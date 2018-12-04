@@ -85,19 +85,18 @@
 <script>
     new Vue({
         el: '#login',
-        data() {
-            return {
-                activeName: 'first',
-                checked: true,
-                centerDialogVisible: false,
-                form: {
-                    user_name: '',
-                    password: ''
-                }
-            };
+        data: {
+            activeName: 'first',
+            checked: true,
+            centerDialogVisible: false,
+            form: {
+                name: '',
+                password: ''
+            }
         },
         methods: {
             handleClick(tab, event) {
+
             },
             onSubmit() {
             },
