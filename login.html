@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>美约会-登录</title>
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" type="text/css" href="css/common.css">
@@ -14,7 +15,7 @@
         <p>美约会电务管理系统</p>
         <div class="login_form">
             <template>
-                <el-tabs v-model="type" @tab-click="handleClick">
+                <el-tabs v-model="type">
                     <el-tab-pane label="主店登录" name="1">
                         <el-form ref="form" :model="form" label-width="80px">
                             <el-form-item label="账号：">
