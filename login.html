@@ -2,20 +2,20 @@
 <html>
 <head>
     <title>美约会-登录</title>
-    <link rel="stylesheet" href="../css/index.css">
-    <link rel="stylesheet" type="text/css" href="../css/common.css">
-    <link rel="stylesheet" type="text/css" href="../css/login.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+    <link rel="stylesheet" type="text/css" href="css/login.css">
 </head>
 <body>
 
 <div id="login" class="login_apge">
     <div class="login_div">
-        <img src="../images/login_logo.png" class="login_logo">
+        <img src="images/login_logo.png" class="login_logo">
         <p>美约会电务管理系统</p>
         <div class="login_form">
             <template>
-                <el-tabs v-model="activeName" @tab-click="handleClick">
-                    <el-tab-pane label="主店登录" name="first">
+                <el-tabs v-model="type" @tab-click="handleClick">
+                    <el-tab-pane label="主店登录" name="1">
                         <el-form ref="form" :model="form" label-width="80px">
                             <el-form-item label="账号：">
                                 <el-input v-model="form.name" placeholder="请输入账号"></el-input>
@@ -30,7 +30,7 @@
                             <button @click="onSubmit" class="blue submit_kq">登录</button>
                         </el-form>
                     </el-tab-pane>
-                    <el-tab-pane label="店员登录" name="second">
+                    <el-tab-pane label="店员登录" name="2">
                         <el-form ref="form" :model="form" label-width="80px">
                             <el-form-item label="账号：">
                                 <el-input v-model="form.name" placeholder="请输入账号"></el-input>
@@ -78,15 +78,15 @@
 </div>
 
 </body>
-<script src="../js/jquery.min.js"></script>
-<script src="../js/vue.js"></script>
-<script src="../js/func.js"></script>
-<script src="../js/index.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/vue.js"></script>
+<script src="js/func.js"></script>
+<script src="js/index.js"></script>
 <script>
     new Vue({
         el: '#login',
         data: {
-            activeName: 'first',
+            type: '1',
             checked: true,
             centerDialogVisible: false,
             form: {
@@ -95,10 +95,8 @@
             }
         },
         methods: {
-            handleClick(tab, event) {
-
-            },
             onSubmit() {
+                $.post()
             },
         },
     })

@@ -1,6 +1,9 @@
-/*
-* 公共方法文件
-* */
+const ym = '';
+const methods = {
+
+};
+
+//-----------------------------------------------------------
 //成功
 function success(msg) {
     this.$message(msg);
