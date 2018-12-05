@@ -1,0 +1,15 @@
+.screen_page{
+  width: 100%;
+  height:100%;
+    background-color: #f7f7ff;
+}
+.el-header {
+    background-coor: #B3C0D1;
+    color: #333;
+    line-height: 60px;
+  }
+  
+  .el-aside {
+    color: #333;
+    background: #dedeff;
+  }
