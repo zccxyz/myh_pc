@@ -3,6 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="6d96ebce-820d-4d5e-824a-ac96900c46dd" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html/home_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/home_page.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/func.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/func.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/login.html" afterDir="false" />
     </list>
@@ -17,21 +19,72 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/login.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1213">
-              <caret line="88" column="36" lean-forward="true" selection-start-line="88" selection-start-column="36" selection-end-line="88" selection-end-column="36" />
+            <state relative-caret-position="328">
+              <caret line="103" column="41" lean-forward="true" selection-start-line="103" selection-start-column="41" selection-end-line="103" selection-end-column="41" />
               <folding>
-                <element signature="n#style#0;n#el-button#0;n#el-tabs#0;n#template#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#head#0;n#html#0;n#!!top" />
+                <element signature="n#body#0;n#html#0;n#!!top" />
+                <element signature="n#div#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#template#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#el-tabs#0;n#template#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#el-tab-pane#0;n#el-tabs#0;n#template#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#el-tab-pane#1;n#el-tabs#0;n#template#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#p#0;n#el-tabs#0;n#template#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#el-input#0;n#p#0;n#el-tabs#0;n#template#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#p#1;n#el-tabs#0;n#template#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#el-input#0;n#p#1;n#el-tabs#0;n#template#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#div#0;n#el-tabs#0;n#template#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
                 <element signature="n#template#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#el-dialog#0;n#template#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#div#0;n#el-dialog#0;n#template#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#p#0;n#div#0;n#el-dialog#0;n#template#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#p#1;n#div#0;n#el-dialog#0;n#template#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#p#2;n#div#0;n#el-dialog#0;n#template#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#span#0;n#el-dialog#0;n#template#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="e#2760#2932#0" />
+                <element signature="e#2976#3465#0" />
+                <element signature="e#3038#3175#0" />
+                <element signature="e#3295#3450#0" />
+                <element signature="e#3373#3432#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/html/home_page.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="342">
+              <caret line="41" column="36" selection-start-line="41" selection-start-column="36" selection-end-line="41" selection-end-column="36" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/html/home.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="202">
+              <caret line="43" column="16" lean-forward="true" selection-start-line="43" selection-start-column="16" selection-end-line="43" selection-end-column="16" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/html/tmp.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="84">
+              <caret line="3" column="26" lean-forward="true" selection-start-line="3" selection-start-column="26" selection-end-line="3" selection-end-column="26" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/func.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="200">
-              <caret line="8" column="32" lean-forward="true" selection-start-line="8" selection-start-column="32" selection-end-line="8" selection-end-column="32" />
+            <state relative-caret-position="280">
+              <caret line="10" column="1" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -69,8 +122,10 @@
         <option value="$PROJECT_DIR$/js/index.js" />
         <option value="$PROJECT_DIR$/html/login.html" />
         <option value="$PROJECT_DIR$/html/tmp.html" />
-        <option value="$PROJECT_DIR$/login.html" />
         <option value="$PROJECT_DIR$/js/func.js" />
+        <option value="$PROJECT_DIR$/html/home_page.html" />
+        <option value="$PROJECT_DIR$/login.html" />
+        <option value="$PROJECT_DIR$/html/home.html" />
       </list>
     </option>
   </component>
@@ -149,18 +204,20 @@
       <updated>1543914951056</updated>
       <workItem from="1543914957695" duration="3691000" />
       <workItem from="1543971967362" duration="6323000" />
-      <workItem from="1543981695856" duration="427000" />
+      <workItem from="1543981695856" duration="1758000" />
+      <workItem from="1543995144650" duration="1437000" />
+      <workItem from="1543998202601" duration="251000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="10441000" />
+    <option name="totallyTimeSpent" value="13460000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18017058" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18336888" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -173,7 +230,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="8" />
       <window_info anchor="bottom" id="Version Control" order="9" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="10" visible="true" weight="0.329718" />
+      <window_info anchor="bottom" id="Terminal" order="10" visible="true" weight="0.3286334" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -222,28 +279,66 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/html/index.html" />
+    <entry file="file://$PROJECT_DIR$/js/func.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="280">
+          <caret line="10" column="1" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/html/tmp.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="27" column="21" lean-forward="true" selection-start-line="27" selection-start-column="21" selection-end-line="27" selection-end-column="21" />
+        <state relative-caret-position="84">
+          <caret line="3" column="26" lean-forward="true" selection-start-line="3" selection-start-column="26" selection-end-line="3" selection-end-column="26" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/login.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1213">
-          <caret line="88" column="36" lean-forward="true" selection-start-line="88" selection-start-column="36" selection-end-line="88" selection-end-column="36" />
+        <state relative-caret-position="328">
+          <caret line="103" column="41" lean-forward="true" selection-start-line="103" selection-start-column="41" selection-end-line="103" selection-end-column="41" />
           <folding>
-            <element signature="n#style#0;n#el-button#0;n#el-tabs#0;n#template#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#head#0;n#html#0;n#!!top" />
+            <element signature="n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#template#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#el-tabs#0;n#template#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#el-tab-pane#0;n#el-tabs#0;n#template#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#el-tab-pane#1;n#el-tabs#0;n#template#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#p#0;n#el-tabs#0;n#template#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#el-input#0;n#p#0;n#el-tabs#0;n#template#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#p#1;n#el-tabs#0;n#template#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#el-input#0;n#p#1;n#el-tabs#0;n#template#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#0;n#el-tabs#0;n#template#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
             <element signature="n#template#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#el-dialog#0;n#template#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#0;n#el-dialog#0;n#template#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#p#0;n#div#0;n#el-dialog#0;n#template#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#p#1;n#div#0;n#el-dialog#0;n#template#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#p#2;n#div#0;n#el-dialog#0;n#template#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#span#0;n#el-dialog#0;n#template#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="e#2760#2932#0" />
+            <element signature="e#2976#3465#0" />
+            <element signature="e#3038#3175#0" />
+            <element signature="e#3295#3450#0" />
+            <element signature="e#3373#3432#0" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/func.js">
+    <entry file="file://$PROJECT_DIR$/html/home_page.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="8" column="32" lean-forward="true" selection-start-line="8" selection-start-column="32" selection-end-line="8" selection-end-column="32" />
+        <state relative-caret-position="342">
+          <caret line="41" column="36" selection-start-line="41" selection-start-column="36" selection-end-line="41" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/html/home.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="202">
+          <caret line="43" column="16" lean-forward="true" selection-start-line="43" selection-start-column="16" selection-end-line="43" selection-end-column="16" />
         </state>
       </provider>
     </entry>

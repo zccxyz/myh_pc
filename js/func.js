@@ -1,6 +1,7 @@
 const ym = 'http://admin.myh.com/apis/backend/';
 const methods = {
     'login': 'login/login',
+    'isLogin': 'login/isLogin',
 };
 let that;
 
@@ -12,7 +13,7 @@ function url(m) {
 //验证
 function verify(data) {
     if(data.code == 1) {
-        return data.info;
+        return data.info==null?data.data:data.info;
     }else{
         error(data.info)
         return false

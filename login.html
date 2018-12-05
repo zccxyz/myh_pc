@@ -95,13 +95,24 @@
                         success(rs)
                     }
                 })
-
             },
+            isLogin() {
+                let s = false;
+                $.post(url(methods.isLogin), v => {
+                    if (v.data) {
+                        //登录后跳转
+                        console.log('ok')
+                        location.href = 'html/home_page.html'
+                    }
+                })
+
+            }
         },
         mounted() {
             this.$nextTick(e => {
                 //初始化
                 that = this;
+                this.isLogin()
             })
         }
     })
