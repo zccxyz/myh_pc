@@ -1,28 +1,29 @@
-const ym = '';
+const ym = 'http://admin.myh.com/apis/backend/';
 const methods = {
-
+    'login': 'login/login',
 };
+let that;
 
 //-----------------------------------------------------------
 //成功
 function success(msg) {
-    this.$message(msg);
+    that.$message(msg);
 }
 //警告
 function warn(msg) {
-    this.$message({
+    that.$message({
         message: msg,
         type: 'success'
     });
 }
 //消息
 function msg(msg) {
-    this.$message({
+    that.$message({
         message: msg,
         type: 'warning'
     });
 }
 //错误
 function error(msg) {
-    this.$message.error(msg);
+    that.$message.error(msg);
 }
