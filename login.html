@@ -27,7 +27,7 @@
                         </el-input>
                     </p>
                     <p>密码：
-                        <el-input v-model="password" placeholder="请输入密码" type="text" class="in_mar">
+                        <el-input v-model="password" placeholder="请输入密码" type="password" class="in_mar">
                         </el-input>
                     </p>
                     <div class="forget_d">
@@ -89,12 +89,17 @@
                     error('请填完以上内容')
                     return
                 }
-                //$.post('http://admin.myh.com/backend/login/login')
+                $.post(url(methods.login), {'username': this.name, 'type': this.type, 'password': this.password}, v => {
+                    let rs = verify(v)
+                    if (rs != false) {
+                        success(rs)
+                    }
+                })
 
             },
         },
         mounted() {
-            this.$nextTick(e=>{
+            this.$nextTick(e => {
                 //初始化
                 that = this;
             })

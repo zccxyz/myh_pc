@@ -5,23 +5,37 @@ const methods = {
 let that;
 
 //-----------------------------------------------------------
+function url(m) {
+    return ym + m + '?source=PC'
+}
+
+//验证
+function verify(data) {
+    if(data.code == 1) {
+        return data.info;
+    }else{
+        error(data.info)
+        return false
+    }
+}
+
 //成功
 function success(msg) {
-    that.$message(msg);
-}
-//警告
-function warn(msg) {
     that.$message({
         message: msg,
         type: 'success'
     });
 }
-//消息
-function msg(msg) {
+//警告
+function warn(msg) {
     that.$message({
         message: msg,
         type: 'warning'
     });
+}
+//消息
+function msg(msg) {
+    this.$message(msg);
 }
 //错误
 function error(msg) {
