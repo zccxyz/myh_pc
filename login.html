@@ -17,27 +17,24 @@
             <template>
                 <el-tabs v-model="type">
                     <el-tab-pane label="主店登录" name="1">
-                        <p>账号： <el-input v-model="input" placeholder="请输入账号" type="text" class="in_mar">
-                        </el-input></p>
-                         <p>密码：<el-input v-model="input" placeholder="请输入密码" type="text" class="in_mar">
-                        </el-input></p>
-                        <div class="forget_d">
-                                <el-checkbox v-model="checked" class="fl">记住密码</el-checkbox>
-                                <el-button type="text" class="fr" @click="centerDialogVisible = true">忘记密码？</el-button>
-                            </div>
-                            <el-button @click="onSubmit" class="blue submit_kq">登录</el-button>
+
                     </el-tab-pane>
                     <el-tab-pane label="店员登录" name="2">
-                          <p>账号：<el-input v-model="input" placeholder="请输入账号" type="text" class="in_mar">
-                        </el-input></p>
-                        <p>密码：<el-input v-model="input" placeholder="请输入密码" type="text" class="in_mar">
-                        </el-input></p>
-                        <div class="forget_d">
-                                <el-checkbox v-model="checked" class="fl">记住密码</el-checkbox>
-                                <el-button type="text" class="fr" @click="centerDialogVisible = true">忘记密码？</el-button>
-                            </div>
-                            <el-button @click="onSubmit" class="blue submit_kq">登录</el-button>
+
                     </el-tab-pane>
+                    <p>账号：
+                        <el-input v-model="name" placeholder="请输入账号" type="text" class="in_mar">
+                        </el-input>
+                    </p>
+                    <p>密码：
+                        <el-input v-model="password" placeholder="请输入密码" type="password" class="in_mar">
+                        </el-input>
+                    </p>
+                    <div class="forget_d">
+                        <el-checkbox v-model="checked" class="fl">记住密码</el-checkbox>
+                        <el-button type="text" class="fr" @click="centerDialogVisible = true">忘记密码？</el-button>
+                    </div>
+                    <el-button style="width: 200px" type="primary" @click="onSubmit">登录</el-button>
                 </el-tabs>
             </template>
         </div>
@@ -49,10 +46,16 @@
                 width="400px"
                 center>
             <div class="dia_div">
-                        <p>手机号：<el-input v-model="input" placeholder="请输入手机号码" class="in_mar"></el-input> </p>
-                        <p>验证码：<el-input v-model="input" placeholder="请输入验证码" disabled class="conf_i in_mar"></el-input>
-                        <el-button type="info" round class="get_code" size="small">获取验证码</el-button></p>
-                         <p>新密码：<el-input v-model="input" placeholder="请输入新密码"></el-input> </p>
+                <p>手机号：
+                    <el-input v-model="input" placeholder="请输入手机号码" class="in_mar"></el-input>
+                </p>
+                <p>验证码：
+                    <el-input v-model="input" placeholder="请输入验证码" disabled class="conf_i in_mar"></el-input>
+                    <el-button type="info" round class="get_code" size="small">获取验证码</el-button>
+                </p>
+                <p>新密码：
+                    <el-input v-model="input" placeholder="请输入新密码"></el-input>
+                </p>
             </div>
             <span slot="footer" class="dialog-footer">
 					    <el-button @click="centerDialogVisible = false">取 消</el-button>
@@ -65,8 +68,9 @@
 </body>
 <script src="js/jquery.min.js"></script>
 <script src="js/vue.js"></script>
-<script src="js/func.js"></script>
 <script src="js/index.js"></script>
+<script src="js/func.js"></script>
+
 <script>
     new Vue({
         el: '#login',
@@ -74,14 +78,32 @@
             type: '1',
             checked: true,
             centerDialogVisible: false,
-            input:'',
+            name: '',
+            password: '',
+            input: '',
         },
         methods: {
             onSubmit() {
-                //$.post('http://admin.myh.com/backend/login/login')
-                console.log(111)
+                if (this.name == '' || this.password == '') {
+                    //this.$message.error('请填完以上内容');
+                    error('请填完以上内容')
+                    return
+                }
+                $.post(url(methods.login), {'username': this.name, 'type': this.type, 'password': this.password}, v => {
+                    let rs = verify(v)
+                    if (rs != false) {
+                        success(rs)
+                    }
+                })
+
             },
         },
+        mounted() {
+            this.$nextTick(e => {
+                //初始化
+                that = this;
+            })
+        }
     })
 </script>
 </html>

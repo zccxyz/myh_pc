@@ -1,28 +1,43 @@
-const ym = '';
+const ym = 'http://admin.myh.com/apis/backend/';
 const methods = {
-
+    'login': 'login/login',
 };
+let that;
 
 //-----------------------------------------------------------
+function url(m) {
+    return ym + m + '?source=PC'
+}
+
+//验证
+function verify(data) {
+    if(data.code == 1) {
+        return data.info;
+    }else{
+        error(data.info)
+        return false
+    }
+}
+
 //成功
 function success(msg) {
-    this.$message(msg);
-}
-//警告
-function warn(msg) {
-    this.$message({
+    that.$message({
         message: msg,
         type: 'success'
     });
 }
-//消息
-function msg(msg) {
-    this.$message({
+//警告
+function warn(msg) {
+    that.$message({
         message: msg,
         type: 'warning'
     });
 }
+//消息
+function msg(msg) {
+    this.$message(msg);
+}
 //错误
 function error(msg) {
-    this.$message.error(msg);
+    that.$message.error(msg);
 }
