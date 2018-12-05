@@ -4,12 +4,64 @@
     background-color: #f7f7ff;
 }
 .el-header {
-    background-coor: #B3C0D1;
-    color: #333;
-    line-height: 60px;
+    line-height:  88px;
+  color:#fff;
+  font-size: 2rem;
   }
-  
+  .el-header p{
+    font-size: 1.6rem;
+    line-height:  88px;
+  }
+  .el-header  i{
+      margin:0 3px;
+    }
+    .el-header  .home_logo{
+      margin-right:15px;
+    }
+     .el-header  .home_exit{
+      margin-left:15px;
+    }
   .el-aside {
-    color: #333;
     background: #dedeff;
   }
+    .el-aside .el-menu{
+      background: #c2c0ec;
+    }
+      .el-aside  a{
+        width: 100%;
+        height:100%;
+        display: block;
+        color:#fff;
+        font-size: 1.6rem;
+      }
+       .el-aside  .el-submenu__title a:hover, .el-aside  .el-submenu__title a:focus, .el-aside  .el-submenu__title a:active{
+        color:#fff;
+       }
+.el-aside  .el-submenu__title i{
+  color:#fff;
+  font-size: 1.6rem;
+}
+      .el-aside .el-menu-item{
+         color:#fff;
+        font-size: 1.5rem;
+      }
+.home_icon{
+  height:20px;
+  margin-right: 10px;
+}
+.home_new{
+  width:20px;
+  margin-right: 10px;
+}
+.el-submenu.is-opened,.el-menu-item.is-active {
+    background: #938ef6;
+}
+iframe{
+  border:none;
+  width: 100%;
+  height:100%;
+}
+.screen_page .el-main {
+  padding: 0;
+  background: #f7f7ff;
+}

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>tmp</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../css/home.css">
+</head>
+<body>
+
+<div id="app">
+    <p class="index_top">
+        <img src="../images/home_birth.png" class="home_birth">本周生日|张三&#12288;10-26
+    </p>
+    <ul class="intex_center">
+        <li>
+            <a href="">
+                <p>今日总营业额</p>
+                <span class="cr">
+                    52200
+                </span>
+                <p class="index_detail">详情</p>
+            </a>
+        </li>
+        <li>
+            <a href="">
+                <p>消耗额</p>
+                <span class="cr">
+                    52200
+                </span>
+                <p>操作项目数：12</p>
+                <p class="index_detail">详情</p>
+            </a>
+        </li>
+        <li>
+            <a href="">
+                <p>今日到店</p>
+                <p>新客户：12</p>
+                <p class="index_detail">详情</p>
+            </a>
+        </li>
+        <li>
+            <ul>
+                <li>
+                    流失会员预警：12
+                </li>
+                <li>
+                    游离会员：12
+                </li>
+                <li>
+                   新客户追踪：12
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <ul class="index_bottom">
+        <li>
+             <a href="{:url('Arrears/index')}">
+                        <img src="../images/home_arrear.png" class="index_img"/>
+                        <p>欠款跟进</p>
+            </a>
+        </li>
+    </ul>
+</div>
+
+</body>
+</html>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../js/func.js"></script>
+<script src="../js/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {},
+        methods: {},
+        mounted() {
+            this.$nextTick(e=>{
+                //初始化
+            })
+        }
+    })
+</script>

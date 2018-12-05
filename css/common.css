@@ -5,6 +5,9 @@ a{
 .over_hidden{
     overflow: hidden;
 }
+img{
+    vertical-align: middle;
+}
 input{
     font-size: 15px !important;
 }
