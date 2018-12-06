@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>美约会-商品管理</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../css/customer.css">
+    <link rel="stylesheet" type="text/css" href="../css/goods.css">
+</head>
+<body>
+
+<div id="app" class="customer">
+    <p class="cus_title">
+       <el-breadcrumb separator-class="el-icon-arrow-right">
+          <el-breadcrumb-item :to="{ path: '/' }">信息管理</el-breadcrumb-item>
+          <el-breadcrumb-item>商品管理</el-breadcrumb-item>
+        </el-breadcrumb>
+    </p>
+    <template>
+        <div class="cus_center">
+            <el-input class="cus_seatch"
+                placeholder="请输入商品名称"
+                prefix-icon="el-icon-search"
+                v-model="input">
+              </el-input>
+              <el-button type="success">导入商品表</el-button>
+              <el-button type="success">导出商品表</el-button>
+              <el-button type="success" class="fr">批量删除</el-button>
+              <el-button type="success" class="fr">新增商品</el-button>
+              <el-button type="success" class="fr">批量新增</el-button>
+        </div>
+        <el-table border 
+            ref="multipleTable"
+            :data="tableData3"
+            tooltip-effect="dark"
+            style="width: 100%"
+            @selection-change="handleSelectionChange">
+            <el-table-column
+              type="selection"
+              width="55">
+            </el-table-column>
+            <el-table-column
+              label="品项"
+              width="120">
+              <template slot-scope="scope">{{ scope.row.px }}</template>
+            </el-table-column>
+            <el-table-column
+              prop="class"
+              label="类别"
+              width="120">
+            </el-table-column>
+            <el-table-column
+              prop="name"
+              label="商品名称">
+            </el-table-column>
+            <el-table-column
+              prop="price"
+              label="零售价">
+            </el-table-column>
+            <el-table-column
+              prop="stock"
+              label="库存">
+            </el-table-column>
+            <el-table-column
+              prop="fre"
+              label="次数">
+            </el-table-column>
+            <el-table-column
+              prop="fee"
+              label="手工">
+            </el-table-column>
+            <el-table-column
+              prop="give"
+              label="赠送">
+            </el-table-column>
+            <el-table-column
+              label="操作"
+              show-overflow-tooltip>
+              <template slot-scope="scope">
+                <el-button
+                  size="mini"
+                  @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                <el-button
+                  size="mini"
+                  type="danger"
+                  @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                </template>
+            </el-table-column>
+          </el-table>
+    </template>
+
+</div>
+
+</body>
+</html>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../js/func.js"></script>
+<script src="../js/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            input:'',
+             tableData3: [{
+             px: '产品',
+              class: '面部',
+             name: '睡眠面膜',
+             price:'231',
+             stock:'12',
+             fre:'',
+             fee:'',
+             give:'是'
+            }, {
+               px: '套盒',
+              class: '身体',
+             name: '肩颈套',
+             price:'2310',
+             stock:'12',
+             fre:'12',
+             fee:'5',
+             give:'是'
+            }],
+            multipleSelection: []
+        },
+        methods: {
+            toggleSelection(rows) {
+            if (rows) {
+              rows.forEach(row => {
+                this.$refs.multipleTable.toggleRowSelection(row);
+              });
+            } else {
+              this.$refs.multipleTable.clearSelection();
+            }
+          },
+           handleSelectionChange(val) {
+            this.multipleSelection = val;
+          },
+          handleEdit(index, row) {
+            console.log(index, row);
+          },
+          handleDelete(index, row) {
+            console.log(index, row);
+          }
+        },
+        mounted() {
+            this.$nextTick(e=>{
+                //初始化
+            })
+        }
+    })
+</script>
