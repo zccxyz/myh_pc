@@ -1,0 +1,85 @@
+.pay_page{
+	margin-top: 5px;
+}
+.order_detail{
+	height:56px;
+	line-height: 56px;
+	font-size: 1.4rem;
+	padding-left: 15px;
+}
+.order_detail .de_title{
+	font-size: 1.5rem;
+	margin-right: 15px;
+}
+.pay_div{
+	border:2px solid rgb(225, 225, 225);
+	background: #fff;
+	padding:5px 0 10px 15px;
+}
+.pay_ul{
+width: 100%;
+}
+.pay_ul>li{
+	margin: 0.5%;
+	border:1px solid  rgb(220, 220, 220);
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  width: 34%;
+  display: inline-block;
+  padding: 10px;
+  line-height: 40px;
+}
+.pay_div img{
+	width: 35px;
+	margin-right: 5px;
+}
+.pay_input{
+	width: 150px;
+}
+.pay_other{
+	margin: 10px;
+	border:1px solid  rgb(220, 220, 220);
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  width: 70%;
+  display: inline-block;
+  padding: 0 10px 0 0;
+  line-height: 40px;
+}
+.pay_have{
+	display: inline-block;
+	width: 35%;
+	padding: 10px;
+}
+.pay_infor{
+	margin: 15px 0;
+	border:1px solid rgb(225, 225, 225);
+	border-radius: 10px;
+	padding: 15px;
+	background: #fff;
+}
+.pay_infor>p{
+	width: 60%;
+}
+.pay_total{
+	padding-left: 100px;
+	width: 100%;
+	background:#fff;
+	left: 0;
+	bottom: 0;
+	position: fixed;
+	height:70px;
+	line-height: 70px;
+	z-index: 999;
+}
+.pay_total *{
+	font-size: 1.8rem;
+}
+.pay{
+	float: right;
+	display: inline-block;
+	width: 150px;
+	height:100%;
+	color:#fff;
+	text-align: center;
+}

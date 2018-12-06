@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>支付页面</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../css/pay_page.css">
+</head>
+<body class="posi_rela">
+
+<div id="app">
+     <template>
+         <p class="cus_title">
+           <el-breadcrumb separator-class="el-icon-arrow-right">
+              <el-breadcrumb-item :to="{ path: '/' }">信息管理</el-breadcrumb-item>
+              <el-breadcrumb-item>会员管理</el-breadcrumb-item>
+              <el-breadcrumb-item>消费</el-breadcrumb-item>
+              <el-breadcrumb-item>支付</el-breadcrumb-item>
+            </el-breadcrumb>
+        </p>
+        <div class="pay_page">
+            <p class="other_back order_detail">
+                <span class="de_title">确认订单信息</span>
+                订单编号：bc4556633&#12288;下单时间：2018-02-12&nbsp;10:30
+            </p>
+            <p class="order_detail">
+                会员:<i class="cr">张三</i>&#12288;订单金额：12452.00
+            </p>
+            <p class="other_back order_detail">支付方式</p>
+            <div class="pay_div">
+                <p><img src="../images/pay_way1.png" height="100%">第三方支付</p>
+                <ul class="pay_ul">
+                    <li>
+                        <img src="../images/pay(3).png" height="100%">支付宝　
+                        <el-input v-model="input" placeholder="0.00" class="fr pay_input"></el-input>
+                    </li>
+                    <li>
+                        <img src="../images/pay(2).png" height="100%">微信　
+                        <el-input v-model="input" placeholder="0.00" class="fr pay_input"></el-input>
+                    </li>
+                    <li>
+                        <img src="../images/pay(4).png" height="100%">POS机
+                        <el-input v-model="input" placeholder="0.00" class="fr pay_input"></el-input>
+                    </li>
+                    <li>
+                        <img src="../images/pay_way2.png" height="100%">大众点评　
+                        <el-input v-model="input" placeholder="0.00" class="fr pay_input"></el-input>
+                    </li>
+                    <li>
+                        <img src="../images/pay_way3.png" height="100%">收钱吧　
+                        <el-input v-model="input" placeholder="0.00" class="fr pay_input"></el-input>
+                    </li>
+                    <li>
+                        <img src="../images/pay_way4.png" height="100%">美团　
+                        <el-input v-model="input" placeholder="0.00" class="fr pay_input"></el-input>
+                    </li>
+                </ul>
+                 <p><img src="../images/pay(5).png" height="100%">余额抵扣</p>
+                 <div class="pay_other">
+                     <span class="pay_have">
+                         会员余额：1252.00
+                     </span>
+                     <span>
+                         使用余额：<el-input v-model="input" placeholder="0.00" class="pay_input"></el-input>
+                     </span>
+                 </div>
+                 <p><img src="../images/pay(8).png" height="100%">积分抵扣</p>
+                 <div class="pay_other">
+                     <span class="pay_have">
+                         累计积分：1252.00&#12288;可用积分：2333
+                     </span>
+                     <span>
+                         使用积分：<el-input v-model="input" placeholder="0.00" class="pay_input"></el-input>&#12288;
+                         抵扣金额：<el-input v-model="input" placeholder="0.00" class="pay_input"></el-input>
+                     </span>
+                 </div>
+                 <p><img src="../images/pay(7).png" height="100%">赠送</p>
+                 <div class="pay_other">
+                     <span class="pay_have">
+                        赠送积分：<el-input v-model="input" placeholder="0" class="pay_input"></el-input>
+                     </span>
+                     <span>
+                         赠送金额：<el-input v-model="input" placeholder="0.00" class="pay_input"></el-input>
+                         &#12288;经手人：<el-input v-model="input" placeholder="请填写经手人" class="pay_input"></el-input>
+                     </span>
+                 </div>
+                  <p><img src="../images/pay(6).png" height="100%">使用优惠券（共3张优惠券）</p>
+                  <div class="pay_coupon">
+                      <el-tabs type="border-card">
+                          <el-tab-pane label="可用优惠券">
+                              以下是该订单可用优惠券，你可以查看优惠券规则说明
+                          </el-tab-pane>
+                          <el-tab-pane label="不可用优惠券">
+                              以下是该订单不可用优惠券，你可以查看优惠券规则说明
+                          </el-tab-pane>
+                        </el-tabs>
+                  </div>
+                </div>
+            </div>
+            <div class="pay_infor">
+                <p>
+                    剩余未支付<span class="fr"><i class="cr">￥</i>182.00</span>
+                </p>
+                <p>
+                    优惠券减免<span class="fr"><i class="cr">￥</i>182.00</span>
+                </p>
+                <p>
+                    积分抵扣金额<span class="fr"><i class="cr">￥</i>182.00</span>
+                </p>
+                <p>
+                    赠送金额<span class="fr"><i class="cr">￥</i>182.00</span>
+                </p>
+            </div>
+     <div style="height:70px"></div>
+     <div class="pay_total">
+         <span class="cr">
+             合计：15235
+         </span>
+         <span class="red_box pay">提交订单</span>
+     </div>
+     </template>
+
+</div>
+
+</body>
+</html>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../js/func.js"></script>
+<script src="../js/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            input:''
+        },
+        methods: {},
+        mounted() {
+            this.$nextTick(e=>{
+                //初始化
+                that = this;
+            })
+        }
+    })
+</script>

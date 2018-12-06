@@ -29,9 +29,4 @@
 	border:none;
 	color:#fff;
 }
-.purple {
-  background-image: -moz-linear-gradient( -52deg, rgb(165,149,249) 0%, rgb(235,211,211) 100%);
-  background-image: -webkit-linear-gradient( -52deg, rgb(165,149,249) 0%, rgb(235,211,211) 100%);
-  background-image: -ms-linear-gradient( -52deg, rgb(165,149,249) 0%, rgb(235,211,211) 100%);
-  box-shadow: 1px 1.732px 6px 0px rgba(65, 77, 110, 0.39);
-}
+
