@@ -1,4 +1,4 @@
-const ym = 'http://admin.myh.com/apis/backend/';
+const ym = 'http://admin.myhkj.com/apis/backend/';
 const methods = {
     'login': 'login/login',
     'isLogin': 'login/isLogin',

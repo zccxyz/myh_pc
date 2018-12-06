@@ -2,10 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6d96ebce-820d-4d5e-824a-ac96900c46dd" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/html/customer.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/customer.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/html/goods.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/goods.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/html/home_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/home_page.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/func.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/func.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -16,11 +12,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/func.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-308">
-              <caret line="7" column="43" lean-forward="true" selection-start-line="7" selection-start-column="43" selection-end-line="7" selection-end-column="43" />
+            <state relative-caret-position="140">
+              <caret line="5" column="39" selection-start-line="5" selection-start-column="39" selection-end-line="5" selection-end-column="39" />
             </state>
           </provider>
         </entry>
@@ -28,7 +24,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/html/customer.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="310">
+            <state relative-caret-position="646">
               <caret line="134" column="12" lean-forward="true" selection-start-line="134" selection-start-column="12" selection-end-line="134" selection-end-column="25" />
               <folding>
                 <element signature="n#style#0;n#el-input#0;n#div#0;n#template#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -42,10 +38,10 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/html/goods.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1154">
+            <state relative-caret-position="2912">
               <caret line="177" column="38" lean-forward="true" selection-start-line="177" selection-start-column="38" selection-end-line="177" selection-end-column="38" />
               <folding>
                 <element signature="n#style#0;n#el-input#0;n#div#0;n#template#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -100,9 +96,9 @@
         <option value="$PROJECT_DIR$/login.html" />
         <option value="$PROJECT_DIR$/html/home.html" />
         <option value="$PROJECT_DIR$/html/home_page.html" />
-        <option value="$PROJECT_DIR$/js/func.js" />
         <option value="$PROJECT_DIR$/html/customer.html" />
         <option value="$PROJECT_DIR$/html/goods.html" />
+        <option value="$PROJECT_DIR$/js/func.js" />
       </list>
     </option>
   </component>
@@ -184,12 +180,12 @@
       <workItem from="1543981695856" duration="1758000" />
       <workItem from="1543995144650" duration="1437000" />
       <workItem from="1543998202601" duration="5691000" />
-      <workItem from="1544064143399" duration="15073000" />
+      <workItem from="1544064143399" duration="15249000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="33973000" />
+    <option name="totallyTimeSpent" value="34149000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -320,16 +316,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/func.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-308">
-          <caret line="7" column="43" lean-forward="true" selection-start-line="7" selection-start-column="43" selection-end-line="7" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/html/customer.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="310">
+        <state relative-caret-position="646">
           <caret line="134" column="12" lean-forward="true" selection-start-line="134" selection-start-column="12" selection-end-line="134" selection-end-column="25" />
           <folding>
             <element signature="n#style#0;n#el-input#0;n#div#0;n#template#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -344,7 +333,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/html/goods.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1154">
+        <state relative-caret-position="2912">
           <caret line="177" column="38" lean-forward="true" selection-start-line="177" selection-start-column="38" selection-end-line="177" selection-end-column="38" />
           <folding>
             <element signature="n#style#0;n#el-input#0;n#div#0;n#template#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -356,6 +345,13 @@
             <element signature="e#4275#4325#0" />
             <element signature="e#4362#4412#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/func.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="5" column="39" selection-start-line="5" selection-start-column="39" selection-end-line="5" selection-end-column="39" />
         </state>
       </provider>
     </entry>
