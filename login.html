@@ -92,7 +92,7 @@
                 $.post(url(methods.login), {'username': this.name, 'type': this.type, 'password': this.password}, v => {
                     let rs = verify(v)
                     if (rs != false) {
-                        success(rs)
+                        location.href = 'html/home_page.html'
                     }
                 })
             },
@@ -101,7 +101,6 @@
                 $.post(url(methods.isLogin), v => {
                     if (v.data) {
                         //登录后跳转
-                        console.log('ok')
                         location.href = 'html/home_page.html'
                     }
                 })

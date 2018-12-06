@@ -18,7 +18,7 @@
             <a href="">
                 <p>今日总营业额</p>
                 <span class="cr">
-                    52200
+                    {{sj.today_money}}
                 </span>
                 <p class="index_detail">详情</p>
             </a>
@@ -27,29 +27,29 @@
             <a href="">
                 <p>消耗额</p>
                 <span class="cr">
-                    52200
+                    {{sj.consume_total}}
                 </span>
-                <p>操作项目数：12</p>
+                <p>操作项目数：{{sj.items_total}}</p>
                 <p class="index_detail">详情</p>
             </a>
         </li>
         <li>
             <a href="">
                 <p>今日到店</p>
-                <p>新客户：12</p>
+                <p>新客户：{{sj.arrival_total}}</p>
                 <p class="index_detail">详情</p>
             </a>
         </li>
         <li>
             <ul>
                 <li>
-                    流失会员预警：12
+                    流失会员预警：{{sj.lost_member}}
                 </li>
                 <li>
-                    游离会员：12
+                    游离会员：{{sj.untime_member}}
                 </li>
                 <li>
-                    新客户追踪：12
+                    新客户追踪：{{sj.new_customer}}
                 </li>
             </ul>
         </li>
@@ -73,11 +73,26 @@
 <script>
     new Vue({
         el: '#app',
-        data: {},
-        methods: {},
+        data: {
+            sj: '',
+        },
+        methods: {
+            getData() {
+                $.post(url(methods.manager), v=>{
+                    let rs = verify(v)
+                    if(rs!=false){
+                        this.sj = rs
+                    }
+                    //console.log(rs)
+                })
+            }
+        },
         mounted() {
             this.$nextTick(e => {
                 //初始化
+                //parent.location.href='../login.html'
+                that = this;
+                this.getData()
             })
         }
     })
