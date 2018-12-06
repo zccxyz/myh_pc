@@ -15,69 +15,95 @@
     </p>
     <template>
         <div class="cus_center">
-            <el-input class="cus_seatch"
-                placeholder="请输入内容"
-                prefix-icon="el-icon-search"
-                v-model="input">
-              </el-input>
-              <el-button type="success">导入会员表</el-button>
-              <el-button type="success">导出Excel表</el-button>
-              <el-button type="success" class="fr">批量删除</el-button>
-              <el-button type="success" class="fr">新增会员</el-button>
+            <el-input class="cus_seatch" style="float: left"
+                      placeholder="请输入内容"
+                      prefix-icon="el-icon-search"
+                      v-model="input">
+            </el-input>
+            <!--<el-button @click="import2" type="success" id="file" native-type="submit">导入会员表</el-button>-->
+            <el-upload
+                    style="float: left"
+                    class="upload-demo"
+                    :action="r"
+                    multiple
+                    :limit="1"
+                    show-file-list="false"
+                    :before-upload="beforeUpload2"
+                    :on-success="ok"
+                    :file-list="fileList">
+                <el-button size="small" type="primary">导入会员表</el-button>
+                <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
+            </el-upload>
+
+            <el-button type="success">导出Excel表</el-button>
+            <el-button type="success" class="fr">批量删除</el-button>
+            <el-button type="success" class="fr">新增会员</el-button>
         </div>
-        <el-table border 
-            ref="multipleTable"
-            :data="tableData3"
-            tooltip-effect="dark"
-            style="width: 100%"
-            @selection-change="handleSelectionChange">
+        <el-table border
+                  ref="multipleTable"
+                  :data="list"
+                  tooltip-effect="dark"
+                  style="width: 100%"
+                  @selection-change="handleSelectionChange">
             <el-table-column
-              type="selection"
-              width="55">
+                    type="selection"
+                    width="55">
             </el-table-column>
             <el-table-column
-              label="会员名"
-              width="120">
-              <template slot-scope="scope">{{ scope.row.name }}</template>
+                    label="会员名"
+                    width="120"
+                    prop="name">
             </el-table-column>
             <el-table-column
-              prop="number"
-              label="会员编号"
-              width="120">
+                    prop="num"
+                    label="会员编号"
+                    width="120">
             </el-table-column>
             <el-table-column
-              prop="tel"
-              label="会员电话">
+                    prop="tel"
+                    label="会员电话">
             </el-table-column>
             <el-table-column
-              label="操作"
-              show-overflow-tooltip>
-              <template slot-scope="scope">
-                <el-button
-                  size="mini"
-                  @click="handleEdit(scope.$index, scope.row)" class="green do_but">到店</el-button>
-                  <el-button
-                  size="mini"
-                  @click="handleEdit(scope.$index, scope.row)" class="purple do_but">消费</el-button>
-                  <el-button
-                  size="mini"
-                  @click="handleEdit(scope.$index, scope.row)" class="red_box do_but">消耗</el-button>
-                  <el-button
-                  size="mini"
-                  @click="handleEdit(scope.$index, scope.row)" class="blue do_but">离店</el-button>
-                 <el-button
-                  size="mini"
-                  @click="handleEdit(scope.$index, scope.row)">查看</el-button>
-                <el-button
-                  size="mini"
-                  @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                <el-button
-                  size="mini"
-                  type="danger"
-                  @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                    label="操作"
+                    show-overflow-tooltip>
+                <template slot-scope="scope">
+                    <el-button
+                            size="mini"
+                            @click="handleEdit(scope.$index, scope.row)" class="green do_but">到店
+                    </el-button>
+                    <el-button
+                            size="mini"
+                            @click="handleEdit(scope.$index, scope.row)" class="purple do_but">消费
+                    </el-button>
+                    <el-button
+                            size="mini"
+                            @click="handleEdit(scope.$index, scope.row)" class="red_box do_but">消耗
+                    </el-button>
+                    <el-button
+                            size="mini"
+                            @click="handleEdit(scope.$index, scope.row)" class="blue do_but">离店
+                    </el-button>
+                    <el-button
+                            size="mini"
+                            @click="handleEdit(scope.$index, scope.row)">查看
+                    </el-button>
+                    <el-button
+                            size="mini"
+                            @click="handleEdit(scope.$index, scope.row)">编辑
+                    </el-button>
+                    <el-button
+                            size="mini"
+                            type="danger"
+                            @click="handleDelete(scope.$index, scope.row)">删除
+                    </el-button>
                 </template>
             </el-table-column>
-          </el-table>
+        </el-table>
+        <!--<el-pagination
+                background
+                layout="prev, pager, next"
+                :total="1000">
+        </el-pagination>-->
     </template>
 
 </div>
@@ -92,41 +118,75 @@
     new Vue({
         el: '#app',
         data: {
-            input:'',
-             tableData3: [{
-          name: '张三',
-          number: '7000123',
-         tel: '15212645632'
-        }, {
-          name: '丽萨',
-          number: '7000125',
-         tel: '15212645632'
-        }],
-        multipleSelection: []
+            input: '',
+            tableData3: [{
+                name: '张三',
+                number: '7000123',
+                tel: '15212645632'
+            }, {
+                name: '丽萨',
+                number: '7000125',
+                tel: '15212645632'
+            }],
+            multipleSelection: [],
+
+            total: 0,
+            list: [],
+            fileList: [],
+            r: '',
         },
         methods: {
             toggleSelection(rows) {
-            if (rows) {
-              rows.forEach(row => {
-                this.$refs.multipleTable.toggleRowSelection(row);
-              });
-            } else {
-              this.$refs.multipleTable.clearSelection();
+                if (rows) {
+                    rows.forEach(row => {
+                        this.$refs.multipleTable.toggleRowSelection(row);
+                    });
+                } else {
+                    this.$refs.multipleTable.clearSelection();
+                }
+            },
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+            },
+            handleEdit(index, row) {
+                console.log(index, row);
+            },
+            handleDelete(index, row) {
+                console.log(index, row);
+            },
+            handleExceed(files, fileList) {
+                console.log(files, fileList)
+            },
+            beforeUpload2(f) {
+                let ext = f.name.toString().split('.')
+                if(ext[1] != 'xlsx') {
+                    error('请上传xlsx文件')
+                    return false
+                }
+            },
+            ok() {
+                success('上传成功')
+                this.getMember()
+            },
+            getMember() {
+                $.get(url(methods.get_member_list), v => {
+                    let rs = verify(v)
+                    if (rs != false) {
+                        this.total = rs.page_count
+                        this.list = rs.all_member
+                    }
+                })
+            },
+            import2() {
+                let data = document.getElementById("file").files[0];
             }
-          },
-           handleSelectionChange(val) {
-            this.multipleSelection = val;
-          },
-          handleEdit(index, row) {
-            console.log(index, row);
-          },
-          handleDelete(index, row) {
-            console.log(index, row);
-          }
         },
         mounted() {
-            this.$nextTick(e=>{
+            this.$nextTick(e => {
                 //初始化
+                that = this
+                this.getMember()
+                this.r = url(methods.upload)
             })
         }
     })

@@ -3,6 +3,9 @@ const methods = {
     'login': 'login/login',
     'isLogin': 'login/isLogin',
     'manager': 'Member/manager',
+    'get_member_list': 'Member/get_member_list',
+    'upload': 'Commodity/upload',
+    'getAllGoods': 'Commodity/getAllGoods',
 };
 let that;
 
@@ -14,8 +17,7 @@ function url(m) {
 //验证
 function verify(data) {
     if(data.code == 1 || data.code == 0) {
-        //console.log(data.info==null?data.data:data.info);return
-        return data.info==null?data.data:data.info;
+        return data.info==null?(data.data==null?data.res:data.data):data.info;
     }else{
         error(data.info)
         return false
