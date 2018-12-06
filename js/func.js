@@ -1,4 +1,4 @@
-//const ym = 'https://admin.myhkj.cn/apis/backend/';
+const ym = 'https://admin.myhkj.cn/apis/backend/';
 //const ym = 'http://admin.myh.com/apis/backend/';
 
 const methods = {
