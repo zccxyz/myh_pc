@@ -11,6 +11,32 @@ a{
 img{
     vertical-align: middle;
 }
+.cus_title{
+    text-align: left;
+    border-bottom:2px solid rgb(225, 225, 225);
+    line-height: 41px;
+    height: 41px;
+}
+.cus_title .el-breadcrumb {
+    font-size: 1.5rem;
+    line-height: 41px;
+}
+.purple {
+  background-image: -moz-linear-gradient( -52deg, rgb(165,149,249) 0%, rgb(235,211,211) 100%);
+  background-image: -webkit-linear-gradient( -52deg, rgb(165,149,249) 0%, rgb(235,211,211) 100%);
+  background-image: -ms-linear-gradient( -52deg, rgb(165,149,249) 0%, rgb(235,211,211) 100%);
+  box-shadow: 1px 1.732px 6px 0px rgba(65, 77, 110, 0.39);
+}
+/*另一渐变*/
+.other_back{
+    background-image: -moz-linear-gradient(90deg, rgb(237, 230, 248) 0%, rgb(207, 212, 250) 100%);
+    background-image: -webkit-linear-gradient(90deg, rgb(237, 230, 248) 0%, rgb(207, 212, 250) 100%);
+    background-image: -ms-linear-gradient(90deg, rgb(237, 230, 248) 0%, rgb(207, 212, 250) 100%);
+    box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.1);
+}
+.posi_rela{
+    position: relative;
+}
 input{
     font-size: 15px !important;
 }
