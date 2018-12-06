@@ -2,14 +2,84 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>tmp</title>
+    <title>美约会-会员管理</title>
     <link rel="stylesheet" href="../css/index.css">
     <link rel="stylesheet" type="text/css" href="../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../css/customer.css">
 </head>
 <body>
 
-<div id="app">
-dcqaqaaaaaaaaaa
+<div id="app" class="customer">
+    <p class="cus_title">
+        会员管理
+    </p>
+    <template>
+        <div class="cus_center">
+            <el-input class="cus_seatch"
+                placeholder="请输入内容"
+                prefix-icon="el-icon-search"
+                v-model="input">
+              </el-input>
+              <el-button type="success">导入会员表</el-button>
+              <el-button type="success">导出Excel表</el-button>
+              <el-button type="success" class="fr">批量删除</el-button>
+              <el-button type="success" class="fr">新增会员</el-button>
+        </div>
+        <el-table border 
+            ref="multipleTable"
+            :data="tableData3"
+            tooltip-effect="dark"
+            style="width: 100%"
+            @selection-change="handleSelectionChange">
+            <el-table-column
+              type="selection"
+              width="55">
+            </el-table-column>
+            <el-table-column
+              label="会员名"
+              width="120">
+              <template slot-scope="scope">{{ scope.row.name }}</template>
+            </el-table-column>
+            <el-table-column
+              prop="number"
+              label="会员编号"
+              width="120">
+            </el-table-column>
+            <el-table-column
+              prop="tel"
+              label="会员电话">
+            </el-table-column>
+            <el-table-column
+              label="操作"
+              show-overflow-tooltip>
+              <template slot-scope="scope">
+                <el-button
+                  size="mini"
+                  @click="handleEdit(scope.$index, scope.row)" class="green do_but">到店</el-button>
+                  <el-button
+                  size="mini"
+                  @click="handleEdit(scope.$index, scope.row)" class="purple do_but">消费</el-button>
+                  <el-button
+                  size="mini"
+                  @click="handleEdit(scope.$index, scope.row)" class="red_box do_but">消耗</el-button>
+                  <el-button
+                  size="mini"
+                  @click="handleEdit(scope.$index, scope.row)" class="blue do_but">离店</el-button>
+                 <el-button
+                  size="mini"
+                  @click="handleEdit(scope.$index, scope.row)">查看</el-button>
+                <el-button
+                  size="mini"
+                  @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                <el-button
+                  size="mini"
+                  type="danger"
+                  @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                </template>
+            </el-table-column>
+          </el-table>
+    </template>
+
 </div>
 
 </body>
@@ -21,8 +91,39 @@ dcqaqaaaaaaaaaa
 <script>
     new Vue({
         el: '#app',
-        data: {},
-        methods: {},
+        data: {
+            input:'',
+             tableData3: [{
+          name: '张三',
+          number: '7000123',
+         tel: '15212645632'
+        }, {
+          name: '丽萨',
+          number: '7000125',
+         tel: '15212645632'
+        }],
+        multipleSelection: []
+        },
+        methods: {
+            toggleSelection(rows) {
+            if (rows) {
+              rows.forEach(row => {
+                this.$refs.multipleTable.toggleRowSelection(row);
+              });
+            } else {
+              this.$refs.multipleTable.clearSelection();
+            }
+          },
+           handleSelectionChange(val) {
+            this.multipleSelection = val;
+          },
+          handleEdit(index, row) {
+            console.log(index, row);
+          },
+          handleDelete(index, row) {
+            console.log(index, row);
+          }
+        },
         mounted() {
             this.$nextTick(e=>{
                 //初始化
