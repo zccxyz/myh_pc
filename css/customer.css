@@ -1,0 +1,36 @@
+.customer{
+	padding: 15px
+}
+.cus_title{
+	text-align: left;
+	border-bottom:2px solid rgb(225, 225, 225);
+	line-height: 41px;
+}
+.cus_center{
+	padding: 5px 0;
+}
+.cus_center button{
+	background: #1cc9b5;
+	margin-left: 15px;
+	border-color: #1cc9b5;
+}
+.cus_seatch{
+	width: 20%;
+	margin-right: 20px;
+}
+.customer .el-table td,.customer .el-table th{
+	text-align: center;
+}
+.customer .el-table td .do_but{
+	width: 90px;
+	border-radius: 10px;
+	outline: 0;
+	border:none;
+	color:#fff;
+}
+.purple {
+  background-image: -moz-linear-gradient( -52deg, rgb(165,149,249) 0%, rgb(235,211,211) 100%);
+  background-image: -webkit-linear-gradient( -52deg, rgb(165,149,249) 0%, rgb(235,211,211) 100%);
+  background-image: -ms-linear-gradient( -52deg, rgb(165,149,249) 0%, rgb(235,211,211) 100%);
+  box-shadow: 1px 1.732px 6px 0px rgba(65, 77, 110, 0.39);
+}

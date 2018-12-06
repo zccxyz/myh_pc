@@ -5,6 +5,9 @@ a{
 .over_hidden{
     overflow: hidden;
 }
+*{
+    font-size: 1.5rem;
+}
 img{
     vertical-align: middle;
 }
