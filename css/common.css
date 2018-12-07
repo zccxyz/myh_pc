@@ -70,6 +70,9 @@ img{
 .customer .el-dialog__header .el-dialog__title {
     color: #fff;
 }
+.white{
+    color:white;
+}
 input{
     font-size: 15px !important;
 }

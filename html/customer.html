@@ -36,7 +36,8 @@
             </el-upload>
 
             <el-button type="success">导出Excel表</el-button>
-            <el-button type="success" class="fr">批量删除</el-button>
+            <el-button type="success">会员表模板下载</el-button>
+            <el-button type="success" class="fr" @click="deleteDialogVisible = false">批量删除</el-button>
             <el-button type="success" class="fr" @click="addDialogVisible = false">新增会员</el-button>
         </div>
         <el-table border
@@ -69,11 +70,11 @@
                 <template slot-scope="scope">
                     <el-button
                             size="mini"
-                            @click="handleEdit(scope.$index, scope.row)" class="green do_but">到店
+                            @click="storeDialogVisible=false" class="green do_but">到店
                     </el-button>
                     <el-button
                             size="mini"
-                            @click="handleEdit(scope.$index, scope.row)" class="purple do_but">消费
+                            @click="handleEdit(scope.$index, scope.row)" class="purple do_but"><a href="buy.html" target="iframe" class="white">消费</a>
                     </el-button>
                     <el-button
                             size="mini"
@@ -84,8 +85,7 @@
                             @click="handleEdit(scope.$index, scope.row)" class="blue do_but">离店
                     </el-button>
                     <el-button
-                            size="mini"
-                            @click="handleEdit(scope.$index, scope.row)">查看
+                            size="mini">查看
                     </el-button>
                     <el-button
                             size="mini"
@@ -167,8 +167,36 @@
             </li>
           </ul>
           <span slot="footer" class="dialog-footer">
-            <el-button @click="centerDialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="centerDialogVisible = false">确 定</el-button>
+            <el-button @click="addDialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="addDialogVisible = false">确 定</el-button>
+          </span>
+        </el-dialog>
+
+        <!-- 删除弹窗 -->
+        <el-dialog
+          title="删除会员"
+          :visible.sync="deleteDialogVisible"
+          width="400px"
+          center>
+          <span>确认删除所选的客户</span>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="deleteDialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="deleteDialogVisible = false">确 定</el-button>
+          </span>
+        </el-dialog>
+         <!-- 到店弹窗 -->
+        <el-dialog
+          title="房间号"
+          :visible.sync="storeDialogVisible"
+          width="400px"
+          center>
+          <div>
+              <p>请输入房间号</p>
+              <el-input v-model="input" placeholder="请输入商品名称"></el-input>
+          </div>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="storeDialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="storeDialogVisible = false">确 定</el-button>
           </span>
         </el-dialog>
     </template>
@@ -188,6 +216,8 @@
             input: '',
             radio:'',
             addDialogVisible:false,
+            deleteDialogVisible:false,
+            storeDialogVisible:false,
             birthday:'',
             name:'',
             options: [{

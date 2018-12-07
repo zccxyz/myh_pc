@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>美约会-消费</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../css/customer.css">
+    <link rel="stylesheet" type="text/css" href="../css/goods.css">
+</head>
+<body>
+
+<div id="app" class="customer">
+    <p class="cus_title">
+        <el-breadcrumb separator-class="el-icon-arrow-right">
+            <el-breadcrumb-item :to="{ path: '/' }">信息管理</el-breadcrumb-item>
+            <el-breadcrumb-item>会员管理</el-breadcrumb-item>
+            <el-breadcrumb-item>消费</el-breadcrumb-item>
+        </el-breadcrumb>
+    </p>
+    <template>
+        <div class="cus_center">
+            <el-input style="float:left;" class="cus_seatch"
+                      placeholder="请输入商品名称"
+                      prefix-icon="el-icon-search"
+                      v-model="input">
+            </el-input>
+        </div>
+        <el-table border
+                  ref="multipleTable"
+                  :data="list"
+                  tooltip-effect="dark"
+                  style="width: 100%"
+                  @selection-change="handleSelectionChange">
+            <el-table-column
+                    type="selection"
+                    width="55">
+            </el-table-column>
+            <el-table-column
+                    label="品项"
+                    width="120"
+                    prop="type">
+            </el-table-column>
+            <el-table-column
+                    prop="class"
+                    label="类别"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="name"
+                    label="商品名称">
+            </el-table-column>
+            <el-table-column
+                    prop="price"
+                    label="零售价">
+            </el-table-column>
+            <el-table-column
+                    prop="stock"
+                    label="库存">
+            </el-table-column>
+            <el-table-column
+                    prop="fre"
+                    label="次数">
+            </el-table-column>
+            <el-table-column
+                    prop="fre"
+                    label="赠送">
+            </el-table-column>
+            <el-table-column
+                    label="加入购物车"
+                    show-overflow-tooltip>
+                <template slot-scope="scope">
+                     <el-button type="success" icon="el-icon-remove" circle></el-button>
+                     <i>5</i>
+                     <el-button type="success" icon="el-icon-circle-plus" circle></el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+       <div class="cart_div">
+           
+       </div> 
+    </template>
+
+</div>
+
+</body>
+</html>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../js/func.js"></script>
+<script src="../js/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            input: '',
+            radio:'',
+             centerDialogVisible: false,
+             tableData3: [{
+                px: '产品',
+                class: '面部',
+                name: '睡眠面膜',
+                price: '231',
+                stock: '12',
+                fre: '',
+                fee: '',
+                give: '是'
+            }, {
+                px: '套盒',
+                class: '身体',
+                name: '肩颈套',
+                price: '2310',
+                stock: '12',
+                fre: '12',
+                fee: '5',
+                give: '是'
+            }],
+            multipleSelection: [],
+
+            list: [],
+            r: '',
+            fileList: [],
+        },
+        methods: {
+            toggleSelection(rows) {
+                if (rows) {
+                    rows.forEach(row => {
+                        this.$refs.multipleTable.toggleRowSelection(row);
+                    });
+                } else {
+                    this.$refs.multipleTable.clearSelection();
+                }
+            },
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+            },
+            handleEdit(index, row) {
+                console.log(index, row);
+            },
+            handleDelete(index, row) {
+                console.log(index, row);
+            },
+            getGoods() {
+                $.post(url(methods.getAllGoods), v=>{
+                    let rs = verify(v)
+                    if(rs != false){
+                        this.list = rs
+                    }
+                })
+            },
+            ok() {
+                success('上传成功')
+                this.fileList = []
+                this.getGoods()
+            },
+            beforeUpload2(f) {
+                let ext = f.name.toString().split('.')
+                if(ext[1] != 'xlsx') {
+                    error('请上传xlsx文件')
+                    return false
+                }
+            },
+        },
+        mounted() {
+            this.$nextTick(e => {
+                //初始化
+                that = this;
+                this.getGoods()
+                loginState()
+                this.r = url(methods.upload+'?type=2')
+            })
+        }
+    })
+</script>
