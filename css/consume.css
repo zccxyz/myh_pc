@@ -39,13 +39,53 @@ margin-bottom: 10px;
 .blue_c{
 	color:#409EFF;
 }
-.矩形_984_拷贝_3 {
-  background-color: rgb(255, 255, 255);
-  box-shadow: 0px 1px 2px 0px rgba(75, 74, 75, 0.2);
-  position: absolute;
-  left: 420px;
-  top: 529px;
-  width: 1473px;
+.p_div_b{
+  background-color: rgb(184, 196, 255);
   height: 60px;
-  z-index: 969;
+  line-height: 60px;
+  padding-left: 12px;
+}
+.commission{
+	overflow: hidden;
+}
+.commission>div{
+	width: 40%;
+}
+.commission_list>li{
+	display: flex;
+	justify-content: space-between;
+}
+.commission_list>li input{
+	border:none;
+}
+.pay_total{
+	width: 100%;
+	background:#fff;
+	left: 0;
+	bottom: 0;
+	position: fixed;
+	height:70px;
+	line-height: 70px;
+	z-index: 999;
+}
+.total_money{
+	padding-left: 100px;
+	display: inline-block;
+	width: 90%;
+	height:100%;
+	border-top:1px solid rgb(225, 225, 225);
+}
+.pay{
+	float: right;
+	display: inline-block;
+	width: 10%;
+	height:100%;
+	color:#fff;
+	text-align: center;
+	font-size: 1.8rem;
+}
+.close{
+	font-size: 2.3rem;
+	display: inline-block;width: 60px;
+	margin: 7px;
 }
