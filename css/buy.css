@@ -1,0 +1,47 @@
+.cart_div{
+	width: 100%;
+	position: fixed;
+	left: 0;
+	bottom: 0;
+}
+.cart_title{
+	border-top-right-radius:10px;
+border-top-left-radius:10px;
+  background-color: rgb(191, 192, 251);
+  height:50px;
+  line-height: 50px;
+  text-align: center;
+  box-shadow: 0px 1px 0px 0px rgba(6, 6, 6, 0.2),0px -1px 0px 0px rgba(6, 6, 6, 0.2);
+}
+.cart_total{
+	width: 100%;
+	background:#fff;
+	left: 0;
+	bottom: 0;
+	position: fixed;
+	height:70px;
+	line-height: 70px;
+	z-index: 999;
+}
+.cart_total *{
+	font-size: 1.8rem;
+	width: 100%;
+}
+.total_money{
+	padding-left: 100px;
+	display: inline-block;
+	width: 90%;
+	height:100%;
+	border-top:1px solid rgb(225, 225, 225);
+}
+.pay{
+	float: right;
+	display: inline-block;
+	width: 10%;
+	height:100%;
+	color:#fff;
+	text-align: center;
+}
+.ci_input{
+	width: 100px;
+}
