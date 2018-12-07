@@ -78,14 +78,14 @@ width: 100%;
 .total_money{
 	padding-left: 100px;
 	display: inline-block;
-	width: 93%;
+	width: 90%;
 	height:100%;
 	border-top:1px solid rgb(225, 225, 225);
 }
 .pay{
 	float: right;
 	display: inline-block;
-	width: 7%;
+	width: 10%;
 	height:100%;
 	color:#fff;
 	text-align: center;

@@ -139,8 +139,76 @@
         </ul>
     </div>
     <div class="commission">
-        <div></div>
+        <div class="mar_hun fl">
+            <p class="p_div_b">
+                消耗手工录入
+            </p>
+            <ul class="consume_list commission_list">
+                <li>
+                    操作人
+                    <el-select v-model="value" placeholder="请选择" class="in_wid">
+                        <el-option
+                          v-for="item in options"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value">
+                        </el-option>
+                    </el-select>
+                    <el-input v-model="input" placeholder="请输入" class="in_wid"></el-input>&nbsp;%<p class="do_blue">添加</p>
+                </li>
+                <li>
+                    操作人
+                    <el-select v-model="value" placeholder="请选择" class="in_wid">
+                        <el-option
+                          v-for="item in options"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value">
+                        </el-option>
+                    </el-select>
+                    <el-input v-model="input" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
+                    <i class="el-icon-circle-close-outline close"></i>
+                </li>
+            </ul>
+        </div>
+        <div class="fr">
+            <p class="p_div_b">
+                消耗提成录入
+            </p>
+            <ul class="consume_list commission_list">
+                <li>
+                    美容师
+                    <el-select v-model="value" placeholder="请选择" class="in_wid">
+                        <el-option
+                          v-for="item in options"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value">
+                        </el-option>
+                    </el-select>
+                    <el-input v-model="input" placeholder="请输入" class="in_wid"></el-input>&nbsp;%<p class="do_blue">添加</p>
+                </li>
+                <li>
+                    顾问
+                    <el-select v-model="value" placeholder="请选择" class="in_wid">
+                        <el-option
+                          v-for="item in options"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value">
+                        </el-option>
+                    </el-select>
+                    <el-input v-model="input" placeholder="请输入" class="in_wid"></el-input>&nbsp;%<p class="do_blue">添加</p>
+                </li>
+            </ul>
+        </div>
     </div>
+     <div style="height:70px"></div>
+     <div class="pay_total">
+        <span class="fl cr total_money">
+         </span>
+         <span class="green pay">确认录入</span>
+     </div>
     </template>
 </div>
 
@@ -153,7 +221,26 @@
 <script>
     new Vue({
         el: '#app',
-        data: {},
+        data: {
+            input:'',
+            options: [{
+              value: '选项1',
+              label: '张三'
+            }, {
+              value: '选项2',
+              label: '丽萨'
+            }],
+            value:'',
+            tableData3: [{
+                name: '张三',
+                number: '7000123',
+                tel: '15212645632'
+            }, {
+                name: '丽萨',
+                number: '7000125',
+                tel: '15212645632'
+            }],
+        },
         methods: {},
         mounted() {
             this.$nextTick(e=>{

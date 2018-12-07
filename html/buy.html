@@ -77,7 +77,7 @@
        <div class="cart_div">
            <p class="cart_title">
                已选择
-               <span class="fr">
+               <span class="fr mar_hun">
                 <img src="../images/delete.png">&nbsp;全部清空
                </span>
            </p>
@@ -91,7 +91,8 @@
                      优惠方式
                      <el-radio v-model="radio" label="1">打折</el-radio>
                     <el-radio v-model="radio" label="2">赠送</el-radio>
-                    &#12288;<el-checkbox v-model="checked">修改次数</el-checkbox><el-input v-model="input" placeholder="请输入次数" width="100px"></el-input>
+                    <i class="check_box">
+                    <el-checkbox v-model="checked">修改次数</el-checkbox></i><el-input v-model="input" placeholder="请输入" class="in_wid und_line"></el-input>
                  </span>
                  <span class="fr mar_hun">
                      <i class="el-icon-remove blue_c"></i>
@@ -109,7 +110,9 @@
                      优惠方式
                      <el-radio v-model="radio" label="1">打折</el-radio>
                     <el-radio v-model="radio" label="2">赠送</el-radio>
-                    &#12288;<el-checkbox v-model="checked">备选项</el-checkbox>修改次数<el-input v-model="input" placeholder="请输入次数" class="ci_input"></el-input>
+                    <i class="check_box">
+                        <el-checkbox v-model="checked">修改次数</el-checkbox>
+                    </i><el-input v-model="input" placeholder="请输入" class="in_wid und_line"></el-input>
                  </span>
                  <span class="fr mar_hun">
                      <i class="el-icon-remove blue_c"></i>
@@ -119,6 +122,7 @@
 
                </li>
            </ul>
+     <div style="height:50px"></div>
            <div class="cart_total">
          <span class="fl cr total_money">
              合计：15235
