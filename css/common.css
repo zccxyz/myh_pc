@@ -37,6 +37,39 @@ img{
 .posi_rela{
     position: relative;
 }
+.goods_edit {
+    background: #fff;
+    overflow: visible;
+}
+.goods_edit li{
+    padding: 0.5rem 1.5rem;
+    line-height: 40px;
+}
+.goods_edit li .list_left{
+    vertical-align: top;
+    width: 25%;
+    min-width: 80px;
+    display: inline-block;
+}
+.goods_edit li .list_right{
+    width: 65%;
+    display: inline-block;
+}
+.goods_edit li .list_right .el-radio {
+    margin-left: 0;
+     margin-right: 20px; 
+}
+.customer .el-dialog__header {
+    line-height: 54px;
+    padding: 0;
+    color:#fff;
+      background-image: -moz-linear-gradient(-52deg, rgb(67, 191, 243) 0%, rgb(59, 236, 194) 100%);
+    background-image: -webkit-linear-gradient(-52deg, rgb(67, 191, 243) 0%, rgb(59, 236, 194) 100%);
+    background-image: -ms-linear-gradient(-52deg, rgb(67, 191, 243) 0%, rgb(59, 236, 194) 100%);
+}
+.customer .el-dialog__header .el-dialog__title {
+    color: #fff;
+}
 input{
     font-size: 15px !important;
 }
