@@ -38,9 +38,9 @@
                 <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
             </el-upload>
             <el-button type="success">导出商品表</el-button>
-            <el-button type="success" class="fr">批量删除</el-button>
-            <el-button type="success" class="fr" @click="centerDialogVisible = true">新增商品</el-button>
-            <el-button type="success" class="fr">批量新增</el-button>
+            <el-button type="success" class="fr" @click="del">批量删除</el-button>
+            <el-button type="success" class="fr" @click="zt = true">新增商品</el-button>
+            <!--<el-button type="success" class="fr">批量新增</el-button>-->
         </div>
         <el-table border
                   ref="multipleTable"
@@ -97,16 +97,16 @@
                     <el-button
                             size="mini"
                             type="danger"
-                            @click="handleDelete(scope.$index, scope.row)">删除
+                            @click="del(2, scope.row)">删除
                     </el-button>
                 </template>
             </el-table-column>
         </el-table>
         <el-dialog v-if="now != null"
-                title="编辑商品"
-                :visible.sync="centerDialogVisible"
-                width="400px"
-                center>
+                   title="编辑商品"
+                   :visible.sync="centerDialogVisible"
+                   width="400px"
+                   center>
             <ul class="goods_edit">
                 <li>
                     <span class="list_left">品项</span>
@@ -130,13 +130,13 @@
                     <el-input v-model="now.stock" placeholder="请输入库存"></el-input>
                 </span>
                 </li>
-                <li>
+                <li v-if="now.zt!=1">
                     <span class="list_left">次数</span>
                     <span class="list_right">
                     <el-input v-model="now.fre" placeholder="请输入次数"></el-input>
                 </span>
                 </li>
-                <li>
+                <li v-if="now.zt!=1">
                     <span class="list_left">手工费</span>
                     <span class="list_right">
                     <el-input v-model="now.free" placeholder="请输入手工费"></el-input>
@@ -145,13 +145,72 @@
                 <li>
                     <span class="list_left">类别</span>
                     <span class="list_right">
-                    <el-radio v-for="v in classify" v-if="now.zt==v.type" v-model="radio" label="1">{{v.name}}</el-radio>
+                    <el-radio v-for="v in classify" v-if="now.zt==v.type" v-model="now.cid"
+                              :label="v.id">{{v.name}}</el-radio>
                 </span>
                 </li>
             </ul>
             <span slot="footer" class="dialog-footer">
             <el-button @click="centerDialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="centerDialogVisible = false">确 定</el-button>
+            <el-button type="primary" @click="editAll">确 定</el-button>
+          </span>
+        </el-dialog>
+        <!--新增-->
+        <el-dialog title="新增商品"
+                   :visible.sync="zt"
+                   width="400px"
+                   center>
+            <ul class="goods_edit">
+                <li>
+                    <span class="list_left">品项</span>
+                    <span class="list_right">
+                        <el-radio v-model="sj.type" label="1">产品</el-radio>
+                        <el-radio v-model="sj.type" label="2">套盒</el-radio>
+                        <el-radio v-model="sj.type" label="3">项目</el-radio>
+                    </span>
+                </li>
+                <li>
+                    <span class="list_left">商品名称</span>
+                    <span class="list_right">
+                    <el-input v-model="sj.name" placeholder="请输入商品名称"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">售价</span>
+                    <span class="list_right">
+                    <el-input v-model="sj.price" placeholder="请输入售价"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">库存</span>
+                    <span class="list_right">
+                    <el-input v-model="sj.stock" placeholder="请输入库存"></el-input>
+                </span>
+                </li>
+                <li v-if="sj.type!=1">
+                    <span class="list_left">次数</span>
+                    <span class="list_right">
+                    <el-input v-model="sj.fre" placeholder="请输入次数"></el-input>
+                </span>
+                </li>
+                <li v-if="sj.type!=1">
+                    <span class="list_left">手工费</span>
+                    <span class="list_right">
+                        <el-input v-model="sj.fee" placeholder="请输入手工费"></el-input>
+                    </span>
+                </li>
+                <li>
+                    <span class="list_left">类别</span>
+                    <span class="list_right">
+                        <el-radio v-for="v in classify" v-if="sj.type==v.type" v-model="sj.cid"
+                                  :label="v.id">{{v.name}}
+                        </el-radio>
+                    </span>
+                </li>
+            </ul>
+            <span slot="footer" class="dialog-footer">
+            <el-button @click="zt = false">取 消</el-button>
+            <el-button type="primary" @click="addAll">确 定</el-button>
           </span>
         </el-dialog>
     </template>
@@ -197,10 +256,86 @@
             fileList: [],
             now: null,
             classify: [],
+            zt: false,
+            sj: {
+                type: '1', //产品，套盒，项目
+                name: '',
+                price: '',
+                stock: '',
+                fre: '',
+                fee: '',
+                cid: ''
+            },
         },
         methods: {
+            del(type=1, v='') {
+                if(type==2){
+                    this.multipleSelection.push(v)
+                }
+                if(this.multipleSelection.length == 0){
+                    error('请选择需要删除的商品')
+                    return
+                }
+                if(confirm('确定删除？')) {
+                    $.post(url(methods.del), {'data': JSON.stringify(this.multipleSelection)}, v=>{
+                        success('删除成功')
+                        this.getGoods()
+                    })
+                }
+            },
+            addAll() {
+                if(this.sj.type!=1){
+                    if (this.sj.name == '' || this.sj.price == '' || this.sj.stock == '' || this.sj.fre == '' ||
+                        this.sj.fee == '') {
+                        error('请填完以上信息')
+                        return
+                    }
+                }else{
+                    if (this.sj.name == '' || this.sj.price == '' || this.sj.stock == '') {
+                        error('请填完以上信息')
+                        return
+                    }
+                }
+
+                if(this.sj.cid == '') {
+                    error('请选择分类')
+                    return
+                }
+                $.post(url(methods.addAll), {'data': JSON.stringify(this.sj)}, v => {
+                    let rs = verify(v)
+                    if (rs != false) {
+                        success('添加成功')
+                        this.sj = {
+                            type: '1', //产品，套盒，项目
+                                name: '',
+                                price: '',
+                                stock: '',
+                                fre: '',
+                                fee: '',
+                                cid: ''
+                        }
+                        this.zt = false
+                        this.getGoods()
+                    }
+                })
+            },
+            editAll() {
+                if (this.now.name == '' || this.now.price == '' || this.now.stock == '' || this.now.fre == '' ||
+                    this.now.fee == '') {
+                    error('请填完以上信息')
+                    return
+                }
+                $.post(url(methods.editAll), {'data': JSON.stringify(this.now)}, v => {
+                    let rs = verify(v)
+                    if (rs != false) {
+                        success('修改成功')
+                        this.centerDialogVisible = false
+                        this.getGoods()
+                    }
+                })
+            },
             getClassify() {
-                $.post(url(methods.getClassify), v=>{
+                $.post(url(methods.getClassify), v => {
                     let rs = verify(v)
                     if (rs != false) {
                         this.classify = rs

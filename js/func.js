@@ -10,6 +10,9 @@ const methods = {
     'getAllGoods': 'Commodity/getAllGoods',
     'logout': 'Center/logout',
     'getClassify': 'Goods/getClassify',
+    'editAll': 'Goods/editAll',
+    'addAll': 'Goods/addAll',
+    'del': 'Goods/del',
 };
 let that;
 
