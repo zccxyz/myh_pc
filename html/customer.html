@@ -36,8 +36,9 @@
             </el-upload>
 
             <el-button type="success">导出Excel表</el-button>
-            <el-button type="success" class="fr">批量删除</el-button>
-            <el-button type="success" class="fr">新增会员</el-button>
+            <el-button type="success">会员表模板下载</el-button>
+            <el-button type="success" class="fr" @click="deleteDialogVisible = false">批量删除</el-button>
+            <el-button type="success" class="fr" @click="addDialogVisible = false">新增会员</el-button>
         </div>
         <el-table border
                   ref="multipleTable"
@@ -69,11 +70,11 @@
                 <template slot-scope="scope">
                     <el-button
                             size="mini"
-                            @click="handleEdit(scope.$index, scope.row)" class="green do_but">到店
+                            @click="storeDialogVisible=false" class="green do_but">到店
                     </el-button>
                     <el-button
                             size="mini"
-                            @click="handleEdit(scope.$index, scope.row)" class="purple do_but">消费
+                            @click="handleEdit(scope.$index, scope.row)" class="purple do_but"><a href="buy.html" target="iframe" class="white">消费</a>
                     </el-button>
                     <el-button
                             size="mini"
@@ -84,8 +85,7 @@
                             @click="handleEdit(scope.$index, scope.row)" class="blue do_but">离店
                     </el-button>
                     <el-button
-                            size="mini"
-                            @click="handleEdit(scope.$index, scope.row)">查看
+                            size="mini">查看
                     </el-button>
                     <el-button
                             size="mini"
@@ -104,6 +104,101 @@
                 layout="prev, pager, next"
                 :total="1000">
         </el-pagination>-->
+        <el-dialog
+          title="新增会员"
+          :visible.sync="addDialogVisible"
+          width="400px"
+          center>
+          <ul class="goods_edit">
+              <li>
+                <span class="list_left">会员名</span>
+                <span class="list_right">
+                    <el-input v-model="input" placeholder="请输入会员名"></el-input>
+                </span>
+              </li>
+              <li>
+                <span class="list_left">年龄</span>
+                <span class="list_right">
+                    <el-input v-model="input" placeholder="请输入年龄"></el-input>
+                </span>
+              </li>
+              <li>
+                <span class="list_left">手机号</span>
+                <span class="list_right">
+                    <el-input v-model="input" placeholder="请输入手机号"></el-input>
+                </span>
+              </li>
+              <li>
+                <span class="list_left">性别</span>
+                <span class="list_right">
+                    <el-radio v-model="radio" label="1">女</el-radio>
+                    <el-radio v-model="radio" label="2">男</el-radio>
+                </span>
+            </li>
+            <li>
+                <span class="list_left">生日类别</span>
+                <span class="list_right">
+                    <el-radio v-model="radio" label="1">阴历</el-radio>
+                    <el-radio v-model="radio" label="2">阳历</el-radio>
+                </span>
+            </li>
+             <li>
+                <span class="list_left">生日</span>
+                <span class="list_right">
+                    <el-date-picker
+                      v-model="birthday"
+                      type="date"
+                      placeholder="选择生日">
+                    </el-date-picker>
+                </span>
+           </li>
+               <li>
+                <span class="list_left">顾问</span>
+                <span class="list_right">
+                    <el-select v-model="value" placeholder="请选择">
+                        <el-option
+                          v-for="item in options"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value">
+                        </el-option>
+                    </el-select>
+                </span>
+            </li>
+          </ul>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="addDialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="addDialogVisible = false">确 定</el-button>
+          </span>
+        </el-dialog>
+
+        <!-- 删除弹窗 -->
+        <el-dialog
+          title="删除会员"
+          :visible.sync="deleteDialogVisible"
+          width="400px"
+          center>
+          <span>确认删除所选的客户</span>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="deleteDialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="deleteDialogVisible = false">确 定</el-button>
+          </span>
+        </el-dialog>
+         <!-- 到店弹窗 -->
+        <el-dialog
+          title="房间号"
+          :visible.sync="storeDialogVisible"
+          width="400px"
+          center>
+          <div>
+              <p>请输入房间号</p>
+              <el-input v-model="input" placeholder="请输入商品名称"></el-input>
+          </div>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="storeDialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="storeDialogVisible = false">确 定</el-button>
+          </span>
+        </el-dialog>
     </template>
 
 </div>
@@ -119,6 +214,20 @@
         el: '#app',
         data: {
             input: '',
+            radio:'',
+            addDialogVisible:false,
+            deleteDialogVisible:false,
+            storeDialogVisible:false,
+            birthday:'',
+            name:'',
+            options: [{
+              value: '选项1',
+              label: '张三'
+            }, {
+              value: '选项2',
+              label: '丽萨'
+            }],
+            value:'',
             tableData3: [{
                 name: '张三',
                 number: '7000123',
