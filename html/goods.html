@@ -228,6 +228,7 @@
             },
             ok() {
                 success('上传成功')
+                this.fileList = []
                 this.getGoods()
             },
             beforeUpload2(f) {

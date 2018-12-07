@@ -22,7 +22,7 @@ function loginState() {
         if (!v.data) {
             //登录后跳转
             localStorage.removeItem('user')
-            setTimeout(()=>location.href = '../login.html', 100)
+            location.href = '../login.html'
         }
     })
 }

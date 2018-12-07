@@ -63,7 +63,8 @@
             logout() {
                 if(confirm('是否退出？')){
                     $.post(url(methods.logout), v => {
-                        location.href = '../login.html'
+                        localStorage.removeItem('user')
+                        setTimeout(()=>location.href = '../login.html', 100)
                     })
                 }
             }
