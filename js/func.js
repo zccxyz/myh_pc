@@ -1,5 +1,5 @@
-const ym = 'https://admin.myhkj.cn/apis/backend/';
-//const ym = 'http://admin.myh.com/apis/backend/';
+//const ym = 'https://admin.myhkj.cn/apis/backend/';
+const ym = 'http://192.168.0.103:81/apis/backend/';
 
 const methods = {
     'login': 'login/login',
@@ -9,6 +9,7 @@ const methods = {
     'upload': 'Commodity/upload',
     'getAllGoods': 'Commodity/getAllGoods',
     'logout': 'Center/logout',
+    'getClassify': 'Goods/getClassify',
 };
 let that;
 
