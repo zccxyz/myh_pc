@@ -1,5 +1,5 @@
-//const ym = 'https://admin.myhkj.cn/apis/backend/';
-const ym = 'http://admin.myh.com/apis/backend/';
+const ym = 'https://admin.myhkj.cn/apis/backend/';
+//const ym = 'http://admin.myh.com/apis/backend/';
 
 const methods = {
     'login': 'login/login',
@@ -22,7 +22,7 @@ function loginState() {
         if (!v.data) {
             //登录后跳转
             localStorage.removeItem('user')
-            setTimeout(()=>location.href = '../login.html', 100)
+            location.href = '../login.html'
         }
     })
 }
