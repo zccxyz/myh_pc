@@ -1,5 +1,5 @@
-const ym = 'https://admin.myhkj.cn/apis/backend/';
-//const ym = 'http://admin.myh.com/apis/backend/';
+//const ym = 'https://admin.myhkj.cn/apis/backend/';
+const ym = 'http://admin.myh.com/apis/backend/';
 
 const methods = {
     'login': 'login/login',
@@ -8,12 +8,22 @@ const methods = {
     'get_member_list': 'Member/get_member_list',
     'upload': 'Commodity/upload',
     'getAllGoods': 'Commodity/getAllGoods',
+    'logout': 'Center/logout',
 };
 let that;
 
 //-----------------------------------------------------------
 function url(m) {
     return ym + m + '?source=PC'
+}
+
+function loginState() {
+    $.post(url(methods.isLogin), v => {
+        if (!v.data) {
+            //登录后跳转
+            location.href = '../login.html'
+        }
+    })
 }
 
 //验证
