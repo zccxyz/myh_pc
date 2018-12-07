@@ -41,7 +41,7 @@ width: 100%;
 	border:1px solid  rgb(220, 220, 220);
   background-color: rgb(255, 255, 255);
   border-radius: 10px;
-  width: 70%;
+  width: 69%;
   display: inline-block;
   padding: 0 10px 0 0;
   line-height: 40px;
@@ -62,7 +62,6 @@ width: 100%;
 	width: 60%;
 }
 .pay_total{
-	padding-left: 100px;
 	width: 100%;
 	background:#fff;
 	left: 0;
@@ -74,11 +73,19 @@ width: 100%;
 }
 .pay_total *{
 	font-size: 1.8rem;
+	width: 100%;
+}
+.total_money{
+	padding-left: 100px;
+	display: inline-block;
+	width: 93%;
+	height:100%;
+	border-top:1px solid rgb(225, 225, 225);
 }
 .pay{
 	float: right;
 	display: inline-block;
-	width: 150px;
+	width: 7%;
 	height:100%;
 	color:#fff;
 	text-align: center;

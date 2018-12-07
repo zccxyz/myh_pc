@@ -34,12 +34,12 @@
                     :before-upload="beforeUpload2"
                     :on-success="ok"
                     :file-list="fileList">
-                <el-button size="small" type="primary">导入商品表</el-button>
+                <el-button type="primary">导入商品表</el-button>
                 <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
             </el-upload>
             <el-button type="success">导出商品表</el-button>
             <el-button type="success" class="fr">批量删除</el-button>
-            <el-button type="success" class="fr">新增商品</el-button>
+            <el-button type="success" class="fr" @click="centerDialogVisible = true">新增商品</el-button>
             <el-button type="success" class="fr">批量新增</el-button>
         </div>
         <el-table border
@@ -92,7 +92,7 @@
                 <template slot-scope="scope">
                     <el-button
                             size="mini"
-                            @click="handleEdit(scope.$index, scope.row)">编辑
+                             @click="centerDialogVisible = false">编辑
                     </el-button>
                     <el-button
                             size="mini"
@@ -102,6 +102,61 @@
                 </template>
             </el-table-column>
         </el-table>
+        <el-dialog
+          title="编辑商品"
+          :visible.sync="centerDialogVisible"
+          width="400px"
+          center>
+          <ul class="goods_edit">
+              <li>
+                <span class="list_left">品项</span>
+                <span class="list_right">产品</span>
+              </li>
+              <li>
+                <span class="list_left">商品名称</span>
+                <span class="list_right">
+                    <el-input v-model="input" placeholder="请输入商品名称" value="补水面膜"></el-input>
+                </span>
+              </li>
+              <li>
+                <span class="list_left">售价</span>
+                <span class="list_right">
+                    <el-input v-model="input" placeholder="请输入售价" value="补水面膜"></el-input>
+                </span>
+              </li>
+              <li>
+                <span class="list_left">库存</span>
+                <span class="list_right">
+                    <el-input v-model="input" placeholder="请输入库存" value="补水面膜"></el-input>
+                </span>
+              </li>
+              <li>
+                <span class="list_left">次数</span>
+                <span class="list_right">
+                    <el-input v-model="input" placeholder="请输入次数" value="补水面膜"></el-input>
+                </span>
+              </li>
+              <li>
+                <span class="list_left">手工费</span>
+                <span class="list_right">
+                    <el-input v-model="input" placeholder="请输入手工费" value="补水面膜"></el-input>
+                </span>
+              </li>
+               <li>
+                <span class="list_left">类别</span>
+                <span class="list_right">
+                    <el-radio v-model="radio" label="1">身体</el-radio>
+                    <el-radio v-model="radio" label="2">面部</el-radio>
+                    <el-radio v-model="radio" label="3">头部</el-radio>
+                    <el-radio v-model="radio" label="4">其他</el-radio>
+                </span>
+            </li>
+          </ul>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="centerDialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="centerDialogVisible = false">确 定</el-button>
+          </span>
+        </el-dialog>
     </template>
 
 </div>
@@ -117,7 +172,9 @@
         el: '#app',
         data: {
             input: '',
-            tableData3: [{
+            radio:'',
+             centerDialogVisible: false,
+             tableData3: [{
                 px: '产品',
                 class: '面部',
                 name: '睡眠面膜',
