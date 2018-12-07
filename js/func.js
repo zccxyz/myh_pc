@@ -21,7 +21,8 @@ function loginState() {
     $.post(url(methods.isLogin), v => {
         if (!v.data) {
             //登录后跳转
-            location.href = '../login.html'
+            localStorage.removeItem('user')
+            setTimeout(()=>location.href = '../login.html', 100)
         }
     })
 }

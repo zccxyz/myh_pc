@@ -14,7 +14,7 @@
             <el-header class="blue_back" style="height:88px">
                 <img src="../images/home_logo.png" class="home_logo">美约会店务管理系统
                 <p class="fr">
-                    乌苏神泥杨家坪店<i class="el-icon-caret-bottom"></i>&#12288;
+                    {{user.name}}<i class="el-icon-caret-bottom"></i>&#12288;
                     <i class="el-icon-setting"></i>设置<i class="el-icon-caret-bottom"></i>&#12288;
                     <img @click="logout" src="../images/home_exit.png" class="home_exit">
                 </p>
@@ -56,7 +56,9 @@
 <script>
     new Vue({
         el: '#app',
-        data: {},
+        data: {
+            user: '',
+        },
         methods: {
             logout() {
                 if(confirm('是否退出？')){
@@ -70,6 +72,7 @@
             this.$nextTick(e => {
                 //初始化
                 that = this;
+                this.user = JSON.parse(localStorage.getItem('user'))
                 loginState()
             })
         }

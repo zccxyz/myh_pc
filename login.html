@@ -83,7 +83,7 @@
             input: '',
         },
         methods: {
-            onSubmit() {
+            onSubmit(key, value) {
                 if (this.name == '' || this.password == '') {
                     //this.$message.error('请填完以上内容');
                     error('请填完以上内容')
@@ -92,19 +92,25 @@
                 $.post(url(methods.login), {'username': this.name, 'type': this.type, 'password': this.password}, v => {
                     let rs = verify(v)
                     if (rs != false) {
+                        let user = JSON.stringify(rs)
+                        console.log(user)
+                        localStorage.setItem('user', user)
                         location.href = 'html/home_page.html'
                     }
                 })
             },
             isLogin() {
-                let s = false;
+                /*let s = false;
                 $.post(url(methods.isLogin), v => {
                     if (v.data) {
                         //登录后跳转
                         location.href = 'html/home_page.html'
                     }
-                })
-
+                })*/
+                let user = localStorage.getItem('user')
+                if(user!=null) {
+                    location.href = 'html/home_page.html'
+                }
             }
         },
         mounted() {
