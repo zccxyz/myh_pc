@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>消耗</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../css/consume.css">
+</head>
+<body>
+
+<div id="app" class="customer">
+    <template>
+    <p class="cus_title">
+        <el-breadcrumb separator-class="el-icon-arrow-right">
+            <el-breadcrumb-item :to="{ path: '/' }">信息管理</el-breadcrumb-item>
+            <el-breadcrumb-item>会员管理</el-breadcrumb-item>
+            <el-breadcrumb-item>消耗</el-breadcrumb-item>
+        </el-breadcrumb>
+    </p>
+    <p class="cr linr_four">
+        会员余额：￥2342
+    </p>
+    <div class="con_div">
+        <p class="con_list linr_four">
+            会员自有项目
+        </p>
+        <ul class="consume_list">
+            <li>
+                <span class="g_name">
+                     面部护理
+                </span>
+               <span class="cr p_wid">￥298.00</span>
+               <span class="g_c_price">
+                   修改价格
+               </span>
+                <span class="fr mar_hun">
+                     <i class="el-icon-remove blue_c"></i>
+                     <i>5</i>
+                     <i class="el-icon-circle-plus blue_c"></i>
+                </span>
+            </li>
+             <li>
+                <span class="g_name">
+                     面部护理
+                </span>
+               <span class="cr p_wid">￥298.00</span>
+               <span class="g_c_price">
+                   修改价格
+               </span>
+               <span class="fr mar_hun">
+                     <i class="el-icon-remove blue_c"></i>
+                     <i>5</i>
+                     <i class="el-icon-circle-plus blue_c"></i>
+                </span>
+            </li>
+        </ul>
+    </div>
+    <div class="con_div">
+        <p class="item_list linr_four">
+            会员自有套盒
+        </p>
+        <ul class="consume_list">
+            <li>
+                <span class="g_name">
+                     面部护理
+                </span>
+               <span class="cr p_wid">￥298.00</span>
+               <span class="huihui p_wid">
+                   剩余次数：3
+               </span>
+               <span class="huihui p_wid">
+                   共有次数：12
+               </span>
+                <span class="fr mar_hun">
+                     <i class="el-icon-remove blue_c"></i>
+                     <i>5</i>
+                     <i class="el-icon-circle-plus blue_c"></i>
+                </span>
+            </li>
+             <li>
+                <span class="g_name">
+                     面部护理
+                </span>
+               <span class="cr p_wid">￥298.00</span>
+               <span class="huihui p_wid">
+                   剩余次数：3
+               </span>
+               <span class="huihui p_wid">
+                   共有次数：12
+               </span>
+               <span class="fr mar_hun">
+                     <i class="el-icon-remove blue_c"></i>
+                     <i>5</i>
+                     <i class="el-icon-circle-plus blue_c"></i>
+                </span>
+            </li>
+        </ul>
+    </div>
+    <div class="con_div">
+        <p class="th_list linr_four">
+            会员项目消耗
+        </p>
+        <ul class="consume_list">
+            <li>
+                <span class="g_name">
+                     面部护理
+                </span>
+               <span class="cr p_wid">￥298.00</span>
+               <span class="huihui p_wid">
+                   剩余次数：3
+               </span>
+               <span class="huihui p_wid">
+                   共有次数：12
+               </span>
+                <span class="fr mar_hun">
+                     <i class="el-icon-remove blue_c"></i>
+                     <i>5</i>
+                     <i class="el-icon-circle-plus blue_c"></i>
+                </span>
+            </li>
+             <li>
+                <span class="g_name">
+                     面部护理
+                </span>
+               <span class="cr p_wid">￥298.00</span>
+               <span class="huihui p_wid">
+                   剩余次数：3
+               </span>
+               <span class="huihui p_wid">
+                   共有次数：12
+               </span>
+               <span class="fr mar_hun">
+                     <i class="el-icon-remove blue_c"></i>
+                     <i>5</i>
+                     <i class="el-icon-circle-plus blue_c"></i>
+                </span>
+            </li>
+        </ul>
+    </div>
+    
+    </template>
+</div>
+
+</body>
+</html>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../js/func.js"></script>
+<script src="../js/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {},
+        methods: {},
+        mounted() {
+            this.$nextTick(e=>{
+                //初始化
+                that = this;
+                loginState()
+            })
+        }
+    })
+</script>

@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="../css/index.css">
     <link rel="stylesheet" type="text/css" href="../css/common.css">
     <link rel="stylesheet" type="text/css" href="../css/customer.css">
-    <link rel="stylesheet" type="text/css" href="../css/goods.css">
+    <link rel="stylesheet" type="text/css" href="../css/buy.css">
 </head>
 <body>
 
@@ -69,15 +69,62 @@
             <el-table-column
                     label="加入购物车"
                     show-overflow-tooltip>
-                <template slot-scope="scope">
-                     <el-button type="success" icon="el-icon-remove" circle></el-button>
+                <i class="el-icon-remove blue_c"></i>
                      <i>5</i>
-                     <el-button type="success" icon="el-icon-circle-plus" circle></el-button>
-                </template>
+                     <i class="el-icon-circle-plus blue_c"></i>
             </el-table-column>
         </el-table>
        <div class="cart_div">
-           
+           <p class="cart_title">
+               已选择
+               <span class="fr">
+                <img src="../images/delete.png">&nbsp;全部清空
+               </span>
+           </p>
+           <ul class="consume_list">
+               <li class="linr_four">
+                    <span class="g_name">
+                     面部护理
+                </span>
+                 <span class="p_wid">￥298.00</span>
+                 <span>
+                     优惠方式
+                     <el-radio v-model="radio" label="1">打折</el-radio>
+                    <el-radio v-model="radio" label="2">赠送</el-radio>
+                    &#12288;<el-checkbox v-model="checked">修改次数</el-checkbox><el-input v-model="input" placeholder="请输入次数" width="100px"></el-input>
+                 </span>
+                 <span class="fr mar_hun">
+                     <i class="el-icon-remove blue_c"></i>
+                     <i>5</i>
+                     <i class="el-icon-circle-plus blue_c"></i>
+                </span>
+
+               </li>
+               <li class="linr_four">
+                    <span class="g_name">
+                     面部护理
+                </span>
+                 <span class="p_wid">￥298.00</span>
+                 <span>
+                     优惠方式
+                     <el-radio v-model="radio" label="1">打折</el-radio>
+                    <el-radio v-model="radio" label="2">赠送</el-radio>
+                    &#12288;<el-checkbox v-model="checked">备选项</el-checkbox>修改次数<el-input v-model="input" placeholder="请输入次数" class="ci_input"></el-input>
+                 </span>
+                 <span class="fr mar_hun">
+                     <i class="el-icon-remove blue_c"></i>
+                     <i>5</i>
+                     <i class="el-icon-circle-plus blue_c"></i>
+                </span>
+
+               </li>
+           </ul>
+           <div class="cart_total">
+         <span class="fl cr total_money">
+             合计：15235
+         </span>
+         <span class="red_box pay">提交订单</span>
+     </div>
        </div> 
     </template>
 
@@ -95,6 +142,7 @@
         data: {
             input: '',
             radio:'',
+            checked:'',
              centerDialogVisible: false,
              tableData3: [{
                 px: '产品',
