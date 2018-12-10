@@ -41,6 +41,7 @@
             <a href="https://admin.myhkj.cn/商品导入.xlsx"><el-button type="success">商品表模板下载</el-button></a>
             <el-button type="success" class="fr" @click="del">批量删除</el-button>
             <el-button type="success" class="fr" @click="zt = true">新增商品</el-button>
+            <el-button type="success" class="fr" @click="addPlan = true">新增方案</el-button>
             <!--<el-button type="success" class="fr">批量新增</el-button>-->
         </div>
         <el-table border
@@ -159,7 +160,7 @@
         <!--新增-->
         <el-dialog title="新增商品"
                    :visible.sync="zt"
-                   width="400px"
+                   width="460px"
                    center>
             <ul class="goods_edit">
                 <li>
@@ -214,7 +215,136 @@
             <el-button type="primary" @click="addAll">确 定</el-button>
           </span>
         </el-dialog>
-    </template>
+        <!-- 新增方案 -->
+        <el-dialog
+          title="添加方案"
+          :visible.sync="addPlan"
+          width="500px" center>
+          <ul class="goods_l">
+                <li>
+                    <span class="list_left">方案名称</span>
+                    <span class="list_right">
+                    <el-input v-model="sj.name" placeholder="请输入方案名称"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">售价</span>
+                    <span class="list_right">
+                    <el-input v-model="sj.price" placeholder="请输入售价"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">项目</span>
+                    <span class="list_right">
+                        <p class="other_back" style="height:40px" @click="good_list=true">
+                            <i class="fr el-icon-circle-plus-outline" style="font-size: 2.2rem;color:#ad97f9;line-height:40px;margin-right: 20px;"></i>
+                        </p>
+                        <ul class="p_g_list">
+                            <li>
+                                <p class="linr_four">
+                                    <span class="p_name">肩颈理疗 </span>
+                                    <i class="cr pri_wid">￥100</i>
+                                    <span class="huihui">次数：12</span>
+                                    <i class="el-icon-circle-close-outline fr" style="font-size: 2.2rem;line-height:40px;margin-right: 20px;"></i>
+                                </p>
+                                <p class="linr_four">
+                                    <i>优惠方式</i>
+                                    <el-checkbox label="打折"></el-checkbox>
+                                    <el-checkbox label="赠送"></el-checkbox>
+                                    <el-checkbox label="修改次数"></el-checkbox>
+                                </p>
+                                <p class="linr_four">
+                                   <span class="list_left"> 打折</span><el-input v-model="input" placeholder="请输入" class="in_wid und_line"></el-input>元
+                                </p>
+                                <p class="linr_four">
+                                    <span class="list_left">折后</span><el-input v-model="input" placeholder="请输入" class="in_wid und_line"></el-input>元
+                                </p>
+                                <p class="linr_four" style="margin-bottom: 15px">
+                                  <span class="list_left"> 修改次数</span><el-input v-model="input" placeholder="请输入" class="in_wid und_line"></el-input>次
+                                </p>
+                            </li>
+                            <li>
+                                <p class="linr_four">
+                                    <span class="p_name">肩颈理疗 </span>
+                                    <i class="cr pri_wid">￥100</i>
+                                    <span class="huihui">次数：12</span>
+                                    <i class="el-icon-circle-close-outline fr" style="font-size: 2.2rem;line-height:40px;margin-right: 20px;"></i>
+                                </p>
+                            </li>
+                        </ul>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">套盒</span>
+                    <span class="list_right">
+                         <p class="other_back" style="height:40px" @click="good_list=true">
+                            <i class="fr el-icon-circle-plus-outline" style="font-size: 2.2rem;color:#ad97f9;line-height:40px;margin-right: 20px;"></i>
+                        </p>
+                        <ul class="p_g_list">
+                        </ul>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">产品</span>
+                    <span class="list_right">
+                        <p class="other_back" style="height:40px" @click="good_list=true">
+                            <i class="fr el-icon-circle-plus-outline" style="font-size: 2.2rem;color:#ad97f9;line-height:40px;margin-right: 20px;"></i>
+                        </p>
+                        <ul class="p_g_list">
+                        </ul>
+                </span>
+                </li>
+            </ul>
+          </div>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="addPlan = false">取 消</el-button>
+            <el-button type="primary" @click="addPlan = false">确 定</el-button>
+          </span>
+        </el-dialog>
+        <!-- 商品列表 -->
+        <el-dialog
+              title=""
+              :visible.sync="good_list"
+              width="500px"
+             center append-to-body>
+              <el-input class="g_search"
+                      placeholder="请输入商品名称"
+                      prefix-icon="el-icon-search"
+                      v-model="input">
+            </el-input>
+              <el-table  border
+                  ref="multipleTable"
+                  :data="tableData3"
+                  tooltip-effect="dark"
+                  style="width: 100%"
+                  @selection-change="handleSelectionChange">
+            <el-table-column
+                    prop="class"
+                    label="类别"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="name"
+                    label="商品名称">
+            </el-table-column>
+            <el-table-column
+                    prop="price"
+                    label="零售价">
+            </el-table-column>
+            <el-table-column
+                    prop="fre"
+                    label="次数">
+            </el-table-column>
+             <el-table-column
+                    label="数量">
+                    <template slot-scope="scope">
+                    <i class="el-icon-remove green_c"></i>
+                     <i>5</i>
+                     <i class="el-icon-circle-plus green_c"></i>
+                </template>
+            </el-table-column>
+            </el-dialog>
+        </template>
 
 </div>
 
@@ -231,24 +361,22 @@
             input: '',
             radio: '',
             centerDialogVisible: false,
+            addPlan: true,
+            good_list:false,
             tableData3: [{
                 px: '产品',
                 class: '面部',
                 name: '睡眠面膜',
                 price: '231',
-                stock: '12',
-                fre: '',
-                fee: '',
-                give: '是'
+                fre:'',
+                amout:''
             }, {
                 px: '套盒',
                 class: '身体',
                 name: '肩颈套',
                 price: '2310',
-                stock: '12',
-                fre: '12',
-                fee: '5',
-                give: '是'
+                fre:12,
+                amout:5
             }],
             multipleSelection: [],
 

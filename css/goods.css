@@ -6,11 +6,11 @@
     background: #fff;
     overflow: visible;
 }
-.goods_edit li{
+.goods_edit>li{
     padding: 0.5rem 1.5rem;
     line-height: 40px;
 }
-.goods_edit li .list_left{
+.goods_edit>li .list_left{
 	vertical-align: top;
     width: 25%;
     min-width: 80px;
@@ -34,4 +34,55 @@
 }
 .customer .el-dialog__header .el-dialog__title {
     color: #fff;
+}
+/*新增方案*/
+.p_name {
+    display: inline-block;
+    width: 90px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+.pri_wid{
+    display: inline-block;
+    width: 70px;
+}
+.p_g_list{
+    border:1px solid rgb(181, 181, 181);
+}
+.p_g_list li:last-child{
+    border:none;
+}
+.p_g_list li {
+  border-bottom: 1px solid rgb(181, 181, 181);
+  background-color: rgb(255, 255, 255);
+}
+/*.green_table thead th{
+    background: #1cc9b5;
+    color:fff;
+}*/
+.g_search{
+    margin: 0px 20px 10px 0;
+}
+.goods_l {
+    background: #fff;
+    overflow: visible;
+}
+.goods_l>li{
+    padding: 0.5rem 1.5rem;
+    line-height: 40px;
+}
+.goods_l li .list_left{
+    vertical-align: top;
+    width: 16%;
+    min-width: 65px;
+    display: inline-block;
+}
+.goods_l li .list_right{
+    width: 82%;
+    display: inline-block;
+}
+.goods_l li .list_right .el-checkbox {
+    margin-left: 20px;
 }

@@ -66,6 +66,11 @@ img{
   background-image: -ms-linear-gradient( -52deg, rgb(165,149,249) 0%, rgb(235,211,211) 100%);
   box-shadow: 1px 1.732px 6px 0px rgba(65, 77, 110, 0.39);
 }
+.und_line input{
+    border-radius: 0;
+    border:none;
+    border-bottom: 1px solid #ddd;
+}
 /*另一渐变*/
 .other_back{
     background-image: -moz-linear-gradient(90deg, rgb(237, 230, 248) 0%, rgb(207, 212, 250) 100%);
@@ -75,6 +80,9 @@ img{
 }
 .blue_c{
     color:#409EFF;
+}
+.green_c{
+    color:#1cc9b5;
 }
 .mar_hun{
     margin-right: 100px;
@@ -89,7 +97,7 @@ img{
     background: #fff;
     overflow: visible;
 }
-.goods_edit li{
+.goods_edit>li{
     padding: 0.5rem 1.5rem;
     line-height: 40px;
 }
