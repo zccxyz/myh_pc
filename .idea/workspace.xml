@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6d96ebce-820d-4d5e-824a-ac96900c46dd" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/html/customer.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/customer.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/func.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/func.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/会员信息及会员持有卡项套盒项目表.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/会员信息及会员持有卡项套盒项目表.xlsx" afterDir="false" />
-    </list>
+    <list default="true" id="6d96ebce-820d-4d5e-824a-ac96900c46dd" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -202,12 +197,12 @@
       <workItem from="1543998202601" duration="5691000" />
       <workItem from="1544064143399" duration="21318000" />
       <workItem from="1544145310108" duration="8475000" />
-      <workItem from="1544160325810" duration="36902000" />
+      <workItem from="1544160325810" duration="37727000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="85595000" />
+    <option name="totallyTimeSpent" value="86420000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
