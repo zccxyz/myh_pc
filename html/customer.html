@@ -31,18 +31,20 @@
                     :before-upload="beforeUpload2"
                     :on-success="ok"
                     :file-list="fileList">
-                <el-button  type="primary">导入会员表</el-button>
+                <el-button type="primary">导入会员表</el-button>
                 <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
             </el-upload>
 
             <el-button type="success">导出Excel表</el-button>
-            <a href="https://admin.myhkj.cn/会员信息及会员持有卡项套盒项目表.xlsx"><el-button type="success">会员表模板下载</el-button></a>
-            <el-button type="success" class="fr" @click="deleteDialogVisible = true">批量删除</el-button>
+            <a href="https://admin.myhkj.cn/会员信息及会员持有卡项套盒项目表.xlsx">
+                <el-button type="success">会员表模板下载</el-button>
+            </a>
+            <el-button type="success" class="fr" @click="del">批量删除</el-button>
             <el-button type="success" class="fr" @click="addDialogVisible = true">新增会员</el-button>
         </div>
         <el-table border
                   ref="multipleTable"
-                  :data="list"
+                  :data="list.filter(data => !input || data.name.toLowerCase().includes(input.toLowerCase()))"
                   tooltip-effect="dark"
                   style="width: 100%"
                   @selection-change="handleSelectionChange">
@@ -60,9 +62,9 @@
                     label="会员编号"
                     width="120">
             </el-table-column>
-            <el-table-column  width="240"
-                    prop="tel"
-                    label="会员电话">
+            <el-table-column width="240"
+                             prop="tel"
+                             label="会员电话">
             </el-table-column>
             <el-table-column
                     label="操作"
@@ -70,31 +72,35 @@
                 <template slot-scope="scope">
                     <el-button
                             size="mini"
-                            @click="storeDialogVisible=true" class="green do_but">到店
+                            @click="storeDialogVisible=true;now=scope.row" class="green do_but">到店
                     </el-button>
                     <el-button
                             size="mini"
-                            @click="handleEdit(scope.$index, scope.row)" class="purple do_but"><a href="buy.html" target="iframe" class="white">消费</a>
+                            @click="handleEdit(scope.$index, scope.row)" class="purple do_but"><a href="buy.html"
+                                                                                                  target="iframe"
+                                                                                                  class="white">消费</a>
                     </el-button>
                     <el-button
                             size="mini"
-                            @click="handleEdit(scope.$index, scope.row)" class="red_box do_but"><a href="consume.html" target="iframe" class="white">消耗</a>
+                            @click="handleEdit(scope.$index, scope.row)" class="red_box do_but"><a href="consume.html"
+                                                                                                   target="iframe"
+                                                                                                   class="white">消耗</a>
                     </el-button>
                     <el-button
                             size="mini"
-                              @click="leaveDialogVisible=true" class="blue do_but">离店
+                            @click="leaveDialogVisible=true;now=scope.row" class="blue do_but">离店
                     </el-button>
                     <el-button
                             size="mini">查看
                     </el-button>
                     <el-button
                             size="mini"
-                            @click="handleEdit(scope.$index, scope.row)">编辑
+                            @click="now=scope.row;edit()">编辑
                     </el-button>
                     <el-button
                             size="mini"
                             type="danger"
-                            @click="handleDelete(scope.$index, scope.row)">删除
+                            @click="delOne(scope.row.id)">删除
                     </el-button>
                 </template>
             </el-table-column>
@@ -105,115 +111,115 @@
                 :total="1000">
         </el-pagination>-->
         <el-dialog
-          title="新增会员"
-          :visible.sync="addDialogVisible"
-          width="400px"
-          center>
-          <ul class="goods_edit">
-              <li>
-                <span class="list_left">会员名</span>
-                <span class="list_right">
-                    <el-input v-model="input" placeholder="请输入会员名"></el-input>
+                title="新增会员"
+                :visible.sync="addDialogVisible"
+                width="400px"
+                center>
+            <ul class="goods_edit">
+                <li>
+                    <span class="list_left">会员名</span>
+                    <span class="list_right">
+                    <el-input v-model="user.name" placeholder="请输入会员名"></el-input>
                 </span>
-              </li>
-              <li>
-                <span class="list_left">年龄</span>
-                <span class="list_right">
-                    <el-input v-model="input" placeholder="请输入年龄"></el-input>
+                </li>
+                <li>
+                    <span class="list_left">年龄</span>
+                    <span class="list_right">
+                    <el-input v-model="user.age" placeholder="请输入年龄"></el-input>
                 </span>
-              </li>
-              <li>
-                <span class="list_left">手机号</span>
-                <span class="list_right">
-                    <el-input v-model="input" placeholder="请输入手机号"></el-input>
+                </li>
+                <li>
+                    <span class="list_left">手机号</span>
+                    <span class="list_right">
+                    <el-input v-model="user.tel" placeholder="请输入手机号"></el-input>
                 </span>
-              </li>
-              <li>
-                <span class="list_left">性别</span>
-                <span class="list_right">
-                    <el-radio v-model="radio" label="1">女</el-radio>
-                    <el-radio v-model="radio" label="2">男</el-radio>
+                </li>
+                <li>
+                    <span class="list_left">性别</span>
+                    <span class="list_right">
+                    <el-radio v-model="user.sex" label="1">女</el-radio>
+                    <el-radio v-model="user.sex" label="2">男</el-radio>
                 </span>
-            </li>
-            <li>
-                <span class="list_left">生日类别</span>
-                <span class="list_right">
-                    <el-radio v-model="radio" label="1">阴历</el-radio>
-                    <el-radio v-model="radio" label="2">阳历</el-radio>
+                </li>
+                <li>
+                    <span class="list_left">生日类别</span>
+                    <span class="list_right">
+                    <el-radio v-model="user.bir_type" label="1">阴历</el-radio>
+                    <el-radio v-model="user.bir_type" label="2">阳历</el-radio>
                 </span>
-            </li>
-             <li>
-                <span class="list_left">生日</span>
-                <span class="list_right">
+                </li>
+                <li>
+                    <span class="list_left">生日</span>
+                    <span class="list_right">
                     <el-date-picker
-                      v-model="birthday"
-                      type="date"
-                      placeholder="选择生日">
+                            v-model="user.birthday"
+                            type="date"
+                            placeholder="选择生日">
                     </el-date-picker>
                 </span>
-           </li>
-               <li>
-                <span class="list_left">顾问</span>
-                <span class="list_right">
+                </li>
+                <!--<li>
+                    <span class="list_left">顾问</span>
+                    <span class="list_right">
                     <el-select v-model="value" placeholder="请选择">
                         <el-option
-                          v-for="item in options"
-                          :key="item.value"
-                          :label="item.label"
-                          :value="item.value">
+                                v-for="item in options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
                         </el-option>
                     </el-select>
                 </span>
-            </li>
-          </ul>
-          <span slot="footer" class="dialog-footer">
-            <el-button @click="addDialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="addDialogVisible = false">确 定</el-button>
+                </li>-->
+            </ul>
+            <span slot="footer" class="dialog-footer">
+            <el-button @click="cancel">取 消</el-button>
+            <el-button type="primary" @click="add">确 定</el-button>
           </span>
         </el-dialog>
 
         <!-- 删除弹窗 -->
         <el-dialog
-          title="删除会员"
-          :visible.sync="deleteDialogVisible"
-          width="400px"
-          center>
-          <span>确认删除所选的客户</span>
-          <span slot="footer" class="dialog-footer">
+                title="删除会员"
+                :visible.sync="deleteDialogVisible"
+                width="400px"
+                center>
+            <span>确认删除所选的客户</span>
+            <span slot="footer" class="dialog-footer">
             <el-button @click="deleteDialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="deleteDialogVisible = false">确 定</el-button>
+            <el-button type="primary" @click="del">确 定</el-button>
           </span>
         </el-dialog>
-         <!-- 到店弹窗 -->
+        <!-- 到店弹窗 -->
         <el-dialog
-          title="房间号"
-          :visible.sync="storeDialogVisible"
-          width="400px"
-          center>
-          <div>
-              <p class="p_text">请输入房间号</p>
-              <el-input v-model="input" placeholder="请输入商品名称"></el-input>
-          </div>
-          <span slot="footer" class="dialog-footer">
-            <el-button @click="storeDialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="storeDialogVisible = false">确 定</el-button>
+                title="房间号"
+                :visible.sync="storeDialogVisible"
+                width="400px"
+                center>
+            <div>
+                <p class="p_text">请输入房间号</p>
+                <el-input v-model="room" placeholder="请输入商品名称"></el-input>
+            </div>
+            <span slot="footer" class="dialog-footer">
+            <el-button @click="storeDialogVisible = false;room='';">取 消</el-button>
+            <el-button type="primary" @click="comeShop">确 定</el-button>
           </span>
         </el-dialog>
         <!-- 离店弹窗 -->
         <el-dialog
-          title="离店号"
-          :visible.sync="leaveDialogVisible"
-          width="400px"
-          center>
-          <div>
-              <p class="p_text">确认现在离店</p>
-          </div>
-          <span slot="footer" class="dialog-footer">
+                title="离店号"
+                :visible.sync="leaveDialogVisible"
+                width="400px"
+                center>
+            <div>
+                <p class="p_text">确认现在离店</p>
+            </div>
+            <span slot="footer" class="dialog-footer">
             <el-button @click="leaveDialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="leaveDialogVisible = false">确 定</el-button>
+            <el-button type="primary" @click="leave">确 定</el-button>
           </span>
         </el-dialog>
-        
+
     </template>
 
 </div>
@@ -229,21 +235,21 @@
         el: '#app',
         data: {
             input: '',
-            radio:'',
-            addDialogVisible:false,
-            deleteDialogVisible:false,
-            storeDialogVisible:false,
-            leaveDialogVisible:false,
-            birthday:'',
-            name:'',
+            radio: '',
+            addDialogVisible: false,
+            deleteDialogVisible: false,
+            storeDialogVisible: false,
+            leaveDialogVisible: false,
+            birthday: '',
+            name: '',
             options: [{
-              value: '选项1',
-              label: '张三'
+                value: '选项1',
+                label: '张三'
             }, {
-              value: '选项2',
-              label: '丽萨'
+                value: '选项2',
+                label: '丽萨'
             }],
-            value:'',
+            value: '',
             tableData3: [{
                 name: '张三',
                 number: '7000123',
@@ -259,8 +265,115 @@
             list: [],
             fileList: [],
             r: '',
+            user: {
+                'name': '',
+                'age': '',
+                'tel': '',
+                'sex': '1',
+                'bir_type': '1',
+                'birthday': '',
+            },
+            room: '',
+            now: '',
         },
         methods: {
+            edit() {
+                this.user.name = this.now.name
+                this.user.age = this.now.age
+                this.user.tel = this.now.tel
+                this.user.sex = this.now.sex==null?'1':'2'
+                this.user.bir_type = this.now.bir_type+''
+                this.user.birthday = this.now.birthday
+                this.addDialogVisible = true
+                console.log(this.now)
+            },
+            del() {
+                if(this.multipleSelection.length==0){
+                    return
+                }
+                if(this.multipleSelection.length>0){
+                    if(confirm('是否删除选中会员?')) {
+                        let arr = [];
+                        for (let v of this.multipleSelection) {
+                            arr.push({'id': v.id, 'type': v.vipStatus==1?'member':'new'})
+                        }
+                        $.post(url(methods.delCheckedMember), {'data': JSON.stringify(arr)}, v=>{
+                            if(v.code==0){
+                                success('删除成功')
+                                this.getMember()
+                            }else{
+                                error('删除失败')
+                            }
+                        })
+                    }
+                }
+                this.deleteDialogVisible = false
+                console.log(this.multipleSelection)
+            },
+            delOne(id) {
+                if(confirm('是否删除?'))
+                $.post(url(methods.delMember), {'id': id, 'type': this.now.vip_status==1?'member':'new'}, v=>{
+                    if(v.code == 1){
+                        success(v.Msg)
+                        this.getMember()
+                    }else{
+                        error(v.error)
+                    }
+                })
+            },
+            leave() {
+                $.post(url(methods.leave), {'mid': this.now.id, 'arrId': ''}, v=>{
+                    if(v.code == 1) {
+                        success(v.Msg)
+                        this.leaveDialogVisible = false
+                    }else{
+                        error(v.error)
+                        this.leaveDialogVisible = false
+                    }
+                })
+            },
+            comeShop() {
+                if(this.room == '') {
+                    error('请输入房间号')
+                    return
+                }
+                $.post(url(methods.addArrive), {'mid': this.now.id, 'room': this.room}, v=>{
+                    if(v.code == -1) {
+                        error(v.errorMsg)
+                    }else{
+                        success(v.Msg)
+                        this.storeDialogVisible = false
+                        this.room = ''
+                    }
+                })
+            },
+            add() {
+                if(this.user.name == '' || this.user.age == '' || this.user.tel == '' || this.user.birthday == ''){
+                    error('请填完以上内容')
+                    return
+                }
+                $.post(url(methods.addVip), {'data': this.user}, v=>{
+                    let rs = verify(v)
+                    if(rs != false){
+                        success('添加成功')
+                        this.addDialogVisible = false
+                        this.getMember()
+                    }else{
+                        error('新增失败')
+                    }
+                })
+            },
+            cancel() {
+                this.addDialogVisible = false
+                this.user = {
+                    'name': '',
+                    'age': '',
+                    'tel': '',
+                    'sex': '',
+                    'bir_type': 1,
+                    'birthday': '',
+                };
+            },
             toggleSelection(rows) {
                 if (rows) {
                     rows.forEach(row => {
@@ -284,7 +397,7 @@
             },
             beforeUpload2(f) {
                 let ext = f.name.toString().split('.')
-                if(ext[1] != 'xlsx') {
+                if (ext[1] != 'xlsx') {
                     error('请上传xlsx文件')
                     return false
                 }

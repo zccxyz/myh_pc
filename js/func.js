@@ -5,6 +5,8 @@ const methods = {
     'login': 'login/login',
     'isLogin': 'login/isLogin',
     'manager': 'Member/manager',
+    'delMember': 'Member/DelMember',
+    'delCheckedMember': 'Member/delCheckedMember',
     'get_member_list': 'Member/get_member_list',
     'upload': 'Commodity/upload',
     'getAllGoods': 'Commodity/getAllGoods',
@@ -13,6 +15,9 @@ const methods = {
     'editAll': 'Goods/editAll',
     'addAll': 'Goods/addAll',
     'del': 'Goods/del',
+    'addVip': 'Member/addvip',
+    'addArrive': 'Arrive/AddArrive',
+    'leave': 'Arrive/leave',
 };
 let that;
 
