@@ -6,6 +6,7 @@ const methods = {
     'isLogin': 'login/isLogin',
     'manager': 'Member/manager',
     'delMember': 'Member/DelMember',
+    'editMember': 'Member/editMember',
     'delCheckedMember': 'Member/delCheckedMember',
     'get_member_list': 'Member/get_member_list',
     'upload': 'Commodity/upload',

@@ -62,9 +62,18 @@
                     label="会员编号"
                     width="120">
             </el-table-column>
-            <el-table-column width="240"
+            <el-table-column width="200"
                              prop="tel"
                              label="会员电话">
+            </el-table-column>
+            <el-table-column width="200"
+                             prop="birthday"
+                             label="会员生日">
+            </el-table-column>
+            <el-table-column width="100"
+                             prop="bir_type"
+                             label="类型"
+                             :formatter="formatter">
             </el-table-column>
             <el-table-column
                     label="操作"
@@ -95,7 +104,7 @@
                     </el-button>
                     <el-button
                             size="mini"
-                            @click="now=scope.row;edit()">编辑
+                            @click="now=scope.row;setVal()">编辑
                     </el-button>
                     <el-button
                             size="mini"
@@ -144,9 +153,9 @@
                 <li>
                     <span class="list_left">生日类别</span>
                     <span class="list_right">
-                    <el-radio v-model="user.bir_type" label="1">阴历</el-radio>
-                    <el-radio v-model="user.bir_type" label="2">阳历</el-radio>
-                </span>
+                        <el-radio v-model="user.bir_type" label="1">阳历</el-radio>
+                        <el-radio v-model="user.bir_type" label="2">阴历</el-radio>
+                    </span>
                 </li>
                 <li>
                     <span class="list_left">生日</span>
@@ -220,6 +229,62 @@
           </span>
         </el-dialog>
 
+        <!--修改会员-->
+        <el-dialog
+                title="编辑会员"
+                :visible.sync="zt"
+                width="400px"
+                center>
+            <ul class="goods_edit">
+                <li>
+                    <span class="list_left">会员名</span>
+                    <span class="list_right">
+                    <el-input v-model="user.name" placeholder="请输入会员名"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">年龄</span>
+                    <span class="list_right">
+                    <el-input v-model="user.age" placeholder="请输入年龄"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">手机号</span>
+                    <span class="list_right">
+                    <el-input v-model="user.tel" placeholder="请输入手机号"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">性别</span>
+                    <span class="list_right">
+                    <el-radio v-model="user.sex" label="1">女</el-radio>
+                    <el-radio v-model="user.sex" label="2">男</el-radio>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">生日类别</span>
+                    <span class="list_right">
+                        <el-radio v-model="user.bir_type" label="1">阳历</el-radio>
+                        <el-radio v-model="user.bir_type" label="2">阴历</el-radio>
+                    </span>
+                </li>
+                <li>
+                    <span class="list_left">生日</span>
+                    <span class="list_right">
+                    <el-date-picker
+                            v-model="user.birthday"
+                            type="date"
+                            placeholder="选择生日">
+                    </el-date-picker>
+                </span>
+                </li>
+            </ul>
+            <span slot="footer" class="dialog-footer">
+            <el-button @click="cancel">取 消</el-button>
+            <el-button type="primary" @click="edit">确 定</el-button>
+          </span>
+        </el-dialog>
+
     </template>
 
 </div>
@@ -275,33 +340,49 @@
             },
             room: '',
             now: '',
+            zt: false
         },
         methods: {
             edit() {
+                if (this.user.name == '' || this.user.age == '' || this.user.tel == '' || this.user.birthday == '') {
+                    error('请填完以上内容')
+                    return
+                }
+                let obj = this.user
+                obj.id = this.now.id
+                $.post(url(methods.editMember), {'data': JSON.stringify(obj)}, v=>{
+                    let rs = verify(v)
+                    if(rs != false) {
+                        this.zt = false
+                        success('修改成功')
+                        this.getMember()
+                    }
+                })
+            },
+            setVal() {
                 this.user.name = this.now.name
                 this.user.age = this.now.age
                 this.user.tel = this.now.tel
-                this.user.sex = this.now.sex==null?'1':'2'
-                this.user.bir_type = this.now.bir_type+''
+                this.user.sex = this.now.sex == null ? '1' : '2'
+                this.user.bir_type = this.now.bir_type + ''
                 this.user.birthday = this.now.birthday
-                this.addDialogVisible = true
-                console.log(this.now)
+                this.zt = true
             },
             del() {
-                if(this.multipleSelection.length==0){
+                if (this.multipleSelection.length == 0) {
                     return
                 }
-                if(this.multipleSelection.length>0){
-                    if(confirm('是否删除选中会员?')) {
+                if (this.multipleSelection.length > 0) {
+                    if (confirm('是否删除选中会员?')) {
                         let arr = [];
                         for (let v of this.multipleSelection) {
-                            arr.push({'id': v.id, 'type': v.vipStatus==1?'member':'new'})
+                            arr.push({'id': v.id, 'type': v.vipStatus == 1 ? 'member' : 'new'})
                         }
-                        $.post(url(methods.delCheckedMember), {'data': JSON.stringify(arr)}, v=>{
-                            if(v.code==0){
+                        $.post(url(methods.delCheckedMember), {'data': JSON.stringify(arr)}, v => {
+                            if (v.code == 0) {
                                 success('删除成功')
                                 this.getMember()
-                            }else{
+                            } else {
                                 error('删除失败')
                             }
                         })
@@ -311,36 +392,39 @@
                 console.log(this.multipleSelection)
             },
             delOne(id) {
-                if(confirm('是否删除?'))
-                $.post(url(methods.delMember), {'id': id, 'type': this.now.vip_status==1?'member':'new'}, v=>{
-                    if(v.code == 1){
-                        success(v.Msg)
-                        this.getMember()
-                    }else{
-                        error(v.error)
-                    }
-                })
+                if (confirm('是否删除?'))
+                    $.post(url(methods.delMember), {
+                        'id': id,
+                        'type': this.now.vip_status == 1 ? 'member' : 'new'
+                    }, v => {
+                        if (v.code == 1) {
+                            success(v.Msg)
+                            this.getMember()
+                        } else {
+                            error(v.error)
+                        }
+                    })
             },
             leave() {
-                $.post(url(methods.leave), {'mid': this.now.id, 'arrId': ''}, v=>{
-                    if(v.code == 1) {
+                $.post(url(methods.leave), {'mid': this.now.id, 'arrId': ''}, v => {
+                    if (v.code == 1) {
                         success(v.Msg)
                         this.leaveDialogVisible = false
-                    }else{
+                    } else {
                         error(v.error)
                         this.leaveDialogVisible = false
                     }
                 })
             },
             comeShop() {
-                if(this.room == '') {
+                if (this.room == '') {
                     error('请输入房间号')
                     return
                 }
-                $.post(url(methods.addArrive), {'mid': this.now.id, 'room': this.room}, v=>{
-                    if(v.code == -1) {
+                $.post(url(methods.addArrive), {'mid': this.now.id, 'room': this.room}, v => {
+                    if (v.code == -1) {
                         error(v.errorMsg)
-                    }else{
+                    } else {
                         success(v.Msg)
                         this.storeDialogVisible = false
                         this.room = ''
@@ -348,17 +432,17 @@
                 })
             },
             add() {
-                if(this.user.name == '' || this.user.age == '' || this.user.tel == '' || this.user.birthday == ''){
+                if (this.user.name == '' || this.user.age == '' || this.user.tel == '' || this.user.birthday == '') {
                     error('请填完以上内容')
                     return
                 }
-                $.post(url(methods.addVip), {'data': this.user}, v=>{
+                $.post(url(methods.addVip), {'data': this.user}, v => {
                     let rs = verify(v)
-                    if(rs != false){
+                    if (rs != false) {
                         success('添加成功')
                         this.addDialogVisible = false
                         this.getMember()
-                    }else{
+                    } else {
                         error('新增失败')
                     }
                 })
@@ -418,6 +502,13 @@
             },
             import2() {
                 let data = document.getElementById("file").files[0];
+            },
+            formatter(r, c) {
+                if(r.bir_type == 1){
+                    return '阳历'
+                }else{
+                    return '农历'
+                }
             }
         },
         mounted() {
