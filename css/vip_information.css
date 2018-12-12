@@ -1,0 +1,151 @@
+.vip_infor{
+	margin-top: 10px;
+}
+.customer .el-tabs--card>.el-tabs__header{
+	border-bottom:none;
+	border-radius: 8px;
+    background: #dedde1;
+}
+.vip_infor .el-tabs__nav{
+	width: 100%;
+	display: flex;
+	border:none;
+}
+.vip_infor .el-tabs__nav .el-tabs__item{
+	flex: 1;
+	text-align: center;
+	border-left:none;
+	border-bottom:none;
+}
+.vip_infor .el-tabs__nav .el-tabs__item:hover{
+	color:#fff;
+}
+.vip_infor .el-tabs__item.is-active {
+       color: #fff;
+    border-radius: 8px;
+   background-image: -moz-linear-gradient( 90deg, rgb(67,191,243) 0%, rgb(59,236,194) 100%);
+  background-image: -webkit-linear-gradient( 90deg, rgb(67,191,243) 0%, rgb(59,236,194) 100%);
+  background-image: -ms-linear-gradient( 90deg, rgb(67,191,243) 0%, rgb(59,236,194) 100%);
+}
+/*基本资料*/
+.basic_inf{
+	border:1px solid  rgb(89, 89, 89);
+ 	background-color: rgb(255, 255, 255);
+ 	margin-top: 10px;
+}
+.basic_ul>li{
+display: flex;
+height:56px;
+line-height: 56px;
+padding-left: 15px;
+}
+.basic_ul>li>*{
+	flex: 1;
+}
+.basic_ul>li:first-child{
+  background-color: rgba(195, 158, 250,0.2);
+}
+.basic_ul>li:first-child input{
+	background: transparent;
+}
+.basic_ul>li+li{
+border-bottom:1px solid rgba(89, 89, 89, 0.2);
+}
+.bottom_but{
+	width: fit-content;
+	margin: 25px auto;
+}
+.un_line_h input{
+    border-radius: 0;
+    border:none;
+    border-bottom: 1px solid #333;
+}
+.time_wid input{
+	width: 150px;
+	border:1px solid #333;
+}
+.sele_wid{
+	width: 90px;
+}
+.sele_wid input{
+	border:1px solid #333;
+}
+.infor_wid{
+	width: 150px;
+}
+.basic_u .el-input__inner {
+	border:1px solid #333;
+}
+.information .el-select-dropdown{
+	margin:0;
+}
+.information .el-popper[x-placement^=bottom] {
+    margin-top: 0;
+}
+/*已购产品*/
+.basic_inf thead,.basic_inf thead th{
+    background-color: rgba(195, 158, 250,0.2);
+}
+.basic_inf th,.basic_inf td{
+    text-align: center;
+}
+.total{
+    overflow: hidden;
+    margin:10px 0;
+    width: 100%;
+}
+.money_total{
+    text-indent: 3em;
+}
+
+.total p{
+    line-height:26px;
+    padding-left: 15px;
+}
+.go_buy{
+    margin:18.5px;
+}
+.el-table thead {
+     color: #606266;
+}
+.delete_a{
+    margin-left: 20px;
+}
+/*健康档案*/
+.p_div{
+    width: 100%;
+    height:40px;
+    line-height:40px;
+    padding-left: 15px;
+}
+.body_c{
+   background-color:#ecfcc5;
+}
+.skin_c{
+    background-color:#ffe0ed;
+}
+.pro_div{
+    padding:15px;
+}
+.information .el-checkbox {
+    margin: 0 15px 0 10px;
+}
+.information .el-checkbox+.el-checkbox {
+    margin-left: 0;
+}
+.choiced{
+position: fixed;
+    bottom: 0;
+    left:0;
+    overflow: hidden;
+}
+.c_title{
+    border-bottom: 1px solid rgb(194, 194, 194);
+}
+.pro_ul{
+    padding-left: 15px;
+}
+.height{
+    height: 100%;
+}
+

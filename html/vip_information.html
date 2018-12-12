@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>会员档案</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../css/vip_information.css">
+</head>
+<body class="information">
+
+<div id="app" class="customer">
+    <template>
+    <p class="cus_title">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+                <el-breadcrumb-item :to="{ path: '/' }">信息管理</el-breadcrumb-item>
+                <el-breadcrumb-item>会员管理</el-breadcrumb-item>
+                <el-breadcrumb-item>会员档案</el-breadcrumb-item>
+            </el-breadcrumb>
+        </p>
+        <el-tabs type="card" class="vip_infor">
+          <el-tab-pane label="基本资料">
+              <div class="basic_inf">
+                  <ul class="basic_ul">
+                      <li>
+                          <p>
+                              姓名：<el-input v-model="input" placeholder="请输入" class="infor_wid un_line_h"></el-input>
+                          </p>
+                          <p>
+                              性别：<el-select v-model="value" placeholder="请选择" class="sele_wid">
+                                <el-option
+                                  v-for="item in options"
+                                  :key="item.value"
+                                  :label="item.label"
+                                  :value="item.value">
+                                </el-option>
+                              </el-select>
+                          </p>
+                          <p>会员编号：<el-input v-model="input" placeholder="请输入" class="infor_wid un_line_h"></el-input>
+                          </p>
+                      </li>
+                      <li>
+                          <p>
+                              手机：<el-input v-model="input" placeholder="请输入" class="infor_wid un_line_h"></el-input>
+                          </p>
+                          <p>
+                              生日：<el-select v-model="value" placeholder="请选择" class="sele_wid">
+                                <el-option
+                                  v-for="item in calss"
+                                  :key="item.value"
+                                  :label="item.label"
+                                  :value="item.value">
+                                </el-option>
+                              </el-select>
+                              <el-date-picker
+                                  v-model="birth"
+                                  type="date"
+                                  placeholder="选择日期"  class="time_wid">
+                                </el-date-picker>
+                          </p>
+                          <p>
+                              入会时间：<el-date-picker
+                                  v-model="birth"
+                                  type="date"
+                                  placeholder="选择日期"  class="time_wid">
+                                </el-date-picker>
+                          </p>
+                      </li>
+                      <li>
+                          <p>
+                             地址：<el-input v-model="input" placeholder="请输入" class="infor_wid un_line_h"></el-input>
+                          </p>
+                          <p>
+                              婚姻状况：<el-select v-model="status" placeholder="请选择" class="sele_wid">
+                                <el-option
+                                  v-for="item in calss"
+                                  :key="item.value"
+                                  :label="item.label"
+                                  :value="item.value">
+                                </el-option>
+                              </el-select>
+                              <el-date-picker
+                                  v-model="birth"
+                                  type="date"
+                                  placeholder="选择日期"  class="time_wid">
+                                </el-date-picker>
+                          </p>
+                          <p>&nbsp;</p>
+                  </ul>
+                  <div class="bottom_but">
+                  <el-button type="success">编辑</el-button>
+                  </div>
+              </div>
+          </el-tab-pane>
+          <el-tab-pane label="已购产品">
+              <div class="basic_inf">
+                  <el-table
+                          :data="tableData"
+                          style="width: 100%">
+                      <el-table-column
+                              prop="name"
+                              label="产品名称">
+                      </el-table-column>
+                      <el-table-column
+                              prop="price"
+                              label="价格">
+                      </el-table-column>
+                      <el-table-column
+                              prop="time"
+                              label="时间">
+                      </el-table-column>
+                      <el-table-column
+                              prop="discount"
+                              label="折扣">
+                      </el-table-column>
+                      <el-table-column
+                              prop="dis_price"
+                              label="折后金额">
+                      </el-table-column>
+                      <el-table-column label="操作">
+                          <template slot-scope="scope">
+                              <a href="#">再次购买</a>
+                          </template>
+                      </el-table-column>
+                  </el-table>
+                  <div class="total">
+                      <span class="fl">
+                      <p class="cr">汇总：</p>
+                    <p class="money_total">累计购买金额：23565.00</p>
+                    <p class="money_total">欠款：5.00</p>
+                  </span>
+                      <el-button type="success" class="go_buy fr">购买产品</el-button>
+                  </div>
+              </div>
+          </el-tab-pane>
+          <el-tab-pane label="会员项目">
+              <div class="basic_inf">
+                  <el-table
+                          :data="tableData"
+                          style="width: 100%">
+                      <el-table-column
+                              prop="name"
+                              label="项目名称">
+                      </el-table-column>
+                      <el-table-column
+                              prop="price"
+                              label="价格">
+                      </el-table-column>
+                      <el-table-column
+                              prop="time"
+                              label="剩余次数">
+                      </el-table-column>
+                      <el-table-column
+                              prop="discount"
+                              label="总次数">
+                      </el-table-column>
+                      <el-table-column
+                              prop="dis_price"
+                              label="折后金额">
+                      </el-table-column>
+                      <el-table-column label="操作">
+                          <template slot-scope="scope">
+                              <a href="#">再次购买</a>
+                              <a href="#" class="cr delete_a">删除</a>
+                          </template>
+                      </el-table-column>
+                  </el-table>
+                  <div class="total">
+                    <span class="fl">
+                          <p class="cr">汇总：</p>
+                        <p class="money_total">累计购买金额：23565.00</p>
+                        <p class="money_total">欠款：5.00</p>
+                    </span>
+                      <el-button type="success" class="go_buy fr">购买项目</el-button>
+                  </div>
+              </div>
+          </el-tab-pane>
+          <el-tab-pane label="会员套盒">
+              <div class="basic_inf">
+                  <el-table
+                          :data="tableData"
+                          style="width: 100%">
+                      <el-table-column
+                              prop="name"
+                              label="套盒名称">
+                      </el-table-column>
+                      <el-table-column
+                              prop="price"
+                              label="价格">
+                      </el-table-column>
+                      <el-table-column
+                              prop="time"
+                              label="剩余次数">
+                      </el-table-column>
+                      <el-table-column
+                              prop="discount"
+                              label="总次数">
+                      </el-table-column>
+                      <el-table-column
+                              prop="dis_price"
+                              label="折后金额">
+                      </el-table-column>
+                      <el-table-column label="操作">
+                          <template slot-scope="scope">
+                              <a href="#">再次购买</a>
+                              <a href="#" class="cr delete_a">删除</a>
+                          </template>
+                      </el-table-column>
+                  </el-table>
+                  <div class="total">
+                      <span class="fl">
+                      <p class="cr">汇总：</p>
+                    <p class="money_total">累计购买金额：23565.00</p>
+                    <p class="money_total">欠款：5.00</p>
+                  </span>
+                      <el-button type="success" class="go_buy fr">购买套盒</el-button>
+                  </div>
+              </div>
+          </el-tab-pane>
+          <el-tab-pane label="优惠券查看">
+              <div class="basic_inf">
+                  <el-table
+                          :data="tableData"
+                          style="width: 100%">
+                      <el-table-column
+                              prop="name"
+                              label="优惠券类型">
+                      </el-table-column>
+                      <el-table-column
+                              prop="price"
+                              label="数量">
+                      </el-table-column>
+                      <el-table-column
+                              prop="time"
+                              label="开始时间">
+                      </el-table-column>
+                      <el-table-column
+                              prop="discount"
+                              label="结束时间">
+                      </el-table-column>
+                  </el-table>
+              </div>
+          </el-tab-pane>
+          <el-tab-pane label="所持卡项">
+              <div class="basic_inf">
+                  <el-table
+                          :data="tableData"
+                          style="width: 100%">
+                      <el-table-column
+                              prop="name"
+                              label="类型">
+                      </el-table-column>
+                      <el-table-column
+                              prop="price"
+                              label="名称">
+                      </el-table-column>
+                      <el-table-column
+                              prop="time"
+                              label="余额">
+                      </el-table-column>
+                      <el-table-column label="操作">
+                          <template slot-scope="scope">
+                              <a href="#" class="cr">删除</a>
+                          </template>
+                      </el-table-column>
+                  </el-table>
+              </div>
+          </el-tab-pane>
+          <el-tab-pane label="积分">
+              <div class="basic_inf">
+                  <el-table
+                          :data="tableData"
+                          style="width: 100%">
+                      <el-table-column
+                              prop="name"
+                              label="日期">
+                      </el-table-column>
+                      <el-table-column
+                              prop="price"
+                              label="消费商品">
+                      </el-table-column>
+                      <el-table-column
+                              prop="time"
+                              label="划扣积分">
+                      </el-table-column>
+                      <el-table-column
+                              prop="time"
+                              label="存入积分">
+                      </el-table-column><el-table-column
+                          prop="time"
+                          label="经手人">
+                  </el-table-column>
+                      <el-table-column label="操作">
+                          <template slot-scope="scope">
+                              <a href="#" class="cr">删除</a>
+                          </template>
+                      </el-table-column>
+                  </el-table>
+                  <div class="total">
+                    <span class="fl">
+                          <p class="cr">汇总：</p>
+                        <p class="money_total">累计积分：23565分</p>
+                        <p class="money_total">可用积分：562分</p>
+                    </span>
+                      <el-button type="success" class="go_buy fr">新增记录</el-button>
+                  </div>
+              </div>
+          </el-tab-pane>
+          <el-tab-pane label="欠款">
+              <div class="basic_inf">
+              <el-table
+                      :data="tableData"
+                      style="width: 100%">
+                  <el-table-column
+                          prop="name"
+                          label="购买日期">
+                  </el-table-column>
+                  <el-table-column
+                          prop="price"
+                          label="消费商品">
+                  </el-table-column>
+                  <el-table-column
+                          prop="time"
+                          label="摘要">
+                  </el-table-column>
+                  <el-table-column
+                          prop="time"
+                          label="欠款金额">
+                  </el-table-column><el-table-column
+                      prop="time"
+                      label="经手人">
+              </el-table-column>
+                  <el-table-column label="操作">
+                      <template slot-scope="scope">
+                          <a href="#" class="cr">补款</a>
+                      </template>
+                  </el-table-column>
+              </el-table>
+              <div class="total">
+                    <span class="fl">
+                          <p class="cr">汇总：</p>
+                        <p class="money_total">欠款合计：23565元</p>
+                    </span>
+              </div>
+              </div>
+          </el-tab-pane>
+          <el-tab-pane label="健康档案">
+              <div class="basic_inf height">
+                  <p class="body_c p_div">身体问题</p>
+                  <div class="pro_div">
+                      <el-button type="primary" round size="mini" @click="dialogVisible = true">头部</el-button>
+                      <el-button round size="mini">头部</el-button>
+                  </div>
+                  <p class="skin_c p_div">皮肤问题</p>
+                  <div class="pro_div">
+                      <el-button type="primary" round size="mini">面部</el-button>
+                      <el-button round size="mini">面部</el-button>
+                  </div>
+                  <div class="choiced">
+                      <p class="c_title p_div">已选择如下：</p>
+                      <ul class="pro_ul">
+                          <li class="c_title p_div">
+                             面部：  <el-button type="primary" round size="mini">长痘</el-button><i class="el-icon-error"></i>
+                          </li>
+                          <li class="c_title p_div">
+                              面部：  <el-button type="primary" round size="mini">长痘</el-button>
+                          </li>
+                      </ul>
+
+                      <div class="bottom_but">
+                          <el-button type="success">提交</el-button>
+                      </div>
+                  </div>
+              </div>
+          </el-tab-pane>
+        </el-tabs>
+        <el-dialog
+                title="面部"
+                    :visible.sync="dialogVisible"
+                    width="30%" center>
+               <div>
+                   <el-checkbox-group v-model="checkList">
+                       <el-checkbox label="复选框 A"></el-checkbox>
+                       <el-checkbox label="复选框 B"></el-checkbox>
+                       <el-checkbox label="复选框 C"></el-checkbox>
+                       <el-checkbox label="ded"></el-checkbox>
+                       <el-checkbox label="dwd"></el-checkbox>
+                   </el-checkbox-group>
+               </div>
+                <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+      </span>
+            </el-dialog>
+    </template>
+</div>
+
+</body>
+</html>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../js/func.js"></script>
+<script src="../js/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            checkList:'',
+            dialogVisible:false,
+            input:'',
+            options: [{
+          value: '选项1',
+          label: '男'
+        }, {
+          value: '选项2',
+          label: '女'
+        }],
+        calss: [{
+          value: '选项1',
+          label: '农历'
+        }, {
+          value: '选项2',
+          label: '阳历'
+        }],
+        status: [{
+          value: '选项1',
+          label: '已婚'
+        }, {
+          value: '选项2',
+          label: '未婚'
+        }],
+        value:'',
+        birth:'',
+            tableData: [{
+                classify: '面部',
+                name: '补水面膜',
+                price :'1235',
+                time:'2019-02-12',
+                discount:'4折',
+                dis_price:'262'
+            }, {
+                classify: '面部',
+                name: '补水面膜',
+                price :'1235',
+                time:'2019-02-12',
+                discount:'4折',
+                dis_price:'262'
+            }, {
+                classify: '面部',
+                name: '补水面膜',
+                price :'1235',
+                time:'2019-02-12',
+                discount:'4折',
+                dis_price:'262'
+            }, {
+                classify: '面部',
+                name: '补水面膜',
+                price :'1235',
+                time:'2019-02-12',
+                discount:'4折',
+                dis_price:'262'
+            }]
+        },
+        methods: {},
+        mounted() {
+            this.$nextTick(e=>{
+                //初始化
+                that = this;
+                loginState()
+            })
+        }
+    })
+</script>
