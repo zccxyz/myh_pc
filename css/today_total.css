@@ -1,0 +1,16 @@
+.today_total thead,.today_total thead th{
+    background-color: #dffdfa;
+}
+.today_total th,.today_total td{
+    text-align: center;
+}
+.total_div{
+    margin-top: 10px;
+}
+.tt_table{
+    margin-top: 10px;
+    border:1px solid #ebeef5;
+}
+.total_sea{
+    width: 20%;
+}
