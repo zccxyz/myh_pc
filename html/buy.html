@@ -28,7 +28,7 @@
         </div>
         <el-table border
                   ref="multipleTable"
-                  :data="list"
+                  :data="list.filter(data => !input || data.name.toLowerCase().includes(input.toLowerCase()))"
                   tooltip-effect="dark"
                   style="width: 100%"
                   @selection-change="handleSelectionChange">
@@ -63,74 +63,62 @@
                     label="次数">
             </el-table-column>
             <el-table-column
-                    prop="fre"
-                    label="赠送">
+                    prop="free"
+                    label="赠送"
+                    :formatter="form">
             </el-table-column>
             <el-table-column
                     label="加入购物车"
                     show-overflow-tooltip>
                 <template slot-scope="scope">
-                    <i class="el-icon-remove blue_c"></i>
-                    <i>5</i>
-                    <i class="el-icon-circle-plus blue_c"></i>
+                    <i class="el-icon-remove blue_c" @click="remove(scope.row)" v-if="scope.row.needNum>0"></i>
+                    <i v-if="scope.row.needNum>0">{{scope.row.needNum}}</i>
+                    <i class="el-icon-circle-plus blue_c" @click="add(scope.row)"></i>
                 </template>
             </el-table-column>
         </el-table>
-        <div v-if="zt" class="cart_div" style="z-index: 10">
+        <div v-if="need.length>0" style="height: 250px;"></div>
+        <div v-if="need.length>0" class="cart_div" style="z-index: 10">
             <p class="cart_title">
-                已选择
-                <span class="fr mar_hun">
+                已选择（{{need.length}}）
+                <span class="fr mar_hun" @click="allRemove">
                 <img src="../images/delete.png">&nbsp;全部清空
                </span>
             </p>
-            <ul class="consume_list">
-                <li class="linr_four">
-                    <span class="g_name">
-                     面部护理
-                </span>
-                    <span class="p_wid">￥298.00</span>
-                    <span>
-                     优惠方式
-                     <el-radio v-model="radio" label="1">打折</el-radio>
-                    <el-radio v-model="radio" label="2">赠送</el-radio>
-                    <i class="check_box">
-                    <el-checkbox v-model="checked">修改次数</el-checkbox></i><el-input v-model="input" placeholder="请输入"
-                                                                                   class="in_wid und_line"></el-input>
-                 </span>
-                    <span class="fr mar_hun">
-                     <i class="el-icon-remove blue_c"></i>
-                     <i>5</i>
-                     <i class="el-icon-circle-plus blue_c"></i>
-                </span>
-
-                </li>
-                <li class="linr_four">
-                    <span class="g_name">
-                     面部护理
-                </span>
-                    <span class="p_wid">￥298.00</span>
-                    <span>
-                     优惠方式
-                     <el-radio v-model="radio" label="1">打折</el-radio>
-                    <el-radio v-model="radio" label="2">赠送</el-radio>
-                    <i class="check_box">
-                        <el-checkbox v-model="checked">修改次数</el-checkbox>
-                    </i><el-input v-model="input" placeholder="请输入" class="in_wid und_line"></el-input>
-                 </span>
-                    <span class="fr mar_hun">
-                     <i class="el-icon-remove blue_c"></i>
-                     <i>5</i>
-                     <i class="el-icon-circle-plus blue_c"></i>
-                </span>
-
-                </li>
-            </ul>
-            <div style="height:50px"></div>
+            <div style="height: 200px;background: white;overflow: scroll;">
+                <ul class="consume_list" style="margin-bottom: 50px">
+                    <li v-for="v in need" class="linr_four">
+                        <span class="g_name">
+                             {{v.name}}
+                        </span>
+                        <span class="p_wid">￥{{v.price * v.discount/10}}</span>
+                        <span>
+                            优惠方式
+                            <el-radio v-model="v.yh" label="1">打折</el-radio>
+                            <el-input v-if="v.yh==1" v-model="v.discount" placeholder="请输入1到10的数字"
+                                      class="in_wid und_line"></el-input>
+                            <el-radio v-model="v.yh" label="2" v-if="v.free==1">赠送</el-radio>
+                            <template v-if="v.type!='产品'">
+                                <i class="check_box">
+                                    <!--<el-checkbox v-model="checked">修改次数</el-checkbox>-->
+                                    修改次数
+                                </i>
+                                <el-input v-model="v.fre" placeholder="请输入次数" class="in_wid und_line"></el-input>
+                            </template>
+                        </span>
+                        <span class="fr mar_hun">
+                             <i class="el-icon-remove blue_c" @click="remove(v)"></i>
+                             <i>{{v.needNum}}</i>
+                             <i class="el-icon-circle-plus blue_c" @click="add(v)"></i>
+                        </span>
+                    </li>
+                </ul>
+            </div>
             <div class="cart_total">
                  <span class="fl cr total_money">
-                     合计：15235
+                     合计：{{total}}
                  </span>
-                <span class="red_box pay">提交订单</span>
+                <a href="pay_page.html"><span class="red_box pay">提交订单</span></a>
             </div>
         </div>
     </template>
@@ -176,8 +164,52 @@
             r: '',
             fileList: [],
             zt: true,
+            need: [],
         },
         methods: {
+            allRemove() {
+                if (confirm('是否全部清空?')) {
+                    this.need = []
+                    for (let v of this.list) {
+                        v.needNum = 0;
+                    }
+                }
+            },
+            form(r, c) {
+                if (r.free == 1) {
+                    return '是'
+                } else {
+                    return '否'
+                }
+            },
+            remove(v) {
+                if (v.needNum > 0) {
+                    v.needNum--
+                    for (let i in this.need) {
+                        if (v.id == this.need[i].id && this.need[i].needNum > 0) {
+                            z = false
+                            break
+                        }
+                        if (this.need[i].needNum == 0) {
+                            this.need.splice(i, 1)
+                        }
+                    }
+                }
+            },
+            add(v) {
+                v.needNum++
+                let z = true;
+                for (let x of this.need) {
+                    if (v.id == x.id) {
+                        z = false
+                        break
+                    }
+                }
+                if (z) {
+                    this.need.unshift(v)
+                }
+                console.log(v)
+            },
             toggleSelection(rows) {
                 if (rows) {
                     rows.forEach(row => {
@@ -200,6 +232,11 @@
                 $.post(url(methods.getAllGoods), v => {
                     let rs = verify(v)
                     if (rs != false) {
+                        for (let v of rs) {
+                            v['needNum'] = 0
+                            v['discount'] = 10
+                            v['yh'] = 0
+                        }
                         this.list = rs
                     }
                 })
@@ -216,6 +253,15 @@
                     return false
                 }
             },
+        },
+        computed: {
+            total() {
+                let all = 0
+                for(let v of this.need) {
+                    all += v.discount/10 * v.price * v.needNum
+                }
+                return all
+            }
         },
         mounted() {
             this.$nextTick(e => {
