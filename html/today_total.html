@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>今日总营业额</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../css/today_total.css">
+</head>
+<body class="today_total">
+
+<div id="app" class="customer">
+    <template>
+        <p class="cus_title">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+                <el-breadcrumb-item :to="{ path: '/' }">工作台首页</el-breadcrumb-item>
+                <el-breadcrumb-item>今日总营业额</el-breadcrumb-item>
+            </el-breadcrumb>
+        </p>
+        <div class="total_div">
+            <el-button type="primary">按日<i class="el-icon-refresh"></i></el-button>
+            <el-date-picker
+                    v-model="value7"
+                    type="daterange"
+                    align="right"
+                    unlink-panels
+                    range-separator="至"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期"
+                    :picker-options="pickerOptions2">
+            </el-date-picker>
+            <el-input class="total_sea"
+                    placeholder="请输入内容"
+                    prefix-icon="el-icon-search"
+                    v-model="input">
+            </el-input>
+        </div>
+        <el-table class="tt_table"
+                  :data="tableData"
+                  style="width: 100%">
+            <el-table-column
+                    prop="pro_item"
+                    label="品项">
+            </el-table-column>
+            <el-table-column
+                    prop="pro_name"
+                    label="商品名称">
+            </el-table-column>
+            <el-table-column
+                    prop="con_money"
+                    label="价格">
+            </el-table-column>
+            <el-table-column
+                    prop="beautician"
+                    label="操作人">
+            </el-table-column>
+        </el-table>
+        <p class="linr_four">
+            <i class="cr">总营业额：￥500.00</i>
+            <el-pagination class="fr"
+                           @size-change="handleSizeChange"
+                           @current-change="handleCurrentChange"
+                           :current-page="currentPage4"
+                           :page-sizes="[100, 200, 300, 400]"
+                           :page-size="100"
+                           layout="total, sizes, prev, pager, next, jumper"
+                           :total="400">
+            </el-pagination>
+        </p>
+    </template>
+</div>
+
+</body>
+</html>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../js/func.js"></script>
+<script src="../js/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            input:'',
+            pickerOptions2: {
+                shortcuts: [{
+                    text: '最近一周',
+                    onClick(picker) {
+                        const end = new Date();
+                        const start = new Date();
+                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                        picker.$emit('pick', [start, end]);
+                    }
+                }, {
+                    text: '最近一个月',
+                    onClick(picker) {
+                        const end = new Date();
+                        const start = new Date();
+                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                        picker.$emit('pick', [start, end]);
+                    }
+                }, {
+                    text: '最近三个月',
+                    onClick(picker) {
+                        const end = new Date();
+                        const start = new Date();
+                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                        picker.$emit('pick', [start, end]);
+                    }
+                }]
+            },
+            value7: '',
+            currentPage4: 4,
+            tableData: [{
+                pro_item: '项目',
+                pro_name: '肩颈理疗',
+                con_money:'26526',
+                beautician:'丽萨'
+            }, {
+                pro_item: '项目',
+                pro_name: '肩颈理疗',
+                con_money:'26526',
+                beautician:'丽萨'
+            }, {
+                pro_item: '项目',
+                pro_name: '肩颈理疗',
+                con_money:'26526',
+                beautician:'丽萨'
+            }, {
+                pro_item: '项目',
+                pro_name: '肩颈理疗',
+                con_money:'26526',
+                beautician:'丽萨'
+            }]
+        },
+        methods: {
+            handleSizeChange(val) {
+                console.log(`每页 ${val} 条`);
+            },
+            handleCurrentChange(val) {
+                console.log(`当前页: ${val}`);
+            }
+        },
+        mounted() {
+            this.$nextTick(e=>{
+                //初始化
+                that = this;
+                loginState()
+            })
+        }
+    })
+</script>

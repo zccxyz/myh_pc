@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>今日操作汇总</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../css/today_total.css">
+</head>
+<body class="today_total">
+
+<div id="app" class="customer">
+    <template>
+        <p class="cus_title">
+        <el-breadcrumb separator-class="el-icon-arrow-right">
+            <el-breadcrumb-item :to="{ path: '/' }">工作台首页</el-breadcrumb-item>
+            <el-breadcrumb-item>今日操作汇总</el-breadcrumb-item>
+        </el-breadcrumb>
+    </p>
+        <el-table class="tt_table"
+                :data="tableData"
+                style="width: 100%">
+            <el-table-column
+                    prop="pro_item"
+                    label="品项">
+            </el-table-column>
+            <el-table-column
+                    prop="class"
+                    label="类别">
+            </el-table-column>
+            <el-table-column
+                    prop="pro_name"
+                    label="消耗名称">
+            </el-table-column>
+            <el-table-column
+                    prop="vip_name"
+                    label="会员名">
+            </el-table-column>
+            <el-table-column
+                    prop="con_money"
+                    label="消耗金额">
+            </el-table-column>
+            <el-table-column
+                    prop="con_fre"
+                    label="消耗次数">
+            </el-table-column>
+            <el-table-column
+                prop="time"
+                label="消耗时间">
+        </el-table-column>
+            <el-table-column
+                    prop="beautician"
+                    label="美容师">
+            </el-table-column>
+        </el-table>
+        <p class="linr_four">
+            <i class="cr">今日操作项目汇总：￥500.00</i>
+            <el-pagination class="fr"
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="currentPage4"
+                    :page-sizes="[100, 200, 300, 400]"
+                    :page-size="100"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="400">
+            </el-pagination>
+        </p>
+        </template>
+</div>
+
+</body>
+</html>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../js/func.js"></script>
+<script src="../js/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            currentPage4: 4,
+            tableData: [{
+                pro_item: '项目',
+                class: '身体',
+               pro_name: '肩颈理疗',
+                vip_name:'李思思',
+                con_money:'26526',
+                con_fre:'1',
+                time:'2019-02-12',
+                beautician:'丽萨'
+            }, {
+                pro_item: '项目',
+                class: '身体',
+                pro_name: '肩颈理疗',
+                vip_name:'李思思',
+                con_money:'26526',
+                con_fre:'1',
+                time:'2019-02-12',
+                beautician:'丽萨'
+            }, {
+                pro_item: '项目',
+                class: '身体',
+                pro_name: '肩颈理疗',
+                vip_name:'李思思',
+                con_money:'26526',
+                con_fre:'1',
+                time:'2019-02-12',
+                beautician:'丽萨'
+            }, {
+                pro_item: '项目',
+                class: '身体',
+                pro_name: '肩颈理疗',
+                vip_name:'李思思',
+                con_money:'26526',
+                con_fre:'1',
+                time:'2019-02-12',
+                beautician:'丽萨'
+            }]
+        },
+        methods: {
+            handleSizeChange(val) {
+                console.log(`每页 ${val} 条`);
+            },
+            handleCurrentChange(val) {
+                console.log(`当前页: ${val}`);
+            }
+        },
+        mounted() {
+            this.$nextTick(e=>{
+                //初始化
+                that = this;
+                loginState()
+            })
+        }
+    })
+</script>
