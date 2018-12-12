@@ -69,44 +69,47 @@
             <el-table-column
                     label="加入购物车"
                     show-overflow-tooltip>
-                <i class="el-icon-remove blue_c"></i>
-                     <i>5</i>
-                     <i class="el-icon-circle-plus blue_c"></i>
+                <template slot-scope="scope">
+                    <i class="el-icon-remove blue_c"></i>
+                    <i>5</i>
+                    <i class="el-icon-circle-plus blue_c"></i>
+                </template>
             </el-table-column>
         </el-table>
-       <div class="cart_div">
-           <p class="cart_title">
-               已选择
-               <span class="fr mar_hun">
+        <div v-if="zt" class="cart_div" style="z-index: 10">
+            <p class="cart_title">
+                已选择
+                <span class="fr mar_hun">
                 <img src="../images/delete.png">&nbsp;全部清空
                </span>
-           </p>
-           <ul class="consume_list">
-               <li class="linr_four">
+            </p>
+            <ul class="consume_list">
+                <li class="linr_four">
                     <span class="g_name">
                      面部护理
                 </span>
-                 <span class="p_wid">￥298.00</span>
-                 <span>
+                    <span class="p_wid">￥298.00</span>
+                    <span>
                      优惠方式
                      <el-radio v-model="radio" label="1">打折</el-radio>
                     <el-radio v-model="radio" label="2">赠送</el-radio>
                     <i class="check_box">
-                    <el-checkbox v-model="checked">修改次数</el-checkbox></i><el-input v-model="input" placeholder="请输入" class="in_wid und_line"></el-input>
+                    <el-checkbox v-model="checked">修改次数</el-checkbox></i><el-input v-model="input" placeholder="请输入"
+                                                                                   class="in_wid und_line"></el-input>
                  </span>
-                 <span class="fr mar_hun">
+                    <span class="fr mar_hun">
                      <i class="el-icon-remove blue_c"></i>
                      <i>5</i>
                      <i class="el-icon-circle-plus blue_c"></i>
                 </span>
 
-               </li>
-               <li class="linr_four">
+                </li>
+                <li class="linr_four">
                     <span class="g_name">
                      面部护理
                 </span>
-                 <span class="p_wid">￥298.00</span>
-                 <span>
+                    <span class="p_wid">￥298.00</span>
+                    <span>
                      优惠方式
                      <el-radio v-model="radio" label="1">打折</el-radio>
                     <el-radio v-model="radio" label="2">赠送</el-radio>
@@ -114,22 +117,22 @@
                         <el-checkbox v-model="checked">修改次数</el-checkbox>
                     </i><el-input v-model="input" placeholder="请输入" class="in_wid und_line"></el-input>
                  </span>
-                 <span class="fr mar_hun">
+                    <span class="fr mar_hun">
                      <i class="el-icon-remove blue_c"></i>
                      <i>5</i>
                      <i class="el-icon-circle-plus blue_c"></i>
                 </span>
 
-               </li>
-           </ul>
-     <div style="height:50px"></div>
-           <div class="cart_total">
-         <span class="fl cr total_money">
-             合计：15235
-         </span>
-         <span class="red_box pay">提交订单</span>
-     </div>
-       </div> 
+                </li>
+            </ul>
+            <div style="height:50px"></div>
+            <div class="cart_total">
+                 <span class="fl cr total_money">
+                     合计：15235
+                 </span>
+                <span class="red_box pay">提交订单</span>
+            </div>
+        </div>
     </template>
 
 </div>
@@ -145,10 +148,10 @@
         el: '#app',
         data: {
             input: '',
-            radio:'',
-            checked:'',
-             centerDialogVisible: false,
-             tableData3: [{
+            radio: '',
+            checked: '',
+            centerDialogVisible: false,
+            tableData3: [{
                 px: '产品',
                 class: '面部',
                 name: '睡眠面膜',
@@ -172,6 +175,7 @@
             list: [],
             r: '',
             fileList: [],
+            zt: true,
         },
         methods: {
             toggleSelection(rows) {
@@ -193,9 +197,9 @@
                 console.log(index, row);
             },
             getGoods() {
-                $.post(url(methods.getAllGoods), v=>{
+                $.post(url(methods.getAllGoods), v => {
                     let rs = verify(v)
-                    if(rs != false){
+                    if (rs != false) {
                         this.list = rs
                     }
                 })
@@ -207,7 +211,7 @@
             },
             beforeUpload2(f) {
                 let ext = f.name.toString().split('.')
-                if(ext[1] != 'xlsx') {
+                if (ext[1] != 'xlsx') {
                     error('请上传xlsx文件')
                     return false
                 }
@@ -219,7 +223,7 @@
                 that = this;
                 this.getGoods()
                 loginState()
-                this.r = url(methods.upload+'?type=2')
+                this.r = url(methods.upload + '?type=2')
             })
         }
     })
