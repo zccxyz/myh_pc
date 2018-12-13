@@ -1,5 +1,5 @@
-//const ym = 'https://www.myhkj.cn/apis/backend/';
-const ym = 'http://admin.test.com/apis/backend/';
+const ym = 'https://www.myhkj.cn/apis/backend/';
+//const ym = 'http://admin.test.com/apis/backend/';
 
 const methods = {
     'login': 'login/login',
@@ -19,6 +19,9 @@ const methods = {
     'addVip': 'Member/addvip',
     'addArrive': 'Arrive/AddArrive',
     'leave': 'Arrive/leave',
+    'mergeBuy': 'buy/mergeBuy',
+    'getPayDetail': 'buy/get_pay_detail',
+    'getDetails': 'Consume/getDetails',
 };
 let that;
 

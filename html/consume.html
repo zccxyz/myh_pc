@@ -11,204 +11,201 @@
 
 <div id="app" class="customer">
     <template>
-    <p class="cus_title">
-        <el-breadcrumb separator-class="el-icon-arrow-right">
-            <el-breadcrumb-item :to="{ path: '/' }">信息管理</el-breadcrumb-item>
-            <el-breadcrumb-item>会员管理</el-breadcrumb-item>
-            <el-breadcrumb-item>消耗</el-breadcrumb-item>
-        </el-breadcrumb>
-    </p>
-    <p class="cr linr_four">
-        会员余额：￥2342
-    </p>
-    <div class="con_div">
-        <p class="con_list linr_four">
-            会员自有项目
+        <p class="cus_title">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+                <el-breadcrumb-item :to="{ path: '/' }">信息管理</el-breadcrumb-item>
+                <el-breadcrumb-item>会员管理</el-breadcrumb-item>
+                <el-breadcrumb-item>消耗</el-breadcrumb-item>
+            </el-breadcrumb>
         </p>
-        <ul class="consume_list">
-            <li>
-                <span class="g_name">
-                     面部护理
-                </span>
-               <span class="cr p_wid">￥298.00</span>
-               <span class="g_c_price">
-                   修改价格
-               </span>
-                <span class="fr mar_hun">
-                     <i class="el-icon-remove blue_c"></i>
-                     <i>5</i>
-                     <i class="el-icon-circle-plus blue_c"></i>
-                </span>
-            </li>
-             <li>
-                <span class="g_name">
-                     面部护理
-                </span>
-               <span class="cr p_wid">￥298.00</span>
-               <span class="g_c_price">
-                   修改价格
-               </span>
-               <span class="fr mar_hun">
-                     <i class="el-icon-remove blue_c"></i>
-                     <i>5</i>
-                     <i class="el-icon-circle-plus blue_c"></i>
-                </span>
-            </li>
-        </ul>
-    </div>
-    <div class="con_div">
-        <p class="item_list linr_four">
-            会员自有套盒
+        <p class="cr linr_four">
+            会员余额：￥{{balance}}
         </p>
-        <ul class="consume_list">
-            <li>
-                <span class="g_name">
-                     面部护理
-                </span>
-               <span class="cr p_wid">￥298.00</span>
-               <span class="huihui p_wid">
-                   剩余次数：3
-               </span>
-               <span class="huihui p_wid">
-                   共有次数：12
-               </span>
-                <span class="fr mar_hun">
-                     <i class="el-icon-remove blue_c"></i>
-                     <i>5</i>
-                     <i class="el-icon-circle-plus blue_c"></i>
-                </span>
-            </li>
-             <li>
-                <span class="g_name">
-                     面部护理
-                </span>
-               <span class="cr p_wid">￥298.00</span>
-               <span class="huihui p_wid">
-                   剩余次数：3
-               </span>
-               <span class="huihui p_wid">
-                   共有次数：12
-               </span>
-               <span class="fr mar_hun">
-                     <i class="el-icon-remove blue_c"></i>
-                     <i>5</i>
-                     <i class="el-icon-circle-plus blue_c"></i>
-                </span>
-            </li>
-        </ul>
-    </div>
-    <div class="con_div">
-        <p class="th_list linr_four">
-            会员项目消耗
-        </p>
-        <ul class="consume_list">
-            <li>
-                <span class="g_name">
-                     面部护理
-                </span>
-               <span class="cr p_wid">￥298.00</span>
-               <span class="huihui p_wid">
-                   剩余次数：3
-               </span>
-               <span class="huihui p_wid">
-                   共有次数：12
-               </span>
-                <span class="fr mar_hun">
-                     <i class="el-icon-remove blue_c"></i>
-                     <i>5</i>
-                     <i class="el-icon-circle-plus blue_c"></i>
-                </span>
-            </li>
-             <li>
-                <span class="g_name">
-                     面部护理
-                </span>
-               <span class="cr p_wid">￥298.00</span>
-               <span class="huihui p_wid">
-                   剩余次数：3
-               </span>
-               <span class="huihui p_wid">
-                   共有次数：12
-               </span>
-               <span class="fr mar_hun">
-                     <i class="el-icon-remove blue_c"></i>
-                     <i>5</i>
-                     <i class="el-icon-circle-plus blue_c"></i>
-                </span>
-            </li>
-        </ul>
-    </div>
-    <div class="commission">
-        <div class="mar_hun fl">
-            <p class="p_div_b">
-                消耗手工录入
+        <div class="con_div" v-if="items.length>0">
+            <p class="con_list linr_four">
+                会员余额消费
             </p>
-            <ul class="consume_list commission_list">
-                <li>
-                    操作人
-                    <el-select v-model="value" placeholder="请选择" class="in_wid">
-                        <el-option
-                          v-for="item in options"
-                          :key="item.value"
-                          :label="item.label"
-                          :value="item.value">
-                        </el-option>
-                    </el-select>
-                    <el-input v-model="input" placeholder="请输入" class="in_wid"></el-input>&nbsp;%<p class="do_blue">添加</p>
+            <ul class="consume_list">
+                <li v-for="(v, i) in items">
+                <span class="g_name">
+                     {{v.pro_name}}
+                </span>
+                    <span class="cr p_wid">￥{{v.price}}</span>
+                    <span class="g_c_price">
+                   修改价格
+               </span>
+                    <span class="fr mar_hun">
+                     <template v-if="v.needNum>0">
+                         <i class="el-icon-remove blue_c" @click="jian(1, i)"></i>
+                         <i>{{v.needNum}}</i>
+                     </template>
+                     <i class="el-icon-circle-plus blue_c" @click="jia(1, i)"></i>
+                </span>
                 </li>
-                <li>
-                    操作人
-                    <el-select v-model="value" placeholder="请选择" class="in_wid">
-                        <el-option
-                          v-for="item in options"
-                          :key="item.value"
-                          :label="item.label"
-                          :value="item.value">
-                        </el-option>
-                    </el-select>
-                    <el-input v-model="input" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
-                    <i class="el-icon-circle-close-outline close"></i>
+                <!--<li>
+                <span class="g_name">
+                     面部护理
+                </span>
+                    <span class="cr p_wid">￥298.00</span>
+                    <span class="g_c_price">
+                   修改价格
+               </span>
+                    <span class="fr mar_hun">
+                     <i class="el-icon-remove blue_c"></i>
+                     <i>5</i>
+                     <i class="el-icon-circle-plus blue_c"></i>
+                </span>
+                </li>-->
+            </ul>
+        </div>
+
+        <div class="con_div" v-if="myBox.length>0">
+            <p class="item_list linr_four">
+                会员自有套盒
+            </p>
+            <ul class="consume_list">
+                <li v-for="(v,i) in myBox">
+                <span class="g_name">
+                     {{v.name}}
+                </span>
+                    <span class="cr p_wid">￥298.00</span>
+                    <span class="huihui p_wid">
+                   剩余次数：{{v.current_num}}
+               </span>
+                    <span class="huihui p_wid">
+                   共有次数：{{v.originally_num}}
+               </span>
+                    <span class="fr mar_hun">
+                     <template v-if="v.needNum>0">
+                         <i class="el-icon-remove blue_c" @click="jian(2, i)"></i>
+                         <i>{{v.needNum}}</i>
+                     </template>
+                     <i class="el-icon-circle-plus blue_c" @click="jia(2, i)"></i>
+                </span>
+                </li>
+                <!--<li>
+                <span class="g_name">
+                     面部护理
+                </span>
+                    <span class="cr p_wid">￥298.00</span>
+                    <span class="huihui p_wid">
+                   剩余次数：3
+               </span>
+                    <span class="huihui p_wid">
+                   共有次数：12
+               </span>
+                    <span class="fr mar_hun">
+                     <i class="el-icon-remove blue_c"></i>
+                     <i>5</i>
+                     <i class="el-icon-circle-plus blue_c"></i>
+                </span>
+                </li>-->
+            </ul>
+        </div>
+
+        <div class="con_div" v-if="myItems.length>0">
+            <p class="th_list linr_four">
+                会员项目消耗
+            </p>
+            <ul class="consume_list">
+                <li v-for="(v,i) in myItems">
+                <span class="g_name">
+                     {{v.name}}
+                </span>
+                    <span class="cr p_wid">￥298.00</span>
+                    <span class="huihui p_wid">
+                   剩余次数：{{v.current_num}}
+               </span>
+                    <span class="huihui p_wid">
+                   共有次数：{{v.originally_num}}
+               </span>
+                    <span class="fr mar_hun">
+                     <template v-if="v.needNum>0">
+                         <i class="el-icon-remove blue_c" @click="jian(3, i)"></i>
+                         <i>{{v.needNum}}</i>
+                     </template>
+                     <i class="el-icon-circle-plus blue_c" @click="jia(3, i)"></i>
+                </span>
                 </li>
             </ul>
         </div>
-        <div class="fr">
-            <p class="p_div_b">
-                消耗提成录入
-            </p>
-            <ul class="consume_list commission_list">
-                <li>
-                    美容师
-                    <el-select v-model="value" placeholder="请选择" class="in_wid">
-                        <el-option
-                          v-for="item in options"
-                          :key="item.value"
-                          :label="item.label"
-                          :value="item.value">
-                        </el-option>
-                    </el-select>
-                    <el-input v-model="input" placeholder="请输入" class="in_wid"></el-input>&nbsp;%<p class="do_blue">添加</p>
-                </li>
-                <li>
-                    顾问
-                    <el-select v-model="value" placeholder="请选择" class="in_wid">
-                        <el-option
-                          v-for="item in options"
-                          :key="item.value"
-                          :label="item.label"
-                          :value="item.value">
-                        </el-option>
-                    </el-select>
-                    <el-input v-model="input" placeholder="请输入" class="in_wid"></el-input>&nbsp;%<p class="do_blue">添加</p>
-                </li>
-            </ul>
+        <div class="commission">
+            <div class="mar_hun fl">
+                <p class="p_div_b">
+                    消耗手工录入
+                </p>
+                <ul class="consume_list commission_list">
+                    <li>
+                        操作人
+                        <el-select v-model="one.id" placeholder="请选择" class="in_wid">
+                            <el-optionitemsArr
+                                    v-for="item in staff"
+                                    :label="item.name"
+                                    :value="item.id">
+                            </el-optionitemsArr>
+                        </el-select>
+                        <el-input v-model="one.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
+                        <p class="do_blue" @click="add(1)">添加</p>
+                    </li>
+                    <li v-for="(v, i) in oneArr">
+                        &nbsp;&nbsp;&nbsp;
+                        <div>{{v.name}}</div>
+                        <el-input :value="v.rate" placeholder="请输入" class="in_wid" disabled></el-input>&nbsp;%
+                        <i class="el-icon-circle-close-outline close" @click="del(1, i)"></i>
+                    </li>
+                </ul>
+            </div>
+            <div class="fr">
+                <p class="p_div_b">
+                    消耗提成录入
+                </p>
+                <ul class="consume_list commission_list">
+                    <li>
+                        美容师
+                        <el-select v-model="two.id" placeholder="请选择" class="in_wid">
+                            <el-option
+                                    v-for="item in mrs"
+                                    :label="item.name"
+                                    :value="item.id">
+                            </el-option>
+                        </el-select>
+                        <el-input v-model="two.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
+                        <p class="do_blue" @click="add(2)">添加</p>
+                    </li>
+                    <li v-for="(v, i) in twoArr">
+                        &nbsp;&nbsp;&nbsp;
+                        <div>{{v.name}}</div>
+                        <el-input :value="v.rate" placeholder="请输入" class="in_wid" disabled></el-input>&nbsp;%
+                        <i class="el-icon-circle-close-outline close" @click="del(2, i)"></i>
+                    </li>
+                    <li>
+                        顾问
+                        <el-select v-model="three.id" placeholder="请选择" class="in_wid">
+                            <el-option
+                                    v-for="item in gw"
+                                    :key="item.value"
+                                    :label="item.name"
+                                    :value="item.id">
+                            </el-option>
+                        </el-select>
+                        <el-input v-model="three.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
+                        <p class="do_blue" @click="add(3)">添加</p>
+                    </li>
+                    <li v-for="(v, i) in threeArr">
+                        &nbsp;&nbsp;&nbsp;
+                        <div>{{v.name}}</div>
+                        <el-input :value="v.rate" placeholder="请输入" class="in_wid" disabled></el-input>&nbsp;%
+                        <i class="el-icon-circle-close-outline close" @click="del(3, i)"></i>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
-     <div style="height:70px"></div>
-     <div class="pay_total">
+        <div style="height:70px"></div>
+        <div class="pay_total">
         <span class="fl cr total_money">
          </span>
-         <span class="green pay">确认录入</span>
-     </div>
+            <span class="green pay">确认录入</span>
+        </div>
     </template>
 </div>
 
@@ -222,15 +219,15 @@
     new Vue({
         el: '#app',
         data: {
-            input:'',
+            input: '',
             options: [{
-              value: '选项1',
-              label: '张三'
+                value: '选项1',
+                label: '张三'
             }, {
-              value: '选项2',
-              label: '丽萨'
+                value: '选项2',
+                label: '丽萨'
             }],
-            value:'',
+            value: '',
             tableData3: [{
                 name: '张三',
                 number: '7000123',
@@ -240,13 +237,143 @@
                 number: '7000125',
                 tel: '15212645632'
             }],
+            userId: 0,
+            items: [],
+            myItems: [],
+            myBox: [],
+            gw: [],
+            mrs: [],
+            staff: [],
+            one: {rate: '', id: ''},
+            two: {rate: '', id: ''},
+            three: {rate: '', id: ''},
+            oneArr: [],
+            twoArr: [],
+            threeArr: [],
+            balance: 0,
         },
-        methods: {},
+        methods: {
+            jian(type, i) {
+                if(type==1){
+                    if(this.items[i].needNum>0){
+                        this.items[i].needNum--
+                    }
+                }else if(type==2){
+                    if(this.myBox[i].needNum>0){
+                        this.myBox[i].needNum--
+                    }
+                }else if(type==3){
+                    if(this.myItems[i].needNum>0){
+                        this.myItems[i].needNum--
+                    }
+                }
+            },
+            jia(type, i) {
+                if(type==1){
+                    this.items[i].needNum++
+                }else if(type==2){
+                    if(this.myBox[i].current_num <= this.myBox[i].needNum) {
+                        error('数量不足')
+                        return
+                    }
+                    this.myBox[i].needNum++
+                }else if(type==3){
+                    if(this.myItems[i].current_num <= this.myItems[i].needNum) {
+                        return
+                    }
+                    this.myItems[i].needNum++
+                }
+            },
+            del(type, i) {
+                if (type == 1) {
+                    this.oneArr.splice(i, 1)
+                } else if (type == 2) {
+                    this.twoArr.splice(i, 1)
+                } else if (type == 3) {
+                    this.threeArr.splice(i, 1)
+                }
+            },
+            add(type) {
+                if (type == 1) {
+                    if (this.one.id == '' || this.one.rate == '') {
+                        error('请选择操作人或填写提成比例')
+                        return
+                    }
+                    for (let v of this.oneArr) {
+                        if (v.id == this.one.id) {
+                            error('操作人已存在')
+                            return
+                        }
+                    }
+                    for (let v of this.staff) {
+                        if (v.id == this.one.id) {
+                            this.oneArr.unshift({name: v.name, rate: this.one.rate, id: v.id})
+                        }
+                    }
+                } else if (type == 2) {
+                    if (this.two.id == '' || this.two.rate == '') {
+                        error('请选择美容师或填写提成比例')
+                        return
+                    }
+                    for (let v of this.twoArr) {
+                        if (v.id == this.two.id) {
+                            error('美容师已存在')
+                            return
+                        }
+                    }
+                    for (let v of this.mrs) {
+                        if (v.id == this.two.id) {
+                            this.twoArr.unshift({name: v.name, rate: this.two.rate, id: v.id})
+                        }
+                    }
+                } else if (type == 3) {
+                    if (this.three.id == '' || this.three.rate == '') {
+                        error('请选择顾问或填写提成比例')
+                        return
+                    }
+                    for (let v of this.threeArr) {
+                        if (v.id == this.three.id) {
+                            error('顾问已存在')
+                            return
+                        }
+                    }
+                    for (let v of this.gw) {
+                        if (v.id == this.three.id) {
+                            this.threeArr.unshift({name: v.name, rate: this.three.rate, id: v.id})
+                        }
+                    }
+                }
+            },
+            getDetail() {
+                $.get(url(methods.getDetails) + `&mid=${this.userId}`, v => {
+                    if (v.code == 1) {
+                        for (let x of v.back.store_items) {
+                            x.needNum = 0
+                        }
+                        this.items = v.back.store_items
+                        for (let x of v.back.itemsArr) {
+                            x.needNum = 0
+                        }
+                        this.myItems = v.back.itemsArr
+                        for (let x of v.back.boxArr) {
+                            x.needNum = 0
+                        }
+                        this.myBox = v.back.boxArr
+                        this.gw = v.back.g
+                        this.mrs = v.back.m
+                        this.staff = v.back.staff
+                        this.balance = v.back.balance
+                    }
+                })
+            }
+        },
         mounted() {
-            this.$nextTick(e=>{
+            this.$nextTick(e => {
                 //初始化
                 that = this;
                 loginState()
+                this.userId = localStorage.getItem('user_id')
+                this.getDetail()
             })
         }
     })

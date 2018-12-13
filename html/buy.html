@@ -118,7 +118,7 @@
                  <span class="fl cr total_money">
                      合计：{{total}}
                  </span>
-                <a href="pay_page.html"><span class="red_box pay">提交订单</span></a>
+                <span class="red_box pay" @click="sub">提交订单</span>
             </div>
         </div>
     </template>
@@ -165,8 +165,58 @@
             fileList: [],
             zt: true,
             need: [],
+            user_id: 0,
         },
         methods: {
+            sub() {
+                if (this.need.length == 0) {
+                    error('请选择商品')
+                    return
+                }
+                let goods = [];
+                let th = [];
+                let items = [];
+                for(let v of this.need) {
+                    if(v.type == '项目'){
+                        if(v.yh!=0){
+                            items.push({'price': v.price, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
+                                'name': v.name, 'sum': v.needNum, 'times': v.fre, 'is_rate': v.yh})
+                        }else{
+                            items.push({'price': v.price, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
+                                'name': v.name, 'sum': v.needNum, 'times': v.fre})
+                        }
+                    }else if(v.type == '产品') {
+                        if(v.yh != 0){
+                            goods.push({'price': v.price, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
+                                'name': v.name, 'sum': v.needNum, 'spec': v.spec, 'is_rate': v.yh})
+                        }else{
+                            goods.push({'price': v.price, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
+                                'name': v.name, 'sum': v.needNum, 'spec': v.spec})
+                        }
+
+                    }else if(v.type == '套盒') {
+                        if(v.yh!=0){
+                            th.push({'price': v.price, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
+                                'name': v.name, 'sum': v.needNum, 'times': v.fre, 'is_rate': v.yh})
+                        }else{
+                            th.push({'price': v.price, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
+                                'name': v.name, 'sum': v.needNum, 'times': v.fre})
+                        }
+                    }
+                }
+                //console.log(goods, th, items);return
+                $.post(url(methods.mergeBuy), {
+                    'item': JSON.stringify(items),
+                    'goods': JSON.stringify(goods), 'th': JSON.stringify(th), 'id': this.user_id}, v=>{
+                    if(v.code==1){
+                        localStorage.setItem('order_id', v.res)
+                        success(v.Msg)
+                        location.href = './pay_page.html'
+                    }else{
+                        error(v.error)
+                    }
+                })
+            },
             allRemove() {
                 if (confirm('是否全部清空?')) {
                     this.need = []
@@ -257,8 +307,8 @@
         computed: {
             total() {
                 let all = 0
-                for(let v of this.need) {
-                    all += v.discount/10 * v.price * v.needNum
+                for (let v of this.need) {
+                    all += v.discount / 10 * v.price * v.needNum
                 }
                 return all
             }
@@ -267,6 +317,7 @@
             this.$nextTick(e => {
                 //初始化
                 that = this;
+                this.user_id = localStorage.getItem('user_id')
                 this.getGoods()
                 loginState()
                 this.r = url(methods.upload + '?type=2')

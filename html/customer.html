@@ -85,15 +85,13 @@
                     </el-button>
                     <el-button
                             size="mini"
-                            @click="handleEdit(scope.$index, scope.row)" class="purple do_but"><a href="buy.html"
-                                                                                                  target="iframe"
-                                                                                                  class="white">消费</a>
+                            @click="jump(1, scope.row)" class="purple do_but">
+                        消费
                     </el-button>
                     <el-button
                             size="mini"
-                            @click="handleEdit(scope.$index, scope.row)" class="red_box do_but"><a href="consume.html"
-                                                                                                   target="iframe"
-                                                                                                   class="white">消耗</a>
+                            @click="jump(2, scope.row)" class="red_box do_but">
+                        消耗
                     </el-button>
                     <el-button
                             size="mini"
@@ -343,6 +341,15 @@
             zt: false
         },
         methods: {
+            jump(type, v) {
+                if(type == 1){
+                    localStorage.setItem('user_id', v.id)
+                    location.href = './buy.html'
+                }else if(type == 2) {
+                    localStorage.setItem('user_id', v.id)
+                    location.href = './consume.html'
+                }
+            },
             edit() {
                 if (this.user.name == '' || this.user.age == '' || this.user.tel == '' || this.user.birthday == '') {
                     error('请填完以上内容')

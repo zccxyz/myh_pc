@@ -22,10 +22,10 @@
         <div class="pay_page">
             <p class="other_back order_detail">
                 <span class="de_title">确认订单信息</span>
-                订单编号：bc4556633&#12288;下单时间：2018-02-12&nbsp;10:30
+                订单编号：{{order.sn}}&#12288;下单时间：{{order.create_time}}
             </p>
             <p class="order_detail">
-                会员:<i class="cr">张三</i>&#12288;订单金额：12452.00
+                会员:<i class="cr">{{member.name}}</i>&#12288;订单金额：{{order.price}}
             </p>
             <p class="other_back order_detail">支付方式</p>
             <div class="pay_div">
@@ -59,7 +59,7 @@
                  <p><img src="../images/pay(5).png" height="100%">余额抵扣</p>
                  <div class="pay_other">
                      <span class="pay_have">
-                         会员余额：1252.00
+                         会员余额：{{member.balance}}
                      </span>
                      <span>
                          使用余额：<el-input v-model="input" placeholder="0.00" class="pay_input"></el-input>
@@ -68,7 +68,7 @@
                  <p><img src="../images/pay(8).png" height="100%">积分抵扣</p>
                  <div class="pay_other">
                      <span class="pay_have">
-                         累计积分：1252.00&#12288;可用积分：2333
+                         累计积分：0.0&#12288;可用积分：{{member.integral}}
                      </span>
                      <span>
                          使用积分：<el-input v-model="input" placeholder="0.00" class="pay_input"></el-input>&#12288;
@@ -85,17 +85,19 @@
                          &#12288;经手人：<el-input v-model="input" placeholder="请填写经手人" class="pay_input"></el-input>
                      </span>
                  </div>
-                  <p><img src="../images/pay(6).png" height="100%">使用优惠券（共3张优惠券）</p>
-                  <div class="pay_coupon">
-                      <el-tabs type="border-card">
-                          <el-tab-pane label="可用优惠券">
-                              以下是该订单可用优惠券，你可以查看优惠券规则说明
-                          </el-tab-pane>
-                          <el-tab-pane label="不可用优惠券">
-                              以下是该订单不可用优惠券，你可以查看优惠券规则说明
-                          </el-tab-pane>
-                        </el-tabs>
-                  </div>
+                  <template v-if="couponList.length>0">
+                      <p><img src="../images/pay(6).png" height="100%">使用优惠券（共{{couponList.length}}张优惠券）</p>
+                      <div class="pay_coupon">
+                          <el-tabs type="border-card">
+                              <el-tab-pane label="可用优惠券">
+                                  以下是该订单可用优惠券，你可以查看优惠券规则说明
+                              </el-tab-pane>
+                              <el-tab-pane label="不可用优惠券">
+                                  以下是该订单不可用优惠券，你可以查看优惠券规则说明
+                              </el-tab-pane>
+                          </el-tabs>
+                      </div>
+                  </template>
                 </div>
             </div>
             <div class="pay_infor">
@@ -117,7 +119,7 @@
          <span class="fl cr total_money">
              合计：15235
          </span>
-         <span class="red_box pay">提交订单</span>
+         <span class="red_box pay" @click="sub">提交订单</span>
      </div>
      </template>
 
@@ -133,13 +135,44 @@
     new Vue({
         el: '#app',
         data: {
-            input:''
+            input:'',
+            id: 0,
+            order: '',
+            member: '',
+            couponList: [],
+            cardList: [],
         },
-        methods: {},
+        methods: {
+            sub() {
+                $.post(url(methods.getPayDetail), {
+                    'order': '', 'arrears': '','card': '',
+                    'cash_pay': '', 'zfb_pay': '','wx_pay': '',
+                    'dzdp_pay': '', 'mt_pay': '','sqb_pay': '',
+                    'bank_pay': '', 'balance_pay': '','send_balance_pay': '',
+                    'integral_pay': '', 'integral': '','send_integral': '',
+                    'card_pay': '', 'send_money': '','person': '',
+                    'coupon': ''
+                }, v=>{
+
+                })
+            },
+            getDetail() {
+                $.get(url(methods.getPayDetail)+'&order='+this.id, v=>{
+                    if(v.code==1){
+                        this.order = v.res.orderDetail
+                        this.member = v.res.member_one
+                        this.couponList = v.res.couponList
+                        this.card = v.res.cardList
+                    }
+                })
+            }
+        },
         mounted() {
             this.$nextTick(e=>{
                 //初始化
                 that = this;
+                this.id = localStorage.getItem('order_id')
+                this.getDetail()
             })
         }
     })
