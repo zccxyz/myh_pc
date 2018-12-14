@@ -30,14 +30,14 @@
                 <span class="g_name">
                      {{v.pro_name}}
                 </span>
-                    <span class="cr p_wid">￥{{v.price}}</span>
-                    <span class="g_c_price">
-                   修改价格
-               </span>
+                    <span class="cr p_wid">￥{{v.check_num>0?v.price * v.check_num:v.price}}</span>
+                    <span class="g_c_price" @click="open3(v)">
+                       修改价格
+                   </span>
                     <span class="fr mar_hun">
-                     <template v-if="v.needNum>0">
+                     <template v-if="v.check_num>0">
                          <i class="el-icon-remove blue_c" @click="jian(1, i)"></i>
-                         <i>{{v.needNum}}</i>
+                         <i>{{v.check_num}}</i>
                      </template>
                      <i class="el-icon-circle-plus blue_c" @click="jia(1, i)"></i>
                 </span>
@@ -76,9 +76,9 @@
                    共有次数：{{v.originally_num}}
                </span>
                     <span class="fr mar_hun">
-                     <template v-if="v.needNum>0">
+                     <template v-if="v.check_num>0">
                          <i class="el-icon-remove blue_c" @click="jian(2, i)"></i>
-                         <i>{{v.needNum}}</i>
+                         <i>{{v.check_num}}</i>
                      </template>
                      <i class="el-icon-circle-plus blue_c" @click="jia(2, i)"></i>
                 </span>
@@ -120,9 +120,9 @@
                    共有次数：{{v.originally_num}}
                </span>
                     <span class="fr mar_hun">
-                     <template v-if="v.needNum>0">
+                     <template v-if="v.check_num>0">
                          <i class="el-icon-remove blue_c" @click="jian(3, i)"></i>
-                         <i>{{v.needNum}}</i>
+                         <i>{{v.check_num}}</i>
                      </template>
                      <i class="el-icon-circle-plus blue_c" @click="jia(3, i)"></i>
                 </span>
@@ -204,7 +204,7 @@
         <div class="pay_total">
         <span class="fl cr total_money">
          </span>
-            <span class="green pay">确认录入</span>
+            <span class="green pay" @click="sub">确认录入</span>
         </div>
     </template>
 </div>
@@ -251,37 +251,85 @@
             twoArr: [],
             threeArr: [],
             balance: 0,
+            roomId: 0,
         },
         methods: {
+            sub() {
+                if(!confirm('是否确认录入？')) {
+                    return
+                }
+                let arr = []
+                let arr2 = []
+                let arr3 = []
+                if(this.oneArr.length>0) {
+                    for(let v of this.oneArr) {
+                        arr.push({'money': v.rate, 'id': v.id})
+                    }
+                }
+                if(this.twoArr.length>0) {
+                    for(let v of this.twoArr) {
+                        arr2.push({'money': v.rate, 'id': v.id})
+                    }
+                }
+                if(this.threeArr.length>0) {
+                    for(let v of this.threeArr) {
+                        arr3.push({'money': v.rate, 'id': v.id})
+                    }
+                }
+                $.post(url(methods.entry), {
+                    'data': JSON.stringify({
+                        'box': this.myBox, 'items': this.myItems,
+                        'amount_items': this.items, 'mid': this.userId,
+                        'arr': this.roomId, 's': arr, 'm': arr2, 'g': arr3
+                    })
+                }, v=>{
+                    if(v.code == 1){
+                        success(v.Msg)
+                        setTimeout(()=>location.reload(), 1000)
+                    }else{
+                        error(v.error)
+                    }
+                })
+            },
+            open3(v) {
+                this.$prompt('请输入数字', v.pro_name, {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    inputErrorMessage: '请输入正确的数字',
+                    inputType: 'number'
+                }).then(({ value }) => {
+                    v.price = value
+                })
+            },
             jian(type, i) {
                 if(type==1){
-                    if(this.items[i].needNum>0){
-                        this.items[i].needNum--
+                    if(this.items[i].check_num>0){
+                        this.items[i].check_num--
                     }
                 }else if(type==2){
-                    if(this.myBox[i].needNum>0){
-                        this.myBox[i].needNum--
+                    if(this.myBox[i].check_num>0){
+                        this.myBox[i].check_num--
                     }
                 }else if(type==3){
-                    if(this.myItems[i].needNum>0){
-                        this.myItems[i].needNum--
+                    if(this.myItems[i].check_num>0){
+                        this.myItems[i].check_num--
                     }
                 }
             },
             jia(type, i) {
                 if(type==1){
-                    this.items[i].needNum++
+                    this.items[i].check_num++
                 }else if(type==2){
-                    if(this.myBox[i].current_num <= this.myBox[i].needNum) {
+                    if(this.myBox[i].current_num <= this.myBox[i].check_num) {
                         error('数量不足')
                         return
                     }
-                    this.myBox[i].needNum++
+                    this.myBox[i].check_num++
                 }else if(type==3){
-                    if(this.myItems[i].current_num <= this.myItems[i].needNum) {
+                    if(this.myItems[i].current_num <= this.myItems[i].check_num) {
                         return
                     }
-                    this.myItems[i].needNum++
+                    this.myItems[i].check_num++
                 }
             },
             del(type, i) {
@@ -348,15 +396,15 @@
                 $.get(url(methods.getDetails) + `&mid=${this.userId}`, v => {
                     if (v.code == 1) {
                         for (let x of v.back.store_items) {
-                            x.needNum = 0
+                            x.check_num = 0
                         }
                         this.items = v.back.store_items
                         for (let x of v.back.itemsArr) {
-                            x.needNum = 0
+                            x.check_num = 0
                         }
                         this.myItems = v.back.itemsArr
                         for (let x of v.back.boxArr) {
-                            x.needNum = 0
+                            x.check_num = 0
                         }
                         this.myBox = v.back.boxArr
                         this.gw = v.back.g
@@ -373,6 +421,7 @@
                 that = this;
                 loginState()
                 this.userId = localStorage.getItem('user_id')
+                this.roomId = localStorage.getItem('roomId')
                 this.getDetail()
             })
         }

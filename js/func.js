@@ -22,6 +22,8 @@ const methods = {
     'mergeBuy': 'buy/mergeBuy',
     'getPayDetail': 'buy/get_pay_detail',
     'getDetails': 'Consume/getDetails',
+    'entry': 'Consume/entry',
+    'isLeave': 'Consume/isLeave',
 };
 let that;
 

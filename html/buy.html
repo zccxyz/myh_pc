@@ -210,8 +210,8 @@
                     'goods': JSON.stringify(goods), 'th': JSON.stringify(th), 'id': this.user_id}, v=>{
                     if(v.code==1){
                         localStorage.setItem('order_id', v.res)
-                        success(v.Msg)
-                        location.href = './pay_page.html'
+                        success('购买成功，请在手机端补款')
+                        /*location.href = './pay_page.html'*/
                     }else{
                         error(v.error)
                     }
