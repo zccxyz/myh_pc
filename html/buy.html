@@ -211,6 +211,7 @@
                     if(v.code==1){
                         localStorage.setItem('order_id', v.res)
                         success('购买成功，请在手机端补款')
+                        setTimeout(()=>location.reload(), 1500)
                         /*location.href = './pay_page.html'*/
                     }else{
                         error(v.error)
