@@ -18,30 +18,31 @@
         </el-breadcrumb>
     </p>
         <el-table class="tt_table"
-                :data="tableData"
+                :data="list"
                 style="width: 100%">
             <el-table-column
-                    prop="pro_item"
+                    :formatter="formatter"
+                    prop="consume_type"
                     label="品项">
             </el-table-column>
-            <el-table-column
+            <!--<el-table-column
                     prop="class"
                     label="类别">
-            </el-table-column>
+            </el-table-column>-->
             <el-table-column
-                    prop="pro_name"
+                    prop="designation_name"
                     label="消耗名称">
             </el-table-column>
             <el-table-column
-                    prop="vip_name"
+                    prop="name"
                     label="会员名">
             </el-table-column>
             <el-table-column
-                    prop="con_money"
+                    prop="consume_money"
                     label="消耗金额">
             </el-table-column>
             <el-table-column
-                    prop="con_fre"
+                    prop="consume_num"
                     label="消耗次数">
             </el-table-column>
             <el-table-column
@@ -49,13 +50,13 @@
                 label="消耗时间">
         </el-table-column>
             <el-table-column
-                    prop="beautician"
+                    prop="operation"
                     label="美容师">
             </el-table-column>
         </el-table>
         <p class="linr_four">
             <i class="cr">今日操作项目汇总：￥500.00</i>
-            <el-pagination class="fr"
+            <!--<el-pagination class="fr"
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
                     :current-page="currentPage4"
@@ -63,7 +64,7 @@
                     :page-size="100"
                     layout="total, sizes, prev, pager, next, jumper"
                     :total="400">
-            </el-pagination>
+            </el-pagination>-->
         </p>
         </template>
 </div>
@@ -115,9 +116,34 @@
                 con_fre:'1',
                 time:'2019-02-12',
                 beautician:'丽萨'
-            }]
+            }],
+            list: [],
         },
         methods: {
+            formatter(r, c) {
+                if(r.consume_type == 1){
+                    return '套盒'
+                }else if(r.consume_type == 2) {
+                    return '项目'
+                }else if(r.consume_type == 3) {
+                    return '方案'
+                }else if(r.consume_type == 4) {
+                    return '体验项目'
+                }else if(r.consume_type == 5) {
+                    return '余额'
+                }else if(r.consume_type == 6) {
+                    return '卡'
+                }
+            },
+            getData() {
+                $.post(url(methods.operationDetail), v=>{
+                    if(v.code==1){
+                        this.list = v.res
+                    }else{
+                        error('请求失败')
+                    }
+                })
+            },
             handleSizeChange(val) {
                 console.log(`每页 ${val} 条`);
             },
@@ -130,6 +156,7 @@
                 //初始化
                 that = this;
                 loginState()
+                this.getData()
             })
         }
     })

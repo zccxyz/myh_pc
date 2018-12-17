@@ -18,7 +18,7 @@
             </el-breadcrumb>
         </p>
         <div class="total_div">
-            <el-button type="primary">按日<i class="el-icon-refresh"></i></el-button>
+            <!--<el-button type="primary">按日<i class="el-icon-refresh"></i></el-button>
             <el-date-picker
                     v-model="value7"
                     type="daterange"
@@ -28,7 +28,7 @@
                     start-placeholder="开始日期"
                     end-placeholder="结束日期"
                     :picker-options="pickerOptions2">
-            </el-date-picker>
+            </el-date-picker>-->
             <el-input class="total_sea"
                     placeholder="请输入内容"
                     prefix-icon="el-icon-search"
@@ -36,28 +36,29 @@
             </el-input>
         </div>
         <el-table class="tt_table"
-                  :data="tableData"
+                  :data="list.filter(data => !input || data.name.toLowerCase().includes(input.toLowerCase()))"
                   style="width: 100%">
             <el-table-column
-                    prop="pro_item"
+                    :formatter="formatter"
+                    prop="type"
                     label="品项">
             </el-table-column>
             <el-table-column
-                    prop="pro_name"
-                    label="商品名称">
+                    prop="name"
+                    label="客户">
             </el-table-column>
             <el-table-column
-                    prop="con_money"
+                    prop="money"
                     label="价格">
             </el-table-column>
             <el-table-column
-                    prop="beautician"
-                    label="操作人">
+                    prop="time"
+                    label="时间">
             </el-table-column>
         </el-table>
         <p class="linr_four">
-            <i class="cr">总营业额：￥500.00</i>
-            <el-pagination class="fr"
+            <i class="cr">总营业额：￥{{total}}</i>
+            <!--<el-pagination class="fr"
                            @size-change="handleSizeChange"
                            @current-change="handleCurrentChange"
                            :current-page="currentPage4"
@@ -65,7 +66,7 @@
                            :page-size="100"
                            layout="total, sizes, prev, pager, next, jumper"
                            :total="400">
-            </el-pagination>
+            </el-pagination>-->
         </p>
     </template>
 </div>
@@ -130,9 +131,32 @@
                 pro_name: '肩颈理疗',
                 con_money:'26526',
                 beautician:'丽萨'
-            }]
+            }],
+
+            list: [],
+            total: 0,
+
         },
         methods: {
+            formatter(r, c) {
+                if(r.type == 1){
+                    return '产品'
+                }else if(r.type == 2) {
+                    return '套盒'
+                }else if(r.type == 3) {
+                    return '项目'
+                }
+            },
+            getData() {
+                $.get(url(methods.total), v=>{
+                    if(v.code==1){
+                        this.list = v.res.arr
+                        this.total = v.res.xf_total_money
+                    }else{
+                        error('请求失败')
+                    }
+                })
+            },
             handleSizeChange(val) {
                 console.log(`每页 ${val} 条`);
             },
@@ -145,6 +169,7 @@
                 //初始化
                 that = this;
                 loginState()
+                this.getData()
             })
         }
     })
