@@ -19,64 +19,73 @@
         </el-breadcrumb>
     </p>
     <template>
-        <div class="cus_center">
-            <el-input style="float:left;" class="cus_seatch"
-                      placeholder="请输入商品名称"
-                      prefix-icon="el-icon-search"
-                      v-model="input">
-            </el-input>
-        </div>
-        <el-table border
-                  ref="multipleTable"
-                  :data="list.filter(data => !input || data.name.toLowerCase().includes(input.toLowerCase()))"
-                  tooltip-effect="dark"
-                  style="width: 100%"
-                  @selection-change="handleSelectionChange">
-            <el-table-column
-                    type="selection"
-                    width="55">
-            </el-table-column>
-            <el-table-column
-                    label="品项"
-                    width="120"
-                    prop="type">
-            </el-table-column>
-            <el-table-column
-                    prop="class"
-                    label="类别"
-                    width="120">
-            </el-table-column>
-            <el-table-column
-                    prop="name"
-                    label="商品名称">
-            </el-table-column>
-            <el-table-column
-                    prop="price"
-                    label="零售价">
-            </el-table-column>
-            <el-table-column
-                    prop="stock"
-                    label="库存">
-            </el-table-column>
-            <el-table-column
-                    prop="fre"
-                    label="次数">
-            </el-table-column>
-            <el-table-column
-                    prop="free"
-                    label="赠送"
-                    :formatter="form">
-            </el-table-column>
-            <el-table-column
-                    label="加入购物车"
-                    show-overflow-tooltip>
-                <template slot-scope="scope">
-                    <i class="el-icon-remove blue_c" @click="remove(scope.row)" v-if="scope.row.needNum>0"></i>
-                    <i v-if="scope.row.needNum>0">{{scope.row.needNum}}</i>
-                    <i class="el-icon-circle-plus blue_c" @click="add(scope.row)"></i>
-                </template>
-            </el-table-column>
-        </el-table>
+
+        <el-tabs>
+            <el-tab-pane label="产品">
+                <div>
+                    <el-input style="margin:5px 0;" class="cus_seatch"
+                              placeholder="请输入商品名称"
+                              prefix-icon="el-icon-search"
+                              v-model="input">
+                    </el-input>
+                </div>
+                <el-table border
+                          ref="multipleTable"
+                          :data="list.filter(data => !input || data.name.toLowerCase().includes(input.toLowerCase()))"
+                          tooltip-effect="dark"
+                          style="width: 100%"
+                          @selection-change="handleSelectionChange">
+                    <el-table-column
+                            type="selection"
+                            width="55">
+                    </el-table-column>
+                    <el-table-column
+                            label="品项"
+                            width="120"
+                            prop="type">
+                    </el-table-column>
+                    <el-table-column
+                            prop="class"
+                            label="类别"
+                            width="120">
+                    </el-table-column>
+                    <el-table-column
+                            prop="name"
+                            label="商品名称">
+                    </el-table-column>
+                    <el-table-column
+                            prop="price"
+                            label="零售价">
+                    </el-table-column>
+                    <el-table-column
+                            prop="stock"
+                            label="库存">
+                    </el-table-column>
+                    <el-table-column
+                            prop="fre"
+                            label="次数">
+                    </el-table-column>
+                    <el-table-column
+                            prop="free"
+                            label="赠送"
+                            :formatter="form">
+                    </el-table-column>
+                    <el-table-column
+                            label="加入购物车"
+                            show-overflow-tooltip>
+                        <template slot-scope="scope">
+                            <i class="el-icon-remove blue_c" @click="remove(scope.row)" v-if="scope.row.needNum>0"></i>
+                            <i v-if="scope.row.needNum>0">{{scope.row.needNum}}</i>
+                            <i class="el-icon-circle-plus blue_c" @click="add(scope.row)"></i>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </el-tab-pane>
+            <el-tab-pane label="项目">项目</el-tab-pane>
+            <el-tab-pane label="套盒">套盒</el-tab-pane>
+        </el-tabs>
+
+
         <div v-if="need.length>0" style="height: 250px;"></div>
         <div v-if="need.length>0" class="cart_div" style="z-index: 10">
             <p class="cart_title">
