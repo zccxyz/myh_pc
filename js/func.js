@@ -9,6 +9,12 @@ const methods = {
     'editMember': 'Member/editMember',
     'delCheckedMember': 'Member/delCheckedMember',
     'get_member_list': 'Member/get_member_list',
+    'haveProductList': 'Member/HaveProductList',
+    'boxItems': 'Member/memberBoxItemsList',
+    'haveCoupon': 'Member/HaveCoupon',
+    'cardList': 'Member/memberCardList',
+    'integralRecord': 'Member/IntegralRecord',
+    'aloneArrears': 'Member/AloneArrears',
     'upload': 'Commodity/upload',
     'getAllGoods': 'Commodity/getAllGoods',
     'logout': 'Center/logout',
@@ -24,6 +30,8 @@ const methods = {
     'getDetails': 'Consume/getDetails',
     'entry': 'Consume/entry',
     'isLeave': 'Consume/isLeave',
+    'userInfo': 'Vipdetails/basicinformation',
+    'editUser': 'Vipdetails/edit',
 };
 let that;
 

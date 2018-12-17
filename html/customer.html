@@ -35,7 +35,7 @@
                 <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
             </el-upload>
 
-            <el-button type="success">导出Excel表</el-button>
+            <el-button type="success" @click="alert('开发中')">导出Excel表</el-button>
             <a href="https://www.myhkj.cn/会员信息及会员持有卡项套盒项目表.xlsx">
                 <el-button type="success">会员表模板下载</el-button>
             </a>
@@ -98,7 +98,7 @@
                             @click="leaveDialogVisible=true;now=scope.row" class="blue do_but">离店
                     </el-button>
                     <el-button
-                            size="mini">查看
+                            size="mini" @click="jump(3, scope.row)">查看
                     </el-button>
                     <el-button
                             size="mini"
@@ -359,6 +359,9 @@
                         localStorage.setItem('user_id', v.id)
                         location.href = './consume.html'
                     })
+                }else if(type == 3) {
+                    localStorage.setItem('user_id', v.id)
+                    location.href = './vip_information.html'
                 }
             },
             edit() {
@@ -466,7 +469,7 @@
                 })
             },
             cancel() {
-                this.addDialogVisible = false
+                this.zt = false
                 this.user = {
                     'name': '',
                     'age': '',
