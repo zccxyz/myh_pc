@@ -7,11 +7,12 @@
     <link rel="stylesheet" type="text/css" href="../css/common.css">
     <link rel="stylesheet" type="text/css" href="../css/consume.css">
     <style>
-        .bottom_submit{
+        .bottom_submit {
             margin-top: 20px;
             width: 100%;
         }
-        .bottom_submit button{
+
+        .bottom_submit button {
             width: 40%;
             display: block;
             margin: 0 auto;
@@ -23,88 +24,92 @@
 <div id="app" class="customer">
     <template>
         <p class="cus_title">
-        <el-breadcrumb separator-class="el-icon-arrow-right">
-            <el-breadcrumb-item :to="{ path: '/' }">信息管理</el-breadcrumb-item>
-            <el-breadcrumb-item>会员管理</el-breadcrumb-item>
-            <el-breadcrumb-item>消费</el-breadcrumb-item>
-            <el-breadcrumb-item>提成人员录入</el-breadcrumb-item>
-        </el-breadcrumb>
-    </p>
-    <div class="">
-        <div class="" style="margin:10px 0 15px;">
-            <p class="p_div_b">
-                消耗手工录入
-            </p>
-            <ul class="consume_list commission_list">
-                <li>
-                    操作人
-                    <el-select v-model="one.id" placeholder="请选择" class="in_wid">
-                        <el-optionitemsArr
-                                v-for="item in staff"
-                                :label="item.name"
-                                :value="item.id">
-                        </el-optionitemsArr>
-                    </el-select>
-                    <el-input v-model="one.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
-                    <p class="do_blue" @click="add(1)">添加</p>
-                </li>
-                <li v-for="(v, i) in oneArr">
-                    &nbsp;&nbsp;&nbsp;
-                    <div>{{v.name}}</div>
-                    <el-input :value="v.rate" placeholder="请输入" class="in_wid" disabled></el-input>&nbsp;%
-                    <i class="el-icon-circle-close-outline close" @click="del(1, i)"></i>
-                </li>
-            </ul>
-        </div>
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+                <el-breadcrumb-item :to="{ path: '/' }">信息管理</el-breadcrumb-item>
+                <el-breadcrumb-item>会员管理</el-breadcrumb-item>
+                <el-breadcrumb-item>消费</el-breadcrumb-item>
+                <el-breadcrumb-item>提成人员录入</el-breadcrumb-item>
+            </el-breadcrumb>
+        </p>
         <div class="">
-            <p class="p_div_b">
-                消耗提成录入
-            </p>
-            <ul class="consume_list commission_list">
-                <li>
-                    美容师
-                    <el-select v-model="two.id" placeholder="请选择" class="in_wid">
-                        <el-option
-                                v-for="item in mrs"
-                                :label="item.name"
-                                :value="item.id">
-                        </el-option>
-                    </el-select>
-                    <el-input v-model="two.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
-                    <p class="do_blue" @click="add(2)">添加</p>
-                </li>
-                <li v-for="(v, i) in twoArr">
-                    &nbsp;&nbsp;&nbsp;
-                    <div>{{v.name}}</div>
-                    <el-input :value="v.rate" placeholder="请输入" class="in_wid" disabled></el-input>&nbsp;%
-                    <i class="el-icon-circle-close-outline close" @click="del(2, i)"></i>
-                </li>
-                <li>
-                    顾问
-                    <el-select v-model="three.id" placeholder="请选择" class="in_wid">
-                        <el-option
-                                v-for="item in gw"
-                                :key="item.value"
-                                :label="item.name"
-                                :value="item.id">
-                        </el-option>
-                    </el-select>
-                    <el-input v-model="three.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
-                    <p class="do_blue" @click="add(3)">添加</p>
-                </li>
-                <li v-for="(v, i) in threeArr">
-                    &nbsp;&nbsp;&nbsp;
-                    <div>{{v.name}}</div>
-                    <el-input :value="v.rate" placeholder="请输入" class="in_wid" disabled></el-input>&nbsp;%
-                    <i class="el-icon-circle-close-outline close" @click="del(3, i)"></i>
-                </li>
-            </ul>
+            <div class="" style="margin:10px 0 15px;">
+                <div style="height: 50px;width: 100%;line-height:50px;padding-left:15px;font-size:1.8rem;background: white;">
+                    可提成金额 ：<span class="cr" style="font-size: 1.8rem;">&yen;{{total}}</span>
+                    <el-button style="float: right" type="warning" @click="location.href = './customer.html'">取消</el-button>
+                </div>
+                <!--<p class="p_div_b">
+                    消耗手工录入
+                </p>
+                <ul class="consume_list commission_list">
+                    <li>
+                        操作人
+                        <el-select v-model="one.id" placeholder="请选择" class="in_wid">
+                            <el-optionitemsArr
+                                    v-for="item in staff"
+                                    :label="item.name"
+                                    :value="item.id">
+                            </el-optionitemsArr>
+                        </el-select>
+                        <el-input v-model="one.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
+                        <p class="do_blue" @click="add(1)">添加</p>
+                    </li>
+                    <li v-for="(v, i) in oneArr">
+                        &nbsp;&nbsp;&nbsp;
+                        <div>{{v.name}}</div>
+                        <el-input :value="v.rate" placeholder="请输入" class="in_wid" disabled></el-input>&nbsp;%
+                        <i class="el-icon-circle-close-outline close" @click="del(1, i)"></i>
+                    </li>
+                </ul>-->
+            </div>
+            <div class="">
+                <p class="p_div_b">
+                    消耗提成录入
+                </p>
+                <ul class="consume_list commission_list">
+                    <li>
+                        美容师
+                        <el-select type="number" v-model="two.id" placeholder="请选择" class="in_wid">
+                            <el-option
+                                    v-for="item in m"
+                                    :label="item.name"
+                                    :value="item.id">
+                            </el-option>
+                        </el-select>
+                        <el-input type="number" v-model="two.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
+                        <p class="do_blue" @click="add(2)">添加</p>
+                    </li>
+                    <li v-for="(v, i) in twoArr">
+                        &nbsp;&nbsp;&nbsp;
+                        <div>{{v.name}}</div>
+                        <el-input type="number" :value="v.rate" placeholder="请输入" class="in_wid" disabled></el-input>&nbsp;%
+                        <i class="el-icon-circle-close-outline close" @click="del(2, i)"></i>
+                    </li>
+                    <li>
+                        顾问
+                        <el-select v-model="three.id" placeholder="请选择" class="in_wid">
+                            <el-option
+                                    v-for="item in g"
+                                    :key="item.value"
+                                    :label="item.name"
+                                    :value="item.id">
+                            </el-option>
+                        </el-select>
+                        <el-input type="number" v-model="three.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
+                        <p class="do_blue" @click="add(3)">添加</p>
+                    </li>
+                    <li v-for="(v, i) in threeArr">
+                        &nbsp;&nbsp;&nbsp;
+                        <div>{{v.name}}</div>
+                        <el-input type="number" :value="v.rate" placeholder="请输入" class="in_wid" disabled></el-input>&nbsp;%
+                        <i class="el-icon-circle-close-outline close" @click="del(3, i)"></i>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
-    <div class="bottom_submit">
-        <el-button type="success">提交</el-button>
-    </div>
-        </template>
+        <div class="bottom_submit">
+            <el-button type="success" @click="sub">提交</el-button>
+        </div>
+    </template>
 </div>
 
 
@@ -127,13 +132,121 @@
             oneArr: [],
             twoArr: [],
             threeArr: [],
+            orderId: 0,
+            cost: 0,
+            total: 0,
+            g: [],
+            m: [],
         },
-        methods: {},
+        methods: {
+            sub() {
+                if (this.twoArr.length == 0 && this.threeArr.length == 0) {
+                    error('请选择提成员工')
+                    return
+                }
+                let arr2 = []
+                let arr3 = []
+                if (this.twoArr.length > 0) {
+                    for (let v of this.twoArr) {
+                        arr2.push({'money': v.rate, 'id': v.id, 'name': v.name})
+                    }
+                }
+                if (this.threeArr.length > 0) {
+                    for (let v of this.threeArr) {
+                        arr3.push({'money': v.rate, 'id': v.id, 'name': v.name})
+                    }
+                }
+                $.post(url(methods.saveCommission), {
+                    data: JSON.stringify({
+                        raise_m: arr2,
+                        raise_g: arr3,
+                        order: this.orderId,
+                        type: '',
+                        cost: this.cost
+                    })
+                }, v => {
+                    if (v.code == 1) {
+                        success(v.Msg)
+                        setTimeout(() => location.href = './customer.html', 1000)
+                    } else {
+                        error(v.error)
+                    }
+                })
+            },
+            del(type, i) {
+                if (type == 1) {
+                    this.oneArr.splice(i, 1)
+                } else if (type == 2) {
+                    this.twoArr.splice(i, 1)
+                } else if (type == 3) {
+                    this.threeArr.splice(i, 1)
+                }
+            },
+            add(type) {
+                if (type == 2) {
+                    if (this.two.id == '' || this.two.rate == '') {
+                        error('请选择美容师或填写提成比例')
+                        return
+                    }
+                    for (let v of this.twoArr) {
+                        if (v.id == this.two.id) {
+                            error('美容师已存在')
+                            return
+                        }
+                    }
+                    for (let v of this.m) {
+                        if (v.id == this.two.id) {
+                            this.twoArr.unshift({name: v.name, rate: this.two.rate, id: v.id})
+                        }
+                    }
+                } else if (type == 3) {
+                    if (this.three.id == '' || this.three.rate == '') {
+                        error('请选择顾问或填写提成比例')
+                        return
+                    }
+                    for (let v of this.threeArr) {
+                        if (v.id == this.three.id) {
+                            error('顾问已存在')
+                            return
+                        }
+                    }
+                    for (let v of this.g) {
+                        if (v.id == this.three.id) {
+                            this.threeArr.unshift({name: v.name, rate: this.three.rate, id: v.id})
+                        }
+                    }
+                }
+            },
+            getData() {
+                $.get(url(methods.saveCommission) + `&order=${this.orderId}&type=`, v => {
+                    if (v.code == 1) {
+                        if (v.res.print_type == 1) {
+                            this.isPrint()
+                        }
+                        this.total = v.res.total
+                        this.g = v.res.g
+                        this.m = v.res.m
+                    } else {
+                        error(v.errorMsg)
+                    }
+                })
+            },
+            isPrint() {
+                if (confirm('是否打印消费单？')) {
+                    $.post(url(methods.print), {order: this.orderId}, v => {
+
+                    })
+                }
+            }
+        },
         mounted() {
-            this.$nextTick(e=>{
+            this.$nextTick(e => {
                 //初始化
                 that = this;
                 loginState()
+                this.orderId = localStorage.getItem('orderId')
+                this.cost = localStorage.getItem('cost')
+                this.getData()
             })
         }
     })

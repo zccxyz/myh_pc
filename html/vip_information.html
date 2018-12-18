@@ -18,7 +18,8 @@
                 <el-breadcrumb-item>会员档案</el-breadcrumb-item>
             </el-breadcrumb>
         </p>
-        <el-tabs type="card" @tab-click="handleClick" class="vip_infor" v-if="userInfo != null">
+        <el-tabs type="card" @tab-click="handleClick"
+                 class="vip_infor" v-if="userInfo != null">
             <el-tab-pane label="基本资料">
                 <div class="basic_inf">
                     <ul class="basic_ul">
@@ -106,13 +107,15 @@
             </el-tab-pane>
             <el-tab-pane label="会员产品">
                 <div class="basic_inf">
-                    <el-button type="success" class="fr" @click="del" style="margin:5px 10px;">批量删除</el-button>
+                    <el-button type="success" class="fr" @click="del(1)"
+                               style="margin:5px 10px;">批量删除</el-button>
                     <el-table
                             :data="cpList"
-                            style="width: 100%">
+                            style="width: 100%"
+                            @selection-change="handle">
                         <el-table-column
                                 type="selection"
-                                width="55">
+                                width="60">
                         </el-table-column>
                         <el-table-column
                                 prop="goods_name"
@@ -136,7 +139,7 @@
                         </el-table-column>
                         <el-table-column label="操作">
                             <template slot-scope="scope">
-                                <el-button type="danger" size="mini">删除</el-button>
+                                <el-button type="danger" size="mini" @click="del(1, scope.row, 2)">删除</el-button>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -152,13 +155,14 @@
             </el-tab-pane>
             <el-tab-pane label="会员项目">
                 <div class="basic_inf">
-                    <el-button type="success" class="fr" @click="del" style="margin:5px 10px;">批量删除</el-button>
+                    <el-button type="success" class="fr" @click="del(2)" style="margin:5px 10px;">批量删除</el-button>
                     <el-table
                             :data="itemsList"
-                            style="width: 100%">
+                            style="width: 100%"
+                            @selection-change="handle2">
                         <el-table-column
                                 type="selection"
-                                width="55">
+                                width="60">
                         </el-table-column>
                         <el-table-column
                                 prop="name"
@@ -182,7 +186,7 @@
                         </el-table-column>-->
                         <el-table-column label="操作">
                             <template slot-scope="scope">
-                                <el-button type="danger" size="mini">删除</el-button>
+                                <el-button type="danger" size="mini" @click="del(2, scope.row, 2)">删除</el-button>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -198,13 +202,14 @@
             </el-tab-pane>
             <el-tab-pane label="会员套盒">
                 <div class="basic_inf">
-                    <el-button type="success" class="fr" @click="del" style="margin:5px 10px;">批量删除</el-button>
+                    <el-button type="success" class="fr" @click="del(3)" style="margin:5px 10px;">批量删除</el-button>
                     <el-table
                             :data="boxList"
-                            style="width: 100%">
+                            style="width: 100%"
+                            @selection-change="handle3">
                         <el-table-column
                                 type="selection"
-                                width="55">
+                                width="60">
                         </el-table-column>
                         <el-table-column
                                 prop="name"
@@ -228,7 +233,7 @@
                         </el-table-column>-->
                         <el-table-column label="操作">
                             <template slot-scope="scope">
-                                <el-button type="danger" size="mini">删除</el-button>
+                                <el-button type="danger" size="mini" @click="del(3, scope.row, 2)">删除</el-button>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -518,8 +523,86 @@
             integer: [],
             arrearsList: [],
             totalArrears: 0,
+            arr: [],
+            arr2: [],
+            arr3: [],
         },
         methods: {
+            handle(val) {
+                if(val.length==0) {
+                    this.arr = []
+                    return
+                }
+                for(let v of val) {
+                    this.arr.push(v.id)
+                }
+            },
+            handle2(val) {
+                if(val.length==0) {
+                    this.arr2 = []
+                    return
+                }
+                for(let v of val) {
+                    this.arr2.push(v.id)
+                }
+            },
+            handle3(val) {
+                if(val.length==0) {
+                    this.arr3 = []
+                    return
+                }
+                for(let v of val) {
+                    this.arr3.push(v.id)
+                }
+            },
+            del(t, v, t2=1) {
+                if(!confirm('是否删除')){
+                    return
+                }
+                let a = []
+                if(t==1){
+                    if(t2==1&&this.arr.length==0) {
+                        return
+                    }
+                    if(t2==1){
+                        a = this.arr
+                    }else{
+                        a.push(v.id)
+                    }
+                }else if(t==2){
+                    if(t2==1&&this.arr2.length==0) {
+                        return
+                    }
+                    if(t2==1){
+                        a = this.arr2
+                    }else{
+                        a.push(v.id)
+                    }
+                }else if(t==3){
+                    if(t2==1&&this.arr3.length==0) {
+                        return
+                    }
+                    if(t2==1){
+                        a = this.arr3
+                    }else{
+                        a.push(v.id)
+                    }
+                }
+                $.post(url(methods.delWhich), {data: JSON.stringify(a), type: t}, v=>{
+                    if(v.code==0){
+                        if(t==1){
+                            this.getCp()
+                        }else if(t==2){
+                            this.getBoxItems('items')
+                        }else if(t==3){
+                            this.getBoxItems('box')
+                        }
+                        success(v.data)
+                    }else{
+                        error(v.msg)
+                    }
+                })
+            },
             jump() {
                 location.href = './buy.html'
             },

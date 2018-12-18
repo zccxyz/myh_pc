@@ -185,7 +185,9 @@
                     })
                 }, v => {
                     if (v.code == 1) {
+                        localStorage.setItem('cost', v.cost)
                         success(v.Msg)
+                        setTimeout(()=>location.href='./commission.html', 1000)
                     } else {
                         error(v.errorMsg)
                     }
