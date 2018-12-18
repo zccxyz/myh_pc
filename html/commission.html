@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>提成人员录入</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../css/consume.css">
+    <style>
+        .bottom_submit{
+            margin-top: 20px;
+            width: 100%;
+        }
+        .bottom_submit button{
+            width: 40%;
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app" class="customer">
+    <template>
+        <p class="cus_title">
+        <el-breadcrumb separator-class="el-icon-arrow-right">
+            <el-breadcrumb-item :to="{ path: '/' }">信息管理</el-breadcrumb-item>
+            <el-breadcrumb-item>会员管理</el-breadcrumb-item>
+            <el-breadcrumb-item>消费</el-breadcrumb-item>
+            <el-breadcrumb-item>提成人员录入</el-breadcrumb-item>
+        </el-breadcrumb>
+    </p>
+    <div class="">
+        <div class="" style="margin:10px 0 15px;">
+            <p class="p_div_b">
+                消耗手工录入
+            </p>
+            <ul class="consume_list commission_list">
+                <li>
+                    操作人
+                    <el-select v-model="one.id" placeholder="请选择" class="in_wid">
+                        <el-optionitemsArr
+                                v-for="item in staff"
+                                :label="item.name"
+                                :value="item.id">
+                        </el-optionitemsArr>
+                    </el-select>
+                    <el-input v-model="one.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
+                    <p class="do_blue" @click="add(1)">添加</p>
+                </li>
+                <li v-for="(v, i) in oneArr">
+                    &nbsp;&nbsp;&nbsp;
+                    <div>{{v.name}}</div>
+                    <el-input :value="v.rate" placeholder="请输入" class="in_wid" disabled></el-input>&nbsp;%
+                    <i class="el-icon-circle-close-outline close" @click="del(1, i)"></i>
+                </li>
+            </ul>
+        </div>
+        <div class="">
+            <p class="p_div_b">
+                消耗提成录入
+            </p>
+            <ul class="consume_list commission_list">
+                <li>
+                    美容师
+                    <el-select v-model="two.id" placeholder="请选择" class="in_wid">
+                        <el-option
+                                v-for="item in mrs"
+                                :label="item.name"
+                                :value="item.id">
+                        </el-option>
+                    </el-select>
+                    <el-input v-model="two.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
+                    <p class="do_blue" @click="add(2)">添加</p>
+                </li>
+                <li v-for="(v, i) in twoArr">
+                    &nbsp;&nbsp;&nbsp;
+                    <div>{{v.name}}</div>
+                    <el-input :value="v.rate" placeholder="请输入" class="in_wid" disabled></el-input>&nbsp;%
+                    <i class="el-icon-circle-close-outline close" @click="del(2, i)"></i>
+                </li>
+                <li>
+                    顾问
+                    <el-select v-model="three.id" placeholder="请选择" class="in_wid">
+                        <el-option
+                                v-for="item in gw"
+                                :key="item.value"
+                                :label="item.name"
+                                :value="item.id">
+                        </el-option>
+                    </el-select>
+                    <el-input v-model="three.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
+                    <p class="do_blue" @click="add(3)">添加</p>
+                </li>
+                <li v-for="(v, i) in threeArr">
+                    &nbsp;&nbsp;&nbsp;
+                    <div>{{v.name}}</div>
+                    <el-input :value="v.rate" placeholder="请输入" class="in_wid" disabled></el-input>&nbsp;%
+                    <i class="el-icon-circle-close-outline close" @click="del(3, i)"></i>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="bottom_submit">
+        <el-button type="success">提交</el-button>
+    </div>
+        </template>
+</div>
+
+
+</body>
+</html>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../js/func.js"></script>
+<script src="../js/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            gw: [],
+            mrs: [],
+            staff: [],
+            one: {rate: '', id: ''},
+            two: {rate: '', id: ''},
+            three: {rate: '', id: ''},
+            oneArr: [],
+            twoArr: [],
+            threeArr: [],
+        },
+        methods: {},
+        mounted() {
+            this.$nextTick(e=>{
+                //初始化
+                that = this;
+                loginState()
+            })
+        }
+    })
+</script>
