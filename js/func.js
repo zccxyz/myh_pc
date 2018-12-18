@@ -40,6 +40,7 @@ const methods = {
     'userInfo': 'Vipdetails/basicinformation',
     'editUser': 'Vipdetails/edit',
     'operationDetail': 'Store/operationDetail',
+    'consumePrint': 'consume/consume_print',
 };
 let that;
 
