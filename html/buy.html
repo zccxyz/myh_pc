@@ -20,7 +20,7 @@
     </p>
     <template>
 
-        <el-tabs>
+        <el-tabs @tab-click="handleClick"><!---->
             <el-tab-pane label="产品">
                 <div>
                     <el-input style="margin:5px 0;" class="cus_seatch"
@@ -31,7 +31,7 @@
                 </div>
                 <el-table border
                           ref="multipleTable"
-                          :data="list.filter(data => !input || data.name.toLowerCase().includes(input.toLowerCase()))"
+                          :data="list.filter(data => (!input || data.name.toLowerCase().includes(input.toLowerCase())) && data.type=='产品')"
                           tooltip-effect="dark"
                           style="width: 100%"
                           @selection-change="handleSelectionChange">
@@ -81,8 +81,126 @@
                     </el-table-column>
                 </el-table>
             </el-tab-pane>
-            <el-tab-pane label="项目">项目</el-tab-pane>
-            <el-tab-pane label="套盒">套盒</el-tab-pane>
+            <el-tab-pane label="项目">
+                <div>
+                    <el-input style="margin:5px 0;" class="cus_seatch"
+                              placeholder="请输入商品名称"
+                              prefix-icon="el-icon-search"
+                              v-model="input">
+                    </el-input>
+                </div>
+                <el-table border
+                          ref="multipleTable"
+                          :data="list.filter(data => (!input || data.name.toLowerCase().includes(input.toLowerCase())) && data.type=='项目')"
+                          tooltip-effect="dark"
+                          style="width: 100%"
+                          @selection-change="handleSelectionChange">
+                    <el-table-column
+                            type="selection"
+                            width="55">
+                    </el-table-column>
+                    <el-table-column
+                            label="品项"
+                            width="120"
+                            prop="type">
+                    </el-table-column>
+                    <el-table-column
+                            prop="class"
+                            label="类别"
+                            width="120">
+                    </el-table-column>
+                    <el-table-column
+                            prop="name"
+                            label="商品名称">
+                    </el-table-column>
+                    <el-table-column
+                            prop="price"
+                            label="零售价">
+                    </el-table-column>
+                    <el-table-column
+                            prop="stock"
+                            label="库存">
+                    </el-table-column>
+                    <el-table-column
+                            prop="fre"
+                            label="次数">
+                    </el-table-column>
+                    <el-table-column
+                            prop="free"
+                            label="赠送"
+                            :formatter="form">
+                    </el-table-column>
+                    <el-table-column
+                            label="加入购物车"
+                            show-overflow-tooltip>
+                        <template slot-scope="scope">
+                            <i class="el-icon-remove blue_c" @click="remove(scope.row)" v-if="scope.row.needNum>0"></i>
+                            <i v-if="scope.row.needNum>0">{{scope.row.needNum}}</i>
+                            <i class="el-icon-circle-plus blue_c" @click="add(scope.row)"></i>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </el-tab-pane>
+            <el-tab-pane label="套盒">
+                <div>
+                    <el-input style="margin:5px 0;" class="cus_seatch"
+                              placeholder="请输入商品名称"
+                              prefix-icon="el-icon-search"
+                              v-model="input">
+                    </el-input>
+                </div>
+                <el-table border
+                          ref="multipleTable"
+                          :data="list.filter(data => (!input || data.name.toLowerCase().includes(input.toLowerCase())) && data.type=='套盒')"
+                          tooltip-effect="dark"
+                          style="width: 100%"
+                          @selection-change="handleSelectionChange">
+                    <el-table-column
+                            type="selection"
+                            width="55">
+                    </el-table-column>
+                    <el-table-column
+                            label="品项"
+                            width="120"
+                            prop="type">
+                    </el-table-column>
+                    <el-table-column
+                            prop="class"
+                            label="类别"
+                            width="120">
+                    </el-table-column>
+                    <el-table-column
+                            prop="name"
+                            label="商品名称">
+                    </el-table-column>
+                    <el-table-column
+                            prop="price"
+                            label="零售价">
+                    </el-table-column>
+                    <el-table-column
+                            prop="stock"
+                            label="库存">
+                    </el-table-column>
+                    <el-table-column
+                            prop="fre"
+                            label="次数">
+                    </el-table-column>
+                    <el-table-column
+                            prop="free"
+                            label="赠送"
+                            :formatter="form">
+                    </el-table-column>
+                    <el-table-column
+                            label="加入购物车"
+                            show-overflow-tooltip>
+                        <template slot-scope="scope">
+                            <i class="el-icon-remove blue_c" @click="remove(scope.row)" v-if="scope.row.needNum>0"></i>
+                            <i v-if="scope.row.needNum>0">{{scope.row.needNum}}</i>
+                            <i class="el-icon-circle-plus blue_c" @click="add(scope.row)"></i>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </el-tab-pane>
         </el-tabs>
 
 
@@ -175,10 +293,109 @@
             zt: true,
             need: [],
             user_id: 0,
+            tabIndex: 0,
         },
         methods: {
+            subItems() {
+                let items = []
+                for(let v of this.need) {
+                    if(v.type == '项目') {
+                        if(v.yh!=0){
+                            items.push({'price': v.price, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
+                                'name': v.name, 'sum': v.needNum, 'times': v.fre, 'is_rate': v.yh})
+                        }else{
+                            items.push({'price': v.price, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
+                                'name': v.name, 'sum': v.needNum, 'times': v.fre})
+                        }
+                    }
+                }
+                $.post(url(methods.buyItems)+`&id=${this.user_id}`, {
+                    data: JSON.stringify(items)
+                }, v=>{
+                    if(v.code==1){
+                        this.need = []
+                        for (let v of this.list) {
+                            v.needNum = 0;
+                        }
+                        success(v.Msg)
+                        localStorage.setItem('orderId', v.res.orderId)
+                        localStorage.setItem('arrearsRes', v.res.arrearsRes)
+                        setTimeout(()=>location.href = './pay_page.html', 1000)
+                    }else{
+                        error(v.errorMsg)
+                    }
+                })
+            },
+            subBox() {
+                let th = []
+                for(let v of this.need){
+                    if(v.type == '套盒') {
+                        if(v.yh!=0){
+                            th.push({'price': v.price, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
+                                'name': v.name, 'sum': v.needNum, 'times': v.fre, 'is_rate': v.yh})
+                        }else{
+                            th.push({'price': v.price, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
+                                'name': v.name, 'sum': v.needNum, 'times': v.fre})
+                        }
+                    }
+                }
+                $.post(url(methods.buyTh)+`&id=${this.user_id}`, {
+                    data: JSON.stringify(th)
+                }, v=>{
+                    if(v.code==1){
+                        this.need = []
+                        for (let v of this.list) {
+                            v.needNum = 0;
+                        }
+                        success(v.Msg)
+                        localStorage.setItem('orderId', v.res.orderId)
+                        localStorage.setItem('arrearsRes', v.res.arrearsRes)
+                        setTimeout(()=>location.href = './pay_page.html', 1000)
+                    }else{
+                        error(v.errorMsg)
+                    }
+                })
+            },
+            subCp() {
+                let goods = []
+                for(let v of this.need) {
+                    if(v.type == '产品') {
+                        if(v.yh != 0){
+                            goods.push({'price': v.price, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
+                                'name': v.name, 'sum': v.needNum, 'spec': v.spec, 'is_rate': v.yh})
+                        }else{
+                            goods.push({'price': v.price, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
+                                'name': v.name, 'sum': v.needNum, 'spec': v.spec})
+                        }
+                    }
+                }
+                //console.log(goods);return
+                $.post(url(methods.buyGoods)+`&id=${this.user_id}`, {
+                    data: JSON.stringify(goods)
+                }, v=>{
+                    if(v.code==1){
+                        this.need = []
+                        for (let v of this.list) {
+                            v.needNum = 0;
+                        }
+                        success(v.Msg)
+                        localStorage.setItem('orderId', v.res.orderId)
+                        localStorage.setItem('arrearsRes', v.res.arrearsRes)
+                        setTimeout(()=>location.href = './pay_page.html', 1000)
+                    }else{
+                        error(v.errorMsg)
+                    }
+                })
+            },
             sub() {
-                if (this.need.length == 0) {
+                if(this.tabIndex==0){
+                    this.subCp()
+                }else if(this.tabIndex==1) {
+                    this.subItems()
+                }else if(this.tabIndex==2) {
+                    this.subBox()
+                }
+                /*if (this.need.length == 0) {
                     error('请选择商品')
                     return
                 }
@@ -221,11 +438,11 @@
                         localStorage.setItem('order_id', v.res)
                         success('购买成功，请在手机端补款')
                         setTimeout(()=>location.reload(), 1500)
-                        /*location.href = './pay_page.html'*/
+                        /!*location.href = './pay_page.html'*!/
                     }else{
                         error(v.error)
                     }
-                })
+                })*/
             },
             allRemove() {
                 if (confirm('是否全部清空?')) {
@@ -311,6 +528,14 @@
                 if (ext[1] != 'xlsx') {
                     error('请上传xlsx文件')
                     return false
+                }
+            },
+            handleClick(tab, event) {
+                //console.log(tab.index)
+                this.tabIndex = tab.index
+                this.need = []
+                for (let v of this.list) {
+                    v.needNum = 0;
                 }
             },
         },
