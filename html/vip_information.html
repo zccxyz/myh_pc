@@ -106,9 +106,14 @@
             </el-tab-pane>
             <el-tab-pane label="会员产品">
                 <div class="basic_inf">
+                    <el-button type="success" class="fr" @click="del" style="margin:5px 10px;">批量删除</el-button>
                     <el-table
                             :data="cpList"
                             style="width: 100%">
+                        <el-table-column
+                                type="selection"
+                                width="55">
+                        </el-table-column>
                         <el-table-column
                                 prop="goods_name"
                                 label="产品名称">
@@ -147,9 +152,14 @@
             </el-tab-pane>
             <el-tab-pane label="会员项目">
                 <div class="basic_inf">
+                    <el-button type="success" class="fr" @click="del" style="margin:5px 10px;">批量删除</el-button>
                     <el-table
                             :data="itemsList"
                             style="width: 100%">
+                        <el-table-column
+                                type="selection"
+                                width="55">
+                        </el-table-column>
                         <el-table-column
                                 prop="name"
                                 label="项目名称">
@@ -188,9 +198,14 @@
             </el-tab-pane>
             <el-tab-pane label="会员套盒">
                 <div class="basic_inf">
+                    <el-button type="success" class="fr" @click="del" style="margin:5px 10px;">批量删除</el-button>
                     <el-table
                             :data="boxList"
                             style="width: 100%">
+                        <el-table-column
+                                type="selection"
+                                width="55">
+                        </el-table-column>
                         <el-table-column
                                 prop="name"
                                 label="套盒名称">
