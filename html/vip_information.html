@@ -104,7 +104,7 @@
                     </div>
                 </div>
             </el-tab-pane>
-            <el-tab-pane label="已购产品">
+            <el-tab-pane label="会员产品">
                 <div class="basic_inf">
                     <el-table
                             :data="cpList"
@@ -129,11 +129,11 @@
                                 prop="dis_price"
                                 label="折后金额">-->
                         </el-table-column>
-                        <!--<el-table-column label="操作">
+                        <el-table-column label="操作">
                             <template slot-scope="scope">
-                                <a href="#">再次购买</a>
+                                <el-button type="danger" size="mini">删除</el-button>
                             </template>
-                        </el-table-column>-->
+                        </el-table-column>
                     </el-table>
                     <div class="total">
                       <span class="fl">
@@ -170,12 +170,11 @@
                                 prop="dis_price"
                                 label="折后金额">
                         </el-table-column>-->
-                        <!--<el-table-column label="操作">
+                        <el-table-column label="操作">
                             <template slot-scope="scope">
-                                <a href="#">再次购买</a>
-                                <a href="#" class="cr delete_a">删除</a>
+                                <el-button type="danger" size="mini">删除</el-button>
                             </template>
-                        </el-table-column>-->
+                        </el-table-column>
                     </el-table>
                     <div class="total">
                     <span class="fl">
@@ -212,12 +211,11 @@
                                 prop="dis_price"
                                 label="折后金额">
                         </el-table-column>-->
-                        <!--<el-table-column label="操作">
+                        <el-table-column label="操作">
                             <template slot-scope="scope">
-                                <a href="#">再次购买</a>
-                                <a href="#" class="cr delete_a">删除</a>
+                                <el-button type="danger" size="mini">删除</el-button>
                             </template>
-                        </el-table-column>-->
+                        </el-table-column>
                     </el-table>
                     <div class="total">
                       <span class="fl">
