@@ -62,18 +62,17 @@
                 <p><img src="../images/pay(9).png" height="100%">会员储值卡</p>
                 <div class="pay_other">
                      <span class="pay_have">
-                         卡项：<el-select v-model="value" placeholder="请选择" style="width: 160px;">
+                         卡项：<el-select v-model="card" placeholder="请选择" style="width: 160px;">
                             <el-option
-                                    v-for="item in options"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
+                                    v-for="item in cardList"
+                                    :label="item.name"
+                                    :value="item.id">
                             </el-option>
                           </el-select>
                      </span>
                     <span style="width: 454.44px;display: inline-block;">
-                         卡内余额：5000
-                         <span class="fr">划扣金额：<el-input type="number" v-model="send_balance_pay" placeholder="0.00"
+                         卡内余额：{{getCard}}
+                         <span class="fr">划扣金额：<el-input type="number" v-model="card_pay" placeholder="0.00"
                                         class="pay_input"></el-input></span>
                      </span>
                 </div>
@@ -191,18 +190,21 @@
             }, {
                 value: '选项2',
                 label: '银卡'
-            }]
+            }],
+            card: '',
+            card_pay: '',
+            card_balance: 0,
         },
         methods: {
             sub() {
                 $.post(url(methods.getPayDetail), {
                     'data': JSON.stringify({
-                        'order': this.id, 'arrears': this.arrears, 'card': '',
+                        'order': this.id, 'arrears': this.arrears, 'card': this.card,
                         'cash_pay': this.cash_pay, 'zfb_pay': this.zfb_pay, 'wx_pay': this.wx_pay,
                         'dzdp_pay': this.dzdp_pay, 'mt_pay': this.mt_pay, 'sqb_pay': this.sqb_pay,
                         'bank_pay': this.bank_pay, 'balance_pay': this.balance_pay, 'send_balance_pay': this.send_balance_pay,
                         'integral_pay': this.integral_pay, 'integral': this.integral, 'send_integral': this.send_integral,
-                        'card_pay': '', 'send_money': this.send_money, 'person': this.person,
+                        'card_pay': this.card_pay, 'send_money': this.send_money, 'person': this.person,
                         'coupon': this.coupon
                     })
                 }, v => {
@@ -211,7 +213,7 @@
                         success(v.Msg)
                         setTimeout(()=>location.href='./commission.html', 1000)
                     } else {
-                        error(v.errorMsg)
+                        error(v.error)
                     }
                 })
             },
@@ -221,12 +223,19 @@
                         this.order = v.res.orderDetail
                         this.member = v.res.member_one
                         this.couponList = v.res.couponList
-                        this.card = v.res.cardList
+                        this.cardList = v.res.cardList
                     }
                 })
             }
         },
         watch: {
+            card(v){
+                for(let x of this.cardList) {
+                    if(x.id == v){
+                        this.card_balance = x.amount
+                    }
+                }
+            }
             /*balance_pay(v) {
                 if(parseFloat(v) > parseFloat(this.member.balance)) {
                     v = 0
@@ -235,6 +244,9 @@
             },*/
         },
         computed: {
+            getCard() {
+                return parseFloat(this.card_balance)-parseFloat(this.card_pay==''?0:this.card_pay)
+            },
             canUseIntegral() {
                 return parseFloat(this.member.integral) - parseFloat(this.integral == '' ? 0 : this.integral)
             },
@@ -252,6 +264,7 @@
                     - parseFloat(this.send_balance_pay == '' ? 0 : this.send_balance_pay) - parseFloat(this.balance_pay == '' ? 0 : this.balance_pay)
                     - parseFloat(this.integral_pay == '' ? 0 : this.integral_pay) - parseFloat(this.send_money == '' ? 0 : this.send_money)
                     - parseFloat(this.cash_pay == '' ? 0 : this.cash_pay)
+                    - parseFloat(this.card_pay == '' ? 0 : this.card_pay)
             },
             getTotal() {
                 return parseFloat(this.zfb_pay == '' ? 0 : this.zfb_pay) + parseFloat(this.wx_pay == '' ? 0 : this.wx_pay)
@@ -261,6 +274,7 @@
                     + parseFloat(this.send_balance_pay == '' ? 0 : this.send_balance_pay) + parseFloat(this.balance_pay == '' ? 0 : this.balance_pay)
                     + parseFloat(this.integral_pay == '' ? 0 : this.integral_pay) + parseFloat(this.send_money == '' ? 0 : this.send_money)
                     + parseFloat(this.cash_pay == '' ? 0 : this.cash_pay)
+                    + parseFloat(this.card_pay == '' ? 0 : this.card_pay)
             },
         },
         mounted() {
