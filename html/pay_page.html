@@ -29,13 +29,9 @@
             </p>
             <p class="other_back order_detail">支付方式</p>
             <div class="pay_div">
-                <p><img src="../images/pay(5).png" height="100%">现金支付</p>
-                <div class="pay_other">
-                    <span>
-                         现金支付：<el-input type="number" v-model="cash_pay" placeholder="0.00"
-                                        class="pay_input"></el-input>
-                     </span>
-                </div>
+                    <p style="margin: 12px 0;">
+                        <img src="../images/pay(1).png" height="100%"> 现金支付：<el-input type="number" v-model="cash_pay" placeholder="0.00" class="pay_input"></el-input>
+                     </p>
                 <p><img src="../images/pay_way1.png" height="100%">第三方支付</p>
                 <ul class="pay_ul">
                     <li>
@@ -63,6 +59,24 @@
                         <el-input type="number" v-model="mt_pay" placeholder="0.00" class="fr pay_input"></el-input>
                     </li>
                 </ul>
+                <p><img src="../images/pay(9).png" height="100%">会员储值卡</p>
+                <div class="pay_other">
+                     <span class="pay_have">
+                         卡项：<el-select v-model="value" placeholder="请选择" style="width: 160px;">
+                            <el-option
+                                    v-for="item in options"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                            </el-option>
+                          </el-select>
+                     </span>
+                    <span style="width: 454.44px;display: inline-block;">
+                         卡内余额：5000
+                         <span class="fr">划扣金额：<el-input type="number" v-model="send_balance_pay" placeholder="0.00"
+                                        class="pay_input"></el-input></span>
+                     </span>
+                </div>
                 <p><img src="../images/pay(5).png" height="100%">余额抵扣</p>
                 <div class="pay_other">
                      <span class="pay_have">
@@ -170,6 +184,14 @@
             integral: '',
             integral_pay: '',
             coupon: '',
+            value:'',
+            options: [{
+                value: '选项1',
+                label: '金卡'
+            }, {
+                value: '选项2',
+                label: '银卡'
+            }]
         },
         methods: {
             sub() {
