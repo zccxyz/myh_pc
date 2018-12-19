@@ -37,7 +37,7 @@
                 <el-button type="primary">导入商品表</el-button>
                 <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
             </el-upload>
-            <el-button type="success" @click="alert('开发中')">导出商品表</el-button>
+            <el-button type="success" @click="exportData">导出商品表</el-button>
             <a href="https://www.myhkj.cn/商品导入.xlsx"><el-button type="success">商品表模板下载</el-button></a>
             <el-button type="success" class="fr" @click="del">批量删除</el-button>
             <el-button type="success" class="fr" @click="zt = true">新增商品</el-button>
@@ -397,6 +397,12 @@
             },
         },
         methods: {
+            exportData() {
+                /*$.post(url(methods.exportGoods), v=>{
+
+                });return*/
+                window.open(url(methods.exportGoods))
+            },
             del(type=1, v='') {
                 if(type==2){
                     this.multipleSelection.push(v)

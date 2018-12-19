@@ -25,38 +25,38 @@
                 </el-input>
             </div>
             <p class="fr linr_four">
-                总欠款：￥12652&#12288;|&#12288;总欠款人数：12&#12288;
+                总欠款：￥{{money}}&#12288;|&#12288;总欠款人数：{{num}}&#12288;
             </p>
         </div>
         <el-table
-                :data="tableData"
+                :data="list.filter(data => !input || data.name.toLowerCase().includes(input.toLowerCase()))"
                 border
                 style="width: 100%">
             <el-table-column
-                    prop="date"
+                    prop="type"
                     label="品项"
                     width="180">
             </el-table-column>
             <el-table-column
-                    prop="name"
+                    prop="time"
                     label="消费时间"
                     width="180">
             </el-table-column>
             <el-table-column
-                    prop="address"
+                    prop="name"
                     label="会员">
             </el-table-column>
             <el-table-column
-                    prop="address"
+                    prop="money"
                     label="欠费金额">
             </el-table-column>
             <el-table-column
                     label="操作"
                     show-overflow-tooltip>
                 <template slot-scope="scope">
-                    <el-button  type="warning"
-                            size="mini"
-                            @click="edit(scope.row)">补款
+                    <el-button type="warning"
+                               size="mini"
+                               @click="bk(scope.row.id)">补款
                     </el-button>
                 </template>
             </el-table-column>
@@ -74,7 +74,7 @@
     new Vue({
         el: '#app',
         data: {
-            input:'',
+            input: '',
             tableData: [{
                 date: '2016-05-02',
                 name: '王小虎',
@@ -83,14 +83,35 @@
                 date: '2016-05-04',
                 name: '王小虎',
                 address: '上海市普陀区金沙江路 1517 弄'
-            }]
+            }],
+            num: 0,
+            list: [],
+            money: 0,
         },
-        methods: {},
+        methods: {
+            bk(id) {
+                localStorage.setItem('type', 2)
+                localStorage.setItem('bkId', id)
+                location.href='./pay_page.html'
+            },
+            getData(){
+                $.get(url(methods.arrearsList), v=>{
+                    if(v.code==1){
+                        this.num = v.res.count
+                        this.list = v.res.list
+                        this.money = v.res.total_money
+                    }else{
+                        error(v.error)
+                    }
+                })
+            },
+        },
         mounted() {
-            this.$nextTick(e=>{
+            this.$nextTick(e => {
                 //初始化
                 that = this;
                 loginState()
+                this.getData()
             })
         }
     })

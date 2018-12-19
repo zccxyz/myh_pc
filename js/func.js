@@ -17,6 +17,8 @@ const methods = {
     'cardList': 'Member/memberCardList',
     'integralRecord': 'Member/IntegralRecord',
     'aloneArrears': 'Member/AloneArrears',
+    'exportMember': 'Member/exportMember',
+    'exportGoods': 'Commodity/exportGoods',
     'upload': 'Commodity/upload',
     'getAllGoods': 'Commodity/getAllGoods',
     'logout': 'Center/logout',
@@ -27,6 +29,7 @@ const methods = {
     'addVip': 'Member/addvip',
     'addArrive': 'Arrive/AddArrive',
     'leave': 'Arrive/leave',
+    'suppDetail': 'arrears/supp_detail',
     'mergeBuy': 'buy/mergeBuy',
     'getPayDetail': 'buy/get_pay_detail',
     'buyGoods': 'buy/buyGoods',
@@ -41,6 +44,7 @@ const methods = {
     'editUser': 'Vipdetails/edit',
     'operationDetail': 'Store/operationDetail',
     'consumePrint': 'consume/consume_print',
+    'arrearsList': 'Arrears/ArrearsList',
 };
 let that;
 

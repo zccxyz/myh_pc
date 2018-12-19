@@ -35,7 +35,8 @@
             <div class="" style="margin:10px 0 15px;">
                 <div style="height: 50px;width: 100%;line-height:50px;padding-left:15px;font-size:1.8rem;background: white;">
                     可提成金额 ：<span class="cr" style="font-size: 1.8rem;">&yen;{{total}}</span>
-                    <el-button style="float: right" type="warning" @click="location.href = './customer.html'">取消</el-button>
+                    <el-button style="float: right" type="warning" @click="location.href = './customer.html'">取消
+                    </el-button>
                 </div>
                 <!--<p class="p_div_b">
                     消耗手工录入
@@ -107,7 +108,8 @@
             </div>
         </div>
         <div class="bottom_submit">
-            <el-button type="success" @click="sub">提交</el-button>
+            <el-button type="success" @click="sub" v-if="type==1">提交</el-button>
+            <el-button type="success" @click="sub2" v-else>提交</el-button>
         </div>
     </template>
 </div>
@@ -137,8 +139,42 @@
             total: 0,
             g: [],
             m: [],
+            type: 0,
         },
         methods: {
+            sub2() {
+                if (this.twoArr.length == 0 && this.threeArr.length == 0) {
+                    error('请选择提成员工')
+                    return
+                }
+                let arr2 = []
+                let arr3 = []
+                if (this.twoArr.length > 0) {
+                    for (let v of this.twoArr) {
+                        arr2.push({'money': v.rate, 'id': v.id, 'name': v.name})
+                    }
+                }
+                if (this.threeArr.length > 0) {
+                    for (let v of this.threeArr) {
+                        arr3.push({'money': v.rate, 'id': v.id, 'name': v.name})
+                    }
+                }
+                $.post(url(methods.saveCommission), {
+                    data: JSON.stringify({
+                        raise_m: arr2,
+                        raise_g: arr3,
+                        type: 'supp',
+                        supp: this.cost
+                    })
+                }, v => {
+                    if (v.code == 1) {
+                        success(v.Msg)
+                        setTimeout(() => location.href = './customer.html', 1000)
+                    } else {
+                        error(v.error)
+                    }
+                })
+            },
             sub() {
                 if (this.twoArr.length == 0 && this.threeArr.length == 0) {
                     error('请选择提成员工')
@@ -237,16 +273,35 @@
 
                     })
                 }
-            }
+            },
+            getData2() {
+                $.get(url(methods.saveCommission) + `&supp=${this.cost}&type=supp`, v => {
+                    if (v.code == 1) {
+                        if (v.res.print_type == 1) {
+                            this.isPrint()
+                        }
+                        this.total = v.res.total
+                        this.g = v.res.g
+                        this.m = v.res.m
+                    } else {
+                        error(v.errorMsg)
+                    }
+                })
+            },
         },
         mounted() {
             this.$nextTick(e => {
                 //初始化
                 that = this;
                 loginState()
-                this.orderId = localStorage.getItem('orderId')
                 this.cost = localStorage.getItem('cost')
-                this.getData()
+                this.type = localStorage.getItem('type')
+                if (this.type == 1) {
+                    this.orderId = localStorage.getItem('orderId')
+                    this.getData()
+                } else {
+                    this.getData2()
+                }
             })
         }
     })

@@ -20,18 +20,26 @@
             </el-breadcrumb>
         </p>
         <div class="pay_page">
-            <p class="other_back order_detail">
+            <p class="other_back order_detail" v-if="type==1">
                 <span class="de_title">确认订单信息</span>
                 订单编号：{{order.sn}}&#12288;下单时间：{{order.create_time}}
             </p>
-            <p class="order_detail">
+            <p class="other_back order_detail" v-else>
+                <span class="de_title">补款信息</span>
+                品项：{{detail.type | type}}&#12288;会员：{{detail.name}}
+            </p>
+            <p class="order_detail" v-if="type==1">
                 会员:<i class="cr">{{member.name}}</i>&#12288;订单金额：{{order.price}}
+            </p>
+            <p class="order_detail" v-else>
+                总金额:<i class="cr">{{detail.price}}</i>&#12288;已支付：{{detail.pay_money}}&#12288;未结清：{{detail.money}}
             </p>
             <p class="other_back order_detail">支付方式</p>
             <div class="pay_div">
-                    <p style="margin: 12px 0;">
-                        <img src="../images/pay(1).png" height="100%"> 现金支付：<el-input type="number" v-model="cash_pay" placeholder="0.00" class="pay_input"></el-input>
-                     </p>
+                <p style="margin: 12px 0;">
+                    <img src="../images/pay(1).png" height="100%"> 现金支付：
+                    <el-input type="number" v-model="cash_pay" placeholder="0.00" class="pay_input"></el-input>
+                </p>
                 <p><img src="../images/pay_way1.png" height="100%">第三方支付</p>
                 <ul class="pay_ul">
                     <li>
@@ -59,8 +67,9 @@
                         <el-input type="number" v-model="mt_pay" placeholder="0.00" class="fr pay_input"></el-input>
                     </li>
                 </ul>
-                <p><img src="../images/pay(9).png" height="100%">会员储值卡</p>
-                <div class="pay_other">
+                <template v-if="type==1">
+                    <p><img src="../images/pay(9).png" height="100%">会员储值卡</p>
+                    <div class="pay_other">
                      <span class="pay_have">
                          卡项：<el-select v-model="card" placeholder="请选择" style="width: 160px;">
                             <el-option
@@ -70,63 +79,64 @@
                             </el-option>
                           </el-select>
                      </span>
-                    <span style="width: 454.44px;display: inline-block;">
+                        <span style="width: 454.44px;display: inline-block;">
                          卡内余额：{{getCard}}
                          <span class="fr">划扣金额：<el-input type="number" v-model="card_pay" placeholder="0.00"
-                                        class="pay_input"></el-input></span>
+                                                         class="pay_input"></el-input></span>
                      </span>
-                </div>
-                <p><img src="../images/pay(5).png" height="100%">余额抵扣</p>
-                <div class="pay_other">
+                    </div>
+                    <p><img src="../images/pay(5).png" height="100%">余额抵扣</p>
+                    <div class="pay_other">
                      <span class="pay_have">
                          会员余额：{{myBalance}}&nbsp;&nbsp;&nbsp;
                          会员赠额：{{mySendBalance}}
                      </span>
-                    <span>
+                        <span>
                          使用余额：<el-input type="number" v-model="balance_pay" placeholder="0.00"
                                         class="pay_input"></el-input>
                          使用赠额：<el-input type="number" v-model="send_balance_pay" placeholder="0.00"
                                         class="pay_input"></el-input>
                      </span>
-                </div>
-                <p><img src="../images/pay(8).png" height="100%">积分抵扣</p>
-                <div class="pay_other">
+                    </div>
+                    <p><img src="../images/pay(8).png" height="100%">积分抵扣</p>
+                    <div class="pay_other">
                      <span class="pay_have">
                          累计积分：0.0&#12288;可用积分：{{canUseIntegral}}
                      </span>
-                    <span>
+                        <span>
                          使用积分：<el-input type="number" v-model="integral" placeholder="0.00"
                                         class="pay_input"></el-input>&#12288;
                          抵扣金额：<el-input type="number" v-model="integral_pay" placeholder="0.00"
                                         class="pay_input"></el-input>
                      </span>
-                </div>
-                <p><img src="../images/pay(7).png" height="100%">赠送</p>
-                <div class="pay_other">
+                    </div>
+                    <p><img src="../images/pay(7).png" height="100%">赠送</p>
+                    <div class="pay_other">
                      <span class="pay_have">
                         赠送积分：<el-input v-model="send_integral" placeholder="0" class="pay_input"></el-input>
                      </span>
-                    <span>
+                        <span>
                          赠送金额：<el-input v-model="send_money" placeholder="0.00" class="pay_input"></el-input>
                          &#12288;经手人：<el-input v-model="person" placeholder="请填写经手人" class="pay_input"></el-input>
                      </span>
-                </div>
-                <template v-if="couponList.length>0">
-                    <p><img src="../images/pay(6).png" height="100%">使用优惠券（共{{couponList.length}}张优惠券）</p>
-                    <div class="pay_coupon">
-                        <el-tabs type="border-card">
-                            <el-tab-pane label="可用优惠券">
-                                以下是该订单可用优惠券，你可以查看优惠券规则说明
-                            </el-tab-pane>
-                            <el-tab-pane label="不可用优惠券">
-                                以下是该订单不可用优惠券，你可以查看优惠券规则说明
-                            </el-tab-pane>
-                        </el-tabs>
                     </div>
+                    <template v-if="couponList.length>0">
+                        <p><img src="../images/pay(6).png" height="100%">使用优惠券（共{{couponList.length}}张优惠券）</p>
+                        <div class="pay_coupon">
+                            <el-tabs type="border-card">
+                                <el-tab-pane label="可用优惠券">
+                                    以下是该订单可用优惠券，你可以查看优惠券规则说明
+                                </el-tab-pane>
+                                <el-tab-pane label="不可用优惠券">
+                                    以下是该订单不可用优惠券，你可以查看优惠券规则说明
+                                </el-tab-pane>
+                            </el-tabs>
+                        </div>
+                    </template>
                 </template>
             </div>
         </div>
-        <div class="pay_infor">
+        <div class="pay_infor" v-if="type==1">
             <p>
                 剩余未支付<span class="fr"><i class="cr">￥</i>{{needPay}}</span>
             </p>
@@ -143,9 +153,10 @@
         <div style="height:70px"></div>
         <div class="pay_total">
          <span class="fl cr total_money">
-             合计：{{getTotal}}
+             {{type==1?'合计':'合计补款'}}：{{getTotal}}
          </span>
-            <span class="red_box pay" @click="sub">提交订单</span>
+            <span class="red_box pay" @click="sub" v-if="type==1">提交订单</span>
+            <span class="red_box pay" @click="sub2" v-else>补款</span>
         </div>
     </template>
 
@@ -183,7 +194,7 @@
             integral: '',
             integral_pay: '',
             coupon: '',
-            value:'',
+            value: '',
             options: [{
                 value: '选项1',
                 label: '金卡'
@@ -194,24 +205,77 @@
             card: '',
             card_pay: '',
             card_balance: 0,
+            type: 0, //1购买，2补款
+            bkId: 0,
+            detail: '',
         },
         methods: {
+            sub2() {
+                let total = parseFloat(this.zfb_pay == '' ? 0 : this.zfb_pay) + parseFloat(this.wx_pay == '' ? 0 : this.wx_pay)
+                    + parseFloat(this.wx_pay == '' ? 0 : this.wx_pay)
+                    + parseFloat(this.bank_pay == '' ? 0 : this.bank_pay) + parseFloat(this.dzdp_pay == '' ? 0 : this.dzdp_pay)
+                    + parseFloat(this.sqb_pay == '' ? 0 : this.sqb_pay) + parseFloat(this.mt_pay == '' ? 0 : this.mt_pay)
+                    + parseFloat(this.send_balance_pay == '' ? 0 : this.send_balance_pay) + parseFloat(this.balance_pay == '' ? 0 : this.balance_pay)
+                    + parseFloat(this.integral_pay == '' ? 0 : this.integral_pay) + parseFloat(this.send_money == '' ? 0 : this.send_money)
+                    + parseFloat(this.cash_pay == '' ? 0 : this.cash_pay)
+                    + parseFloat(this.card_pay == '' ? 0 : this.card_pay)
+                if(total != this.detail.money){
+                    error(`补款金额必须是${this.detail.money}元`)
+                    return
+                }
+                $.post(url(methods.suppDetail), {
+                    'data': JSON.stringify({
+                        'id': this.bkId,
+                        'cash_pay': this.cash_pay,
+                        'zfb_pay': this.zfb_pay,
+                        'wx_pay': this.wx_pay,
+                        'dzdp_pay': this.dzdp_pay,
+                        'mt_pay': this.mt_pay,
+                        'sqb_pay': this.sqb_pay,
+                        'bank_pay': this.bank_pay,
+                    })
+                }, v => {
+                    if (v.code == 1) {
+                        if(this.type==1){
+                            localStorage.setItem('cost', v.cost)
+                        }else{
+                            localStorage.setItem('cost', v.supp)
+                        }
+                        success(v.Msg)
+                        setTimeout(() => location.href = './commission.html', 1000)
+                    } else {
+                        error(v.error)
+                    }
+                })
+            },
             sub() {
                 $.post(url(methods.getPayDetail), {
                     'data': JSON.stringify({
-                        'order': this.id, 'arrears': this.arrears, 'card': this.card,
-                        'cash_pay': this.cash_pay, 'zfb_pay': this.zfb_pay, 'wx_pay': this.wx_pay,
-                        'dzdp_pay': this.dzdp_pay, 'mt_pay': this.mt_pay, 'sqb_pay': this.sqb_pay,
-                        'bank_pay': this.bank_pay, 'balance_pay': this.balance_pay, 'send_balance_pay': this.send_balance_pay,
-                        'integral_pay': this.integral_pay, 'integral': this.integral, 'send_integral': this.send_integral,
-                        'card_pay': this.card_pay, 'send_money': this.send_money, 'person': this.person,
+                        'order': this.id,
+                        'arrears': this.arrears,
+                        'card': this.card,
+                        'cash_pay': this.cash_pay,
+                        'zfb_pay': this.zfb_pay,
+                        'wx_pay': this.wx_pay,
+                        'dzdp_pay': this.dzdp_pay,
+                        'mt_pay': this.mt_pay,
+                        'sqb_pay': this.sqb_pay,
+                        'bank_pay': this.bank_pay,
+                        'balance_pay': this.balance_pay,
+                        'send_balance_pay': this.send_balance_pay,
+                        'integral_pay': this.integral_pay,
+                        'integral': this.integral,
+                        'send_integral': this.send_integral,
+                        'card_pay': this.card_pay,
+                        'send_money': this.send_money,
+                        'person': this.person,
                         'coupon': this.coupon
                     })
                 }, v => {
                     if (v.code == 1) {
                         localStorage.setItem('cost', v.cost)
                         success(v.Msg)
-                        setTimeout(()=>location.href='./commission.html', 1000)
+                        setTimeout(() => location.href = './commission.html', 1000)
                     } else {
                         error(v.error)
                     }
@@ -226,12 +290,32 @@
                         this.cardList = v.res.cardList
                     }
                 })
+            },
+            getDetail2() {
+                $.get(url(methods.suppDetail) + `&id=${this.bkId}`, v => {
+                    if (v.code == 1) {
+                        this.detail = v.detail
+                    } else {
+                        error(v.error)
+                    }
+                })
+            },
+        },
+        filters: {
+            type(v) {
+                if (v == 1) {
+                    return '产品'
+                } else if (v == 2) {
+                    return '套盒'
+                } else if (v == 3) {
+                    return '项目'
+                }
             }
         },
         watch: {
-            card(v){
-                for(let x of this.cardList) {
-                    if(x.id == v){
+            card(v) {
+                for (let x of this.cardList) {
+                    if (x.id == v) {
                         this.card_balance = x.amount
                     }
                 }
@@ -245,7 +329,7 @@
         },
         computed: {
             getCard() {
-                return parseFloat(this.card_balance)-parseFloat(this.card_pay==''?0:this.card_pay)
+                return parseFloat(this.card_balance) - parseFloat(this.card_pay == '' ? 0 : this.card_pay)
             },
             canUseIntegral() {
                 return parseFloat(this.member.integral) - parseFloat(this.integral == '' ? 0 : this.integral)
@@ -283,7 +367,13 @@
                 that = this;
                 this.id = localStorage.getItem('orderId')
                 this.arrears = localStorage.getItem('arrearsRes')
-                this.getDetail()
+                this.type = localStorage.getItem('type')
+                if (this.type == 1) {
+                    this.getDetail()
+                } else {
+                    this.bkId = localStorage.getItem('bkId')
+                    this.getDetail2()
+                }
             })
         }
     })

@@ -35,7 +35,7 @@
                 <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
             </el-upload>
 
-            <el-button type="success" @click="alert('开发中')">导出Excel表</el-button>
+            <el-button type="success" @click="exportData">导出Excel表</el-button>
             <a href="https://www.myhkj.cn/会员信息及会员持有卡项套盒项目表.xlsx">
                 <el-button type="success">会员表模板下载</el-button>
             </a>
@@ -341,6 +341,12 @@
             zt: false
         },
         methods: {
+            exportData(){
+                /*$.get(url(methods.exportMember), v=>{
+
+                })*/
+                window.open(url(methods.exportMember))
+            },
             jump(type, v) {
                 if(type == 1){
                     localStorage.setItem('user_id', v.id)
