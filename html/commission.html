@@ -268,11 +268,17 @@
                 })
             },
             isPrint() {
-                if (confirm('是否打印消费单？')) {
+                this.$confirm('是否打印消费单?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
                     $.post(url(methods.print), {order: this.orderId}, v => {
 
                     })
-                }
+                }).catch(e=>{
+
+                })
             },
             getData2() {
                 $.get(url(methods.saveCommission) + `&supp=${this.cost}&type=supp`, v => {

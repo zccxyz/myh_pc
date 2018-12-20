@@ -64,12 +64,18 @@
         },
         methods: {
             logout() {
-                if(confirm('是否退出？')){
+                this.$confirm('是否退出?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
                     $.post(url(methods.logout), v => {
                         localStorage.removeItem('user')
                         setTimeout(()=>location.href = '../login.html', 100)
                     })
-                }
+                }).catch(e=>{
+
+                })
             }
         },
         mounted() {

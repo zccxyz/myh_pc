@@ -402,7 +402,11 @@
                     return
                 }
                 if (this.multipleSelection.length > 0) {
-                    if (confirm('是否删除选中会员?')) {
+                    this.$confirm('是否删除选中会员?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
                         let arr = [];
                         for (let v of this.multipleSelection) {
                             arr.push({'id': v.id, 'type': v.vipStatus == 1 ? 'member' : 'new'})
@@ -415,13 +419,19 @@
                                 error('删除失败')
                             }
                         })
-                    }
+                    }).catch(e=>{
+
+                    })
                 }
                 this.deleteDialogVisible = false
                 console.log(this.multipleSelection)
             },
             delOne(id) {
-                if (confirm('是否删除?'))
+                this.$confirm('是否删除?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
                     $.post(url(methods.delMember), {
                         'id': id,
                         'type': this.now.vip_status == 1 ? 'member' : 'new'
@@ -433,6 +443,9 @@
                             error(v.error)
                         }
                     })
+                }).catch(e=>{
+
+                })
             },
             leave() {
                 $.post(url(methods.leave), {'mid': this.now.id, 'arrId': ''}, v => {
@@ -449,7 +462,11 @@
                 })
             },
             isPrint(rid) {
-                if(confirm('是否打印消耗账单？')){
+                this.$confirm('是否打印消耗账单?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
                     $.post(url(methods.consumePrint), {mid: this.now.id, room: rid}, v=>{
                         if(v.code==1){
                             success('打印成功')
@@ -457,7 +474,9 @@
                             error(v.error)
                         }
                     })
-                }
+                }).catch(e=>{
+
+                })
             },
             comeShop() {
                 if (this.room == '') {

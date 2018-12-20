@@ -413,12 +413,18 @@
                     error('请选择需要删除的商品')
                     return
                 }
-                if(confirm('确定删除？')) {
+                this.$confirm('确定删除?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
                     $.post(url(methods.del), {'data': JSON.stringify(this.multipleSelection)}, v=>{
                         success('删除成功')
                         this.getGoods()
                     })
-                }
+                }).catch(e=>{
+
+                })
             },
             addAll() {
                 if(this.sj.type!=1){

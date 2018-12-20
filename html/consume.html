@@ -378,40 +378,45 @@
         },
         methods: {
             sub() {
-                if (!confirm('是否确认录入？')) {
-                    return
-                }
-                let arr = []
-                let arr2 = []
-                let arr3 = []
-                if (this.oneArr.length > 0) {
-                    for (let v of this.oneArr) {
-                        arr.push({'money': v.rate, 'id': v.id})
+                this.$confirm('是否确认录入?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    let arr = []
+                    let arr2 = []
+                    let arr3 = []
+                    if (this.oneArr.length > 0) {
+                        for (let v of this.oneArr) {
+                            arr.push({'money': v.rate, 'id': v.id})
+                        }
                     }
-                }
-                if (this.twoArr.length > 0) {
-                    for (let v of this.twoArr) {
-                        arr2.push({'money': v.rate, 'id': v.id})
+                    if (this.twoArr.length > 0) {
+                        for (let v of this.twoArr) {
+                            arr2.push({'money': v.rate, 'id': v.id})
+                        }
                     }
-                }
-                if (this.threeArr.length > 0) {
-                    for (let v of this.threeArr) {
-                        arr3.push({'money': v.rate, 'id': v.id})
+                    if (this.threeArr.length > 0) {
+                        for (let v of this.threeArr) {
+                            arr3.push({'money': v.rate, 'id': v.id})
+                        }
                     }
-                }
-                $.post(url(methods.entry), {
-                    'data': JSON.stringify({
-                        'box': this.myBox, 'items': this.myItems,
-                        'amount_items': this.items, 'mid': this.userId,
-                        'arr': this.roomId, 's': arr, 'm': arr2, 'g': arr3
+                    $.post(url(methods.entry), {
+                        'data': JSON.stringify({
+                            'box': this.myBox, 'items': this.myItems,
+                            'amount_items': this.items, 'mid': this.userId,
+                            'arr': this.roomId, 's': arr, 'm': arr2, 'g': arr3
+                        })
+                    }, v => {
+                        if (v.code == 1) {
+                            success(v.Msg)
+                            setTimeout(() => location.href = './customer.html', 1000)
+                        } else {
+                            error(v.error)
+                        }
                     })
-                }, v => {
-                    if (v.code == 1) {
-                        success(v.Msg)
-                        setTimeout(() => location.href = './customer.html', 1000)
-                    } else {
-                        error(v.error)
-                    }
+                }).catch(e=>{
+
                 })
             },
             open3(v) {
