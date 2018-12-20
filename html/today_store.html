@@ -32,32 +32,32 @@
         </el-breadcrumb>
     </p>
     <div class="cus_center">
-        <el-radio-group v-model="radio3" class="store_tabs">
+        <el-radio-group v-model="now" class="store_tabs">
             <el-radio-button label="会员"></el-radio-button>
             <el-radio-button label="新客"></el-radio-button>
         </el-radio-group>
     </div>
     <el-table
-            :data="tableData"
+            :data="nowArr"
             border
             style="width: 100%">
         <el-table-column
-                prop="date"
+                prop="name"
                 label="姓名"
                 width="180">
         </el-table-column>
         <el-table-column
-                prop="name"
+                prop="sex"
                 label="性别"
                 width="180">
         </el-table-column>
         <el-table-column
-                prop="name"
+                prop="tel"
                 label="电话"
                 width="180">
         </el-table-column>
         <el-table-column
-                prop="address"
+                prop="arrival_time"
                 label="到店时间">
         </el-table-column>
     </el-table>
@@ -74,7 +74,6 @@
     new Vue({
         el: '#app',
         data: {
-            radio3: '会员',
             tableData: [{
                 date: '2016-05-02',
                 name: '王小虎',
@@ -91,14 +90,41 @@
                 date: '2016-05-03',
                 name: '王小虎',
                 address: '上海市普陀区金沙江路 1516 弄'
-            }]
+            }],
+            member: [],
+            new: [],
+            now: '会员',
+            nowArr: [],
         },
-        methods: {},
+        methods: {
+            getData(){
+                $.get(url(methods.toStoreDetail), v=>{
+                    if(v.code==1){
+                        this.member = v.res.m
+                        this.nowArr = v.res.m
+                        this.new = v.res.n
+                    }else{
+                        error(v.error)
+                    }
+                })
+            }
+        },
+        watch: {
+            now(v) {
+                if(v=='会员'){
+                    this.nowArr = this.member
+                }else{
+                    this.nowArr = this.new
+                }
+                this.getData()
+            }
+        },
         mounted() {
             this.$nextTick(e=>{
                 //初始化
                 that = this;
                 loginState()
+                this.getData()
             })
         }
     })
