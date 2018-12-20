@@ -17,44 +17,44 @@
             </el-breadcrumb>
         </p>
         <el-table style="margin-top: 10px"
-                :data="tableData"
-                border
-                style="width: 100%">
-        <el-table-column
-                prop="set_time"
-                label="创建时间">
-        </el-table-column>
-        <el-table-column
-                prop="vip"
-                label="预约人"
-                width="180">
-        </el-table-column>
-        <el-table-column
-                prop="tel"
-                label="电话"
-                width="180">
-        </el-table-column>
-        <el-table-column
-                prop="beautician"
-                label="美容师">
-        </el-table-column>
-        <el-table-column
-                prop="be_time"
-                label="预约时间">
-        </el-table-column>
-        <el-table-column
-                prop="backup"
-                label="备注">
-        </el-table-column>
+                  :data="list"
+                  border
+                  style="width: 100%">
+            <el-table-column
+                    prop="time"
+                    label="创建时间">
+            </el-table-column>
+            <el-table-column
+                    prop="name"
+                    label="预约人"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="tel"
+                    label="电话"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="staff_name"
+                    label="美容师">
+            </el-table-column>
+            <el-table-column
+                    prop="choice_time"
+                    label="预约时间">
+            </el-table-column>
+            <el-table-column
+                    prop="m_remark"
+                    label="备注">
+            </el-table-column>
             <el-table-column
                     label="操作"
-                    width="680"
+                    width="300"
                     fixed="right"
                     show-overflow-tooltip>
                 <template slot-scope="scope">
                     <el-button type="danger"
-                            size="mini"
-                            @click="">
+                               size="mini"
+                               @click="">
                         取消预约
                     </el-button>
                     <el-button
@@ -63,28 +63,29 @@
                     </el-button>
                     <el-button
                             size="mini"
-                            @click="edit_dal=true">编辑
+                            @click="edit_dal=true;now=scope.row">编辑
                     </el-button>
                 </template>
             </el-table-column>
         </el-table>
         <el-dialog
-        title="预约编辑"
-        :visible.sync="edit_dal"
-        width="400px"
-        center>
-        <div>
-            <p class="p_text">请输入预约时间</p>
-            <el-date-picker style="width: 80%;
+                title="预约编辑"
+                :visible.sync="edit_dal"
+                width="400px"
+                center>
+            <div>
+                <p class="p_text">请输入预约时间</p>
+                <el-date-picker style="width: 80%;
     margin-left: 10%;"
-                    v-model="value1"
-                    type="datetime"
-                    placeholder="选择日期时间">
-            </el-date-picker>
-        </div>
-        <span slot="footer" class="dialog-footer">
+                                v-model="time"
+                                type="datetime"
+                                value-format="yyyy-MM-dd HH-mm-ss"
+                                placeholder="选择日期时间">
+                </el-date-picker>
+            </div>
+            <span slot="footer" class="dialog-footer">
             <el-button @click="edit_dal = false">取 消</el-button>
-            <el-button type="primary" @click="">确 定</el-button>
+            <el-button type="primary" @click="edit">确 定</el-button>
           </span>
         </el-dialog>
     </template>
@@ -101,30 +102,59 @@
     new Vue({
         el: '#app',
         data: {
-            edit_dal:false,
-            value1:'',
+            edit_dal: false,
+            value1: '',
             tableData: [{
                 set_time: '2016-05-02 10:30',
                 vip: '王小虎',
                 tel: '15326354235',
-                beautician:'丽萨',
-                be_time:'2016-05-05 10:30',
-                backup:'dwjeidjwhnudfejhi'
+                beautician: '丽萨',
+                be_time: '2016-05-05 10:30',
+                backup: 'dwjeidjwhnudfejhi'
             }, {
                 set_time: '2016-05-02 10:30',
                 vip: '王小虎',
                 tel: '15326354235',
-                beautician:'丽萨',
-                be_time:'2016-05-05 10:30',
-                backup:'dwjeidjwhnudfejhi'
-            }]
+                beautician: '丽萨',
+                be_time: '2016-05-05 10:30',
+                backup: 'dwjeidjwhnudfejhi'
+            }],
+            list: [],
+            time: '',
+            now: '',
         },
-        methods: {},
+        methods: {
+            edit(id) {
+                if (this.time == '') {
+                    error('请选择时间')
+                    return
+                }
+                $.post(url(methods.bespeakEdit), {time: this.time, id: this.now.id}, v => {
+                    if (v.code == 0) {
+                        this.edit_dal = false
+                        this.getData()
+                        success(v.data)
+                    } else {
+                        error(v.msg)
+                    }
+                })
+            },
+            getData() {
+                $.get(url(methods.bespeakDetail), v => {
+                    if (v.code == 1) {
+                        this.list = v.res
+                    } else {
+                        error(v.error)
+                    }
+                })
+            }
+        },
         mounted() {
-            this.$nextTick(e=>{
+            this.$nextTick(e => {
                 //初始化
                 that = this;
                 loginState()
+                this.getData()
             })
         }
     })

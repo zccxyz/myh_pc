@@ -138,11 +138,11 @@
                     <li>
                         操作人
                         <el-select v-model="one.id" placeholder="请选择" class="in_wid">
-                            <el-optionitemsArr
-                                    v-for="item in staff"
-                                    :label="item.name"
-                                    :value="item.id">
-                            </el-optionitemsArr>
+                            <el-option
+                                    v-for="v in staff"
+                                    :label="v.name"
+                                    :value="v.id">
+                            </el-option>
                         </el-select>
                         <el-input v-model="one.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
                         <p class="do_blue" @click="add(1)">添加</p>
@@ -255,24 +255,24 @@
         },
         methods: {
             sub() {
-                if(!confirm('是否确认录入？')) {
+                if (!confirm('是否确认录入？')) {
                     return
                 }
                 let arr = []
                 let arr2 = []
                 let arr3 = []
-                if(this.oneArr.length>0) {
-                    for(let v of this.oneArr) {
+                if (this.oneArr.length > 0) {
+                    for (let v of this.oneArr) {
                         arr.push({'money': v.rate, 'id': v.id})
                     }
                 }
-                if(this.twoArr.length>0) {
-                    for(let v of this.twoArr) {
+                if (this.twoArr.length > 0) {
+                    for (let v of this.twoArr) {
                         arr2.push({'money': v.rate, 'id': v.id})
                     }
                 }
-                if(this.threeArr.length>0) {
-                    for(let v of this.threeArr) {
+                if (this.threeArr.length > 0) {
+                    for (let v of this.threeArr) {
                         arr3.push({'money': v.rate, 'id': v.id})
                     }
                 }
@@ -282,11 +282,11 @@
                         'amount_items': this.items, 'mid': this.userId,
                         'arr': this.roomId, 's': arr, 'm': arr2, 'g': arr3
                     })
-                }, v=>{
-                    if(v.code == 1){
+                }, v => {
+                    if (v.code == 1) {
                         success(v.Msg)
-                        setTimeout(()=>location.href='./customer.html', 1000)
-                    }else{
+                        setTimeout(() => location.href = './customer.html', 1000)
+                    } else {
                         error(v.error)
                     }
                 })
@@ -297,36 +297,36 @@
                     cancelButtonText: '取消',
                     inputErrorMessage: '请输入正确的数字',
                     inputType: 'number'
-                }).then(({ value }) => {
+                }).then(({value}) => {
                     v.price = value
                 })
             },
             jian(type, i) {
-                if(type==1){
-                    if(this.items[i].check_num>0){
+                if (type == 1) {
+                    if (this.items[i].check_num > 0) {
                         this.items[i].check_num--
                     }
-                }else if(type==2){
-                    if(this.myBox[i].check_num>0){
+                } else if (type == 2) {
+                    if (this.myBox[i].check_num > 0) {
                         this.myBox[i].check_num--
                     }
-                }else if(type==3){
-                    if(this.myItems[i].check_num>0){
+                } else if (type == 3) {
+                    if (this.myItems[i].check_num > 0) {
                         this.myItems[i].check_num--
                     }
                 }
             },
             jia(type, i) {
-                if(type==1){
+                if (type == 1) {
                     this.items[i].check_num++
-                }else if(type==2){
-                    if(this.myBox[i].current_num <= this.myBox[i].check_num) {
+                } else if (type == 2) {
+                    if (this.myBox[i].current_num <= this.myBox[i].check_num) {
                         error('数量不足')
                         return
                     }
                     this.myBox[i].check_num++
-                }else if(type==3){
-                    if(this.myItems[i].current_num <= this.myItems[i].check_num) {
+                } else if (type == 3) {
+                    if (this.myItems[i].current_num <= this.myItems[i].check_num) {
                         return
                     }
                     this.myItems[i].check_num++

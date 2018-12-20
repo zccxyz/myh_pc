@@ -46,6 +46,8 @@ const methods = {
     'operationDetail': 'Store/operationDetail',
     'consumePrint': 'consume/consume_print',
     'arrearsList': 'Arrears/ArrearsList',
+    'bespeakDetail': 'Bespeak/BespeakDetail',
+    'bespeakEdit': 'Bespeak/bespeak_edit',
 };
 let that;
 
