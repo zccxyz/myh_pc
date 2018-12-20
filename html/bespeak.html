@@ -43,6 +43,11 @@
                     label="预约时间">
             </el-table-column>
             <el-table-column
+                    prop="status"
+                    label="状态"
+                    :formatter="formatter">
+            </el-table-column>
+            <el-table-column
                     prop="m_remark"
                     label="备注">
             </el-table-column>
@@ -52,9 +57,9 @@
                     fixed="right"
                     show-overflow-tooltip>
                 <template slot-scope="scope">
-                    <el-button type="danger"
+                    <el-button type="danger" v-if="scope.status!=3 && scope.status!=4"
                                size="mini"
-                               @click="">
+                               @click="now=scope.row;open2()">
                         取消预约
                     </el-button>
                     <el-button
@@ -79,7 +84,7 @@
     margin-left: 10%;"
                                 v-model="time"
                                 type="datetime"
-                                value-format="yyyy-MM-dd HH-mm-ss"
+                                value-format="yyyy-MM-dd HH:mm:ss"
                                 placeholder="选择日期时间">
                 </el-date-picker>
             </div>
@@ -124,12 +129,32 @@
             now: '',
         },
         methods: {
-            edit(id) {
-                if (this.time == '') {
+            formatter(r, c){
+                if(r.status == 1){
+                    return '待确认'
+                }else if(r.status == 2){
+                    return '确认'
+                }else if(r.status == 3){
+                    return '店铺取消'
+                }else if(r.status == 3){
+                    return '会员取消'
+                }
+            },
+            open2() {
+                this.$confirm('是否取消预约?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.edit(2)
+                })
+            },
+            edit(t=1) {
+                if (t==1 && this.time == '') {
                     error('请选择时间')
                     return
                 }
-                $.post(url(methods.bespeakEdit), {time: this.time, id: this.now.id}, v => {
+                $.post(url(methods.bespeakEdit), {time: this.time, id: this.now.id, type: t}, v => {
                     if (v.code == 0) {
                         this.edit_dal = false
                         this.getData()
