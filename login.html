@@ -67,7 +67,6 @@
 </div>
 
 </body>
-<script src="js/poly.js"></script>
 <script src="js/jquery.min.js"></script>
 <script src="js/vue.js"></script>
 <script src="js/index.js"></script>
@@ -95,7 +94,6 @@
                     let rs = verify(v)
                     if (rs != false) {
                         let user = JSON.stringify(rs)
-                        console.log(user)
                         localStorage.setItem('user', user)
                         location.href = 'html/home_page.html'
                     }
