@@ -48,6 +48,7 @@ const methods = {
     'arrearsList': 'Arrears/ArrearsList',
     'bespeakDetail': 'Bespeak/BespeakDetail',
     'bespeakEdit': 'Bespeak/bespeak_edit',
+    'bespeakOperation': 'Bespeak/BespeakOperation',
 };
 let that;
 

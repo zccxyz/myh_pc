@@ -42,11 +42,11 @@
                     prop="choice_time"
                     label="预约时间">
             </el-table-column>
-            <el-table-column
+            <!--<el-table-column
                     prop="status"
                     label="状态"
                     :formatter="formatter">
-            </el-table-column>
+            </el-table-column>-->
             <el-table-column
                     prop="m_remark"
                     label="备注">
@@ -64,7 +64,7 @@
                     </el-button>
                     <el-button
                             size="mini"
-                            @click="" type="success">确认到店
+                            @click="open" type="success">确认到店
                     </el-button>
                     <el-button
                             size="mini"
@@ -90,7 +90,7 @@
             </div>
             <span slot="footer" class="dialog-footer">
             <el-button @click="edit_dal = false">取 消</el-button>
-            <el-button type="primary" @click="edit">确 定</el-button>
+            <el-button type="primary" @click="edit()">确 定</el-button>
           </span>
         </el-dialog>
     </template>
@@ -129,6 +129,16 @@
             now: '',
         },
         methods: {
+            sure(){
+                $.post(url(methods.bespeakOperation), {id: 1, type: 'sure'}, v=>{
+                    if(v.code==1){
+                        success(v.Msg)
+                        this.getData()
+                    }else{
+                        error(v.error)
+                    }
+                })
+            },
             formatter(r, c){
                 if(r.status == 1){
                     return '待确认'
@@ -149,6 +159,15 @@
                     this.edit(2)
                 })
             },
+            open() {
+                this.$confirm('请再次确认已到店?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.sure()
+                })
+            },
             edit(t=1) {
                 if (t==1 && this.time == '') {
                     error('请选择时间')
@@ -158,6 +177,7 @@
                     if (v.code == 0) {
                         this.edit_dal = false
                         this.getData()
+                        this.time = ''
                         success(v.data)
                     } else {
                         error(v.msg)
