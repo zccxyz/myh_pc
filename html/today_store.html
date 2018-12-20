@@ -101,7 +101,11 @@
                 $.get(url(methods.toStoreDetail), v=>{
                     if(v.code==1){
                         this.member = v.res.m
-                        this.nowArr = v.res.m
+                        if(this.now=='会员'){
+                            this.nowArr = v.res.m
+                        }else{
+                            this.nowArr = v.res.n
+                        }
                         this.new = v.res.n
                     }else{
                         error(v.error)

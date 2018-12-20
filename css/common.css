@@ -15,6 +15,15 @@ a{
 .over_hidden{
     overflow: hidden;
 }
+.app_li{
+    background-color: #d5baf9 !important;
+    text-indent: 1.5rem;
+}
+.t_input input{
+    background-color: transparent !important;
+    color: #000 !important;
+    text-align: center;
+}
 *{
     font-size: 1.5rem;
 }
@@ -210,7 +219,6 @@ html {
 }
 html, body {
     height: 100%;
-    scroll = "no"
 }
 i {
     font-style: normal;

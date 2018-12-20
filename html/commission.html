@@ -82,7 +82,7 @@
                     <li v-for="(v, i) in twoArr" style="background: #d5baf9;">
                         &nbsp;&nbsp;&nbsp;
                         <div>{{v.name}}</div>
-                        <el-input type="number" :value="v.rate" placeholder="请输入" class="in_wid" disabled></el-input>&nbsp;%
+                        <el-input type="number" :value="v.rate" placeholder="请输入" class="in_wid t_input" disabled></el-input>&nbsp;%
                         <i class="el-icon-circle-close-outline close" @click="del(2, i)"></i>
                     </li>
                     <li>
@@ -101,7 +101,7 @@
                     <li v-for="(v, i) in threeArr" style="background: #d5baf9;">
                         &nbsp;&nbsp;&nbsp;
                         <div>{{v.name}}</div>
-                        <el-input type="number" :value="v.rate" placeholder="请输入" class="in_wid" disabled></el-input>&nbsp;%
+                        <el-input type="number" :value="v.rate" placeholder="请输入" class="in_wid t_input" disabled></el-input>&nbsp;%
                         <i class="el-icon-circle-close-outline close" @click="del(3, i)"></i>
                     </li>
                 </ul>
