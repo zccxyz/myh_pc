@@ -3,28 +3,26 @@ margin-bottom: 10px;
     border-bottom: 1px  solid rgb(238, 238, 238);
   box-shadow: 0px 1px 2px 0px rgba(75, 74, 75, 0.2);
 }
-.con_list {
+.el-collapse-item__header{
+	padding-left: 15px;
+}
+.con .el-collapse-item__header {
   background-color: rgb(231, 220, 249);
 }
-.item_list {
+.item .el-collapse-item__header {
   background-color: rgb(255, 221, 221);
 }
-.th_list {
+.th .el-collapse-item__header{
   background-color: rgb(255, 247, 207);
 }
 .consume_list{
 
 }
  .consume_list li{
-    padding: 0.5rem 1.5rem;
+	 background: #fff;
+	 padding: 0.5rem 1.5rem;
     line-height: 40px;
     border-bottom: 1px  solid rgb(238, 238, 238);
-}
-.consume_list li:first-child{
-	background: #fff;
-}
-.consume_list li+li{
-	background: #f6f6f6;
 }
 .mar_hun{
  	margin-right: 100px;
