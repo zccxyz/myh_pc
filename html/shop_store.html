@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>到店管理</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+</head>
+<body>
+
+<div id="app" class="customer">
+    <template>
+        <p class="cus_title">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+                <el-breadcrumb-item :to="{ path: '/' }">到店管理</el-breadcrumb-item>
+            </el-breadcrumb>
+        </p>
+        <div class="cus_center">
+            <el-button type="success" class="fr" style="margin-bottom: 5px;">到店添加</el-button>
+        </div>
+        <el-table
+                :data="tableData"
+                border
+                style="width: 100%">
+            <el-table-column
+                    prop="name"
+                    label="姓名"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="tel"
+                    label="电话"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="room"
+                    label="房号">
+            </el-table-column>
+            <el-table-column
+                    prop="time"
+                    label="到店时间">
+            </el-table-column>
+            <el-table-column
+                    prop="do_time"
+                    label="操作时长">
+            </el-table-column>
+            <el-table-column
+                    label="操作"
+                    fixed="right"
+                    show-overflow-tooltip>
+                <template slot-scope="scope">
+                    <el-button
+                            size="mini"
+                            @click="" class="purple do_but">
+                        消费
+                    </el-button>
+                    <el-button
+                            size="mini"
+                            @click="" class="red_box do_but">
+                        消耗
+                    </el-button>
+                    <el-button
+                            size="mini"
+                            @click="" class="blue do_but">离店
+                    </el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+    </template>
+</div>
+
+</body>
+</html>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../js/func.js"></script>
+<script src="../js/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            tableData: [{
+                name: '王小虎',
+                tel:'15236545689',
+                room:'1002',
+                time: '2016-05-02 10:30',
+                do_time: '30分钟'
+            }, {
+                name: '王小虎',
+                tel:'15236545689',
+                room:'1002',
+                time: '2016-05-02 10:30',
+                do_time: '30分钟'
+            }]
+        },
+        methods: {},
+        mounted() {
+            this.$nextTick(e => {
+                //初始化
+                that = this;
+                loginState()
+            })
+        }
+    })
+</script>
