@@ -32,11 +32,11 @@
                             <span class="g_name">
                                  {{v.pro_name}}
                             </span>
-                                    <span class="cr p_wid">￥{{v.check_num>0?v.price * v.check_num:v.price}}</span>
-                                    <span class="g_c_price" @click="open3(v)">
+                            <span class="cr p_wid">￥{{v.check_num>0?v.price * v.check_num:v.price}}</span>
+                            <span class="g_c_price" @click="open3(v)">
                                    修改价格
                                </span>
-                                    <span class="fr mar_hun">
+                            <span class="fr mar_hun">
                                  <template v-if="v.check_num>0">
                                      <i class="el-icon-remove blue_c" @click="jian(1, i)"></i>
                                      <i>{{v.check_num}}</i>
@@ -44,7 +44,7 @@
                                  <i class="el-icon-circle-plus blue_c" @click="jia(1, i)"></i>
                             </span>
                         </li>
-                        <li>
+                        <!--<li>
                         <span class="g_name">
                              面部护理
                         </span>
@@ -57,7 +57,7 @@
                              <i>5</i>
                              <i class="el-icon-circle-plus blue_c"></i>
                         </span>
-                        </li>
+                        </li>-->
                     </ul>
                 </div>
             </el-collapse-item>
@@ -73,14 +73,14 @@
                             <span class="g_name">
                                  {{v.name}}
                             </span>
-                                    <span class="cr p_wid">￥298.00</span>
-                                    <span class="huihui p_wid">
+                            <span class="cr p_wid">￥298.00</span>
+                            <span class="huihui p_wid">
                                剩余次数：{{v.current_num}}
                            </span>
-                                    <span class="huihui p_wid">
+                            <span class="huihui p_wid">
                                共有次数：{{v.originally_num}}
                            </span>
-                                    <span class="fr mar_hun">
+                            <span class="fr mar_hun">
                                  <template v-if="v.check_num>0">
                                      <i class="el-icon-remove blue_c" @click="jian(2, i)"></i>
                                      <i>{{v.check_num}}</i>
@@ -88,7 +88,7 @@
                                  <i class="el-icon-circle-plus blue_c" @click="jia(2, i)"></i>
                             </span>
                         </li>
-                        <li>
+                        <!--<li>
                             <span class="g_name">
                                  面部护理
                             </span>
@@ -104,7 +104,7 @@
                                  <i>5</i>
                                  <i class="el-icon-circle-plus blue_c"></i>
                             </span>
-                        </li>
+                        </li>-->
                     </ul>
                 </div>
             </el-collapse-item>
@@ -120,14 +120,14 @@
                             <span class="g_name">
                                  {{v.name}}
                             </span>
-                                    <span class="cr p_wid">￥298.00</span>
-                                    <span class="huihui p_wid">
+                            <span class="cr p_wid">￥298.00</span>
+                            <span class="huihui p_wid">
                                剩余次数：{{v.current_num}}
                            </span>
-                                    <span class="huihui p_wid">
+                            <span class="huihui p_wid">
                                共有次数：{{v.originally_num}}
                            </span>
-                                    <span class="fr mar_hun">
+                            <span class="fr mar_hun">
                                  <template v-if="v.check_num>0">
                                      <i class="el-icon-remove blue_c" @click="jian(3, i)"></i>
                                      <i>{{v.check_num}}</i>
@@ -140,115 +140,115 @@
             </el-collapse-item>
         </el-collapse>
         <!--<p class="cr linr_four">-->
-            <!--会员余额：￥{{balance}}-->
+        <!--会员余额：￥{{balance}}-->
         <!--</p>-->
         <!--<div class="con_div" v-if="items.length>0">-->
-            <!--<p class="con_list linr_four">-->
-                <!--会员余额消费-->
-            <!--</p>-->
-            <!--<ul class="consume_list">-->
-                <!--<li v-for="(v, i) in items">-->
-                <!--<span class="g_name">-->
-                     <!--{{v.pro_name}}-->
-                <!--</span>-->
-                    <!--<span class="cr p_wid">￥{{v.check_num>0?v.price * v.check_num:v.price}}</span>-->
-                    <!--<span class="g_c_price" @click="open3(v)">-->
-                       <!--修改价格-->
-                   <!--</span>-->
-                    <!--<span class="fr mar_hun">-->
-                     <!--<template v-if="v.check_num>0">-->
-                         <!--<i class="el-icon-remove blue_c" @click="jian(1, i)"></i>-->
-                         <!--<i>{{v.check_num}}</i>-->
-                     <!--</template>-->
-                     <!--<i class="el-icon-circle-plus blue_c" @click="jia(1, i)"></i>-->
-                <!--</span>-->
-                <!--</li>-->
-                <!--&lt;!&ndash;<li>-->
-                <!--<span class="g_name">-->
-                     <!--面部护理-->
-                <!--</span>-->
-                    <!--<span class="cr p_wid">￥298.00</span>-->
-                    <!--<span class="g_c_price">-->
-                   <!--修改价格-->
-               <!--</span>-->
-                    <!--<span class="fr mar_hun">-->
-                     <!--<i class="el-icon-remove blue_c"></i>-->
-                     <!--<i>5</i>-->
-                     <!--<i class="el-icon-circle-plus blue_c"></i>-->
-                <!--</span>-->
-                <!--</li>&ndash;&gt;-->
-            <!--</ul>-->
+        <!--<p class="con_list linr_four">-->
+        <!--会员余额消费-->
+        <!--</p>-->
+        <!--<ul class="consume_list">-->
+        <!--<li v-for="(v, i) in items">-->
+        <!--<span class="g_name">-->
+        <!--{{v.pro_name}}-->
+        <!--</span>-->
+        <!--<span class="cr p_wid">￥{{v.check_num>0?v.price * v.check_num:v.price}}</span>-->
+        <!--<span class="g_c_price" @click="open3(v)">-->
+        <!--修改价格-->
+        <!--</span>-->
+        <!--<span class="fr mar_hun">-->
+        <!--<template v-if="v.check_num>0">-->
+        <!--<i class="el-icon-remove blue_c" @click="jian(1, i)"></i>-->
+        <!--<i>{{v.check_num}}</i>-->
+        <!--</template>-->
+        <!--<i class="el-icon-circle-plus blue_c" @click="jia(1, i)"></i>-->
+        <!--</span>-->
+        <!--</li>-->
+        <!--&lt;!&ndash;<li>-->
+        <!--<span class="g_name">-->
+        <!--面部护理-->
+        <!--</span>-->
+        <!--<span class="cr p_wid">￥298.00</span>-->
+        <!--<span class="g_c_price">-->
+        <!--修改价格-->
+        <!--</span>-->
+        <!--<span class="fr mar_hun">-->
+        <!--<i class="el-icon-remove blue_c"></i>-->
+        <!--<i>5</i>-->
+        <!--<i class="el-icon-circle-plus blue_c"></i>-->
+        <!--</span>-->
+        <!--</li>&ndash;&gt;-->
+        <!--</ul>-->
         <!--</div>-->
 
         <!--<div class="con_div" v-if="myBox.length>0">-->
-            <!--<p class="item_list linr_four">-->
-                <!--会员自有套盒-->
-            <!--</p>-->
-            <!--<ul class="consume_list">-->
-                <!--<li v-for="(v,i) in myBox">-->
-                <!--<span class="g_name">-->
-                     <!--{{v.name}}-->
-                <!--</span>-->
-                    <!--<span class="cr p_wid">￥298.00</span>-->
-                    <!--<span class="huihui p_wid">-->
-                   <!--剩余次数：{{v.current_num}}-->
-               <!--</span>-->
-                    <!--<span class="huihui p_wid">-->
-                   <!--共有次数：{{v.originally_num}}-->
-               <!--</span>-->
-                    <!--<span class="fr mar_hun">-->
-                     <!--<template v-if="v.check_num>0">-->
-                         <!--<i class="el-icon-remove blue_c" @click="jian(2, i)"></i>-->
-                         <!--<i>{{v.check_num}}</i>-->
-                     <!--</template>-->
-                     <!--<i class="el-icon-circle-plus blue_c" @click="jia(2, i)"></i>-->
-                <!--</span>-->
-                <!--</li>-->
-                <!--&lt;!&ndash;<li>-->
-                <!--<span class="g_name">-->
-                     <!--面部护理-->
-                <!--</span>-->
-                    <!--<span class="cr p_wid">￥298.00</span>-->
-                    <!--<span class="huihui p_wid">-->
-                   <!--剩余次数：3-->
-               <!--</span>-->
-                    <!--<span class="huihui p_wid">-->
-                   <!--共有次数：12-->
-               <!--</span>-->
-                    <!--<span class="fr mar_hun">-->
-                     <!--<i class="el-icon-remove blue_c"></i>-->
-                     <!--<i>5</i>-->
-                     <!--<i class="el-icon-circle-plus blue_c"></i>-->
-                <!--</span>-->
-                <!--</li>&ndash;&gt;-->
-            <!--</ul>-->
+        <!--<p class="item_list linr_four">-->
+        <!--会员自有套盒-->
+        <!--</p>-->
+        <!--<ul class="consume_list">-->
+        <!--<li v-for="(v,i) in myBox">-->
+        <!--<span class="g_name">-->
+        <!--{{v.name}}-->
+        <!--</span>-->
+        <!--<span class="cr p_wid">￥298.00</span>-->
+        <!--<span class="huihui p_wid">-->
+        <!--剩余次数：{{v.current_num}}-->
+        <!--</span>-->
+        <!--<span class="huihui p_wid">-->
+        <!--共有次数：{{v.originally_num}}-->
+        <!--</span>-->
+        <!--<span class="fr mar_hun">-->
+        <!--<template v-if="v.check_num>0">-->
+        <!--<i class="el-icon-remove blue_c" @click="jian(2, i)"></i>-->
+        <!--<i>{{v.check_num}}</i>-->
+        <!--</template>-->
+        <!--<i class="el-icon-circle-plus blue_c" @click="jia(2, i)"></i>-->
+        <!--</span>-->
+        <!--</li>-->
+        <!--&lt;!&ndash;<li>-->
+        <!--<span class="g_name">-->
+        <!--面部护理-->
+        <!--</span>-->
+        <!--<span class="cr p_wid">￥298.00</span>-->
+        <!--<span class="huihui p_wid">-->
+        <!--剩余次数：3-->
+        <!--</span>-->
+        <!--<span class="huihui p_wid">-->
+        <!--共有次数：12-->
+        <!--</span>-->
+        <!--<span class="fr mar_hun">-->
+        <!--<i class="el-icon-remove blue_c"></i>-->
+        <!--<i>5</i>-->
+        <!--<i class="el-icon-circle-plus blue_c"></i>-->
+        <!--</span>-->
+        <!--</li>&ndash;&gt;-->
+        <!--</ul>-->
         <!--</div>-->
 
         <!--<div class="con_div" v-if="myItems.length>0">-->
-            <!--<p class="th_list linr_four">-->
-                <!--会员项目消耗-->
-            <!--</p>-->
-            <!--<ul class="consume_list">-->
-                <!--<li v-for="(v,i) in myItems">-->
-                <!--<span class="g_name">-->
-                     <!--{{v.name}}-->
-                <!--</span>-->
-                    <!--<span class="cr p_wid">￥298.00</span>-->
-                    <!--<span class="huihui p_wid">-->
-                   <!--剩余次数：{{v.current_num}}-->
-               <!--</span>-->
-                    <!--<span class="huihui p_wid">-->
-                   <!--共有次数：{{v.originally_num}}-->
-               <!--</span>-->
-                    <!--<span class="fr mar_hun">-->
-                     <!--<template v-if="v.check_num>0">-->
-                         <!--<i class="el-icon-remove blue_c" @click="jian(3, i)"></i>-->
-                         <!--<i>{{v.check_num}}</i>-->
-                     <!--</template>-->
-                     <!--<i class="el-icon-circle-plus blue_c" @click="jia(3, i)"></i>-->
-                <!--</span>-->
-                <!--</li>-->
-            <!--</ul>-->
+        <!--<p class="th_list linr_four">-->
+        <!--会员项目消耗-->
+        <!--</p>-->
+        <!--<ul class="consume_list">-->
+        <!--<li v-for="(v,i) in myItems">-->
+        <!--<span class="g_name">-->
+        <!--{{v.name}}-->
+        <!--</span>-->
+        <!--<span class="cr p_wid">￥298.00</span>-->
+        <!--<span class="huihui p_wid">-->
+        <!--剩余次数：{{v.current_num}}-->
+        <!--</span>-->
+        <!--<span class="huihui p_wid">-->
+        <!--共有次数：{{v.originally_num}}-->
+        <!--</span>-->
+        <!--<span class="fr mar_hun">-->
+        <!--<template v-if="v.check_num>0">-->
+        <!--<i class="el-icon-remove blue_c" @click="jian(3, i)"></i>-->
+        <!--<i>{{v.check_num}}</i>-->
+        <!--</template>-->
+        <!--<i class="el-icon-circle-plus blue_c" @click="jia(3, i)"></i>-->
+        <!--</span>-->
+        <!--</li>-->
+        <!--</ul>-->
         <!--</div>-->
         <div class="commission">
             <div class="mar_hun fl">
@@ -341,7 +341,7 @@
         el: '#app',
         data: {
             activeNames: ['2'],
-            radio:'1',
+            radio: '1',
             input: '',
             options: [{
                 value: '选项1',
@@ -420,7 +420,7 @@
                     cancelButtonText: '取消',
                     inputErrorMessage: '请输入正确的数字',
                     inputType: 'number'
-                }).then(({value}) => {
+                }).then(value => {
                     v.price = value
                 })
             },
