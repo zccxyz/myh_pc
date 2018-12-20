@@ -5,6 +5,13 @@ a{
 .customer .el-table td,.customer .el-table th{
     text-align: center;
 }
+.customer .el-table td .do_but{
+    width: 90px;
+    border-radius: 10px;
+    outline: 0;
+    border:none;
+    color:#fff;
+}
 .over_hidden{
     overflow: hidden;
 }
