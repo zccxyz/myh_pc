@@ -268,7 +268,7 @@
                         <el-input v-model="one.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
                         <p class="do_blue" @click="add(1)">添加</p>
                     </li>
-                    <li v-for="(v, i) in oneArr">
+                    <li v-for="(v, i) in oneArr" style="background: #d5baf9;">
                         &nbsp;&nbsp;&nbsp;
                         <div>{{v.name}}</div>
                         <el-input :value="v.rate" placeholder="请输入" class="in_wid" disabled></el-input>&nbsp;%
@@ -293,7 +293,7 @@
                         <el-input v-model="two.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
                         <p class="do_blue" @click="add(2)">添加</p>
                     </li>
-                    <li v-for="(v, i) in twoArr">
+                    <li v-for="(v, i) in twoArr" style="background: #d5baf9;">
                         &nbsp;&nbsp;&nbsp;
                         <div>{{v.name}}</div>
                         <el-input :value="v.rate" placeholder="请输入" class="in_wid" disabled></el-input>&nbsp;%
