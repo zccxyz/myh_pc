@@ -448,12 +448,18 @@
                 })*/
             },
             allRemove() {
-                if (confirm('是否全部清空?')) {
+                this.$confirm('是否全部清空?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
                     this.need = []
                     for (let v of this.list) {
                         v.needNum = 0;
                     }
-                }
+                }).catch(e=>{
+
+                })
             },
             form(r, c) {
                 if (r.free == 1) {
