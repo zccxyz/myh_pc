@@ -1,5 +1,5 @@
-const ym = 'https://www.myhkj.cn/apis/backend/';
-//const ym = 'http://admin.test.com/apis/backend/';
+//const ym = 'https://www.myhkj.cn/apis/backend/';
+const ym = 'http://admin.test.com/apis/backend/';
 
 const methods = {
     'login': 'login/login',
@@ -50,6 +50,7 @@ const methods = {
     'bespeakEdit': 'Bespeak/bespeak_edit',
     'bespeakOperation': 'Bespeak/BespeakOperation',
     'arriveList': 'Arrive/ArriveList',
+    'birthdayDetail': 'member/BirthdayDetail',
 };
 let that;
 
