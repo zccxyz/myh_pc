@@ -301,7 +301,7 @@
                 for(let v of this.need) {
                     if(v.type == '项目') {
                         if(v.yh!=0){
-                            items.push({'price': v.price, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
+                            items.push({'price': v.yh==1?v.price * v.discount/10:0, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
                                 'name': v.name, 'sum': v.needNum, 'times': v.fre, 'is_rate': v.yh})
                         }else{
                             items.push({'price': v.price, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
@@ -332,7 +332,7 @@
                 for(let v of this.need){
                     if(v.type == '套盒') {
                         if(v.yh!=0){
-                            th.push({'price': v.price, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
+                            th.push({'price': v.yh==1?v.price * v.discount/10:0, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
                                 'name': v.name, 'sum': v.needNum, 'times': v.fre, 'is_rate': v.yh})
                         }else{
                             th.push({'price': v.price, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
@@ -363,7 +363,7 @@
                 for(let v of this.need) {
                     if(v.type == '产品') {
                         if(v.yh != 0){
-                            goods.push({'price': v.price, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
+                            goods.push({'price': v.yh==1?v.price * v.discount/10:0, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
                                 'name': v.name, 'sum': v.needNum, 'spec': v.spec, 'is_rate': v.yh})
                         }else{
                             goods.push({'price': v.price, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
@@ -494,7 +494,7 @@
                 if (z) {
                     this.need.unshift(v)
                 }
-                console.log(v)
+                console.log(this.need)
             },
             toggleSelection(rows) {
                 if (rows) {

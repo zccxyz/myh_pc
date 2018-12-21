@@ -1,5 +1,5 @@
-//const ym = 'https://www.myhkj.cn/apis/backend/';
-const ym = 'http://admin.test.com/apis/backend/';
+const ym = 'https://www.myhkj.cn/apis/backend/';
+//const ym = 'http://admin.test.com/apis/backend/';
 
 const methods = {
     'login': 'login/login',
