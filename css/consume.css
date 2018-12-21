@@ -15,8 +15,8 @@ margin-bottom: 10px;
 .th .el-collapse-item__header{
   background-color: rgb(255, 247, 207);
 }
-.consume_list{
-
+.el-collapse-item{
+	margin-bottom: 10px;
 }
  .consume_list li{
 	 background: #fff;
