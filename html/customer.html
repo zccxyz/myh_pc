@@ -343,23 +343,23 @@
             zt: false
         },
         methods: {
-            exportData(){
+            exportData() {
                 /*$.get(url(methods.exportMember), v=>{
 
                 })*/
                 window.open(url(methods.exportMember))
             },
             jump(type, v) {
-                if(type == 1){
+                if (type == 1) {
                     localStorage.setItem('user_id', v.id)
                     location.href = './buy.html'
-                }else if(type == 2) {
-                    $.post(url(methods.isLeave), {'id': v.id}, x=>{
-                        if(x.code != 0){
+                } else if (type == 2) {
+                    $.post(url(methods.isLeave), {'id': v.id}, x => {
+                        if (x.code != 0) {
                             error('请求出错')
                             return
                         }
-                        if(x.data==false){
+                        if (x.data == false) {
                             error('用户未到店')
                             return
                         }
@@ -367,7 +367,7 @@
                         localStorage.setItem('user_id', v.id)
                         location.href = './consume.html'
                     })
-                }else if(type == 3) {
+                } else if (type == 3) {
                     localStorage.setItem('user_id', v.id)
                     location.href = './vip_information.html'
                 }
@@ -379,9 +379,9 @@
                 }
                 let obj = this.user
                 obj.id = this.now.id
-                $.post(url(methods.editMember), {'data': JSON.stringify(obj)}, v=>{
+                $.post(url(methods.editMember), {'data': JSON.stringify(obj)}, v => {
                     let rs = verify(v)
-                    if(rs != false) {
+                    if (rs != false) {
                         this.zt = false
                         success('修改成功')
                         this.getMember()
@@ -419,7 +419,7 @@
                                 error('删除失败')
                             }
                         })
-                    }).catch(e=>{
+                    }).catch(e => {
 
                     })
                 }
@@ -443,7 +443,7 @@
                             error(v.error)
                         }
                     })
-                }).catch(e=>{
+                }).catch(e => {
 
                 })
             },
@@ -452,9 +452,10 @@
                     if (v.code == 1) {
                         success(v.Msg)
                         this.leaveDialogVisible = false
-                        if(v.res.time!=null) {
+                        if (v.res.time != null) {
                             this.isPrint(v.res.id)
                         }
+                        this.getMember()
                     } else {
                         error(v.error)
                         this.leaveDialogVisible = false
@@ -467,14 +468,14 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    $.post(url(methods.consumePrint), {mid: this.now.id, room: rid}, v=>{
-                        if(v.code==1){
+                    $.post(url(methods.consumePrint), {mid: this.now.id, room: rid}, v => {
+                        if (v.code == 1) {
                             success('打印成功')
-                        }else{
+                        } else {
                             error(v.error)
                         }
                     })
-                }).catch(e=>{
+                }).catch(e => {
 
                 })
             },
@@ -566,9 +567,9 @@
                 let data = document.getElementById("file").files[0];
             },
             formatter(r, c) {
-                if(r.bir_type == 1){
+                if (r.bir_type == 1) {
                     return '阳历'
-                }else{
+                } else {
                     return '农历'
                 }
             }

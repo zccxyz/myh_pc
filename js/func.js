@@ -49,6 +49,7 @@ const methods = {
     'bespeakDetail': 'Bespeak/BespeakDetail',
     'bespeakEdit': 'Bespeak/bespeak_edit',
     'bespeakOperation': 'Bespeak/BespeakOperation',
+    'arriveList': 'Arrive/ArriveList',
 };
 let that;
 
