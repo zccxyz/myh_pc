@@ -10,9 +10,55 @@
 <body>
 
 <div id="app">
-    <p class="index_top">
-        <img src="../images/home_birth.png" class="home_birth"/>本周生日|张三&#12288;10-26
-    </p>
+    <div class="index_top">
+        <img src="../images/home_birth.png" class="home_birth"/>本周生日&nbsp;|&nbsp;
+        <ul class="bir_ul">
+            <li>
+                <a href="birthday.html" target="iframe">
+                张三&nbsp;10-26
+                </a>
+            </li>
+            <li>
+                ferf&nbsp;10-26
+            </li>
+            <li>
+                分&nbsp;10-26
+            </li>
+            <li>
+                范文芳&nbsp;10-26
+            </li>
+            <li>
+                特瑞特&nbsp;10-26
+            </li>
+            <li>
+                它4人&nbsp;10-26
+            </li>
+            <li>
+                士大夫但是&nbsp;10-26
+            </li>
+            <li>
+                丰富&nbsp;10-26
+            </li>
+            <li>
+                丰富&nbsp;10-26
+            </li>
+            <li>
+                阿文&nbsp;10-26
+            </li>
+            <li>
+                发热我&nbsp;10-26
+            </li>
+            <li>
+                34人&nbsp;10-26
+            </li>
+            <li>
+                热风&nbsp;10-26
+            </li>
+            <li>
+                五分&nbsp;10-26
+            </li>
+        </ul>
+    </div>
     <ul class="intex_center">
         <li>
             <a href="today_total.html" target="iframe">
@@ -78,9 +124,9 @@
         },
         methods: {
             getData() {
-                $.post(url(methods.manager), v=>{
+                $.post(url(methods.manager), v => {
                     let rs = verify(v)
-                    if(rs!=false){
+                    if (rs != false) {
                         this.sj = rs
                     }
                 })

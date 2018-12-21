@@ -5,9 +5,20 @@
 	line-height: 56px;
 	font-size: 1.5rem;
 	border-bottom: 1px solid rgb(225, 225, 225);
+	white-space: nowrap;
 }
 .home_birth{
 	margin-right: 15px;
+}
+.bir_ul{
+	display: inline-block;
+}
+.bir_ul>li{
+	display: inline-block;
+	margin:0 20px 0 5px;
+}
+.bir_ul>li>a{
+	color:#333;
 }
 .intex_center{
 	width: 100%;
