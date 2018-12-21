@@ -26,21 +26,21 @@
             </div>
         </div>
         <el-table
-                :data="tableData"
+                :data="list.filter(data => !input || data.name.toLowerCase().includes(input.toLowerCase()))"
                 border
                 style="width: 100%">
             <el-table-column
-                    prop="date"
+                    prop="name"
                     label="姓名"
                     width="180">
             </el-table-column>
             <el-table-column
-                    prop="name"
+                    prop="birthday"
                     label="生日"
                     width="180">
             </el-table-column>
             <el-table-column
-                    prop="address"
+                    prop="tel"
                     label="电话">
             </el-table-column>
         </el-table>
@@ -75,14 +75,26 @@
                 date: '2016-05-03',
                 name: '王小虎',
                 address: '上海市普陀区金沙江路 1516 弄'
-            }]
+            }],
+            list: [],
         },
-        methods: {},
+        methods: {
+            getData(){
+                $.post(url(methods.birthdayDetail), {start: '', end: ''}, v=>{
+                    if(v.code==1){
+                        this.list = v.res
+                    }else{
+                        error(v.error)
+                    }
+                })
+            },
+        },
         mounted() {
             this.$nextTick(e=>{
                 //初始化
                 that = this;
                 loginState()
+                this.getData()
             })
         }
     })
