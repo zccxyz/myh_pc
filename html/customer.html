@@ -44,7 +44,8 @@
         </div>
         <el-table border
                   ref="multipleTable"
-                  :data="list.filter(data => !input || data.name.toLowerCase().includes(input.toLowerCase()))"
+                  :data="list.filter(data => !input || data.name.toLowerCase().includes(input.toLowerCase()) ||
+                  data.tel.toLowerCase().includes(input.toLowerCase()))"
                   tooltip-effect="dark"
                   style="width: 100%"
                   @selection-change="handleSelectionChange">
@@ -123,7 +124,8 @@
                 title="新增会员"
                 :visible.sync="addDialogVisible"
                 width="400px"
-                center>
+                center
+                :before-close="close">
             <ul class="goods_edit">
                 <li>
                     <span class="list_left">会员名</span>
@@ -163,6 +165,7 @@
                     <el-date-picker
                             v-model="user.birthday"
                             type="date"
+                            value-format="yyyy-MM-dd"
                             placeholder="选择生日">
                     </el-date-picker>
                 </span>
@@ -234,7 +237,8 @@
                 title="编辑会员"
                 :visible.sync="zt"
                 width="400px"
-                center>
+                center
+                :before-close="close">
             <ul class="goods_edit">
                 <li>
                     <span class="list_left">会员名</span>
@@ -274,6 +278,7 @@
                     <el-date-picker
                             v-model="user.birthday"
                             type="date"
+                            value-format="yyyy-MM-dd"
                             placeholder="选择生日">
                     </el-date-picker>
                 </span>
@@ -383,6 +388,14 @@
                     let rs = verify(v)
                     if (rs != false) {
                         this.zt = false
+                        this.user = {
+                            'name': '',
+                            'age': '',
+                            'tel': '',
+                            'sex': '1',
+                            'bir_type': '1',
+                            'birthday': '',
+                        }
                         success('修改成功')
                         this.getMember()
                     }
@@ -503,6 +516,14 @@
                     let rs = verify(v)
                     if (rs != false) {
                         success('添加成功')
+                        this.user = {
+                            'name': '',
+                            'age': '',
+                            'tel': '',
+                            'sex': '1',
+                            'bir_type': '1',
+                            'birthday': '',
+                        }
                         this.addDialogVisible = false
                         this.getMember()
                     } else {
@@ -510,13 +531,27 @@
                     }
                 })
             },
+            close() {
+                //alert(1)
+                this.user = {
+                    'name': '',
+                    'age': '',
+                    'tel': '',
+                    'sex': '1',
+                    'bir_type': '1',
+                    'birthday': '',
+                }
+                this.addDialogVisible = false
+                this.zt = false
+            },
             cancel() {
+                this.addDialogVisible = false
                 this.zt = false
                 this.user = {
                     'name': '',
                     'age': '',
                     'tel': '',
-                    'sex': '',
+                    'sex': '1',
                     'bir_type': 1,
                     'birthday': '',
                 };
