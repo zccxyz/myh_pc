@@ -21,6 +21,16 @@
      .el-header  .home_exit{
       margin-left:15px;
     }
+.news {
+    position: absolute;
+    right: -5px;
+    top: -11px;
+    background-color: #f13333;
+    border-radius: 50%;
+    display: block;
+    height: 8px;
+    width: 8px;
+}
   .el-aside {
     background: #dedeff;
   }
