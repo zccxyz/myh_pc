@@ -25,8 +25,8 @@
             <el-collapse-item name="1" class="con">
                 <template slot="title">
                     <p>
-                        <el-radio v-model="radio" label="1">会员余额</el-radio>
-                        <el-radio v-model="radio" label="2">卡项余额</el-radio>
+                        <el-radio v-model="c_b" label="1">会员余额</el-radio>
+                        <el-radio v-model="c_b" v-for="v in card" :label="v.id">{{v.name}}</el-radio>
                     </p>
                 </template>
                 <div class="con_div" v-if="items.length>0">
@@ -378,6 +378,8 @@
             threeArr: [],
             balance: 0,
             roomId: 0,
+            c_b: '1', //1余额，2会员卡
+            card: [],
         },
         methods: {
             sub() {
@@ -409,7 +411,7 @@
                             'box': this.myBox, 'items': this.myItems,
                             'amount_items': this.items, 'mid': this.userId,
                             'arr': this.roomId, 's': arr, 'm': arr2, 'g': arr3,
-                            'c_b': '', 'consume_card': '',
+                            'c_b': this.c_b==1?1:2, 'consume_card': this.c_b==1?0:this.c_b,
                         })
                     }, v => {
                         if (v.code == 1) {
@@ -429,8 +431,8 @@
                     cancelButtonText: '取消',
                     inputErrorMessage: '请输入正确的数字',
                     inputType: 'number'
-                }).then(value => {
-                    v.price = value
+                }).then(x => {
+                    v.price = x.value
                 })
             },
             jian(type, i) {
@@ -543,8 +545,23 @@
                         this.mrs = v.back.m
                         this.staff = v.back.staff
                         this.balance = v.back.balance
+                        this.card = v.back.card
                     }
                 })
+            }
+        },
+        watch: {
+            c_b(v) {
+                if(v==1){
+
+                }else{
+                    for(let x of this.card) {
+                        if(v == x.id){
+                            this.balance = x.amount
+                            return
+                        }
+                    }
+                }
             }
         },
         mounted() {

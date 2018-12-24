@@ -67,7 +67,7 @@ function loginState() {
         if (!v.data) {
             //登录后跳转
             localStorage.removeItem('user')
-            location.href = '../login.html'
+            window.location.href = '../login.html'
         }
     })
 }
