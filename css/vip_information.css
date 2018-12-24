@@ -143,9 +143,20 @@ position: fixed;
     border-bottom: 1px solid rgb(194, 194, 194);
 }
 .pro_ul{
+    max-height: 250px;
+    overflow-y: scroll;
     padding-left: 15px;
 }
 .height{
     height: 100%;
+}
+.heal_title{
+    border-top-right-radius:10px;
+    border-top-left-radius:10px;
+    background-color: rgb(191, 192, 251);
+    height:50px;
+    line-height: 50px;
+    text-align: center;
+    box-shadow: 0px 1px 0px 0px rgba(6, 6, 6, 0.2),0px -1px 0px 0px rgba(6, 6, 6, 0.2);
 }
 
