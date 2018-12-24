@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="../css/index.css">
     <link rel="stylesheet" type="text/css" href="../css/common.css">
     <link rel="stylesheet" type="text/css" href="../css/vip_information.css">
+    <link rel="stylesheet" type="text/css" href="../css/add_archives.css">
 </head>
 <body class="information">
 
@@ -397,8 +398,8 @@
                 <ul class="ul_list">
                     <li v-for="v in list">
                         {{v.create_time}}
-                        <el-button class="fr" @click="dialogVisible=true">查看</el-button>
-                        <el-button type="danger" class="fr">删除</el-button>
+                        <el-button class="fr mar_hun" @click="dialogVisible=true">查看</el-button>
+                        <el-button type="danger" class="fr mar_hun">删除</el-button>
                     </li>
                 </ul>
             </el-tab-pane>
