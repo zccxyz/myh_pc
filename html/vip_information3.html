@@ -390,59 +390,38 @@
                 </div>
             </el-tab-pane>
             <el-tab-pane label="健康档案">
-                <div class="cus_center">
-                    <el-button type="success" class="fr" @click="add_archives = true"
-                               style="margin-bottom: 5px">新增档案</el-button>
-                </div>
-                <ul>
-                    <li>
-                        2018-12-24
-                        <img src="../images/moredetail.png" class="fr item_Detail" height="100%">
-                    </li>
-                </ul>
-            </el-tab-pane>
-        </el-tabs>
-        <!--外面的大弹框-->
-        <el-dialog
-                :title="健康问题"
-                :visible.sync="add_archives"
-                width="70%">
-            <div class="basic_inf height">
-                <p class="body_c p_div">身体问题</p>
-                <div class="pro_div">
-                    <el-button round size="mini" v-for="v in body" :type="v.zt?'primary':''" @click="click(v, 1)">{{v.body}}</el-button>
-                </div>
-                <p class="skin_c p_div">皮肤问题</p>
-                <div class="pro_div">
-                    <el-button round size="mini" v-for="v in skin" :type="v.zt?'primary':''" @click="click(v, 2)">{{v.body}}</el-button>
-                </div>
-                <div class="choiced" style="width: 100%;" v-show="need.length>0">
-                    <p class="heal_title">已选择</p>
-                    <ul class="pro_ul">
-                        <li class="c_title p_div" v-for="v in need">
-                            {{v.head.body}}：
-                            <span v-for="x in v.list">
+                <div class="basic_inf height">
+                    <p class="body_c p_div">身体问题</p>
+                    <div class="pro_div">
+                        <el-button round size="mini" v-for="v in body" :type="v.zt?'primary':''" @click="click(v, 1)">{{v.body}}</el-button>
+                    </div>
+                    <p class="skin_c p_div">皮肤问题</p>
+                    <div class="pro_div">
+                        <el-button round size="mini" v-for="v in skin" :type="v.zt?'primary':''" @click="click(v, 2)">{{v.body}}</el-button>
+                    </div>
+                    <div class="choiced" style="width: 100%;" v-show="need.length>0">
+                        <p class="heal_title">已选择</p>
+                        <ul class="pro_ul">
+                            <li class="c_title p_div" v-for="(v, j) in need">
+                                {{v.head.body}}：
+                                <span v-for="(x, i) in v.list">
                                     <el-button type="primary" round size="mini">{{x.body}}</el-button>
-                                    <i class="el-icon-error"></i>
+                                    <i class="el-icon-error" @click="delWt(j, i)"></i>
                                 </span>
-                        </li>
-                    </ul>
+                            </li>
+                        </ul>
 
-                    <div class="bottom_but">
-                        <el-button type="success">提交</el-button>
+                        <div class="bottom_but">
+                            <el-button type="success">提交</el-button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="sureCheck">确 定</el-button>
-      </span>
-        </el-dialog>
-        <!--小弹框-->
+            </el-tab-pane>
+        </el-tabs>
         <el-dialog
                 :title="now.body"
                 :visible.sync="dialogVisible"
-                width="30%" center append-to-body>
+                width="30%" center>
             <div>
                 <el-checkbox-group v-model="check">
                     <el-checkbox v-for="v in list" :label="v.body"></el-checkbox>
@@ -467,7 +446,6 @@
         el: '#app',
         data: {
             checkList: '',
-            add_archives: false,
             dialogVisible: false,
             input: '',
             options: [{
@@ -551,6 +529,25 @@
             type: 1,
         },
         methods: {
+            delWt(j, i) {
+                this.need[j]['list'].splice(i, 1)
+                if(this.need[j]['list'].length==0){
+                    if(this.need[j]['type']==1){
+                        for(let v of this.body) {
+                            if(v.id == this.need[j]['head']['id']){
+                                v.zt = false
+                            }
+                        }
+                    }else{
+                        for(let v of this.skin) {
+                            if(v.id == this.need[j]['head']['id']){
+                                v.zt = false
+                            }
+                        }
+                    }
+                    this.need.splice(j, 1)
+                }
+            },
             sureCheck() {
                 let arr = []
                 if(this.check.length>0){
@@ -575,12 +572,17 @@
                             }
                         }
                     }
+                    let zt = true
                     for(let v of this.need) {
                         if(v.head.id == this.now.id){
-
+                            v.list = arr
+                            zt = false
+                            break
                         }
                     }
-                    this.need.unshift({head: this.now, list: arr,})
+                    if(zt){
+                        this.need.unshift({head: this.now, list: arr, type: this.type})
+                    }
                     this.list = []
                     this.check = []
                     this.dialogVisible = false
