@@ -6,11 +6,12 @@
     <link rel="stylesheet" href="../css/index.css">
     <link rel="stylesheet" type="text/css" href="../css/common.css">
     <style>
-        .dis_div{
+        .dis_div {
             display: flex;
             flex-wrap: wrap;
         }
-        .dis_div>span{
+
+        .dis_div > span {
             display: inline-block;
             width: 46%;
             margin-bottom: 5px;
@@ -30,21 +31,22 @@
             <el-button type="success" class="fr" @click="add_card = true" style="margin-bottom: 5px">新增卡项</el-button>
         </div>
         <el-table
-                :data="tableData"
+                :data="list"
                 border
                 style="width: 100%">
             <el-table-column
-                    prop="date"
+                    prop="card_type"
                     label="卡类"
-                    width="180">
+                    width="180"
+                    :formatter="formatter">
             </el-table-column>
             <el-table-column
-                    prop="name"
+                    prop="card_name"
                     label="卡名称"
                     width="180">
             </el-table-column>
             <el-table-column
-                    prop="address"
+                    prop="amount"
                     label="卡金额">
             </el-table-column>
             <el-table-column
@@ -54,7 +56,7 @@
                 <template slot-scope="scope">
                     <el-button
                             size="mini"
-                            @click="">编辑
+                            @click="detail(scope.row.id)">编辑
                     </el-button>
                     <el-button
                             size="mini"
@@ -64,72 +66,73 @@
                 </template>
             </el-table-column>
         </el-table>
-        <el-dialog title="新增商品"
+        <el-dialog title="新增卡项"
                    :visible.sync="add_card"
                    width="660px"
-                   center>
+                   center
+                   :before-close="close">
             <ul class="goods_edit">
                 <li>
                     <span class="list_left">卡类</span>
                     <span class="list_right">
-                        <el-radio v-model="sj.type" label="1">折扣卡</el-radio>
-                        <el-radio v-model="sj.type" label="2">折扣储值卡</el-radio>
-                        <el-radio v-model="sj.type" label="3">全场折扣卡</el-radio>
+                        <el-radio v-model="sj2.type" label="1">储值卡</el-radio>
+                        <el-radio v-model="sj2.type" label="2">折扣储值卡</el-radio>
+                        <el-radio v-model="sj2.type" label="3">全场折扣卡</el-radio>
                     </span>
                 </li>
                 <li>
                     <span class="list_left">卡名</span>
                     <span class="list_right">
-                    <el-input v-model="sj.price" placeholder="请输入卡名"></el-input>
+                    <el-input v-model="sj2.name" placeholder="请输入卡名"></el-input>
                 </span>
                 </li>
                 <li>
                     <span class="list_left">售价</span>
                     <span class="list_right">
-                    <el-input v-model="sj.stock" placeholder="请输入售价"></el-input>
+                    <el-input v-model="sj2.price" type="number" placeholder="请输入售价"></el-input>
                 </span>
                 </li>
                 <li>
                     <span class="list_left">额度</span>
                     <span class="list_right">
-                    <el-input v-model="sj.fre" placeholder="请输入额度"></el-input>
+                    <el-input v-model="sj2.amount" type="number" placeholder="请输入额度"></el-input>
                 </span>
                 </li>
-                <li v-if="sj.type==3">
+                <li v-if="sj2.type==3">
                     <span class="list_left">折扣</span>
                     <span class="list_right">
-                    <el-input v-model="sj.fre" placeholder="请输入折扣"></el-input>
+                    <el-input v-model="sj2.discount" placeholder="请输入折扣"></el-input>
                 </span>
                 </li>
                 <li>
                     <span class="list_left">是否允许赠送</span>
                     <span class="list_right">
-                       <el-radio v-model="radio" label="1">允许</el-radio>
-                        <el-radio v-model="radio" label="2">不允许</el-radio>
+                       <el-radio v-model="sj2.send" label="1">允许</el-radio>
+                        <el-radio v-model="sj2.send" label="2">不允许</el-radio>
                     </span>
                 </li>
-                <li v-if="sj.type==2" class="dis_div">
+                <li v-if="sj2.type==2" class="dis_div">
                     <span>
                         套盒折扣：&#12288;
-                        <el-input v-model="input" placeholder="0" class="in_wid"></el-input>&nbsp;%
+                        <el-input v-model="sj2.suitbox" type="number" placeholder="0" class="in_wid"></el-input>&nbsp;%
                     </span>
                     <span>
                         产品折扣：&#12288;
-                        <el-input v-model="input" placeholder="0" class="in_wid"></el-input>&nbsp;%
+                        <el-input v-model="sj2.pro" type="number" placeholder="0" class="in_wid"></el-input>&nbsp;%
                     </span>
                     <span>
                         礼包折扣：&#12288;
-                        <el-input v-model="input" placeholder="0" class="in_wid"></el-input>&nbsp;%
+                        <el-input v-model="sj2.gift" type="number" placeholder="0" class="in_wid"></el-input>&nbsp;%
                     </span>
                     <span>
                         项目折扣：&#12288;
-                        <el-input v-model="input" placeholder="0" class="in_wid"></el-input>&nbsp;%
+                        <el-input v-model="sj2.items" type="number" placeholder="0" class="in_wid"></el-input>&nbsp;%
                     </span>
                 </li>
             </ul>
             <span slot="footer" class="dialog-footer">
             <el-button @click="add_card = false">取 消</el-button>
-            <el-button type="primary" @click="">确 定</el-button>
+            <el-button type="primary" @click="addCard">确 定</el-button>
           </span>
         </el-dialog>
     </template>
@@ -145,7 +148,7 @@
     new Vue({
         el: '#app',
         data: {
-            input:'',
+            input: '',
             sj: {
                 type: '1', //产品，套盒，项目
                 name: '',
@@ -155,8 +158,8 @@
                 fee: '',
                 cid: ''
             },
-            add_card:'false',
-            radio:'',
+            add_card: false,
+            radio: '',
             options: [{
                 value: '选项1',
                 label: '折扣卡'
@@ -184,14 +187,95 @@
                 date: '2016-05-03',
                 name: '王小虎',
                 address: '上海市普陀区金沙江路 1516 弄'
-            }]
+            }],
+
+            sj2: {
+                type: '1',
+                name: '',
+                amount: '',
+                discount: '',
+                suitbox: '',
+                pro: '',
+                gift: '',
+                items: '',
+                send: '1',
+                price: '',
+            },
+            list: [],
         },
-        methods: {},
+        methods: {
+            detail(id) {
+                this.add_card = true
+                $.post(url(methods.getCardDetails), {id: id}, v=>{
+                    if(v.code==1){
+
+                    }else{
+                        error(v.error)
+                    }
+                })
+            },
+            close() {
+                this.add_card = false
+                this.sj2 = {
+                    type: '1',
+                    name: '',
+                    amount: '',
+                    discount: '',
+                    suitbox: '',
+                    pro: '',
+                    gift: '',
+                    items: '',
+                    send: '1',
+                    price: '',
+                }
+            },
+            formatter(r, c) {
+                if(r.card_type==1){
+                    return '储值卡'
+                }else if(r.card_type==2) {
+                    return '折扣储值卡'
+                }else if(r.card_type==3) {
+                    return '全场折扣卡'
+                }
+            },
+            addCard() {
+                $.post(url(methods.addCard), {data: this.sj2}, v=>{
+                    if(v.code==1){
+                        this.getData()
+                        this.sj2 = {
+                            type: '1',
+                            name: '',
+                            amount: '',
+                            discount: '',
+                            suitbox: '',
+                            pro: '',
+                            gift: '',
+                            items: '',
+                            send: '1',
+                            price: '',
+                        }
+                        success(v.Msg)
+                    }else{
+                        error(v.error)
+                    }
+                })
+            },
+            getData() {
+                $.get(url(methods.getCardList), v=>{
+                    if(v.code==1){
+                        this.list = v.card.list
+                    }else{
+                        error(v.error)
+                    }
+                })
+            },
+        },
         mounted() {
             this.$nextTick(e => {
                 //初始化
                 that = this;
                 loginState()
+                this.getData()
             })
         }
     })

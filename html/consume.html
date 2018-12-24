@@ -19,6 +19,9 @@
             </el-breadcrumb>
         </p>
         <el-collapse v-model="activeNames">
+            <p class="cr linr_four">
+                会员余额：￥{{balance}}
+            </p>
             <el-collapse-item name="1" class="con">
                 <template slot="title">
                     <p>
@@ -405,7 +408,8 @@
                         'data': JSON.stringify({
                             'box': this.myBox, 'items': this.myItems,
                             'amount_items': this.items, 'mid': this.userId,
-                            'arr': this.roomId, 's': arr, 'm': arr2, 'g': arr3
+                            'arr': this.roomId, 's': arr, 'm': arr2, 'g': arr3,
+                            'c_b': '', 'consume_card': '',
                         })
                     }, v => {
                         if (v.code == 1) {

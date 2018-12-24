@@ -51,6 +51,9 @@ const methods = {
     'bespeakOperation': 'Bespeak/BespeakOperation',
     'arriveList': 'Arrive/ArriveList',
     'birthdayDetail': 'member/BirthdayDetail',
+    'getCardList': 'card/get_list',
+    'addCard': 'card/addCard',
+    'getCardDetails': 'card/get_details',  //post (id)
 };
 let that;
 
