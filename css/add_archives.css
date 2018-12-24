@@ -1,0 +1,113 @@
+/*添加档案*/
+.record_list{
+    line-height: 1.8;
+    padding: 10px 0 0 0 !important;
+    background: #f3f3f3;
+}
+.record_list input{
+    font-size: 1.5rem !important;
+}
+.record_list li{
+    line-height:40px;
+    display: flex;
+    padding: 10px 10px 10px 1.5rem;
+    margin-bottom: 5px;
+    background: #fff;
+}
+.record_list li>div{
+    white-space:normal;
+}
+.record_list li .dan_fa{
+    width: 90%;
+}
+.record_list li .search_goods{
+    height: 36px;
+    line-height: 36px;
+    display: inline-block;
+    border-radius: 10px;
+    padding: 0 10px;
+    color:#fff;
+    text-align:center;
+}
+.record_list li .choice_goods{
+    display: flex;
+    line-height: 40px;
+}
+.danci_wid{
+    width: 100%;
+}
+.record_list li .select_style{
+    height:40px;
+    line-height: 32px;
+    border-radius: 8px;
+    flex: auto;
+    margin-right:10px;
+    border:1px solid rgb(238,238,238);
+    display: inline-block;
+    vertical-align: middle;
+}
+.record_list li .select_style .am-selected {
+    width: 100%;
+    border-radius: 8px;
+}
+.record_list li .select_style .am-selected button{
+    border: none;
+}
+.record_list li .pre_next{
+    border:1px solid rgb(238,238,238);
+    border-radius: 8px;
+    height: 36px;
+    line-height: 36px;
+    width: 170px;
+    padding-left: 15px;
+    display: inline-block;
+}
+.record_list li #next_time{
+    width: 120px;
+}
+.record_list li .down_width{
+    width: 10px;
+}
+.record_list li .adviser {
+    width: 60% !important;
+}
+.record_list li .choice_list{
+    white-space: normal;
+}
+.adv_sel .am-btn{
+    border-radius: 8px;
+}
+.el-select>.el-input{
+    width: 100% !important;
+}
+.record_list li .el-input{
+    vertical-align: middle;
+    flex: auto;
+    width: 60%;
+    margin-right: 150px;
+}
+.butt_sub{
+    display: block;
+    width: 60%;
+    margin: 25px auto;
+}
+.color_box{
+    border-radius: 10px;
+    margin: 5px 12px 5px 0;
+    line-height: 1.8;
+    padding: 0 13px;
+    display: inline-block;
+    color: white;
+}
+.product_red_color{
+    background-color: rgb(241, 158, 194);
+}
+.project_green_color{
+    background-color: rgb(179, 212, 101);
+}
+.taohe_color{
+    background-color: rgb(190, 157, 250);
+}
+.plan_color {
+    background-color: rgb(207, 169, 114);
+}
