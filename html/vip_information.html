@@ -493,6 +493,7 @@
             arr2: [],
             arr3: [],
             list: [],
+            detail: '',
         },
         methods: {
             bk(id) {
@@ -640,6 +641,15 @@
                 $.get(url(methods.healthList)+`&mid=${this.userId}`, v=>{
                     if(v.code==1){
                         this.list = v.list
+                    }
+                })
+            },
+            getJK(id) {
+                $.post(url(methods.healthDetail)+`&mid=${this.userId}`, {
+                    mid: this.userId, id: id
+                }, v=>{
+                    if(v.code==1){
+                        this.detail = v.res
                     }
                 })
             },
