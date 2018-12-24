@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>会员档案</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../css/vip_information.css">
+</head>
+<body class="information">
+
+<div id="app" class="customer">
+    <template>
+        <p class="cus_title">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+                <el-breadcrumb-item :to="{ path: '/' }">信息管理</el-breadcrumb-item>
+                <el-breadcrumb-item>会员管理</el-breadcrumb-item>
+                <el-breadcrumb-item>会员详情</el-breadcrumb-item>
+                <el-breadcrumb-item>健康问题</el-breadcrumb-item>
+            </el-breadcrumb>
+        </p>
+        <div class="basic_inf height">
+            <p class="body_c p_div">身体问题</p>
+            <div class="pro_div">
+                <el-button round size="mini" v-for="v in body" :type="v.zt?'primary':''" @click="click(v, 1)">{{v.body}}</el-button>
+            </div>
+            <p class="skin_c p_div">皮肤问题</p>
+            <div class="pro_div">
+                <el-button round size="mini" v-for="v in skin" :type="v.zt?'primary':''" @click="click(v, 2)">{{v.body}}</el-button>
+            </div>
+            <div class="choiced" style="width: 100%;" v-show="need.length>0">
+                <p class="heal_title">已选择</p>
+                <ul class="pro_ul">
+                    <li class="c_title p_div" v-for="v in need">
+                        {{v.head.body}}：
+                        <span v-for="x in v.list">
+                                    <el-button type="primary" round size="mini">{{x.body}}</el-button>
+                                    <i class="el-icon-error"></i>
+                                </span>
+                    </li>
+                </ul>
+
+                <div class="bottom_but">
+                    <el-button type="success">提交</el-button>
+                </div>
+            </div>
+        </div>
+        <!--小弹框-->
+        <el-dialog
+                :title="now.body"
+                :visible.sync="dialogVisible"
+                width="30%" center append-to-body>
+            <div>
+                <el-checkbox-group v-model="check">
+                    <el-checkbox v-for="v in list" :label="v.body"></el-checkbox>
+                </el-checkbox-group>
+            </div>
+            <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="sureCheck">确 定</el-button>
+      </span>
+        </el-dialog>
+    </template>
+</div>
+
+</body>
+</html>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../js/func.js"></script>
+<script src="../js/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            dialogVisible: false,
+            input: '',
+            options: [{
+                value: '2',
+                label: '男'
+            }, {
+                value: '1',
+                label: '女'
+            }],
+            calss: [{
+                value: 2,
+                label: '农历'
+            }, {
+                value: 1,
+                label: '阳历'
+            }],
+            status: [{
+                value: 1,
+                label: '已婚'
+            }, {
+                value: 2,
+                label: '未婚'
+            }],
+            value: '',
+            birth: '',
+            tableData: [{
+                classify: '面部',
+                name: '补水面膜',
+                price: '1235',
+                time: '2019-02-12',
+                discount: '4折',
+                dis_price: '262'
+            }, {
+                classify: '面部',
+                name: '补水面膜',
+                price: '1235',
+                time: '2019-02-12',
+                discount: '4折',
+                dis_price: '262'
+            }, {
+                classify: '面部',
+                name: '补水面膜',
+                price: '1235',
+                time: '2019-02-12',
+                discount: '4折',
+                dis_price: '262'
+            }, {
+                classify: '面部',
+                name: '补水面膜',
+                price: '1235',
+                time: '2019-02-12',
+                discount: '4折',
+                dis_price: '262'
+            }],
+
+            userId: 0,
+            userInfo: null,
+            cpList: [],
+            arrears: 0,
+            total: 0,
+            num: 0,
+            arrears2: 0,
+            itemsList: [],
+            num2: 0,
+            arrears3: 0,
+            boxList: [],
+            coupon: [],
+            card: [],
+            integer: [],
+            arrearsList: [],
+            totalArrears: 0,
+            arr: [],
+            arr2: [],
+            arr3: [],
+            body: [],
+            skin: [],
+            now: '',
+            check: [],
+            list: [],
+            need: [],
+            type: 1,
+        },
+        methods: {
+            sureCheck() {
+                let arr = []
+                if(this.check.length>0){
+                    if(this.type==1){
+                        for(let v of this.body) {
+                            if(v.id == this.now.id){
+                                v.zt = true
+                            }
+                        }
+                    }else{
+                        for(let v of this.skin) {
+                            if(v.id == this.now.id){
+                                v.zt = true
+                            }
+                        }
+                    }
+                    for(let v of this.check) {
+                        for(let x of this.list) {
+                            if(x.body == v){
+                                arr.push(x)
+                                x.zt = true
+                            }
+                        }
+                    }
+                    for(let v of this.need) {
+                        if(v.head.id == this.now.id){
+
+                        }
+                    }
+                    this.need.unshift({head: this.now, list: arr,})
+                    this.list = []
+                    this.check = []
+                    this.dialogVisible = false
+                }else{
+                    for(let i=0;i<this.need.length;i++) {
+                        if(this.need[i].head.id == this.now.id){
+                            this.need.splice(i, 1)
+                        }
+                    }
+                    if(this.type==1){
+                        for(let v of this.body) {
+                            if(v.id == this.now.id){
+                                v.zt = false
+                            }
+                        }
+                    }else{
+                        for(let v of this.skin) {
+                            if(v.id == this.now.id){
+                                v.zt = false
+                            }
+                        }
+                    }
+                    this.list = []
+                    this.check = []
+                    this.dialogVisible = false
+                }
+            },
+            click(v, t) {
+                this.now = v
+                this.type = t
+                this.search(v.id)
+                this.dialogVisible = true
+            },
+            search(id) {
+                $.get(url(methods.healthSearch)+`&type=check&pid=${id}`, v=>{
+                    if(v.code==1){
+                        this.list = v.res
+                    }else{
+                        error(v.error)
+                    }
+                })
+            },
+            bk(id) {
+                localStorage.setItem('type', 2)
+                localStorage.setItem('bkId', id)
+                location.href = './pay_page.html'
+            },
+            handle(val) {
+                if (val.length == 0) {
+                    this.arr = []
+                    return
+                }
+                for (let v of val) {
+                    this.arr.push(v.id)
+                }
+            },
+            handle2(val) {
+                if (val.length == 0) {
+                    this.arr2 = []
+                    return
+                }
+                for (let v of val) {
+                    this.arr2.push(v.id)
+                }
+            },
+            handle3(val) {
+                if (val.length == 0) {
+                    this.arr3 = []
+                    return
+                }
+                for (let v of val) {
+                    this.arr3.push(v.id)
+                }
+            },
+            del(t, v, t2 = 1) {
+                if (!confirm('是否删除')) {
+                    return
+                }
+                let a = []
+                if (t == 1) {
+                    if (t2 == 1 && this.arr.length == 0) {
+                        return
+                    }
+                    if (t2 == 1) {
+                        a = this.arr
+                    } else {
+                        a.push(v.id)
+                    }
+                } else if (t == 2) {
+                    if (t2 == 1 && this.arr2.length == 0) {
+                        return
+                    }
+                    if (t2 == 1) {
+                        a = this.arr2
+                    } else {
+                        a.push(v.id)
+                    }
+                } else if (t == 3) {
+                    if (t2 == 1 && this.arr3.length == 0) {
+                        return
+                    }
+                    if (t2 == 1) {
+                        a = this.arr3
+                    } else {
+                        a.push(v.id)
+                    }
+                }
+                $.post(url(methods.delWhich), {data: JSON.stringify(a), type: t}, v => {
+                    if (v.code == 0) {
+                        if (t == 1) {
+                            this.getCp()
+                        } else if (t == 2) {
+                            this.getBoxItems('items')
+                        } else if (t == 3) {
+                            this.getBoxItems('box')
+                        }
+                        success(v.data)
+                    } else {
+                        error(v.msg)
+                    }
+                })
+            },
+            jump() {
+                location.href = './buy.html'
+            },
+            getArrears() {
+                $.get(url(methods.aloneArrears) + `&mid=${this.userId}`, v => {
+                    this.arrearsList = v.list
+                    for (let x of v.list) {
+                        this.totalArrears += parseFloat(x.price)
+                    }
+                })
+            },
+            getIntegral() {
+                $.get(url(methods.integralRecord) + `&mid=${this.userId}`, v => {
+                    this.integer = v.record
+                })
+            },
+            formatter2(r, c) {
+                if (r.bir_type == 1) {
+                    return '赠送'
+                } else {
+                    return '划扣'
+                }
+            },
+            formatter(r, c) {
+                if (r.bir_type == 1) {
+                    return '无折扣消费卡'
+                } else {
+                    return '折扣消费卡'
+                }
+            },
+            getCard() {
+                $.get(url(methods.cardList) + `&mid=${this.userId}`, v => {
+                    this.card = v.res
+                })
+            },
+            getCoupon() {
+                $.post(url(methods.haveCoupon), {mid: this.userId}, v => {
+                    this.coupon = v.data
+                })
+            },
+            handleClick(tab, event) {
+                if (tab.index == 0) {
+                    this.getDetail()
+                } else if (tab.index == 1) {
+                    this.getCp()
+                } else if (tab.index == 2) {
+                    this.getBoxItems('items')
+                } else if (tab.index == 3) {
+                    this.getBoxItems('box')
+                } else if (tab.index == 4) {
+                    this.getCoupon()
+                } else if (tab.index == 5) {
+                    this.getCard()
+                } else if (tab.index == 6) {
+                    this.getIntegral()
+                } else if (tab.index == 7) {
+                    this.getArrears()
+                } else if (tab.index == 8) {
+                    this.getDa()
+                }
+            },
+            getDa() {
+                $.get(url(methods.healthAdd)+`&type=list&id=${this.userId}`, v=>{
+                    if(v.code==0){
+                        for(let x of v.data.body) {
+                            x.zt = false
+                        }
+                        for(let x of v.data.skin) {
+                            x.zt = false
+                        }
+                        this.body = v.data.body
+                        this.skin = v.data.skin
+                    }
+                })
+            },
+            getBoxItems(t) {
+                $.get(url(methods.boxItems) + `&mid=${this.userId}&type=${t}`, v => {
+                    if (v.code == 1) {
+                        if (t == 'items') {
+                            this.num = v.res.total_num
+                            this.itemsList = v.res.list
+                            this.arrears2 = v.res.total_arrears
+                        } else {
+                            this.num2 = v.res.total_num
+                            this.boxList = v.res.list
+                            this.arrears3 = v.res.total_arrears
+                        }
+                    } else {
+                        error('请求出错')
+                    }
+                })
+            },
+            getCp() {
+                $.post(url(methods.haveProductList), {mid: this.userId}, v => {
+                    if (v.code == 1) {
+                        let t = 0
+                        for (let x of v.list) {
+                            t += x.sum * x.price
+                        }
+                        this.total = t
+                        this.cpList = v.list
+                        this.arrears = v.arrears
+                    } else {
+                        error('请求出错')
+                    }
+                })
+            },
+            modifyUser() {
+                if (this.userInfo.name == '' || this.userInfo.tel == '' || this.userInfo.address == '' || this.userInfo.marital == ''
+                    || this.userInfo.id == '' || this.userInfo.bir_type == '' || this.userInfo.birthday == '' || this.userInfo.sex == '') {
+                    error('请填完以上内容')
+                    return
+                }
+                $.post(url(methods.editUser), {
+                    data: {
+                        name: this.userInfo.name,
+                        tel: this.userInfo.tel,
+                        address: this.userInfo.address,
+                        id: this.userInfo.id,
+                        bir_type: this.userInfo.bir_type,
+                        birthday: this.userInfo.yl,
+                        marital: this.userInfo.marital,
+                        sex: this.userInfo.sex,
+                    }
+                }, v => {
+                    if (v.code == 1) {
+                        success(v.Msg)
+                    } else {
+                        error(v.errorMsg)
+                    }
+                })
+            },
+            getDetail() {
+                $.get(url(methods.userInfo) + `&id=${this.userId}`, v => {
+                    if (v.code == 0) {
+                        v.data.sex = v.data.sex.toString()
+                        this.userInfo = v.data
+                    } else {
+                        error('请求出错')
+                    }
+                })
+            },
+        },
+        mounted() {
+            this.$nextTick(e => {
+                //初始化
+                that = this;
+                loginState()
+                this.userId = localStorage.getItem('user_id')
+                this.getDetail()
+            })
+        }
+    })
+</script>

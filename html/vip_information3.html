@@ -393,11 +393,15 @@
                 <div class="basic_inf height">
                     <p class="body_c p_div">身体问题</p>
                     <div class="pro_div">
-                        <el-button round size="mini" v-for="v in body" :type="v.zt?'primary':''" @click="click(v, 1)">{{v.body}}</el-button>
+                        <el-button round size="mini" v-for="v in body" :type="v.zt?'primary':''" @click="click(v, 1)">
+                            {{v.body}}
+                        </el-button>
                     </div>
                     <p class="skin_c p_div">皮肤问题</p>
                     <div class="pro_div">
-                        <el-button round size="mini" v-for="v in skin" :type="v.zt?'primary':''" @click="click(v, 2)">{{v.body}}</el-button>
+                        <el-button round size="mini" v-for="v in skin" :type="v.zt?'primary':''" @click="click(v, 2)">
+                            {{v.body}}
+                        </el-button>
                     </div>
                     <div class="choiced" style="width: 100%;" v-show="need.length>0">
                         <p class="heal_title">已选择</p>
@@ -432,6 +436,19 @@
         <el-button type="primary" @click="sureCheck">确 定</el-button>
       </span>
         </el-dialog>
+        <div class="cus_center over_hidden">
+            <el-button type="success" class="fr" @click="add_archives = true"
+                       style="margin-bottom: 5px">新增档案
+            </el-button>
+        </div>
+        <ul>
+            <li>
+                2018-12-24
+                <img src="../images/moredetail.png" class="fr item_Detail" height="100%">
+            </li>
+        </ul>
+        </el-tab-pane>
+        </el-tabs>
     </template>
 </div>
 
@@ -531,16 +548,16 @@
         methods: {
             delWt(j, i) {
                 this.need[j]['list'].splice(i, 1)
-                if(this.need[j]['list'].length==0){
-                    if(this.need[j]['type']==1){
-                        for(let v of this.body) {
-                            if(v.id == this.need[j]['head']['id']){
+                if (this.need[j]['list'].length == 0) {
+                    if (this.need[j]['type'] == 1) {
+                        for (let v of this.body) {
+                            if (v.id == this.need[j]['head']['id']) {
                                 v.zt = false
                             }
                         }
-                    }else{
-                        for(let v of this.skin) {
-                            if(v.id == this.need[j]['head']['id']){
+                    } else {
+                        for (let v of this.skin) {
+                            if (v.id == this.need[j]['head']['id']) {
                                 v.zt = false
                             }
                         }
@@ -550,57 +567,57 @@
             },
             sureCheck() {
                 let arr = []
-                if(this.check.length>0){
-                    if(this.type==1){
-                        for(let v of this.body) {
-                            if(v.id == this.now.id){
+                if (this.check.length > 0) {
+                    if (this.type == 1) {
+                        for (let v of this.body) {
+                            if (v.id == this.now.id) {
                                 v.zt = true
                             }
                         }
-                    }else{
-                        for(let v of this.skin) {
-                            if(v.id == this.now.id){
+                    } else {
+                        for (let v of this.skin) {
+                            if (v.id == this.now.id) {
                                 v.zt = true
                             }
                         }
                     }
-                    for(let v of this.check) {
-                        for(let x of this.list) {
-                            if(x.body == v){
+                    for (let v of this.check) {
+                        for (let x of this.list) {
+                            if (x.body == v) {
                                 arr.push(x)
                                 x.zt = true
                             }
                         }
                     }
                     let zt = true
-                    for(let v of this.need) {
-                        if(v.head.id == this.now.id){
+                    for (let v of this.need) {
+                        if (v.head.id == this.now.id) {
                             v.list = arr
                             zt = false
                             break
                         }
                     }
-                    if(zt){
+                    if (zt) {
                         this.need.unshift({head: this.now, list: arr, type: this.type})
                     }
                     this.list = []
                     this.check = []
                     this.dialogVisible = false
-                }else{
-                    for(let i=0;i<this.need.length;i++) {
-                        if(this.need[i].head.id == this.now.id){
+                } else {
+                    for (let i = 0; i < this.need.length; i++) {
+                        if (this.need[i].head.id == this.now.id) {
                             this.need.splice(i, 1)
                         }
                     }
-                    if(this.type==1){
-                        for(let v of this.body) {
-                            if(v.id == this.now.id){
+                    if (this.type == 1) {
+                        for (let v of this.body) {
+                            if (v.id == this.now.id) {
                                 v.zt = false
                             }
                         }
-                    }else{
-                        for(let v of this.skin) {
-                            if(v.id == this.now.id){
+                    } else {
+                        for (let v of this.skin) {
+                            if (v.id == this.now.id) {
                                 v.zt = false
                             }
                         }
@@ -617,10 +634,10 @@
                 this.dialogVisible = true
             },
             search(id) {
-                $.get(url(methods.healthSearch)+`&type=check&pid=${id}`, v=>{
-                    if(v.code==1){
+                $.get(url(methods.healthSearch) + `&type=check&pid=${id}`, v => {
+                    if (v.code == 1) {
                         this.list = v.res
-                    }else{
+                    } else {
                         error(v.error)
                     }
                 })
@@ -767,12 +784,12 @@
                 }
             },
             getDa() {
-                $.get(url(methods.healthAdd)+`&type=list&id=${this.userId}`, v=>{
-                    if(v.code==0){
-                        for(let x of v.data.body) {
+                $.get(url(methods.healthAdd) + `&type=list&id=${this.userId}`, v => {
+                    if (v.code == 0) {
+                        for (let x of v.data.body) {
                             x.zt = false
                         }
-                        for(let x of v.data.skin) {
+                        for (let x of v.data.skin) {
                             x.zt = false
                         }
                         this.body = v.data.body
