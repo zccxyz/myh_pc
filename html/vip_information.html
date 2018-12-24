@@ -393,25 +393,21 @@
                 <div class="basic_inf height">
                     <p class="body_c p_div">身体问题</p>
                     <div class="pro_div">
-                        <el-button type="primary" round size="mini" @click="dialogVisible = true">头部</el-button>
-                        <el-button round size="mini">头部</el-button>
+                        <el-button round size="mini" v-for="v in body" :type="v.zt?'primary':''" @click="click(v, 1)">{{v.body}}</el-button>
                     </div>
                     <p class="skin_c p_div">皮肤问题</p>
                     <div class="pro_div">
-                        <el-button type="primary" round size="mini">面部</el-button>
-                        <el-button round size="mini">面部</el-button>
+                        <el-button round size="mini" v-for="v in skin" :type="v.zt?'primary':''" @click="click(v, 2)">{{v.body}}</el-button>
                     </div>
-                    <div class="choiced" style="width: 100%;">
+                    <div class="choiced" style="width: 100%;" v-show="need.length>0">
                         <p class="heal_title">已选择</p>
                         <ul class="pro_ul">
-                            <li class="c_title p_div">
-                                面部：
-                                <el-button type="primary" round size="mini">长痘</el-button>
-                                <i class="el-icon-error"></i>
-                            </li>
-                            <li class="c_title p_div">
-                                面部：
-                                <el-button type="primary" round size="mini">长痘</el-button>
+                            <li class="c_title p_div" v-for="v in need">
+                                {{v.head.body}}：
+                                <span v-for="x in v.list">
+                                    <el-button type="primary" round size="mini">{{x.body}}</el-button>
+                                    <i class="el-icon-error"></i>
+                                </span>
                             </li>
                         </ul>
 
@@ -423,21 +419,17 @@
             </el-tab-pane>
         </el-tabs>
         <el-dialog
-                title="面部"
+                :title="now.body"
                 :visible.sync="dialogVisible"
                 width="30%" center>
             <div>
-                <el-checkbox-group v-model="checkList">
-                    <el-checkbox label="复选框 A"></el-checkbox>
-                    <el-checkbox label="复选框 B"></el-checkbox>
-                    <el-checkbox label="复选框 C"></el-checkbox>
-                    <el-checkbox label="ded"></el-checkbox>
-                    <el-checkbox label="dwd"></el-checkbox>
+                <el-checkbox-group v-model="check">
+                    <el-checkbox v-for="v in list" :label="v.body"></el-checkbox>
                 </el-checkbox-group>
             </div>
             <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        <el-button type="primary" @click="sureCheck">确 定</el-button>
       </span>
         </el-dialog>
     </template>
@@ -528,8 +520,87 @@
             arr: [],
             arr2: [],
             arr3: [],
+            body: [],
+            skin: [],
+            now: '',
+            check: [],
+            list: [],
+            need: [],
+            type: 1,
         },
         methods: {
+            sureCheck() {
+                let arr = []
+                if(this.check.length>0){
+                    if(this.type==1){
+                        for(let v of this.body) {
+                            if(v.id == this.now.id){
+                                v.zt = true
+                            }
+                        }
+                    }else{
+                        for(let v of this.skin) {
+                            if(v.id == this.now.id){
+                                v.zt = true
+                            }
+                        }
+                    }
+                    for(let v of this.check) {
+                        for(let x of this.list) {
+                            if(x.body == v){
+                                arr.push(x)
+                                x.zt = true
+                            }
+                        }
+                    }
+                    for(let v of this.need) {
+                        if(v.head.id == this.now.id){
+
+                        }
+                    }
+                    this.need.unshift({head: this.now, list: arr,})
+                    this.list = []
+                    this.check = []
+                    this.dialogVisible = false
+                }else{
+                    for(let i=0;i<this.need.length;i++) {
+                        if(this.need[i].head.id == this.now.id){
+                            this.need.splice(i, 1)
+                        }
+                    }
+                    if(this.type==1){
+                        for(let v of this.body) {
+                            if(v.id == this.now.id){
+                                v.zt = false
+                            }
+                        }
+                    }else{
+                        for(let v of this.skin) {
+                            if(v.id == this.now.id){
+                                v.zt = false
+                            }
+                        }
+                    }
+                    this.list = []
+                    this.check = []
+                    this.dialogVisible = false
+                }
+            },
+            click(v, t) {
+                this.now = v
+                this.type = t
+                this.search(v.id)
+                this.dialogVisible = true
+            },
+            search(id) {
+                $.get(url(methods.healthSearch)+`&type=check&pid=${id}`, v=>{
+                    if(v.code==1){
+                        this.list = v.res
+                    }else{
+                        error(v.error)
+                    }
+                })
+            },
             bk(id) {
                 localStorage.setItem('type', 2)
                 localStorage.setItem('bkId', id)
@@ -667,7 +738,23 @@
                     this.getIntegral()
                 } else if (tab.index == 7) {
                     this.getArrears()
+                } else if (tab.index == 8) {
+                    this.getDa()
                 }
+            },
+            getDa() {
+                $.get(url(methods.healthAdd)+`&type=list&id=${this.userId}`, v=>{
+                    if(v.code==0){
+                        for(let x of v.data.body) {
+                            x.zt = false
+                        }
+                        for(let x of v.data.skin) {
+                            x.zt = false
+                        }
+                        this.body = v.data.body
+                        this.skin = v.data.skin
+                    }
+                })
             },
             getBoxItems(t) {
                 $.get(url(methods.boxItems) + `&mid=${this.userId}&type=${t}`, v => {
