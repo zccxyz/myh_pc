@@ -390,38 +390,59 @@
                 </div>
             </el-tab-pane>
             <el-tab-pane label="健康档案">
-                <div class="basic_inf height">
-                    <p class="body_c p_div">身体问题</p>
-                    <div class="pro_div">
-                        <el-button round size="mini" v-for="v in body" :type="v.zt?'primary':''" @click="click(v, 1)">{{v.body}}</el-button>
-                    </div>
-                    <p class="skin_c p_div">皮肤问题</p>
-                    <div class="pro_div">
-                        <el-button round size="mini" v-for="v in skin" :type="v.zt?'primary':''" @click="click(v, 2)">{{v.body}}</el-button>
-                    </div>
-                    <div class="choiced" style="width: 100%;" v-show="need.length>0">
-                        <p class="heal_title">已选择</p>
-                        <ul class="pro_ul">
-                            <li class="c_title p_div" v-for="v in need">
-                                {{v.head.body}}：
-                                <span v-for="x in v.list">
+                <div class="cus_center">
+                    <el-button type="success" class="fr" @click="add_archives = true"
+                               style="margin-bottom: 5px">新增档案</el-button>
+                </div>
+                <ul>
+                    <li>
+                        2018-12-24
+                        <img src="../images/moredetail.png" class="fr item_Detail" height="100%">
+                    </li>
+                </ul>
+            </el-tab-pane>
+        </el-tabs>
+        <!--外面的大弹框-->
+        <el-dialog
+                :title="健康问题"
+                :visible.sync="add_archives"
+                width="70%">
+            <div class="basic_inf height">
+                <p class="body_c p_div">身体问题</p>
+                <div class="pro_div">
+                    <el-button round size="mini" v-for="v in body" :type="v.zt?'primary':''" @click="click(v, 1)">{{v.body}}</el-button>
+                </div>
+                <p class="skin_c p_div">皮肤问题</p>
+                <div class="pro_div">
+                    <el-button round size="mini" v-for="v in skin" :type="v.zt?'primary':''" @click="click(v, 2)">{{v.body}}</el-button>
+                </div>
+                <div class="choiced" style="width: 100%;" v-show="need.length>0">
+                    <p class="heal_title">已选择</p>
+                    <ul class="pro_ul">
+                        <li class="c_title p_div" v-for="v in need">
+                            {{v.head.body}}：
+                            <span v-for="x in v.list">
                                     <el-button type="primary" round size="mini">{{x.body}}</el-button>
                                     <i class="el-icon-error"></i>
                                 </span>
-                            </li>
-                        </ul>
+                        </li>
+                    </ul>
 
-                        <div class="bottom_but">
-                            <el-button type="success">提交</el-button>
-                        </div>
+                    <div class="bottom_but">
+                        <el-button type="success">提交</el-button>
                     </div>
                 </div>
-            </el-tab-pane>
-        </el-tabs>
+            </div>
+            <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="sureCheck">确 定</el-button>
+      </span>
+        </el-dialog>
+        <!--小弹框-->
         <el-dialog
                 :title="now.body"
                 :visible.sync="dialogVisible"
-                width="30%" center>
+                width="30%" center append-to-body>
             <div>
                 <el-checkbox-group v-model="check">
                     <el-checkbox v-for="v in list" :label="v.body"></el-checkbox>
@@ -446,6 +467,7 @@
         el: '#app',
         data: {
             checkList: '',
+            add_archives: false,
             dialogVisible: false,
             input: '',
             options: [{
