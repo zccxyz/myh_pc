@@ -28,7 +28,8 @@
             </el-breadcrumb>
         </p>
         <div class="cus_center">
-            <el-button type="success" class="fr" @click="add_card = true" style="margin-bottom: 5px">新增卡项</el-button>
+            <el-button type="success" class="fr" @click="add_card = true"
+                       style="margin-bottom: 5px">新增卡项</el-button>
         </div>
         <el-table
                 :data="list"
@@ -56,12 +57,12 @@
                 <template slot-scope="scope">
                     <el-button
                             size="mini"
-                            @click="detail(scope.row.id)">编辑
+                            @click="getDetail(scope.row.id)">编辑
                     </el-button>
                     <el-button
                             size="mini"
                             type="danger"
-                            @click="">删除
+                            @click="del(scope.row.id)">删除
                     </el-button>
                 </template>
             </el-table-column>
@@ -135,6 +136,76 @@
             <el-button type="primary" @click="addCard">确 定</el-button>
           </span>
         </el-dialog>
+
+        <el-dialog title="编辑卡项"
+                   :visible.sync="zt"
+                   width="660px"
+                   center
+                   :before-close="close">
+            <ul class="goods_edit">
+                <li>
+                    <span class="list_left">卡类</span>
+                    <span class="list_right">
+                        <el-radio v-model="detail.card_type" label="1">储值卡</el-radio>
+                        <el-radio v-model="detail.card_type" label="2">折扣储值卡</el-radio>
+                        <el-radio v-model="detail.card_type" label="3">全场折扣卡</el-radio>
+                    </span>
+                </li>
+                <li>
+                    <span class="list_left">卡名</span>
+                    <span class="list_right">
+                    <el-input v-model="detail.card_name" placeholder="请输入卡名"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">售价</span>
+                    <span class="list_right">
+                    <el-input v-model="detail.price" type="number" placeholder="请输入售价"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">额度</span>
+                    <span class="list_right">
+                    <el-input v-model="detail.amount" type="number" placeholder="请输入额度"></el-input>
+                </span>
+                </li>
+                <li v-if="sj2.type==3">
+                    <span class="list_left">折扣</span>
+                    <span class="list_right">
+                    <el-input v-model="detail.discount" placeholder="请输入折扣"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">是否允许赠送</span>
+                    <span class="list_right">
+                       <el-radio v-model="detail.send" label="1">允许</el-radio>
+                        <el-radio v-model="detail.send" label="2">不允许</el-radio>
+                    </span>
+                </li>
+                <li v-if="detail.type==2" class="dis_div">
+                    <span>
+                        套盒折扣：&#12288;
+                        <el-input v-model="detail.suitbox" type="number" placeholder="0" class="in_wid"></el-input>&nbsp;%
+                    </span>
+                    <span>
+                        产品折扣：&#12288;
+                        <el-input v-model="detail.product" type="number" placeholder="0" class="in_wid"></el-input>&nbsp;%
+                    </span>
+                    <span>
+                        礼包折扣：&#12288;
+                        <el-input v-model="detail.gift" type="number" placeholder="0" class="in_wid"></el-input>&nbsp;%
+                    </span>
+                    <span>
+                        项目折扣：&#12288;
+                        <el-input v-model="detail.items" type="number" placeholder="0" class="in_wid"></el-input>&nbsp;%
+                    </span>
+                </li>
+            </ul>
+            <span slot="footer" class="dialog-footer">
+            <el-button @click="zt = false">取 消</el-button>
+            <el-button type="primary" @click="edit">确 定</el-button>
+          </span>
+        </el-dialog>
     </template>
 </div>
 
@@ -202,13 +273,46 @@
                 price: '',
             },
             list: [],
+            zt: false,
+            detail: '',
         },
         methods: {
-            detail(id) {
-                this.add_card = true
+            del(id) {
+                this.$confirm('是否删除?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    $.post(url(methods.removerCard), {cardid: id}, v=>{
+                        if(v.code==1){
+                            success(v.Msg)
+                            this.getData()
+                        }else{
+                            error(v.error)
+                        }
+                    })
+                }).catch(e=>{
+
+                })
+            },
+            edit(id) {
+                $.post(url(methods.editCard), {update: this.detail}, v=>{
+                    if(v.code==1){
+                        success(v.Msg)
+                        this.close()
+                        this.getData()
+                    }else{
+                        error(v.error)
+                    }
+                })
+            },
+            getDetail(id) {
+                this.zt = true
                 $.post(url(methods.getCardDetails), {id: id}, v=>{
                     if(v.code==1){
-
+                        v.res.card_type = v.res.card_type.toString()
+                        v.res.send = v.res.send.toString()
+                        this.detail = v.res
                     }else{
                         error(v.error)
                     }
@@ -216,6 +320,7 @@
             },
             close() {
                 this.add_card = false
+                this.zt = false
                 this.sj2 = {
                     type: '1',
                     name: '',

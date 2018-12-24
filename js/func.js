@@ -1,5 +1,5 @@
-const ym = 'https://www.myhkj.cn/apis/backend/';
-//const ym = 'http://admin.test.com/apis/backend/';
+//const ym = 'https://www.myhkj.cn/apis/backend/';
+const ym = 'http://admin.test.com/apis/backend/';
 
 const methods = {
     'login': 'login/login',
@@ -36,6 +36,7 @@ const methods = {
     'buyGoods': 'buy/buyGoods',
     'buyTh': 'buy/buyTh',
     'buyItems': 'buy/buyItems',
+    'buyCard': 'buy/buyCard',
     'print': 'buy/consume_print',
     'saveCommission': 'buy/save_commission',
     'getDetails': 'Consume/getDetails',
@@ -53,11 +54,15 @@ const methods = {
     'birthdayDetail': 'member/BirthdayDetail',
     'getCardList': 'card/get_list',
     'addCard': 'card/addCard',
-    'getCardDetails': 'card/get_details',  //post (id)
+    'getCardDetails': 'card/get_details',
+    'editCard': 'card/update',
+    'removerCard': 'card/removerCard',
+    'healthSearch': 'Healthy/HealthSearch',
 };
 let that;
 
 //-----------------------------------------------------------
+
 function url(m) {
     return ym + m + '?source=PC'
 }

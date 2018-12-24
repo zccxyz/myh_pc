@@ -33,12 +33,7 @@
                           ref="multipleTable"
                           :data="list.filter(data => (!input || data.name.toLowerCase().includes(input.toLowerCase())) && data.type=='产品')"
                           tooltip-effect="dark"
-                          style="width: 100%"
-                          @selection-change="handleSelectionChange">
-                    <el-table-column
-                            type="selection"
-                            width="55">
-                    </el-table-column>
+                          style="width: 100%">
                     <el-table-column
                             label="品项"
                             width="120"
@@ -60,6 +55,10 @@
                     <el-table-column
                             prop="stock"
                             label="库存">
+                    </el-table-column>
+                    <el-table-column
+                            prop="beforehand_num"
+                            label="预售">
                     </el-table-column>
                     <el-table-column
                             prop="fre"
@@ -93,12 +92,7 @@
                           ref="multipleTable"
                           :data="list.filter(data => (!input || data.name.toLowerCase().includes(input.toLowerCase())) && data.type=='项目')"
                           tooltip-effect="dark"
-                          style="width: 100%"
-                          @selection-change="handleSelectionChange">
-                    <el-table-column
-                            type="selection"
-                            width="55">
-                    </el-table-column>
+                          style="width: 100%">
                     <el-table-column
                             label="品项"
                             width="120"
@@ -120,6 +114,10 @@
                     <el-table-column
                             prop="stock"
                             label="库存">
+                    </el-table-column>
+                    <el-table-column
+                            prop="beforehand_num"
+                            label="预售">
                     </el-table-column>
                     <el-table-column
                             prop="fre"
@@ -153,12 +151,7 @@
                           ref="multipleTable"
                           :data="list.filter(data => (!input || data.name.toLowerCase().includes(input.toLowerCase())) && data.type=='套盒')"
                           tooltip-effect="dark"
-                          style="width: 100%"
-                          @selection-change="handleSelectionChange">
-                    <el-table-column
-                            type="selection"
-                            width="55">
-                    </el-table-column>
+                          style="width: 100%">
                     <el-table-column
                             label="品项"
                             width="120"
@@ -182,6 +175,10 @@
                             label="库存">
                     </el-table-column>
                     <el-table-column
+                            prop="beforehand_num"
+                            label="预售">
+                    </el-table-column>
+                    <el-table-column
                             prop="fre"
                             label="次数">
                     </el-table-column>
@@ -197,6 +194,65 @@
                             <i class="el-icon-remove blue_c" @click="remove(scope.row)" v-if="scope.row.needNum>0"></i>
                             <i v-if="scope.row.needNum>0">{{scope.row.needNum}}</i>
                             <i class="el-icon-circle-plus blue_c" @click="add(scope.row)"></i>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </el-tab-pane>
+            <el-tab-pane label="卡项">
+                <div>
+                    <el-input style="margin:5px 0;" class="cus_seatch"
+                              placeholder="请输入商品名称"
+                              prefix-icon="el-icon-search"
+                              v-model="input">
+                    </el-input>
+                </div>
+                <el-table border
+                          ref="multipleTable"
+                          :data="card.filter(data => (!input || data.card_name.toLowerCase().includes(input.toLowerCase())))"
+                          tooltip-effect="dark"
+                          style="width: 100%">
+                    <el-table-column
+                            label="类型"
+                            width="120"
+                            prop="card_type">
+                    </el-table-column>
+                    <el-table-column
+                            prop="card_name"
+                            label="名称"
+                            width="120">
+                    </el-table-column>
+                    <el-table-column
+                            prop="amount"
+                            label="余额">
+                    </el-table-column>
+                    <el-table-column
+                            prop="price"
+                            label="售价">
+                    </el-table-column>
+                    <!--<el-table-column
+                            prop="stock"
+                            label="库存">
+                    </el-table-column>
+                    <el-table-column
+                            prop="beforehand_num"
+                            label="预售">
+                    </el-table-column>
+                    <el-table-column
+                            prop="fre"
+                            label="次数">
+                    </el-table-column>-->
+                    <el-table-column
+                            prop="send"
+                            label="赠送"
+                            :formatter="form2">
+                    </el-table-column>
+                    <el-table-column
+                            label="加入购物车"
+                            show-overflow-tooltip>
+                        <template slot-scope="scope">
+                            <i class="el-icon-remove blue_c" @click="remove2(scope.row)" v-if="scope.row.needNum>0"></i>
+                            <i v-if="scope.row.needNum>0">{{scope.row.needNum}}</i>
+                            <i class="el-icon-circle-plus blue_c" @click="add2(scope.row)"></i>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -220,7 +276,7 @@
                         </span>
                         <span class="p_wid">￥{{v.price * v.discount/10}}</span>
                         <span>
-                            优惠方式
+                            优惠方式{{v.yh}}
                             <el-radio v-model="v.yh" label="1">打折</el-radio>
                             <el-input v-if="v.yh==1" v-model="v.discount" placeholder="请输入1到10的数字"
                                       class="in_wid und_line"></el-input>
@@ -246,6 +302,43 @@
                      合计：{{total}}
                  </span>
                 <span class="red_box pay" @click="sub">提交订单</span>
+            </div>
+        </div>
+
+        <div v-if="need2.length>0" class="cart_div" style="z-index: 10">
+            <p class="cart_title">
+                已选择（{{need2.length}}）
+                <span class="fr mar_hun" @click="allRemove">
+                <img src="../images/delete.png">&nbsp;全部清空
+               </span>
+            </p>
+            <div style="height: 200px;background: white;overflow: scroll;">
+                <ul class="consume_list" style="margin-bottom: 50px">
+                    <li v-for="v in need2" class="linr_four">
+                        <span class="g_name">
+                             {{v.card_name}}
+                        </span>
+                        <span class="p_wid">￥{{v.price * v.dis/10}}</span>
+                        <span>
+                            优惠方式
+                            <el-radio v-model="v.yh" label="1">打折</el-radio>
+                            <el-input v-if="v.yh==1" v-model="v.dis" placeholder="请输入1到10的数字"
+                                      class="in_wid und_line"></el-input>
+                            <el-radio v-model="v.yh" label="2" v-if="v.send==1">赠送</el-radio>
+                        </span>
+                        <span class="fr mar_hun">
+                             <i class="el-icon-remove blue_c" @click="remove2(v)"></i>
+                             <i>{{v.needNum}}</i>
+                             <i class="el-icon-circle-plus blue_c" @click="add2(v)"></i>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <div class="cart_total">
+                 <span class="fl cr total_money">
+                     合计：{{total2}}
+                 </span>
+                <span class="red_box pay" @click="subCard">提交订单</span>
             </div>
         </div>
     </template>
@@ -294,8 +387,39 @@
             need: [],
             user_id: 0,
             tabIndex: 0,
+            card: [],
+            need2: [],
         },
         methods: {
+            subCard() {
+                if(this.need2.length==0){
+                    return
+                }
+                let card = []
+                for(let v of this.need2) {
+                    if(v.yh==0){
+                        card.push({'price': v.price, 'id': v.id, 'sum': v.needNum})
+                    }else{
+                        card.push({'price': v.yh==1?v.price * v.dis/10:0, [`p_dis_t${v.id}`]: v.yh,
+                            'id': v.id, 'sum': v.needNum})
+                    }
+                }
+                $.post(url(methods.buyCard)+`&id=${this.user_id}`, {data: JSON.stringify(card)}, v=>{
+                    if(v.code==1){
+                        this.need = []
+                        for (let v of this.list) {
+                            v.needNum = 0;
+                        }
+                        success(v.Msg)
+                        localStorage.setItem('orderId', v.res.orderId)
+                        localStorage.setItem('arrearsRes', v.res.arrearsRes)
+                        localStorage.setItem('type', 1)
+                        setTimeout(()=>location.href = './pay_page.html', 1000)
+                    }else{
+                        error(v.error)
+                    }
+                })
+            },
             subItems() {
                 let items = []
                 for(let v of this.need) {
@@ -371,7 +495,6 @@
                         }
                     }
                 }
-                //console.log(goods);return
                 $.post(url(methods.buyGoods)+`&id=${this.user_id}`, {
                     data: JSON.stringify(goods)
                 }, v=>{
@@ -457,12 +580,23 @@
                     for (let v of this.list) {
                         v.needNum = 0;
                     }
+                    this.need2 = []
+                    for (let v of this.card) {
+                        v.needNum = 0;
+                    }
                 }).catch(e=>{
 
                 })
             },
             form(r, c) {
                 if (r.free == 1) {
+                    return '是'
+                } else {
+                    return '否'
+                }
+            },
+            form2(r, c) {
+                if (r.send == 1) {
                     return '是'
                 } else {
                     return '否'
@@ -482,6 +616,20 @@
                     }
                 }
             },
+            remove2(v) {
+                if (v.needNum > 0) {
+                    v.needNum--
+                    for (let i in this.need2) {
+                        if (v.id == this.need2[i].id && this.need2[i].needNum > 0) {
+                            z = false
+                            break
+                        }
+                        if (this.need2[i].needNum == 0) {
+                            this.need2.splice(i, 1)
+                        }
+                    }
+                }
+            },
             add(v) {
                 v.needNum++
                 let z = true;
@@ -494,7 +642,19 @@
                 if (z) {
                     this.need.unshift(v)
                 }
-                console.log(this.need)
+            },
+            add2(v) {
+                v.needNum++
+                let z = true;
+                for (let x of this.need2) {
+                    if (v.id == x.id) {
+                        z = false
+                        break
+                    }
+                }
+                if (z) {
+                    this.need2.unshift(v)
+                }
             },
             toggleSelection(rows) {
                 if (rows) {
@@ -543,16 +703,47 @@
                 //console.log(tab.index)
                 this.tabIndex = tab.index
                 this.need = []
+                this.need2 = []
                 for (let v of this.list) {
                     v.needNum = 0;
                 }
+                for (let v of this.card) {
+                    v.needNum = 0;
+                }
+            },
+            getCard() {
+                $.post(url(methods.getCardList), v=>{
+                    if(v.code==1){
+                        for(let x of v.card.list) {
+                            x.dis = 10
+                            x.yh = 0
+                            x.needNum = 0
+                        }
+                        this.card = v.card.list
+                    }else{
+                        error(v.error)
+                    }
+                })
             },
         },
         computed: {
             total() {
                 let all = 0
                 for (let v of this.need) {
+                    if(v.yh==2) {
+                        continue
+                    }
                     all += v.discount / 10 * v.price * v.needNum
+                }
+                return all
+            },
+            total2() {
+                let all = 0
+                for (let v of this.need2) {
+                    if(v.yh==2) {
+                        continue
+                    }
+                    all += v.dis / 10 * v.price * v.needNum
                 }
                 return all
             }
@@ -565,6 +756,7 @@
                 this.getGoods()
                 loginState()
                 this.r = url(methods.upload + '?type=2')
+                this.getCard()
             })
         }
     })
