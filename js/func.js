@@ -59,6 +59,7 @@ const methods = {
     'removerCard': 'card/removerCard',
     'healthSearch': 'Healthy/HealthSearch',
     'healthAdd': 'Healthy/add',
+    'healthList': 'Healthy/get_healthy_detail',
 };
 let that;
 

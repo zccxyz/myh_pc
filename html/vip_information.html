@@ -391,13 +391,14 @@
             </el-tab-pane>
             <el-tab-pane label="健康档案">
                 <div class="cus_center over_hidden">
-                    <el-button type="success" class="fr" @click="add_archives = true"
+                    <el-button type="success" class="fr" @click="location.href='health_pro.html'"
                                style="margin-bottom: 5px">新增档案</el-button>
                 </div>
                 <ul>
-                    <li>
-                        2018-12-24
-                        <img src="../images/moredetail.png" class="fr item_Detail" height="100%">
+                    <li v-for="v in list">
+                        {{v.create_time}}
+                        <img src="../images/moredetail.png" class="fr item_Detail"
+                             height="100%">
                     </li>
                 </ul>
             </el-tab-pane>
@@ -491,87 +492,9 @@
             arr: [],
             arr2: [],
             arr3: [],
-            body: [],
-            skin: [],
-            now: '',
-            check: [],
             list: [],
-            need: [],
-            type: 1,
         },
         methods: {
-            sureCheck() {
-                let arr = []
-                if(this.check.length>0){
-                    if(this.type==1){
-                        for(let v of this.body) {
-                            if(v.id == this.now.id){
-                                v.zt = true
-                            }
-                        }
-                    }else{
-                        for(let v of this.skin) {
-                            if(v.id == this.now.id){
-                                v.zt = true
-                            }
-                        }
-                    }
-                    for(let v of this.check) {
-                        for(let x of this.list) {
-                            if(x.body == v){
-                                arr.push(x)
-                                x.zt = true
-                            }
-                        }
-                    }
-                    for(let v of this.need) {
-                        if(v.head.id == this.now.id){
-
-                        }
-                    }
-                    this.need.unshift({head: this.now, list: arr,})
-                    this.list = []
-                    this.check = []
-                    this.dialogVisible = false
-                }else{
-                    for(let i=0;i<this.need.length;i++) {
-                        if(this.need[i].head.id == this.now.id){
-                            this.need.splice(i, 1)
-                        }
-                    }
-                    if(this.type==1){
-                        for(let v of this.body) {
-                            if(v.id == this.now.id){
-                                v.zt = false
-                            }
-                        }
-                    }else{
-                        for(let v of this.skin) {
-                            if(v.id == this.now.id){
-                                v.zt = false
-                            }
-                        }
-                    }
-                    this.list = []
-                    this.check = []
-                    this.dialogVisible = false
-                }
-            },
-            click(v, t) {
-                this.now = v
-                this.type = t
-                this.search(v.id)
-                this.dialogVisible = true
-            },
-            search(id) {
-                $.get(url(methods.healthSearch)+`&type=check&pid=${id}`, v=>{
-                    if(v.code==1){
-                        this.list = v.res
-                    }else{
-                        error(v.error)
-                    }
-                })
-            },
             bk(id) {
                 localStorage.setItem('type', 2)
                 localStorage.setItem('bkId', id)
@@ -714,16 +637,9 @@
                 }
             },
             getDa() {
-                $.get(url(methods.healthAdd)+`&type=list&id=${this.userId}`, v=>{
-                    if(v.code==0){
-                        for(let x of v.data.body) {
-                            x.zt = false
-                        }
-                        for(let x of v.data.skin) {
-                            x.zt = false
-                        }
-                        this.body = v.data.body
-                        this.skin = v.data.skin
+                $.get(url(methods.healthList)+`&mid=${this.userId}`, v=>{
+                    if(v.code==1){
+                        this.list = v.list
                     }
                 })
             },
@@ -802,6 +718,7 @@
                 loginState()
                 this.userId = localStorage.getItem('user_id')
                 this.getDetail()
+                this.getDa()
             })
         }
     })
