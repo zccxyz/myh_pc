@@ -397,12 +397,71 @@
                 <ul class="ul_list">
                     <li v-for="v in list">
                         {{v.create_time}}
-                        <img src="../images/moredetail.png" class="fr item_Detail"
-                             height="100%">
+                        <el-button class="fr" @click="dialogVisible=true">查看</el-button>
+                        <el-button type="danger" class="fr">删除</el-button>
                     </li>
                 </ul>
             </el-tab-pane>
         </el-tabs>
+        <el-dialog
+                title="查看档案"
+                :visible.sync="dialogVisible"
+                width="50%">
+            <ul class="record_list">
+                <li>
+                    <p>需要解决的皮肤问题：<span>干燥<span/></p>
+                    <!--<div>没有需要解决的问题喔~</div>-->
+                </li>
+
+                <li>
+                    <p>需要解决的身体问题：<span>没有需要解决的问题喔~<span/></p>
+                </li>
+
+                <li>
+                    过敏史：无
+
+                </li>
+
+                <li>
+                    面部解决方案：补水
+
+                </li>
+
+                <li>
+                    身体解决方案：
+                    无
+                </li>
+
+                <li>
+                    单次操作项目及手法：
+                    无
+                </li>
+                <li>
+                    <i>品项设计：</i>
+                    <div class="choice_list">
+                        <i ng-repeat="v in design_arr" ng-click="remove(v.design_id)">
+                            <span class="product_red_color color_box">产品</span>
+                            <span class="project_green_color color_box">项目</span>
+                            <span class="taohe_color color_box">套盒</span>
+                            <span class="plan_color color_box">方案</span>
+                        </i>
+                    </div>
+                </li>
+
+                <li class="disflex">
+                    下次预约时间：2018-12-28
+                </li>
+
+                <li>
+                    <span>顾问：丽萨</span>
+                </li>
+
+                <li>
+                    备注：无
+                </li>
+            </ul>
+
+        </el-dialog>
     </template>
 </div>
 
@@ -417,7 +476,6 @@
         el: '#app',
         data: {
             checkList: '',
-            add_archives: false,
             dialogVisible: false,
             input: '',
             options: [{
