@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>分店管理</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+</head>
+<body>
+
+<div id="app" class="customer">
+    <template>
+        <p class="cus_title">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+                <el-breadcrumb-item :to="{ path: '/' }">分店管理</el-breadcrumb-item>
+            </el-breadcrumb>
+        </p>
+        <el-table style="margin-top: 5px"
+                :data="tableData"
+                border
+                style="width: 100%">
+            <el-table-column
+                    prop="name"
+                    label="店铺名称"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="class"
+                    label="店铺类型"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="manger"
+                    label="负责人">
+            </el-table-column>
+            <el-table-column
+                    prop="tel"
+                    label="电话"
+                    width="180">
+            </el-table-column>
+            <el-table-column label="操作" prop="tag">
+                <template slot-scope="scope">
+                    <el-button
+                            :type="scope.row.tag === '当前店铺' ? 'primary' : 'success'"
+                            disable-transitions>{{scope.row.tag}}</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+    </template>
+
+</div>
+
+</body>
+</html>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../js/func.js"></script>
+<script src="../js/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            tableData: [{
+                name: '蓝岛美容',
+                class: '总店',
+                manger: '谢总',
+                tel:'12345678910',
+                tag:'当前店铺'
+            }, {
+                name: '蓝岛美容',
+                class: '总店',
+                manger: '谢总',
+                tel:'12345678910',
+                tag:'进入店铺'
+            }, {
+                name: '蓝岛美容',
+                class: '总店',
+                manger: '谢总',
+                tel:'12345678910',
+                tag:'进入店铺'
+            }, {
+                name: '蓝岛美容',
+                class: '总店',
+                manger: '谢总',
+                tel:'12345678910',
+                tag:'进入店铺'
+            }]
+        },
+        methods: {},
+        mounted() {
+            this.$nextTick(e=>{
+                //初始化
+                that = this;
+                loginState()
+            })
+        }
+    })
+</script>
