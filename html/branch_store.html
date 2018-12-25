@@ -16,7 +16,7 @@
             </el-breadcrumb>
         </p>
         <el-table style="margin-top: 5px"
-                :data="tableData"
+                :data="list"
                 border
                 style="width: 100%">
             <el-table-column
@@ -25,24 +25,25 @@
                     width="180">
             </el-table-column>
             <el-table-column
-                    prop="class"
+                    prop="store_type"
                     label="店铺类型"
-                    width="180">
+                    width="180"
+                    :formatter="formatter">
             </el-table-column>
             <el-table-column
-                    prop="manger"
+                    prop="manager_name"
                     label="负责人">
             </el-table-column>
             <el-table-column
-                    prop="tel"
+                    prop="mobile"
                     label="电话"
                     width="180">
             </el-table-column>
-            <el-table-column label="操作" prop="tag">
+            <el-table-column label="操作">
                 <template slot-scope="scope">
                     <el-button
-                            :type="scope.row.tag === '当前店铺' ? 'primary' : 'success'"
-                            disable-transitions>{{scope.row.tag}}</el-button>
+                            :type="scope.row.sid==sid?'primary':'success'"
+                            disable-transitions @click="change(scope.row)">{{scope.row.sid==sid?'当前店铺':'进入店铺'}}</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -84,14 +85,56 @@
                 manger: '谢总',
                 tel:'12345678910',
                 tag:'进入店铺'
-            }]
+            }],
+            list: [],
+            sid: 0,
         },
-        methods: {},
+        methods: {
+            change(v) {
+                if(v.sid == this.sid){
+                    return
+                }
+                $.post(url(methods.switchStore), {
+                    id: v.sid
+                }, v=>{
+                    if(v.code==1){
+                        success(v.Msg)
+                        this.getShop()
+                    }else{
+                        error(v.error)
+                    }
+                })
+            },
+            formatter(r, c) {
+                if(r.store_type==1) {
+                    return '主店'
+                }else{
+                    return '分店'
+                }
+            },
+            getShop() {
+                $.get(url(methods.firstCheck), v=>{
+
+                })
+                $.get(url(methods.getBranch), v=>{
+                    if(v.code==1){
+                        this.sid = v.res.sid
+                        if(v.res.child==false){
+                            return
+                        }
+                        this.list = v.res.child
+                    }else{
+                        error(v.error)
+                    }
+                })
+            },
+        },
         mounted() {
             this.$nextTick(e=>{
                 //初始化
                 that = this;
                 loginState()
+                this.getShop()
             })
         }
     })

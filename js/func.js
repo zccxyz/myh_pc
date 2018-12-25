@@ -1,5 +1,5 @@
-//const ym = 'https://www.myhkj.cn/apis/backend/';
-const ym = 'http://admin.test.com/apis/backend/';
+const ym = 'https://www.myhkj.cn/apis/backend/';
+//const ym = 'http://admin.test.com/apis/backend/';
 
 const methods = {
     'login': 'login/login',
@@ -63,6 +63,9 @@ const methods = {
     'healthDetail': 'Healthy/prescription_detail',
     'healthDel': 'Healthy/del',
     'health': 'Healthy/prescrip_detail',
+    'getBranch': 'Center/get_branch',
+    'firstCheck': 'Center/first_check',
+    'switchStore': 'Center/switch_store',
 };
 let that;
 
