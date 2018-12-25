@@ -21,42 +21,44 @@
         </p>
         <ul class="record_list">
             <li>
-                <p>需要解决的皮肤问题：<span>干燥<span/></p>
-                <!--<div>没有需要解决的问题喔~</div>-->
+                <p>需要解决的皮肤问题：<span v-for="v in face_detail">{{v.title}}: {{v.content}}</span></p>
+                <div v-if="face_detail.length==0">没有需要解决的问题喔~</div>
             </li>
 
             <li>
-                <p>需要解决的身体问题：<span>没有需要解决的问题喔~<span/></p>
+                <p>需要解决的身体问题：<span v-for="v in body_detail">{{v.title}}: {{v.content}}</span></p>
+                <div v-if="body_detail.length==0">没有需要解决的问题喔~</div>
             </li>
 
             <li>
-                过敏史：<el-input v-model="input" placeholder="请输入过敏史"></el-input>
+                过敏史：
+                <el-input v-model="data.allergy" placeholder="请输入过敏史"></el-input>
 
             </li>
 
             <li>
-                面部解决方案：<el-input v-model="input" placeholder="如没有请写‘无’"></el-input>
+                面部解决方案：
+                <el-input v-model="data.skin_ok" placeholder="如没有请写‘无’"></el-input>
 
             </li>
 
             <li>
                 身体解决方案：
-                    <el-input v-model="input" placeholder="如没有请写‘无’"></el-input>
+                <el-input v-model="data.body_ok" placeholder="如没有请写‘无’"></el-input>
             </li>
 
             <li>
                 单次操作项目及手法：
-                <el-input v-model="input" placeholder="如没有请写‘无’"></el-input>
+                <el-input v-model="data.one_opera" placeholder="如没有请写‘无’"></el-input>
             </li>
 
             <li class="choice_goods">
                 <i>品项设计：</i>
                 <div>
                     <span class="select_style">
-                        <el-select v-model="value" placeholder="请选择">
+                        <el-select v-model="now" placeholder="请选择">
                             <el-option
                                     v-for="item in options"
-                                    :key="item.value"
                                     :label="item.label"
                                     :value="item.value">
                             </el-option>
@@ -64,63 +66,78 @@
                     </span>
 
                     <span class="select_style">
-                        <el-select v-model="value" placeholder="请选择">
+                        <el-select v-model="nowGoods" placeholder="请选择" v-show="now==1">
                             <el-option
-                                    v-for="item in options"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
+                                    v-for="item in goods"
+                                    :label="item.goods_name"
+                                    :value="item.id">
                             </el-option>
-                          </el-select>
+                        </el-select>
+                        <el-select v-model="nowGoods2" placeholder="请选择" v-show="now==2">
+                            <el-option
+                                    v-for="item in goods"
+                                    :label="item.box_name"
+                                    :value="item.id">
+                            </el-option>
+                        </el-select>
+                        <el-select v-model="nowGoods3" placeholder="请选择" v-show="now==3">
+                            <el-option
+                                    v-for="item in goods"
+                                    :label="item.pro_name"
+                                    :value="item.id">
+                            </el-option>
+                        </el-select>
+                        <el-select v-model="nowGoods4" placeholder="请选择" v-show="now==4">
+                            <el-option
+                                    v-for="item in goods"
+                                    :label="item.name"
+                                    :value="item.id">
+                            </el-option>
+                        </el-select>
                     </span>
                 </div>
             </li>
 
             <li>
                 <div class="choice_list">
-                    <i ng-repeat="v in design_arr" ng-click="remove(v.design_id)">
-                        <span class="product_red_color color_box">产品</span>
-                        <span class="project_green_color color_box">项目</span>
-                        <span class="taohe_color color_box">套盒</span>
-                        <span class="plan_color color_box">方案</span>
+                    <i v-for="(v, i) in needGoods">
+                        <span class="product_red_color color_box" v-if="v.cate==1" @click="del(i)">{{v.name}}</span>
+                        <span class="project_green_color color_box" v-if="v.cate==2" @click="del(i)">{{v.name}}</span>
+                        <span class="taohe_color color_box" v-if="v.cate==3" @click="del(i)">{{v.name}}</span>
+                        <span class="plan_color color_box" v-if="v.cate==4" @click="del(i)">{{v.name}}</span>
                     </i>
                 </div>
             </li>
 
             <li class="disflex">
-               下次预约时间：
-                    <el-time-select style="width: 250px;flex: none;"
-                                        v-model="next_time"
-                                        :picker-options="{
-                start: '08:30',
-                step: '00:15',
-                end: '18:30'
-              }"
-                                        placeholder="选择时间">
-            </el-time-select>
+                下次预约时间：
+                <el-date-picker style="width: 250px;flex: none;"
+                                v-model="data.next_time" type="date"
+                                value-format="yyyy-MM-dd"
+                                placeholder="选择时间">
+                </el-date-picker>
 
             </li>
 
             <li>
                 <span>顾问：</span>
                 <span class="adv_sel">
-                    <el-select v-model="value" placeholder="请选择">
+                    <el-select v-model="data.gw" placeholder="请选择">
                             <el-option
-                                    v-for="item in options"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
+                                    v-for="item in staff"
+                                    :label="item.name"
+                                    :value="item.id">
                             </el-option>
-                          </el-select>
+                    </el-select>
                 </span>
             </li>
 
             <li>
                 备注：
-                <el-input v-model="input" placeholder="请输入备注"></el-input>
+                <el-input v-model="data.remarks" placeholder="请输入备注"></el-input>
             </li>
         </ul>
-        <el-button type="primary" class="butt_sub">完成</el-button>
+        <el-button type="primary" class="butt_sub" @click="sub">完成</el-button>
     </template>
 
 </div>
@@ -135,29 +152,153 @@
     new Vue({
         el: '#app',
         data: {
-            next_time:'',
-            input:'',
+            next_time: '',
+            input: '',
             options: [{
-                value: '选项1',
+                value: '1',
+                label: '产品'
+            }, {
+                value: '2',
                 label: '套盒'
             }, {
-                value: '选项2',
-                label: '方案'
-            }, {
-                value: '选项3',
+                value: '3',
                 label: '项目'
             }, {
-                value: '选项4',
-                label: '产品'
+                value: '4',
+                label: '方案'
             }],
-            value: ''
+            value: '',
+            arc: 0,
+            userId: 0,
+            now: '1',
+            data: {
+                allergy: '',
+                skin_ok: '',
+                body_ok: '',
+                one_opera: '',
+                remarks: '',
+                gw: '',
+                next_time: '',
+            },
+            design: [],
+            goods: [],
+            body_detail: [],
+            face_detail: [],
+            staff: [],
+            nowGoods: '',
+            nowGoods2: '',
+            nowGoods3: '',
+            nowGoods4: '',
+            needGoods: [],
         },
-        methods: {},
+        watch: {
+            now(v) {
+                this.getDetail(v)
+            },
+            nowGoods(v) {
+                if(v==0){
+                    return
+                }
+                for(let x of this.needGoods) {
+                    if(v == x.design_id) {
+                        return
+                    }
+                }
+                for(let x of this.goods) {
+                    if(v == x.id) {
+                        this.needGoods.unshift({cate: 1, design_id: v, name: x.goods_name})
+                    }
+                }
+            },
+            nowGoods2(v) {
+                if(v==0){
+                    return
+                }
+                for(let x of this.needGoods) {
+                    if(v == x.design_id) {
+                        return
+                    }
+                }
+                for(let x of this.goods) {
+                    if(v == x.id) {
+                        this.needGoods.unshift({cate: 2, design_id: v, name: x.box_name})
+                    }
+                }
+            },
+            nowGoods3(v) {
+                if(v==0){
+                    return
+                }
+                for(let x of this.needGoods) {
+                    if(v == x.design_id) {
+                        return
+                    }
+                }
+                for(let x of this.goods) {
+                    if(v == x.id) {
+                        this.needGoods.unshift({cate: 3, design_id: v, name: x.pro_name})
+                    }
+                }
+            },
+            nowGoods4(v) {
+                if(v==0){
+                    return
+                }
+                for(let x of this.needGoods) {
+                    if(v == x.design_id) {
+                        return
+                    }
+                }
+                for(let x of this.goods) {
+                    if(v == x.id) {
+                        this.needGoods.unshift({cate: 4, design_id: v, name: x.name})
+                    }
+                }
+            },
+        },
+        methods: {
+            del(i) {
+                this.needGoods.splice(i, 1)
+            },
+            getDetail(cate = 1) {
+                $.get(url(methods.health) + `&cate=${cate}&id=${this.arc}&mid=${this.userId}`, v => {
+                    if (v.code == 1) {
+                        this.goods = v.res.all_goods
+                        this.body_detail = v.res.body_detail
+                        this.face_detail = v.res.face_detail
+                        this.staff = v.res.returnStaffArr
+                    } else {
+                        error(v.error)
+                    }
+                })
+            },
+            sub() {
+                if(this.data.allergy == '' || this.data.skin_ok==''||this.data.body_ok==''
+                ||this.data.one_opera==''||this.data.gw==''||this.data.next_time==''){
+                    error('请填完以上内容')
+                    return
+                }
+                $.post(url(methods.health), {
+                    data: this.data, arc: this.arc, mid: this.userId,
+                    design: JSON.stringify(this.needGoods)
+                }, v => {
+                    if (v.code == 1) {
+                        success(v.Msg)
+                        setTimeout(()=>location.href='./vip_information.html', 1000)
+                    } else {
+                        error(v.error)
+                    }
+                })
+            },
+        },
         mounted() {
-            this.$nextTick(e=>{
+            this.$nextTick(e => {
                 //初始化
                 that = this;
                 loginState()
+                this.arc = localStorage.getItem('arc')
+                this.userId = localStorage.getItem('user_id')
+                this.getDetail()
             })
         }
     })

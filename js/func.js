@@ -61,6 +61,8 @@ const methods = {
     'healthAdd': 'Healthy/add',
     'healthList': 'Healthy/get_healthy_detail',
     'healthDetail': 'Healthy/prescription_detail',
+    'healthDel': 'Healthy/del',
+    'health': 'Healthy/prescrip_detail',
 };
 let that;
 

@@ -393,72 +393,77 @@
             <el-tab-pane label="健康档案">
                 <div class="cus_center over_hidden">
                     <el-button type="success" class="fr" @click="location.href='health_pro.html'"
-                               style="margin-bottom: 5px">新增档案</el-button>
+                               style="margin-bottom: 5px">新增档案
+                    </el-button>
                 </div>
                 <ul class="ul_list">
                     <li v-for="v in list">
                         {{v.create_time}}
-                        <el-button class="fr mar_hun" @click="dialogVisible=true">查看</el-button>
-                        <el-button type="danger" class="fr mar_hun">删除</el-button>
+                        <el-button class="fr mar_hun" @click="getJK(v.id)">查看</el-button>
+                        <el-button type="danger" class="fr mar_hun" @click="delJK(v.id)">删除</el-button>
                     </li>
                 </ul>
             </el-tab-pane>
         </el-tabs>
-        <el-dialog
+        <el-dialog v-if="detail!=''"
                 title="查看档案"
                 :visible.sync="dialogVisible"
-                width="50%">
+                width="50%" center>
             <ul class="record_list">
                 <li>
-                    <p>需要解决的皮肤问题：<span>干燥<span/></p>
+                    <p>需要解决的皮肤问题：
+                        <span v-for="v in detail.face_detail">{{v.title}}: {{v.content}}</span>
+                    </p>
                     <!--<div>没有需要解决的问题喔~</div>-->
                 </li>
 
                 <li>
-                    <p>需要解决的身体问题：<span>没有需要解决的问题喔~<span/></p>
+                    <p>需要解决的身体问题：
+                        <span v-for="v in detail.body_detail">{{v.title}}: {{v.content}}</span>
+                    </p>
                 </li>
 
                 <li>
-                    过敏史：无
+                    过敏史：{{detail.res.allergy}}
 
                 </li>
 
                 <li>
-                    面部解决方案：补水
+                    面部解决方案：{{detail.res.face}}
 
                 </li>
 
                 <li>
                     身体解决方案：
-                    无
+                    {{detail.res.one_opera}}
                 </li>
 
                 <li>
                     单次操作项目及手法：
-                    无
+                    {{detail.res.one_opera}}
                 </li>
                 <li>
                     <i>品项设计：</i>
                     <div class="choice_list">
-                        <i ng-repeat="v in design_arr" ng-click="remove(v.design_id)">
-                            <span class="product_red_color color_box">产品</span>
-                            <span class="project_green_color color_box">项目</span>
+                        <i>
+                            <span class="product_red_color color_box" v-for="v in detail.res.design">{{v.name}}</span>
+                            <!--<span class="project_green_color color_box">项目</span>
                             <span class="taohe_color color_box">套盒</span>
-                            <span class="plan_color color_box">方案</span>
+                            <span class="plan_color color_box">方案</span>-->
                         </i>
                     </div>
                 </li>
 
                 <li class="disflex">
-                    下次预约时间：2018-12-28
+                    下次预约时间：{{detail.res.next_time}}
                 </li>
 
                 <li>
-                    <span>顾问：丽萨</span>
+                    <span>顾问：{{detail.res.gw}}</span>
                 </li>
 
                 <li>
-                    备注：无
+                    备注：{{detail.res.remarks}}
                 </li>
             </ul>
 
@@ -555,6 +560,26 @@
             detail: '',
         },
         methods: {
+            delJK(id) {
+                this.$confirm('是否删除?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    $.post(url(methods.healthDel), {
+                        mid: this.userId, aid: id
+                    }, v=>{
+                        if(v.code==1){
+                            success(v.Msg)
+                            this.getDa()
+                        }else{
+                            error(v.error)
+                        }
+                    })
+                }).catch(e=>{
+
+                })
+            },
             bk(id) {
                 localStorage.setItem('type', 2)
                 localStorage.setItem('bkId', id)
@@ -588,51 +613,56 @@
                 }
             },
             del(t, v, t2 = 1) {
-                if (!confirm('是否删除')) {
-                    return
-                }
-                let a = []
-                if (t == 1) {
-                    if (t2 == 1 && this.arr.length == 0) {
-                        return
-                    }
-                    if (t2 == 1) {
-                        a = this.arr
-                    } else {
-                        a.push(v.id)
-                    }
-                } else if (t == 2) {
-                    if (t2 == 1 && this.arr2.length == 0) {
-                        return
-                    }
-                    if (t2 == 1) {
-                        a = this.arr2
-                    } else {
-                        a.push(v.id)
-                    }
-                } else if (t == 3) {
-                    if (t2 == 1 && this.arr3.length == 0) {
-                        return
-                    }
-                    if (t2 == 1) {
-                        a = this.arr3
-                    } else {
-                        a.push(v.id)
-                    }
-                }
-                $.post(url(methods.delWhich), {data: JSON.stringify(a), type: t}, v => {
-                    if (v.code == 0) {
-                        if (t == 1) {
-                            this.getCp()
-                        } else if (t == 2) {
-                            this.getBoxItems('items')
-                        } else if (t == 3) {
-                            this.getBoxItems('box')
+                this.$confirm('是否删除?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    let a = []
+                    if (t == 1) {
+                        if (t2 == 1 && this.arr.length == 0) {
+                            return
                         }
-                        success(v.data)
-                    } else {
-                        error(v.msg)
+                        if (t2 == 1) {
+                            a = this.arr
+                        } else {
+                            a.push(v.id)
+                        }
+                    } else if (t == 2) {
+                        if (t2 == 1 && this.arr2.length == 0) {
+                            return
+                        }
+                        if (t2 == 1) {
+                            a = this.arr2
+                        } else {
+                            a.push(v.id)
+                        }
+                    } else if (t == 3) {
+                        if (t2 == 1 && this.arr3.length == 0) {
+                            return
+                        }
+                        if (t2 == 1) {
+                            a = this.arr3
+                        } else {
+                            a.push(v.id)
+                        }
                     }
+                    $.post(url(methods.delWhich), {data: JSON.stringify(a), type: t}, v => {
+                        if (v.code == 0) {
+                            if (t == 1) {
+                                this.getCp()
+                            } else if (t == 2) {
+                                this.getBoxItems('items')
+                            } else if (t == 3) {
+                                this.getBoxItems('box')
+                            }
+                            success(v.data)
+                        } else {
+                            error(v.msg)
+                        }
+                    })
+                }).catch(e=>{
+
                 })
             },
             jump() {
@@ -697,17 +727,18 @@
                 }
             },
             getDa() {
-                $.get(url(methods.healthList)+`&mid=${this.userId}`, v=>{
-                    if(v.code==1){
+                $.get(url(methods.healthList) + `&mid=${this.userId}`, v => {
+                    if (v.code == 1) {
                         this.list = v.list
                     }
                 })
             },
             getJK(id) {
-                $.post(url(methods.healthDetail)+`&mid=${this.userId}`, {
+                this.dialogVisible = true
+                $.post(url(methods.healthDetail), {
                     mid: this.userId, id: id
-                }, v=>{
-                    if(v.code==1){
+                }, v => {
+                    if (v.code == 1) {
                         this.detail = v.res
                     }
                 })

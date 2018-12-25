@@ -41,7 +41,7 @@
                 </ul>
 
                 <div class="bottom_but">
-                    <el-button type="success">提交</el-button>
+                    <el-button type="success" @click="sub">提交</el-button>
                 </div>
             </div>
         </div>
@@ -265,6 +265,29 @@
                         this.skin = v.data.skin
                     }
                 })
+            },
+            sub() {
+                if(this.need.length==0){
+                    return
+                }
+                let arr = []
+                for(let v of this.need) {
+                    let a = []
+                    for(let x of v.list) {
+                        a.push(x.id)
+                    }
+                    arr[v.head.id] = a
+                }
+                $.post(url(methods.healthAdd), {data: arr, mid: this.userId}, v=>{
+                    if(v.code==1){
+                        success(v.Msg)
+                        localStorage.setItem('arc', v.arc)
+                        setTimeout(()=>location.href='./add_archives.html', 1000)
+                    }else{
+                        error(v.error)
+                    }
+                })
+                //console.log(arr)
             },
 
         },
