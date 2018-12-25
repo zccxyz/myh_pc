@@ -114,18 +114,17 @@
             },
             getShop() {
                 $.get(url(methods.firstCheck), v=>{
-
-                })
-                $.get(url(methods.getBranch), v=>{
-                    if(v.code==1){
-                        this.sid = v.res.sid
-                        if(v.res.child==false){
-                            return
+                    $.get(url(methods.getBranch), v=>{
+                        if(v.code==1){
+                            this.sid = v.res.sid
+                            if(v.res.child==false){
+                                return
+                            }
+                            this.list = v.res.child
+                        }else{
+                            error(v.error)
                         }
-                        this.list = v.res.child
-                    }else{
-                        error(v.error)
-                    }
+                    })
                 })
             },
         },
