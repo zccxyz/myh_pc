@@ -101,6 +101,9 @@
         },
         mounted() {
             this.$nextTick(e => {
+                if(!isPC()){
+                    window.location.href = 'https://myh.myhkj.cn';
+                }
                 console.log("                            _ooOoo_\n" +
                     "                           o8888888o\n" +
                     "                           88\" . \"88\n" +
