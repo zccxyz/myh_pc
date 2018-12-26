@@ -193,6 +193,10 @@
         },
         watch: {
             now(v) {
+                this.nowGoods = ''
+                this.nowGoods2 = ''
+                this.nowGoods3 = ''
+                this.nowGoods4 = ''
                 this.getDetail(v)
             },
             nowGoods(v) {
@@ -200,7 +204,7 @@
                     return
                 }
                 for(let x of this.needGoods) {
-                    if(v == x.design_id) {
+                    if(v == x.design_id && x.cate == 1) {
                         return
                     }
                 }
@@ -215,7 +219,7 @@
                     return
                 }
                 for(let x of this.needGoods) {
-                    if(v == x.design_id) {
+                    if(v == x.design_id && x.cate == 2) {
                         return
                     }
                 }
@@ -230,7 +234,7 @@
                     return
                 }
                 for(let x of this.needGoods) {
-                    if(v == x.design_id) {
+                    if(v == x.design_id && x.cate == 3) {
                         return
                     }
                 }
@@ -245,7 +249,7 @@
                     return
                 }
                 for(let x of this.needGoods) {
-                    if(v == x.design_id) {
+                    if(v == x.design_id && x.cate == 4) {
                         return
                     }
                 }
@@ -258,6 +262,10 @@
         },
         methods: {
             del(i) {
+                this.nowGoods = ''
+                this.nowGoods2 = ''
+                this.nowGoods3 = ''
+                this.nowGoods4 = ''
                 this.needGoods.splice(i, 1)
             },
             getDetail(cate = 1) {
