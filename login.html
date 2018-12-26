@@ -111,11 +111,28 @@
                 if (user != null) {
                     location.href = 'html/home_page.html'
                 }
+            },
+            IsPC() {
+                var userAgentInfo = navigator.userAgent;
+                var Agents = ["Android", "iPhone",
+                    "SymbianOS", "Windows Phone",
+                    "iPad", "iPod"];
+                var flag = true;
+                for (var v = 0; v < Agents.length; v++) {
+                    if (userAgentInfo.indexOf(Agents[v]) > 0) {
+                        flag = false;
+                        break;
+                    }
+                }
+                return flag;
             }
         },
         mounted() {
             this.$nextTick(e => {
                 //初始化
+                if(!this.IsPC()){
+                    window.location.href = 'https://myh.myhkj.cn';
+                }
                 that = this;
                 this.isLogin()
             })
