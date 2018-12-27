@@ -1,5 +1,5 @@
-//const ym = 'https://www.myhkj.cn/apis/backend/';
-const ym = 'http://admin.test.com/apis/backend/';
+const ym = 'https://www.myhkj.cn/apis/backend/';
+//const ym = 'http://admin.test.com/apis/backend/';
 
 const methods = {
     'login': 'login/login',
@@ -36,6 +36,7 @@ const methods = {
     'buyGoods': 'buy/buyGoods',
     'buyTh': 'buy/buyTh',
     'buyItems': 'buy/buyItems',
+    'buyPlan': 'buy/buyPlan',
     'buyCard': 'buy/buyCard',
     'print': 'buy/consume_print',
     'saveCommission': 'buy/save_commission',
@@ -68,6 +69,7 @@ const methods = {
     'switchStore': 'Center/switch_store',
     'planList': 'Plan/plan_list',
     'delPlan': 'Plan/del_plan',   //id,type=del
+    'addPlan': 'Plan/add',   //get获取数据，post提交数据
 };
 let that;
 

@@ -17,11 +17,12 @@
             </el-breadcrumb>
         </p>
         <div class="cus_center">
-            <el-button type="success" class="fr" @click="add_plan = true"
-                       style="margin-bottom: 5px">新增方案</el-button>
+            <el-button type="success" class="fr" @click="location.href='./add_plan.html'"
+                       style="margin-bottom: 5px">新增方案
+            </el-button>
         </div>
         <el-table
-                :data="plan"
+                :data="list"
                 border
                 style="width: 100%">
             <el-table-column
@@ -30,7 +31,7 @@
                     width="180">
             </el-table-column>
             <el-table-column
-                    prop="price"
+                    prop="sale"
                     label="价格">
             </el-table-column>
             <el-table-column
@@ -40,45 +41,45 @@
                 <template slot-scope="scope">
                     <el-button
                             size="mini"
-                            @click="getDetail=true">查看
+                            @click="detail=scope.row.sj;getDetail=true">查看
                     </el-button>
                     <el-button
                             size="mini"
                             type="danger"
-                            @click="">删除
+                            @click="del(scope.row.id)">删除
                     </el-button>
                 </template>
             </el-table-column>
         </el-table>
 
-<!-- 查看详情 -->
-<el-dialog
-        title="方案详情"
-        :visible.sync="getDetail"
-        center>
-    <el-table border
-            :data="tableData"
-            style="width: 100%">
-        <el-table-column
-                prop="class"
-                label="类别"
-                width="180">
-        </el-table-column>
-        <el-table-column
-                prop="name"
-                label="名称"
-                width="180">
-        </el-table-column>
-        <el-table-column
-                prop="price"
-                label="售价">
-        </el-table-column>
-        <el-table-column
-                prop="fre"
-                label="次数">
-        </el-table-column>
-    </el-table>
-</el-dialog>
+        <!-- 查看详情 -->
+        <el-dialog
+                title="方案详情"
+                :visible.sync="getDetail"
+                center>
+            <el-table border
+                      :data="detail"
+                      style="width: 100%">
+                <el-table-column
+                        prop="type"
+                        label="类别"
+                        width="80">
+                </el-table-column>
+                <el-table-column
+                        prop="name"
+                        label="名称"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="price"
+                        label="售价">
+                </el-table-column>
+                <el-table-column
+                        prop="times"
+                        label="次数">
+                </el-table-column>
+            </el-table>
+        </el-dialog>
     </template>
 
 </div>
@@ -93,40 +94,75 @@
     new Vue({
         el: '#app',
         data: {
-            getDetail:'flase',
-            plan:[{
-                name:'减肥方案',
-                price:'5868',
-            },{
-                name:'减肥方案',
-                price:'5868',
-            },{
-                name:'减肥方案',
-                price:'5868',
+            getDetail: false,
+            plan: [{
+                name: '减肥方案',
+                price: '5868',
+            }, {
+                name: '减肥方案',
+                price: '5868',
+            }, {
+                name: '减肥方案',
+                price: '5868',
             }],
             tableData: [{
                 class: '产品',
                 name: '补水面膜',
                 price: '56',
-                fre:'fre',
+                fre: 'fre',
             }, {
                 class: '产品',
                 name: '补水面膜',
                 price: '56',
-                fre:'fre',
+                fre: 'fre',
             }, {
                 class: '产品',
                 name: '补水面膜',
                 price: '56',
-                fre:'fre',
-            }]
+                fre: 'fre',
+            }],
+            list: [],
+            i: 0,
+            detail: [],
         },
-        methods: {},
+        methods: {
+            del(id) {
+                this.$confirm('是否删除?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    $.post(url(methods.delPlan), {id: id, type: 'del'}, v=>{
+                        if(v.code==1){
+                            success(v.Msg)
+                            this.getPlan()
+                        }else{
+                            error(v.error)
+                        }
+                    })
+                }).catch(e=>{
+
+                })
+            },
+            getPlan() {
+                $.get(url(methods.planList), v => {
+                    for(let x of v.res) {
+                        let a = []
+                        for(let k in x.detail) {
+                            a.push(x.detail[k])
+                        }
+                        x.sj = a
+                    }
+                    this.list = v.res
+                })
+            },
+        },
         mounted() {
-            this.$nextTick(e=>{
+            this.$nextTick(e => {
                 //初始化
                 that = this;
                 loginState()
+                this.getPlan()
             })
         }
     })

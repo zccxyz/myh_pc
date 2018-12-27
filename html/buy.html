@@ -198,6 +198,43 @@
                     </el-table-column>
                 </el-table>
             </el-tab-pane>
+            <el-tab-pane label="方案">
+                <div>
+                    <el-input style="margin:5px 0;" class="cus_seatch"
+                              placeholder="请输入商品名称"
+                              prefix-icon="el-icon-search"
+                              v-model="input">
+                    </el-input>
+                </div>
+                <el-table border
+                          ref="multipleTable"
+                          :data="list.filter(data => (!input || data.name.toLowerCase().includes(input.toLowerCase())) && data.type=='方案')"
+                          tooltip-effect="dark"
+                          style="width: 100%">
+                    <el-table-column
+                            prop="name"
+                            label="商品名称">
+                    </el-table-column>
+                    <el-table-column
+                            prop="sale"
+                            label="零售价">
+                    </el-table-column>
+                    <el-table-column
+                            prop="free"
+                            label="赠送"
+                            :formatter="form">
+                    </el-table-column>
+                    <el-table-column
+                            label="加入购物车"
+                            show-overflow-tooltip>
+                        <template slot-scope="scope">
+                            <i class="el-icon-remove blue_c" @click="remove(scope.row)" v-if="scope.row.needNum>0"></i>
+                            <i v-if="scope.row.needNum>0">{{scope.row.needNum}}</i>
+                            <i class="el-icon-circle-plus blue_c" @click="add(scope.row)"></i>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </el-tab-pane>
             <el-tab-pane label="卡项">
                 <div>
                     <el-input style="margin:5px 0;" class="cus_seatch"
@@ -281,7 +318,7 @@
                             <el-input v-if="v.yh==1" v-model="v.discount" placeholder="请输入1到10的数字"
                                       class="in_wid und_line"></el-input>
                             <el-radio v-model="v.yh" label="2" v-if="v.free==1">赠送</el-radio>
-                            <template v-if="v.type!='产品'">
+                            <template v-if="v.type!='产品' && v.type!='方案'">
                                 <i class="check_box">
                                     <!--<el-checkbox v-model="checked">修改次数</el-checkbox>-->
                                     修改次数
@@ -513,6 +550,35 @@
                     }
                 })
             },
+            subPlan() {
+                let goods = []
+                for(let v of this.need) {
+                    if(v.type == '方案') {
+                        if(v.yh != 0){
+                            goods.push({'price': v.yh==1?v.price * v.discount/10:0, 'id': v.id, 'sum': v.needNum})
+                        }else{
+                            goods.push({'price': v.price, 'id': v.id, 'sum': v.needNum})
+                        }
+                    }
+                }
+                $.post(url(methods.buyPlan)+`&id=${this.user_id}`, {
+                    data: JSON.stringify(goods)
+                }, v=>{
+                    if(v.code==1){
+                        this.need = []
+                        for (let v of this.list) {
+                            v.needNum = 0;
+                        }
+                        success(v.Msg)
+                        localStorage.setItem('orderId', v.res.orderId)
+                        localStorage.setItem('arrearsRes', v.res.arrearsRes)
+                        localStorage.setItem('type', 1)
+                        setTimeout(()=>location.href = './pay_page.html', 1000)
+                    }else{
+                        error(v.errorMsg)
+                    }
+                })
+            },
             sub() {
                 if(this.tabIndex==0){
                     this.subCp()
@@ -520,6 +586,8 @@
                     this.subItems()
                 }else if(this.tabIndex==2) {
                     this.subBox()
+                }else if(this.tabIndex==3) {
+                    this.subPlan()
                 }
                 /*if (this.need.length == 0) {
                     error('请选择商品')
