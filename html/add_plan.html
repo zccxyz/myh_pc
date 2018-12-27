@@ -131,7 +131,6 @@
                                 <p class="linr_four">
                                     <span class="p_name">{{v.name}} </span>
                                     <i class="cr pri_wid">￥{{v.price}}</i>
-                                    <span class="huihui">次数：{{v.times}}</span>
                                     <i class="el-icon-circle-close-outline fr" style="font-size: 2.2rem;line-height:40px;
                                     margin-right: 20px;" @click="del(i)"></i>
                                 </p>
@@ -142,7 +141,6 @@
                                         <el-radio label="1">打折</el-radio>
                                         <el-radio label="2">赠送</el-radio>
                                     </el-radio-group>
-                                    <el-checkbox v-model="v.edit" label="修改次数"></el-checkbox>
                                 </p>
                                 <p class="linr_four" v-if="v.state==1">
                                    <span class="list_left"> 打折</span>
@@ -153,11 +151,6 @@
                                     <span class="list_left">折后</span>
                                     <el-input v-model="v.price*v.dis/10" disabled placeholder="请输入" type="number"
                                               class="in_wid und_line"></el-input>元
-                                </p>
-                                <p class="linr_four" style="margin-bottom: 15px" v-if="v.edit">
-                                  <span class="list_left"> 修改次数</span>
-                                    <el-input v-model="v.times" placeholder="请输入" type="number"
-                                              class="in_wid und_line"></el-input>次
                                 </p>
                             </li>
                         </ul>
@@ -397,14 +390,16 @@
                     let d = this.box[i]
                     this.need.unshift({
                         price: d.price, id: d.id, name: d.box_name,
-                        type: '套盒', cost: d.cost, times: d.times
+                        type: '套盒', cost: d.cost, times: d.times,
+                        dis: 10, state: '0', edit: false,
                     })
                 } else if (type == 3) {
                     this.goods[i].number++
                     let d = this.goods[i]
                     this.need.unshift({
                         price: d.price, id: d.id, name: d.goods_name,
-                        type: '产品', cost: d.cost, times: d.stock
+                        type: '产品', cost: d.cost, times: d.stock,
+                        dis: 10, state: '0', edit: false,
                     })
                 }
             },
