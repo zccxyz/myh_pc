@@ -6,6 +6,15 @@
     <link rel="stylesheet" href="../css/index.css">
     <link rel="stylesheet" type="text/css" href="../css/common.css">
     <link rel="stylesheet" type="text/css" href="../css/vip_information.css">
+    <style>
+        .dele_icon{
+            position: relative;
+            left: -15px;
+            background-color: #fff;
+            border-radius: 50%;
+            top: -9px;
+        }
+    </style>
 </head>
 <body class="information">
 
@@ -35,7 +44,7 @@
                         {{v.head.body}}：
                         <span v-for="(x, i) in v.list">
                                     <el-button type="primary" round size="mini">{{x.body}}</el-button>
-                                    <i class="el-icon-error" @click="delWt(j, i)"></i>
+                                    <i class="el-icon-error dele_icon" @click="delWt(j, i)"></i>
                                 </span>
                     </li>
                 </ul>
