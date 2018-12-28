@@ -29,7 +29,7 @@
                 品项：{{detail.type | type}}&#12288;会员：{{detail.name}}
             </p>
             <p class="order_detail" v-if="type==1">
-                会员:<i class="cr">{{member.name}}</i>&#12288;订单金额：{{order.price}}
+                会员：<i class="cr">{{member.name}}</i>&#12288;订单金额：{{order.price}}
             </p>
             <p class="order_detail" v-else>
                 总金额:<i class="cr">{{detail.price}}</i>&#12288;已支付：{{detail.pay_money}}&#12288;未结清：{{detail.money}}
