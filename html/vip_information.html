@@ -669,10 +669,11 @@
                 location.href = './buy.html'
             },
             getArrears() {
+                this.totalArrears = 0
                 $.get(url(methods.aloneArrears) + `&mid=${this.userId}`, v => {
                     this.arrearsList = v.list
                     for (let x of v.list) {
-                        this.totalArrears += parseFloat(x.price)
+                        this.totalArrears += parseFloat(x.money)
                     }
                 })
             },
