@@ -514,15 +514,10 @@
             },
             getGoods() {
                 $.post(url(methods.getAllGoods), v => {
-                    if(v.code==0){
-                        success('导入失败')
-                    }else{
-                        error('导入失败')
+                    let rs = verify(v)
+                    if (rs != false) {
+                        this.list = rs
                     }
-                    //let rs = verify(v)
-                    //if (rs != false) {
-                    //    this.list = rs
-                    //}
                 })
             },
             ok() {
