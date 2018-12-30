@@ -584,10 +584,14 @@
                     return false
                 }
             },
-            ok() {
-                success('上传成功')
+            ok(v, file, fileList) {
+                if(v.code==0){
+                    success(v.msg)
+                    this.getMember()
+                }else{
+                    error('导入失败，请检查数据是否填写正确  '+v.msg)
+                }
                 this.fileList = []
-                this.getMember()
             },
             getMember() {
                 $.get(url(methods.get_member_list), v => {
