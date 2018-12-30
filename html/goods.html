@@ -520,10 +520,15 @@
                     }
                 })
             },
-            ok() {
-                success('上传成功，正在导入。。。')
+            ok(v, file, fileList) {
+                console.log(v)
+                if(v.code==0){
+                    success(v.msg)
+                    this.getGoods()
+                }else{
+                    error('导入失败，请检查数据是否填写正确  '+v.msg)
+                }
                 this.fileList = []
-                this.getGoods()
             },
             beforeUpload2(f) {
                 let ext = f.name.toString().split('.')
