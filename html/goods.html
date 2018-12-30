@@ -514,14 +514,19 @@
             },
             getGoods() {
                 $.post(url(methods.getAllGoods), v => {
-                    let rs = verify(v)
-                    if (rs != false) {
-                        this.list = rs
+                    if(v.code==0){
+                        success('导入失败')
+                    }else{
+                        error('导入失败')
                     }
+                    //let rs = verify(v)
+                    //if (rs != false) {
+                    //    this.list = rs
+                    //}
                 })
             },
             ok() {
-                success('上传成功')
+                success('上传成功，正在导入。。。')
                 this.fileList = []
                 this.getGoods()
             },
