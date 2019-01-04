@@ -377,6 +377,7 @@
             twoArr: [],
             threeArr: [],
             balance: 0,
+            balance2: 0,
             roomId: 0,
             c_b: '1', //1余额，2会员卡
             card: [],
@@ -545,6 +546,7 @@
                         this.mrs = v.back.m
                         this.staff = v.back.staff
                         this.balance = v.back.balance
+                        this.balance2 = v.back.balance
                         this.card = v.back.card
                     }
                 })
@@ -553,7 +555,7 @@
         watch: {
             c_b(v) {
                 if(v==1){
-
+                    this.balance = this.balance2
                 }else{
                     for(let x of this.card) {
                         if(v == x.id){
