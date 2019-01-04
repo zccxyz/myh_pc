@@ -311,11 +311,14 @@
                         <span class="g_name">
                              {{v.name}}
                         </span>
-                        <span class="p_wid">￥{{v.price * v.discount/10}}</span>
+                        <span class="p_wid">￥{{v.yh==1?v.price * v.discount/10:v.yh==2?0:v.price2}}</span>
                         <span>
                             优惠方式
                             <el-radio v-model="v.yh" label="1">打折</el-radio>
                             <el-input v-if="v.yh==1" v-model="v.discount" placeholder="请输入1到10的数字"
+                                      class="in_wid und_line"></el-input>
+                            <el-radio v-model="v.yh" label="3">改价</el-radio>
+                            <el-input v-if="v.yh==3" v-model="v.price2" placeholder="请输入价格"
                                       class="in_wid und_line"></el-input>
                             <el-radio v-model="v.yh" label="2" v-if="v.free==1">赠送</el-radio>
                             <template v-if="v.type!='产品' && v.type!='方案'">
@@ -355,11 +358,14 @@
                         <span class="g_name">
                              {{v.card_name}}
                         </span>
-                        <span class="p_wid">￥{{v.price * v.dis/10}}</span>
+                        <span class="p_wid">￥{{v.yh==1?v.price * v.dis/10:v.yh==2?0:v.price2}}</span>
                         <span>
                             优惠方式
                             <el-radio v-model="v.yh" label="1">打折</el-radio>
                             <el-input v-if="v.yh==1" v-model="v.dis" placeholder="请输入1到10的数字"
+                                      class="in_wid und_line"></el-input>
+                            <el-radio v-model="v.yh" label="3">改价</el-radio>
+                            <el-input v-if="v.yh==3" v-model="v.price2" placeholder="请输入价格"
                                       class="in_wid und_line"></el-input>
                             <el-radio v-model="v.yh" label="2" v-if="v.send==1">赠送</el-radio>
                         </span>
@@ -434,8 +440,8 @@
                 }
                 let card = []
                 for(let v of this.need2) {
-                    if(v.yh==0){
-                        card.push({'price': v.price, 'id': v.id, 'sum': v.needNum})
+                    if(v.yh==0 || v.yh==3){
+                        card.push({'price': v.price2, 'id': v.id, 'sum': v.needNum})
                     }else{
                         card.push({'price': v.yh==1?v.price * v.dis/10:0, [`p_dis_t${v.id}`]: v.yh,
                             'id': v.id, 'sum': v.needNum})
@@ -461,11 +467,11 @@
                 let items = []
                 for(let v of this.need) {
                     if(v.type == '项目') {
-                        if(v.yh!=0){
+                        if(v.yh!=0 && v.yh!=3){
                             items.push({'price': v.yh==1?v.price * v.discount/10:0, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
                                 'name': v.name, 'sum': v.needNum, 'times': v.fre, 'is_rate': v.yh})
                         }else{
-                            items.push({'price': v.price, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
+                            items.push({'price': v.price2, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
                                 'name': v.name, 'sum': v.needNum, 'times': v.fre})
                         }
                     }
@@ -492,11 +498,11 @@
                 let th = []
                 for(let v of this.need){
                     if(v.type == '套盒') {
-                        if(v.yh!=0){
+                        if(v.yh!=0 && v.yh!=3){
                             th.push({'price': v.yh==1?v.price * v.discount/10:0, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
                                 'name': v.name, 'sum': v.needNum, 'times': v.fre, 'is_rate': v.yh})
                         }else{
-                            th.push({'price': v.price, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
+                            th.push({'price': v.price2, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
                                 'name': v.name, 'sum': v.needNum, 'times': v.fre})
                         }
                     }
@@ -523,11 +529,11 @@
                 let goods = []
                 for(let v of this.need) {
                     if(v.type == '产品') {
-                        if(v.yh != 0){
+                        if(v.yh != 0 && v.yh!=3){
                             goods.push({'price': v.yh==1?v.price * v.discount/10:0, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
                                 'name': v.name, 'sum': v.needNum, 'spec': v.spec, 'is_rate': v.yh})
                         }else{
-                            goods.push({'price': v.price, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
+                            goods.push({'price': v.price2, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
                                 'name': v.name, 'sum': v.needNum, 'spec': v.spec})
                         }
                     }
@@ -554,10 +560,10 @@
                 let goods = []
                 for(let v of this.need) {
                     if(v.type == '方案') {
-                        if(v.yh != 0){
+                        if(v.yh != 0 && v.yh!=3){
                             goods.push({'price': v.yh==1?v.price * v.discount/10:0, 'id': v.id, 'sum': v.needNum})
                         }else{
-                            goods.push({'price': v.price, 'id': v.id, 'sum': v.needNum})
+                            goods.push({'price': v.price2, 'id': v.id, 'sum': v.needNum})
                         }
                     }
                 }
@@ -750,6 +756,7 @@
                             v['needNum'] = 0
                             v['discount'] = 10
                             v['yh'] = 0
+                            v['price2'] = v['price']
                         }
                         this.list = rs
                     }
@@ -786,6 +793,7 @@
                             x.dis = 10
                             x.yh = 0
                             x.needNum = 0
+                            x.price2 = x.price
                         }
                         this.card = v.card.list
                     }else{
@@ -800,8 +808,11 @@
                 for (let v of this.need) {
                     if(v.yh==2) {
                         continue
+                    }else if(v.yh==1){
+                        all += v.discount / 10 * v.price * v.needNum
+                    }else{
+                        all += v.price2 * v.needNum
                     }
-                    all += v.discount / 10 * v.price * v.needNum
                 }
                 return all
             },
@@ -810,8 +821,11 @@
                 for (let v of this.need2) {
                     if(v.yh==2) {
                         continue
+                    }else if(v.yh==1){
+                        all += v.dis / 10 * v.price * v.needNum
+                    }else{
+                        all += v.price2 * v.needNum
                     }
-                    all += v.dis / 10 * v.price * v.needNum
                 }
                 return all
             }
