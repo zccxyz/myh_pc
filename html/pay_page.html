@@ -155,8 +155,8 @@
          <span class="fl cr total_money">
              {{type==1?'合计':'合计补款'}}：{{getTotal}}
          </span>
-            <span class="red_box pay" @click="sub" v-if="type==1">提交订单</span>
-            <span class="red_box pay" @click="sub2" v-else>补款</span>
+            <span class="red_box pay cursor" @click="sub" v-if="type==1">提交订单</span>
+            <span class="red_box pay cursor" @click="sub2" v-else>补款</span>
         </div>
     </template>
 
