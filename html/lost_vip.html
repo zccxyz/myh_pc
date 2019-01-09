@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>流失会员</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../css/vip_information.css">
+</head>
+<body>
+
+<div id="app" class="customer">
+    <template>
+        <p class="cus_title">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+                <el-breadcrumb-item>工作台首页</el-breadcrumb-item>
+                <el-breadcrumb-item :to="{ path: '/' }">流失会员</el-breadcrumb-item>
+            </el-breadcrumb>
+        </p>
+        <el-tabs type="card" @tab-click=""
+                 class="vip_infor">
+            <el-tab-pane label="1个月">
+                <div class="basic_inf">
+                    <el-table
+                            :data="vip"
+                            style="width: 100%">
+                        <el-table-column
+                                prop="name"
+                                label="姓名">
+                        </el-table-column>
+                        <el-table-column
+                                prop="sex"
+                                label="性别">
+                        </el-table-column>
+                        <el-table-column
+                                prop="tel"
+                                label="电话">
+                        </el-table-column>
+                        <el-table-column
+                                prop="last_time"
+                                label="最后到店">
+                        </el-table-column>
+                        <el-table-column label="操作">
+                            <template slot-scope="scope">
+                                <a href="#"  @click="">查看</a>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+            </el-tab-pane>
+            <el-tab-pane label="2个月">
+                <div class="basic_inf">
+                    <el-table
+                            :data="vip"
+                            style="width: 100%">
+                        <el-table-column
+                                prop="name"
+                                label="姓名">
+                        </el-table-column>
+                        <el-table-column
+                                prop="sex"
+                                label="性别">
+                        </el-table-column>
+                        <el-table-column
+                                prop="tel"
+                                label="电话">
+                        </el-table-column>
+                        <el-table-column
+                                prop="last_time"
+                                label="最后到店">
+                        </el-table-column>
+                        <el-table-column label="操作">
+                            <template slot-scope="scope">
+                                <a href="#"  @click="">查看</a>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+            </el-tab-pane>
+            <el-tab-pane label="3个月">
+                <div class="basic_inf">
+                    <el-table
+                            :data="vip"
+                            style="width: 100%">
+                        <el-table-column
+                                prop="name"
+                                label="姓名">
+                        </el-table-column>
+                        <el-table-column
+                                prop="sex"
+                                label="性别">
+                        </el-table-column>
+                        <el-table-column
+                                prop="tel"
+                                label="电话">
+                        </el-table-column>
+                        <el-table-column
+                                prop="last_time"
+                                label="最后到店">
+                        </el-table-column>
+                        <el-table-column label="操作">
+                            <template slot-scope="scope">
+                                <a href="#"  @click="">查看</a>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+            </el-tab-pane>
+            <el-tab-pane label="6个月">
+                <div class="basic_inf">
+                    <el-table
+                            :data="vip"
+                            style="width: 100%">
+                        <el-table-column
+                                prop="name"
+                                label="姓名">
+                        </el-table-column>
+                        <el-table-column
+                                prop="sex"
+                                label="性别">
+                        </el-table-column>
+                        <el-table-column
+                                prop="tel"
+                                label="电话">
+                        </el-table-column>
+                        <el-table-column
+                                prop="last_time"
+                                label="最后到店">
+                        </el-table-column>
+                        <el-table-column label="操作">
+                            <template slot-scope="scope">
+                                <a href="#"  @click="">查看</a>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+            </el-tab-pane>
+        </el-tabs>
+    </template>
+
+</div>
+
+</body>
+</html>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../js/func.js"></script>
+<script src="../js/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            vip:[{
+                name:'Lisa',
+                sex:'女',
+                tel:'15346875621',
+                last_time:'2018-02-14'
+            },{
+                name:'Lisa',
+                sex:'女',
+                tel:'15346875621',
+                last_time:'2018-02-14'
+            }]
+        },
+        methods: {},
+        mounted() {
+            this.$nextTick(e=>{
+                //初始化
+                that = this;
+                loginState()
+            })
+        }
+    })
+</script>

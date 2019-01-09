@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>美约会-会员管理</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../css/customer.css">
+</head>
+<body>
+
+<div id="app" class="customer">
+    <template>
+        <p class="cus_title">
+        <el-breadcrumb separator-class="el-icon-arrow-right">
+            <el-breadcrumb-item>工作台首页</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/' }">新客户追踪</el-breadcrumb-item>
+        </el-breadcrumb>
+    </p>
+        <div class="cus_center">
+            <el-input class="cus_seatch" style="float: left"
+                      placeholder="请输入内容"
+                      prefix-icon="el-icon-search"
+                      v-model="input">
+            </el-input>
+            <el-button type="success" class="fr" @click="del">批量删除</el-button>
+            <el-button type="success" class="fr" @click="addDialogVisible = true">添加新客</el-button>
+        </div>
+        <el-table border
+                  ref="multipleTable"
+                  :data="list.filter(data => !input || data.name.toLowerCase().includes(input.toLowerCase()) ||
+                  data.tel.toLowerCase().includes(input.toLowerCase()))"
+                  tooltip-effect="dark"
+                  style="width: 100%"
+                  @selection-change="handleSelectionChange">
+            <el-table-column
+                    type="selection"
+                    width="55">
+            </el-table-column>
+            <el-table-column
+                    label="新客名"
+                    width="120"
+                    prop="name">
+            </el-table-column>
+            <el-table-column width="200"
+                             prop="tel"
+                             label="联系电话">
+            </el-table-column>
+            <el-table-column
+                    label="操作"
+                    width="680"
+                    fixed="right"
+                    show-overflow-tooltip>
+                <template slot-scope="scope">
+                    <el-button
+                            size="mini"
+                            type="success"
+                            @click="now=scope.row;setVal()">升级
+                    </el-button>
+                    <el-button
+                            size="mini"
+                            @click="storeDialogVisible=true;now=scope.row" class="green do_but">到店
+                    </el-button>
+                    <el-button
+                            size="mini"
+                            @click="jump(1, scope.row)" class="purple do_but">
+                        消费
+                    </el-button>
+                    <el-button
+                            size="mini"
+                            @click="jump(2, scope.row)" class="red_box do_but">
+                        消耗
+                    </el-button>
+                    <el-button
+                            size="mini"
+                            @click="leaveDialogVisible=true;now=scope.row" class="blue do_but">离店
+                    </el-button>
+                    <el-button
+                            size="mini"
+                            type="danger"
+                            @click="delOne(scope.row.id)">删除
+                    </el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+        <el-dialog
+                title="添加新客"
+                :visible.sync="addDialogVisible"
+                width="400px"
+                center
+                :before-close="close">
+            <ul class="goods_edit">
+                <li>
+                    <span class="list_left">姓名名</span>
+                    <span class="list_right">
+                    <el-input v-model="user.name" placeholder="请输入会员名"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">年龄</span>
+                    <span class="list_right">
+                    <el-input v-model="user.age" placeholder="请输入年龄"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">手机号</span>
+                    <span class="list_right">
+                    <el-input v-model="user.tel" placeholder="请输入手机号"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">性别</span>
+                    <span class="list_right">
+                    <el-radio v-model="user.sex" label="1">女</el-radio>
+                    <el-radio v-model="user.sex" label="2">男</el-radio>
+                </span>
+                </li>
+
+                <li>
+                    <span class="list_left">顾问</span>
+                    <span class="list_right">
+                    <el-select v-model="value" placeholder="请选择">
+                        <el-option
+                                v-for="item in options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
+                </span>
+                </li>
+            </ul>
+            <span slot="footer" class="dialog-footer">
+            <el-button @click="cancel">取 消</el-button>
+            <el-button type="primary" @click="add">确 定</el-button>
+          </span>
+        </el-dialog>
+
+        <!-- 删除弹窗 -->
+        <el-dialog
+                title="删除新客"
+                :visible.sync="deleteDialogVisible"
+                width="400px"
+                center>
+            <span>确认删除所选的新客</span>
+            <span slot="footer" class="dialog-footer">
+            <el-button @click="deleteDialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="del">确 定</el-button>
+          </span>
+        </el-dialog>
+        <!-- 到店弹窗 -->
+        <el-dialog
+                title="房间号"
+                :visible.sync="storeDialogVisible"
+                width="400px"
+                center>
+            <div>
+                <p class="p_text">请输入房间号</p>
+                <el-input v-model="room" placeholder="请输入房间号"></el-input>
+            </div>
+            <span slot="footer" class="dialog-footer">
+            <el-button @click="storeDialogVisible = false;room='';">取 消</el-button>
+            <el-button type="primary" @click="comeShop">确 定</el-button>
+          </span>
+        </el-dialog>
+        <!-- 离店弹窗 -->
+        <el-dialog
+                title="离店号"
+                :visible.sync="leaveDialogVisible"
+                width="400px"
+                center>
+            <div>
+                <p class="p_text">确认现在离店</p>
+            </div>
+            <span slot="footer" class="dialog-footer">
+            <el-button @click="leaveDialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="leave">确 定</el-button>
+          </span>
+        </el-dialog>
+
+        <!--会员升级-->
+        <el-dialog
+                title="会员升级"
+                :visible.sync="zt"
+                width="400px"
+                center
+                :before-close="close">
+            <ul class="goods_edit">
+                <li>
+                    <span class="list_left">会员编号</span>
+                    <span class="list_right">
+                    <el-input placeholder=""></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">会员名</span>
+                    <span class="list_right">
+                    <el-input v-model="user.name" placeholder="请输入会员名"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">年龄</span>
+                    <span class="list_right">
+                    <el-input v-model="user.age" placeholder="请输入年龄"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">手机号</span>
+                    <span class="list_right">
+                    <el-input v-model="user.tel" placeholder="请输入手机号"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">微信</span>
+                    <span class="list_right">
+                    <el-input placeholder="请输入会员微信号"></el-input>
+                </span>
+                <li>
+                    <span class="list_left">密码</span>
+                    <span class="list_right">
+                    <el-input placeholder="密码默认为123456"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">性别</span>
+                    <span class="list_right">
+                    <el-radio v-model="user.sex" label="1">女</el-radio>
+                    <el-radio v-model="user.sex" label="2">男</el-radio>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">生日类别</span>
+                    <span class="list_right">
+                        <el-radio v-model="user.bir_type" label="1">阳历</el-radio>
+                        <el-radio v-model="user.bir_type" label="2">阴历</el-radio>
+                    </span>
+                </li>
+                <li>
+                    <span class="list_left">生日</span>
+                    <span class="list_right">
+                    <el-date-picker
+                            v-model="user.birthday"
+                            type="date"
+                            value-format="yyyy-MM-dd"
+                            placeholder="选择生日">
+                    </el-date-picker>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">婚姻</span>
+                    <span class="list_right">
+                        <el-radio v-model="user.bir_type" label="1">已婚</el-radio>
+                        <el-radio v-model="user.bir_type" label="2">未婚</el-radio>
+                    </span>
+                </li>
+                <li>
+                    <span class="list_left">顾问</span>
+                    <span class="list_right">
+                    <el-select v-model="value" placeholder="请选择">
+                        <el-option
+                                v-for="item in options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
+                </span>
+                </li>
+            </ul>
+            <span slot="footer" class="dialog-footer">
+            <el-button @click="cancel">取 消</el-button>
+            <el-button type="primary" @click="edit">确 定</el-button>
+          </span>
+        </el-dialog>
+
+    </template>
+
+</div>
+
+</body>
+</html>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../js/func.js"></script>
+<script src="../js/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            input: '',
+            radio: '',
+            addDialogVisible: false,
+            deleteDialogVisible: false,
+            storeDialogVisible: false,
+            leaveDialogVisible: false,
+            birthday: '',
+            name: '',
+            options: [{
+                value: '选项1',
+                label: '张三'
+            }, {
+                value: '选项2',
+                label: '丽萨'
+            }],
+            value: '',
+            tableData3: [{
+                name: '张三',
+                number: '7000123',
+                tel: '15212645632'
+            }, {
+                name: '丽萨',
+                number: '7000125',
+                tel: '15212645632'
+            }],
+            multipleSelection: [],
+
+            total: 0,
+            list: [],
+            fileList: [],
+            r: '',
+            user: {
+                'name': '',
+                'age': '',
+                'tel': '',
+                'sex': '1',
+                'bir_type': '1',
+                'birthday': '',
+            },
+            room: '',
+            now: '',
+            zt: false
+        },
+        methods: {
+            exportData() {
+                /*$.get(url(methods.exportMember), v=>{
+
+                })*/
+                window.open(url(methods.exportMember))
+            },
+            jump(type, v) {
+                if (type == 1) {
+                    localStorage.setItem('user_id', v.id)
+                    location.href = './buy.html'
+                } else if (type == 2) {
+                    $.post(url(methods.isLeave), {'id': v.id}, x => {
+                        if (x.code != 0) {
+                            error('请求出错')
+                            return
+                        }
+                        if (x.data == false) {
+                            error('用户未到店')
+                            return
+                        }
+                        localStorage.setItem('roomId', x.data.id)
+                        localStorage.setItem('user_id', v.id)
+                        location.href = './consume.html'
+                    })
+                } else if (type == 3) {
+                    localStorage.setItem('user_id', v.id)
+                    location.href = 'vip_information.html'
+                }
+            },
+            edit() {
+                if (this.user.name == '' || this.user.age == '' || this.user.tel == '' || this.user.birthday == '') {
+                    error('请填完以上内容')
+                    return
+                }
+                let obj = this.user
+                obj.id = this.now.id
+                $.post(url(methods.editMember), {'data': JSON.stringify(obj)}, v => {
+                    let rs = verify(v)
+                    if (rs != false) {
+                        this.zt = false
+                        this.user = {
+                            'name': '',
+                            'age': '',
+                            'tel': '',
+                            'sex': '1',
+                            'bir_type': '1',
+                            'birthday': '',
+                        }
+                        success('修改成功')
+                        this.getMember()
+                    }
+                })
+            },
+            setVal() {
+                this.user.name = this.now.name
+                this.user.age = this.now.age
+                this.user.tel = this.now.tel
+                this.user.sex = this.now.sex == null ? '1' : '2'
+                this.user.bir_type = this.now.bir_type + ''
+                this.user.birthday = this.now.birthday
+                this.zt = true
+            },
+            del() {
+                if (this.multipleSelection.length == 0) {
+                    return
+                }
+                if (this.multipleSelection.length > 0) {
+                    this.$confirm('是否删除选中会员?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        let arr = [];
+                        for (let v of this.multipleSelection) {
+                            arr.push({'id': v.id, 'type': v.vipStatus == 1 ? 'member' : 'new'})
+                        }
+                        $.post(url(methods.delCheckedMember), {'data': JSON.stringify(arr)}, v => {
+                            if (v.code == 0) {
+                                success('删除成功')
+                                this.getMember()
+                            } else {
+                                error('删除失败')
+                            }
+                        })
+                    }).catch(e => {
+
+                    })
+                }
+                this.deleteDialogVisible = false
+                console.log(this.multipleSelection)
+            },
+            delOne(id) {
+                this.$confirm('是否删除?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    $.post(url(methods.delMember), {
+                        'id': id,
+                        'type': this.now.vip_status == 1 ? 'member' : 'new'
+                    }, v => {
+                        if (v.code == 1) {
+                            success(v.Msg)
+                            this.getMember()
+                        } else {
+                            error(v.error)
+                        }
+                    })
+                }).catch(e => {
+
+                })
+            },
+            leave() {
+                $.post(url(methods.leave), {'mid': this.now.id, 'arrId': ''}, v => {
+                    if (v.code == 1) {
+                        success(v.Msg)
+                        this.leaveDialogVisible = false
+                        if (v.res.time != null) {
+                            this.isPrint(v.res.id)
+                        }
+                        this.getMember()
+                    } else {
+                        error(v.error)
+                        this.leaveDialogVisible = false
+                    }
+                })
+            },
+            isPrint(rid) {
+                this.$confirm('是否打印消耗账单?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    $.post(url(methods.consumePrint), {mid: this.now.id, room: rid}, v => {
+                        if (v.code == 1) {
+                            success('打印成功')
+                        } else {
+                            error(v.error)
+                        }
+                    })
+                }).catch(e => {
+
+                })
+            },
+            comeShop() {
+                if (this.room == '') {
+                    error('请输入房间号')
+                    return
+                }
+                $.post(url(methods.addArrive), {'mid': this.now.id, 'room': this.room}, v => {
+                    if (v.code == -1) {
+                        error(v.error)
+                    } else {
+                        success(v.Msg)
+                        this.storeDialogVisible = false
+                        this.room = ''
+                        location.href = './shop_store.html'
+                    }
+                })
+            },
+            add() {
+                if (this.user.name == '' || this.user.age == '' || this.user.tel == '' || this.user.birthday == '') {
+                    error('请填完以上内容')
+                    return
+                }
+                $.post(url(methods.addVip), {'data': this.user}, v => {
+                    let rs = verify(v)
+                    if (rs != false) {
+                        success('添加成功')
+                        this.user = {
+                            'name': '',
+                            'age': '',
+                            'tel': '',
+                            'sex': '1',
+                            'bir_type': '1',
+                            'birthday': '',
+                        }
+                        this.addDialogVisible = false
+                        this.getMember()
+                    } else {
+                        error('新增失败')
+                    }
+                })
+            },
+            close() {
+                //alert(1)
+                this.user = {
+                    'name': '',
+                    'age': '',
+                    'tel': '',
+                    'sex': '1',
+                    'bir_type': '1',
+                    'birthday': '',
+                }
+                this.addDialogVisible = false
+                this.zt = false
+            },
+            cancel() {
+                this.addDialogVisible = false
+                this.zt = false
+                this.user = {
+                    'name': '',
+                    'age': '',
+                    'tel': '',
+                    'sex': '1',
+                    'bir_type': 1,
+                    'birthday': '',
+                };
+            },
+            toggleSelection(rows) {
+                if (rows) {
+                    rows.forEach(row => {
+                        this.$refs.multipleTable.toggleRowSelection(row);
+                    });
+                } else {
+                    this.$refs.multipleTable.clearSelection();
+                }
+            },
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+            },
+            handleEdit(index, row) {
+                console.log(index, row);
+            },
+            handleDelete(index, row) {
+                console.log(index, row);
+            },
+            handleExceed(files, fileList) {
+                console.log(files, fileList)
+            },
+            beforeUpload2(f) {
+                let ext = f.name.toString().split('.')
+                if (ext[1] != 'xlsx') {
+                    error('请上传xlsx文件')
+                    return false
+                }
+            },
+            ok(v, file, fileList) {
+                if(v.code==0){
+                    success(v.msg)
+                    this.getMember()
+                }else{
+                    error('导入失败，请检查数据是否填写正确  '+v.msg)
+                }
+                this.fileList = []
+            },
+            getMember() {
+                $.get(url(methods.get_member_list), v => {
+                    let rs = verify(v)
+                    if (rs != false) {
+                        this.total = rs.page_count
+                        this.list = rs.all_member
+                    }
+                })
+            },
+            import2() {
+                let data = document.getElementById("file").files[0];
+            },
+            formatter(r, c) {
+                if (r.bir_type == 1) {
+                    return '阳历'
+                } else {
+                    return '农历'
+                }
+            }
+        },
+        mounted() {
+            this.$nextTick(e => {
+                //初始化
+                that = this
+                this.getMember()
+                this.r = url(methods.upload)
+                loginState();
+            })
+        }
+    })
+</script>

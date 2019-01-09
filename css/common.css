@@ -45,6 +45,7 @@ img{
 }
 .cus_center{
     padding: 5px 0;
+    overflow: hidden;
 }
 .cus_seatch{
     width: 20%;
@@ -116,6 +117,9 @@ img{
 }
 .blue_c{
     color:#409EFF;
+}
+.black_c{
+    color:#333 !important;
 }
 .green_c{
     color:#1cc9b5;
