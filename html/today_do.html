@@ -138,7 +138,7 @@
             getData() {
                 $.post(url(methods.operationDetail), v=>{
                     if(v.code==1){
-                        this.list = v.res
+                        this.list = v.res.operations
                     }else{
                         error('请求失败')
                     }
