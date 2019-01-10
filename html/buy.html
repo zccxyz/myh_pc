@@ -359,7 +359,7 @@
                              {{v.card_name}}
                         </span>
                         <span class="p_wid">￥{{v.yh==1?v.price * v.dis/10:v.yh==2?0:v.price2}}</span>
-                        <span>
+                        <span class="span_bold">
                             优惠方式
                             <el-radio v-model="v.yh" label="1">打折</el-radio>
                             <el-input v-if="v.yh==1" v-model="v.dis" placeholder="请输入1到10的数字"

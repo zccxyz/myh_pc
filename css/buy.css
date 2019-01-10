@@ -55,3 +55,6 @@ border-top-left-radius:10px;
 	border:none;
 	border-bottom: 1px solid #ddd;
 }
+.span_bold *{
+	font-weight: bold !important;
+}
