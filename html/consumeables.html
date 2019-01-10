@@ -28,12 +28,12 @@
             </el-breadcrumb>
         </p>
         <div class="cus_center">
-            <el-button type="success" class="fr" @click="getDetail=true"
+            <el-button type="success" class="fr" @click="zt=true"
                        style="margin-bottom: 5px">新增耗材
             </el-button>
         </div>
         <el-table
-                :data="court"
+                :data="list"
                 border
                 style="width: 100%">
             <el-table-column
@@ -43,7 +43,8 @@
             </el-table-column>
             <el-table-column
                     prop="spec"
-                    label="规格">
+                    label="规格"
+                    :formatter="formatter">
             </el-table-column>
             <el-table-column
                     prop="stock"
@@ -56,7 +57,7 @@
                 <template slot-scope="scope">
                     <el-button
                             size="mini"
-                            @click="getDetail=true">编辑
+                            @click="now2=scope.row;zt2=true;">编辑
                     </el-button>
                     <el-button
                             size="mini"
@@ -67,52 +68,52 @@
             </el-table-column>
         </el-table>
 
-        <!-- 耗材编辑 -->
+
         <el-dialog style="margin-top: -50px"
-                title="耗材编辑"
-                :visible.sync="getDetail" width="460px"
-                center>
+                   title="新增耗材"
+                   :visible.sync="zt" width="460px"
+                   center :before-close="close">
             <ul class="ul_list">
                 <li>
                     <span class="list_left">耗材类型</span>
                     <span class="list_right">
-                        <el-radio v-model="sj.type" label="1">固定</el-radio>
-                        <el-radio v-model="sj.type" label="2">非固定</el-radio>
+                        <el-radio v-model="now.consumables_type" label="1">固定</el-radio>
+                        <el-radio v-model="now.consumables_type" label="2">非固定</el-radio>
                     </span>
                 </li>
                 <li>
                     <span class="list_left">耗材编号</span>
                     <span class="list_right">
-                    <el-input v-model="input" placeholder="请填写耗材编号(如无可不填)"></el-input>
+                    <el-input v-model="now.number" placeholder="请填写耗材编号(如无可不填)"></el-input>
                 </span>
                 </li>
                 <li>
                     <span class="list_left">耗材名称</span>
                     <span class="list_right">
-                    <el-input v-model="input" placeholder="请输入耗材名称名称"></el-input>
+                    <el-input v-model="now.name" placeholder="请输入耗材名称名称"></el-input>
                 </span>
                 </li>
                 <li>
                     <span class="list_left">库存数量</span>
                     <span class="list_right">
-                    <el-input v-model="input" placeholder="请输入库存数量名称"></el-input>
+                    <el-input v-model="now.stock" type="number" placeholder="请输入库存数量名称"></el-input>
                 </span>
                 </li>
                 <li>
                     <span class="list_left">单个容量</span>
                     <span class="list_right">
-                    <el-input v-model="input" placeholder="请输入耗材容量名称"></el-input>
+                    <el-input v-model="now.spec" type="number" placeholder="请输入耗材容量名称"></el-input>
                 </span>
                 </li>
                 <li>
                     <span class="list_left">规格类型</span>
                     <span class="list_right">
-                    <el-select v-model="value" placeholder="请选择" style="width: 100%">
+                    <el-select v-model="now.spec_type" placeholder="请选择" style="width: 100%">
                         <el-option
                                 v-for="item in options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
+                                :key="item.id"
+                                :label="item.spec+' ('+item.name+')'"
+                                :value="item.id">
                         </el-option>
                       </el-select>
                 </span>
@@ -120,18 +121,85 @@
                 <li>
                     <span class="list_left">单次消耗</span>
                     <span class="list_right">
-                    <el-input v-model="input" placeholder="请输入商品名称"></el-input>
+                    <el-input v-model="now.one_consume" type="number" placeholder="请输入商品名称"></el-input>
                 </span>
                 <li>
                     <span class="list_left">实用项目数</span>
                     <span class="list_right">
-                    10次（仅做参考）
+                    {{ now.spec==''||now.stock==''||now.one_consume==''?0:(now.spec * now.stock/now.one_consume)<1?0:now.spec * now.stock/now.one_consume }}次（仅做参考）
                 </span>
                 </li>
             </ul>
             <span slot="footer" class="dialog-footer">
-            <el-button @click="getDetail = false">取 消</el-button>
-            <el-button type="primary" @click="">确 定</el-button>
+            <el-button @click="zt = false">取 消</el-button>
+            <el-button type="primary" @click="sub">确 定</el-button>
+          </span>
+        </el-dialog>
+        <!-- 耗材编辑 -->
+        <el-dialog style="margin-top: -50px"
+                   title="编辑耗材"
+                   :visible.sync="zt2" width="460px"
+                   center :before-close="close">
+            <ul class="ul_list">
+                <li>
+                    <span class="list_left">耗材类型</span>
+                    <span class="list_right">
+                        <el-radio v-model="now2.consumables_type" label="1" disabled>固定</el-radio>
+                        <el-radio v-model="now2.consumables_type" label="2" disabled>非固定</el-radio>
+                    </span>
+                </li>
+                <li>
+                    <span class="list_left">耗材编号</span>
+                    <span class="list_right">
+                    <el-input v-model="now2.number" placeholder="请填写耗材编号(如无可不填)"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">耗材名称</span>
+                    <span class="list_right">
+                    <el-input v-model="now2.name" placeholder="请输入耗材名称名称"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">库存数量</span>
+                    <span class="list_right">
+                    <el-input v-model="now2.stock" disabled type="number" placeholder="请输入库存数量名称"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">单个容量</span>
+                    <span class="list_right">
+                    <el-input v-model="now2.spec" type="number" placeholder="请输入耗材容量名称"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">规格类型</span>
+                    <span class="list_right">
+                    <el-select v-model="now2.spec_type" placeholder="请选择" style="width: 100%">
+                        <el-option
+                                v-for="item in options"
+                                :key="item.id"
+                                :label="item.spec+' ('+item.name+')'"
+                                :value="item.id">
+                        </el-option>
+                      </el-select>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">单次消耗</span>
+                    <span class="list_right">
+                    <el-input v-model="now2.one_consume" type="number" placeholder="请输入商品名称"></el-input>
+                </span>
+                <li>
+                    <span class="list_left">实用项目数</span>
+                    <span class="list_right">
+                    {{ now2.spec==''||now2.stock==''||now2.one_consume==''?0:(now2.spec * now2.stock/now2.one_consume)<1?0:now2.spec * now2.stock/now2.one_consume }}次（仅做参考）
+                </span>
+                </li>
+            </ul>
+            <span slot="footer" class="dialog-footer">
+            <el-button @click="zt2 = false">取 消</el-button>
+            <el-button type="primary" @click="modify()">确 定</el-button>
           </span>
         </el-dialog>
     </template>
@@ -166,20 +234,24 @@
                 spec: '100ml',
                 stock:'12'
             }],
-            options: [{
-                value: '选项1',
-                label: 'l(升)'
-            }, {
-                value: '选项2',
-                label: 'ml(毫升)'
-            }, {
-                value: '选项3',
-                label: 'g(克)'
-            }, {
-                value: '选项4',
-                label: 'kg(千克)'
-            }],
+            options: [],
             value:'',
+
+            list: [],
+            zt: false,
+            zt2: false,
+            now: {
+                number: '',
+                name: '',
+                cost: '',
+                stock: '',
+                spec: '',
+                spec_type: 1,
+                consumables_type: '2',
+                one_consume: '',
+                one_syxms: '0',
+            },
+            now2: {},
         },
         methods: {
             del(id) {
@@ -188,24 +260,92 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    $.post(url(methods.delPlan), {id: id, type: 'del'}, v=>{
+                    $.post(url(methods.conOperation), {
+                        id: id, type: 'del'
+                    }, v=>{
                         if(v.code==1){
-                            success(v.Msg)
-                            //this.getPlan()
+                            success(v['Msg'])
+                            this.close()
                         }else{
-                            error(v.error)
+                            error(v['error'])
                         }
                     })
-                }).catch(e=>{
-
                 })
             },
+            modify() {
+                if(this.now2.name==''||this.now2.stock==''||this.now2.spec==''
+                    ||this.now2.consumables_type==''||this.now2.one_consume==''){
+                    return error('请填完以上内容')
+                }
+                this.now2['one_syxms'] = this.now.spec * this.now.stock/this.now.one_consume<1?0:this.now.spec * this.now.stock/this.now.one_consume
+                $.post(url(methods.conOperation), {
+                    data: this.now2, type: 'modify'
+                }, v=>{
+                    if(v.code==1){
+                        success(v['Msg'])
+                        this.close()
+                    }else{
+                        error(v['error'])
+                    }
+                })
+            },
+            sub() {
+                if(this.now.name==''||this.now.stock==''||this.now.spec==''
+                    ||this.now.consumables_type==''||this.now.one_consume==''){
+                    return error('请填完以上内容')
+                }
+                this.now['one_syxms'] = this.now.spec * this.now.stock/this.now.one_consume<1?0:this.now.spec * this.now.stock/this.now.one_consume
+                $.post(url(methods.conOperation), {
+                    data: this.now, type: 'add'
+                }, v=>{
+                    if(v.code==1){
+                        success(v['Msg'])
+                        this.close()
+                    }else{
+                        error(v['error'])
+                    }
+                })
+            },
+            close() {
+                this.getData()
+                this.zt = false
+                this.zt2 = false
+                this.now = {
+                    number: '',
+                    name: '',
+                    cost: '',
+                    stock: '',
+                    spec: '',
+                    spec_type: 1,
+                    consumables_type: '2',
+                    one_consume: '',
+                    one_syxms: '0',
+                }
+            },
+            getData(){
+                $.get(url(methods.consumablesList), v=>{
+                    for(let x of v.res) {
+                        x['consumables_type'] = x['consumables_type']==null?'2':x['consumables_type'].toString()
+                    }
+                    this.list = v.res
+                })
+            },
+            formatter(r, c){
+                return r['spec']+r['spec_name']
+            },
+            getSpec() {
+                $.get(url(methods.getSpec), v=>{
+                    this.options = v.res
+                })
+            }
         },
         mounted() {
             this.$nextTick(e => {
                 //初始化
                 that = this;
                 loginState()
+                this.getSpec()
+                this.getData()
                 //this.getPlan()
             })
         }

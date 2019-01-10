@@ -32,6 +32,8 @@ const methods = {
     'addAll': 'Goods/addAll',
     'del': 'Goods/del',
     'getSpec': 'Goods/get_spec',
+    'conOperation': 'Goods/con_operation',
+    'consumablesList': 'Goods/ConsumablesList',
     'addVip': 'Member/addvip',
     'addArrive': 'Arrive/AddArrive',
     'leave': 'Arrive/leave',
@@ -76,6 +78,7 @@ const methods = {
     'planList': 'Plan/plan_list',
     'delPlan': 'Plan/del_plan',   //id,type=del
     'addPlan': 'Plan/add',   //get获取数据，post提交数据
+    'getCate': 'items/getCategory',
 };
 let that;
 

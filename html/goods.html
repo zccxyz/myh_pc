@@ -186,6 +186,26 @@
                     <el-input v-model="sj.name" placeholder="请输入商品名称"></el-input>
                 </span>
                 </li>
+                <li v-if="sj.type==3">
+                    <span class="list_left">绑定商品</span>
+                    <span class="list_right">
+                        <el-radio label="1" v-model="sj.is_bind">是</el-radio>
+                        <el-radio label="2" v-model="sj.is_bind">否</el-radio>
+                    </span>
+                </li>
+                <li v-if="sj.type==3 && sj.is_bind==1">
+                    <span class="list_left">耗材</span>
+                    <span class="list_right">
+                        <el-select v-model="sj.spec_id" filterable placeholder="请选择">
+                            <el-option
+                                    v-for="item in cate"
+                                    :key="item.id"
+                                    :label="item.name"
+                                    :value="item.id">
+                            </el-option>
+                          </el-select>
+                    </span>
+                </li>
                 <li>
                     <span class="list_left">售价</span>
                     <span class="list_right">
@@ -409,7 +429,9 @@
                 stock: '',
                 fre: '',
                 fee: '',
-                cid: ''
+                cid: '',
+                is_bind: '2',
+                spec_id: '',
             },
         },
         methods: {
@@ -448,6 +470,11 @@
                             error('请填完以上信息')
                             return
                         }
+                        if(this.sj.is_bind==1){
+                            if(this.sj.spec_id==''){
+                                return error('请选择耗材')
+                            }
+                        }
                     }else{
                         if (this.sj.name == '' || this.sj.price == '' || this.sj.stock == '' || this.sj.fre == '' ||
                             this.sj.fee == '') {
@@ -477,7 +504,9 @@
                             stock: '',
                             fre: '',
                             fee: '',
-                            cid: ''
+                            cid: '',
+                            is_bind: '2',
+                            spec_id: '',
                         }
                         this.zt = false
                         this.getGoods()
@@ -554,6 +583,11 @@
                     return false
                 }
             },
+            getCate() {
+                $.get(url(methods.getCate), v=>{
+                    this.cate = v.res.list
+                })
+            },
         },
         mounted() {
             this.$nextTick(e => {
@@ -561,6 +595,7 @@
                 that = this;
                 this.getGoods()
                 this.getClassify()
+                this.getCate()
                 loginState()
                 this.r = url(methods.upload) + '&type=2'
             })
