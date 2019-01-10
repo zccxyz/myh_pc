@@ -191,7 +191,7 @@
                     $.post(url(methods.delPlan), {id: id, type: 'del'}, v=>{
                         if(v.code==1){
                             success(v.Msg)
-                            this.getPlan()
+                            //this.getPlan()
                         }else{
                             error(v.error)
                         }
@@ -206,7 +206,7 @@
                 //初始化
                 that = this;
                 loginState()
-                this.getPlan()
+                //this.getPlan()
             })
         }
     })

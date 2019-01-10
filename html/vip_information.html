@@ -399,16 +399,17 @@
                 <ul class="ul_list">
                     <li v-for="v in list">
                         {{v.create_time}}
-                        <el-button class="fr mar_hun" @click="getJK(v.id)">查看</el-button>
-                        <el-button type="danger" class="fr mar_hun" @click="delJK(v.id)">删除</el-button>
+                        <el-button class="fr" @click="getJK(v.id)">查看</el-button>
+                        <el-button class="fr" @click="getJK2(v.id)" style="margin-right: 10px">编辑</el-button>
+                        <el-button type="danger" class="fr" @click="delJK(v.id)">删除</el-button>
                     </li>
                 </ul>
             </el-tab-pane>
         </el-tabs>
         <el-dialog v-if="detail!=''"
-                title="查看档案"
-                :visible.sync="dialogVisible"
-                width="50%" center>
+                   title="查看档案"
+                   :visible.sync="dialogVisible"
+                   width="50%" center>
             <ul class="record_list">
                 <li>
                     <p>需要解决的皮肤问题：
@@ -468,6 +469,87 @@
             </ul>
 
         </el-dialog>
+        <!--编辑档案-->
+        <el-dialog v-if="detail2!=''"
+                   title="编辑档案"
+                   :visible.sync="dialogVisible2"
+                   width="50%" center>
+            <ul class="record_list">
+                <li>
+                    <p>需要解决的皮肤问题：
+                        <span v-for="v in detail2.face_detail">{{v.title}}: {{v.content}}</span>
+                    </p>
+                    <!--<div>没有需要解决的问题喔~</div>-->
+                </li>
+
+                <li>
+                    <p>需要解决的身体问题：
+                        <span v-for="v in detail2.body_detail">{{v.title}}: {{v.content}}</span>
+                    </p>
+                </li>
+
+                <li>
+                    <el-input placeholder="请输入内容" v-model="detail2.res.allergy">
+                        <template slot="prepend">过敏史：</template>
+                    </el-input>
+                </li>
+
+                <li>
+                    <el-input placeholder="请输入内容" v-model="detail2.res.face">
+                        <template slot="prepend">面部解决方案：</template>
+                    </el-input>
+                </li>
+
+                <li>
+                    <el-input placeholder="请输入内容" v-model="detail2.res.one_opera">
+                        <template slot="prepend">身体解决方案：</template>
+                    </el-input>
+                </li>
+
+                <li>
+                    <el-input placeholder="请输入内容" v-model="detail2.res.one_opera">
+                        <template slot="prepend">单次操作项目及手法：</template>
+                    </el-input>
+                </li>
+                <li>
+                    <i>品项设计：</i>
+                    <div class="choice_list">
+                        <i>
+                            <span class="product_red_color color_box" v-for="v in detail2.res.design">{{v.name}}</span>
+                            <!--<span class="project_green_color color_box">项目</span>
+                            <span class="taohe_color color_box">套盒</span>
+                            <span class="plan_color color_box">方案</span>-->
+                        </i>
+                    </div>
+                </li>
+
+                <li class="disflex">
+                    下次预约时间：
+                    <el-date-picker
+                            v-model="detail2.res.next_time"
+                            type="datetime"
+                            value-format="yyyy-MM-dd HH:mm"
+                            placeholder="选择日期时间">
+                    </el-date-picker>
+                </li>
+
+                <li>
+                    <el-input placeholder="请输入内容" v-model="detail2.res.gw" disabled>
+                        <template slot="prepend">顾问：</template>
+                    </el-input>
+                </li>
+
+                <li>
+                    <el-input placeholder="请输入内容" v-model="detail2.res.remarks">
+                        <template slot="prepend">备注：</template>
+                    </el-input>
+                </li>
+            </ul>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible2 = false">取 消</el-button>
+                <el-button type="primary" @click="modify()">确 定</el-button>
+              </span>
+        </el-dialog>
     </template>
 </div>
 
@@ -483,6 +565,7 @@
         data: {
             checkList: '',
             dialogVisible: false,
+            dialogVisible2: false,
             input: '',
             options: [{
                 value: '2',
@@ -558,8 +641,20 @@
             arr3: [],
             list: [],
             detail: '',
+            detail2: '',
         },
         methods: {
+            modify(){
+                $.post(url(methods.healthModify), {data: this.detail2.res}, v=>{
+                    if(v.code==1){
+                        success(v['Msg'])
+                    }else{
+                        error(v['Msg'])
+                    }
+                    this.detail2 = ''
+                    this.dialogVisible2 = false
+                })
+            },
             delJK(id) {
                 this.$confirm('是否删除?', '提示', {
                     confirmButtonText: '确定',
@@ -568,15 +663,15 @@
                 }).then(() => {
                     $.post(url(methods.healthDel), {
                         mid: this.userId, aid: id
-                    }, v=>{
-                        if(v.code==1){
+                    }, v => {
+                        if (v.code == 1) {
                             success(v.Msg)
                             this.getDa()
-                        }else{
+                        } else {
                             error(v.error)
                         }
                     })
-                }).catch(e=>{
+                }).catch(e => {
 
                 })
             },
@@ -661,7 +756,7 @@
                             error(v.msg)
                         }
                     })
-                }).catch(e=>{
+                }).catch(e => {
 
                 })
             },
@@ -741,6 +836,16 @@
                 }, v => {
                     if (v.code == 1) {
                         this.detail = v.res
+                    }
+                })
+            },
+            getJK2(id) {
+                this.dialogVisible2 = true
+                $.post(url(methods.healthDetail), {
+                    mid: this.userId, id: id
+                }, v => {
+                    if (v.code == 1) {
+                        this.detail2 = v.res
                     }
                 })
             },

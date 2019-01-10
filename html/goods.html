@@ -38,7 +38,9 @@
                 <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
             </el-upload>
             <el-button type="success" @click="exportData">导出商品表</el-button>
-            <a href="https://www.myhkj.cn/商品导入.xlsx"><el-button type="success">商品表模板下载</el-button></a>
+            <a href="https://www.myhkj.cn/商品导入.xlsx">
+                <el-button type="success">商品表模板下载</el-button>
+            </a>
             <el-button type="success" class="fr" @click="del">批量删除</el-button>
             <el-button type="success" class="fr" @click="zt = true">新增商品</el-button>
             <!--addPlan = true-->
@@ -110,6 +112,7 @@
                 </template>
             </el-table-column>
         </el-table>
+
         <el-dialog v-if="now != null"
                    title="编辑商品"
                    :visible.sync="centerDialogVisible"
@@ -132,7 +135,7 @@
                     <el-input v-model="now.price" placeholder="请输入售价"></el-input>
                 </span>
                 </li>
-                <li>
+                <li v-if="now.zt!=3">
                     <span class="list_left">库存</span>
                     <span class="list_right">
                     <el-input v-model="now.stock" placeholder="请输入库存"></el-input>
@@ -189,7 +192,7 @@
                     <el-input v-model="sj.price" placeholder="请输入售价"></el-input>
                 </span>
                 </li>
-                <li>
+                <li v-if="sj.type!=3">
                     <span class="list_left">库存</span>
                     <span class="list_right">
                     <el-input v-model="sj.stock" placeholder="请输入库存"></el-input>
@@ -223,10 +226,10 @@
         </el-dialog>
         <!-- 新增方案 -->
         <el-dialog
-          title="添加方案"
-          :visible.sync="addPlan"
-          width="500px" center>
-          <ul class="goods_l">
+                title="添加方案"
+                :visible.sync="addPlan"
+                width="500px" center>
+            <ul class="goods_l">
                 <li>
                     <span class="list_left">方案名称</span>
                     <span class="list_right">
@@ -243,7 +246,8 @@
                     <span class="list_left">项目</span>
                     <span class="list_right">
                         <p class="other_back" style="height:40px" @click="good_list=true">
-                            <i class="fr el-icon-circle-plus-outline" style="font-size: 2.2rem;color:#ad97f9;line-height:40px;margin-right: 20px;"></i>
+                            <i class="fr el-icon-circle-plus-outline"
+                               style="font-size: 2.2rem;color:#ad97f9;line-height:40px;margin-right: 20px;"></i>
                         </p>
                         <ul class="p_g_list">
                             <li>
@@ -251,7 +255,8 @@
                                     <span class="p_name">肩颈理疗 </span>
                                     <i class="cr pri_wid">￥100</i>
                                     <span class="huihui">次数：12</span>
-                                    <i class="el-icon-circle-close-outline fr" style="font-size: 2.2rem;line-height:40px;margin-right: 20px;"></i>
+                                    <i class="el-icon-circle-close-outline fr"
+                                       style="font-size: 2.2rem;line-height:40px;margin-right: 20px;"></i>
                                 </p>
                                 <p class="linr_four">
                                     <i>优惠方式</i>
@@ -260,13 +265,16 @@
                                     <el-checkbox label="修改次数"></el-checkbox>
                                 </p>
                                 <p class="linr_four">
-                                   <span class="list_left"> 打折</span><el-input v-model="input" placeholder="请输入" class="in_wid und_line"></el-input>元
+                                   <span class="list_left"> 打折</span><el-input v-model="input" placeholder="请输入"
+                                                                               class="in_wid und_line"></el-input>元
                                 </p>
                                 <p class="linr_four">
-                                    <span class="list_left">折后</span><el-input v-model="input" placeholder="请输入" class="in_wid und_line"></el-input>元
+                                    <span class="list_left">折后</span><el-input v-model="input" placeholder="请输入"
+                                                                               class="in_wid und_line"></el-input>元
                                 </p>
                                 <p class="linr_four" style="margin-bottom: 15px">
-                                  <span class="list_left"> 修改次数</span><el-input v-model="input" placeholder="请输入" class="in_wid und_line"></el-input>次
+                                  <span class="list_left"> 修改次数</span><el-input v-model="input" placeholder="请输入"
+                                                                                class="in_wid und_line"></el-input>次
                                 </p>
                             </li>
                             <li>
@@ -274,7 +282,8 @@
                                     <span class="p_name">肩颈理疗 </span>
                                     <i class="cr pri_wid">￥100</i>
                                     <span class="huihui">次数：12</span>
-                                    <i class="el-icon-circle-close-outline fr" style="font-size: 2.2rem;line-height:40px;margin-right: 20px;"></i>
+                                    <i class="el-icon-circle-close-outline fr"
+                                       style="font-size: 2.2rem;line-height:40px;margin-right: 20px;"></i>
                                 </p>
                             </li>
                         </ul>
@@ -284,7 +293,8 @@
                     <span class="list_left">套盒</span>
                     <span class="list_right">
                          <p class="other_back" style="height:40px" @click="good_list=true">
-                            <i class="fr el-icon-circle-plus-outline" style="font-size: 2.2rem;color:#ad97f9;line-height:40px;margin-right: 20px;"></i>
+                            <i class="fr el-icon-circle-plus-outline"
+                               style="font-size: 2.2rem;color:#ad97f9;line-height:40px;margin-right: 20px;"></i>
                         </p>
                         <ul class="p_g_list">
                         </ul>
@@ -294,63 +304,63 @@
                     <span class="list_left">产品</span>
                     <span class="list_right">
                         <p class="other_back" style="height:40px" @click="good_list=true">
-                            <i class="fr el-icon-circle-plus-outline" style="font-size: 2.2rem;color:#ad97f9;line-height:40px;margin-right: 20px;"></i>
+                            <i class="fr el-icon-circle-plus-outline"
+                               style="font-size: 2.2rem;color:#ad97f9;line-height:40px;margin-right: 20px;"></i>
                         </p>
                         <ul class="p_g_list">
                         </ul>
                 </span>
                 </li>
             </ul>
-          </div>
-          <span slot="footer" class="dialog-footer">
+            <span slot="footer" class="dialog-footer">
             <el-button @click="addPlan = false">取 消</el-button>
             <el-button type="primary" @click="addPlan = false">确 定</el-button>
           </span>
         </el-dialog>
         <!-- 商品列表 -->
         <el-dialog
-              title=""
-              :visible.sync="good_list"
-              width="500px"
-             center append-to-body>
-              <el-input class="g_search"
+                title=""
+                :visible.sync="good_list"
+                width="500px"
+                center append-to-body>
+            <el-input class="g_search"
                       placeholder="请输入商品名称"
                       prefix-icon="el-icon-search"
                       v-model="input">
             </el-input>
-              <el-table  border
-                  ref="multipleTable"
-                  :data="tableData3"
-                  tooltip-effect="dark"
-                  style="width: 100%"
-                  @selection-change="handleSelectionChange">
-            <el-table-column
-                    prop="class"
-                    label="类别"
-                    width="120">
-            </el-table-column>
-            <el-table-column
-                    prop="name"
-                    label="商品名称">
-            </el-table-column>
-            <el-table-column
-                    prop="price"
-                    label="零售价">
-            </el-table-column>
-            <el-table-column
-                    prop="fre"
-                    label="次数">
-            </el-table-column>
-             <el-table-column
-                    label="数量">
+            <el-table border
+                      ref="multipleTable"
+                      :data="tableData3"
+                      tooltip-effect="dark"
+                      style="width: 100%"
+                      @selection-change="handleSelectionChange">
+                <el-table-column
+                        prop="class"
+                        label="类别"
+                        width="120">
+                </el-table-column>
+                <el-table-column
+                        prop="name"
+                        label="商品名称">
+                </el-table-column>
+                <el-table-column
+                        prop="price"
+                        label="零售价">
+                </el-table-column>
+                <el-table-column
+                        prop="fre"
+                        label="次数">
+                </el-table-column>
+                <el-table-column
+                        label="数量">
                     <template slot-scope="scope">
-                    <i class="el-icon-remove green_c"></i>
-                     <i>5</i>
-                     <i class="el-icon-circle-plus green_c"></i>
-                </template>
-            </el-table-column>
-            </el-dialog>
-        </template>
+                        <i class="el-icon-remove green_c"></i>
+                        <i>5</i>
+                        <i class="el-icon-circle-plus green_c"></i>
+                    </template>
+                </el-table-column>
+        </el-dialog>
+    </template>
 
 </div>
 
@@ -368,21 +378,21 @@
             radio: '',
             centerDialogVisible: false,
             addPlan: false,
-            good_list:false,
+            good_list: false,
             tableData3: [{
                 px: '产品',
                 class: '面部',
                 name: '睡眠面膜',
                 price: '231',
-                fre:'',
-                amout:''
+                fre: '',
+                amout: ''
             }, {
                 px: '套盒',
                 class: '身体',
                 name: '肩颈套',
                 price: '2310',
-                fre:12,
-                amout:5
+                fre: 12,
+                amout: 5
             }],
             multipleSelection: [],
 
@@ -409,11 +419,11 @@
                 });return*/
                 window.open(url(methods.exportGoods))
             },
-            del(type=1, v='') {
-                if(type==2){
+            del(type = 1, v = '') {
+                if (type == 2) {
                     this.multipleSelection.push(v)
                 }
-                if(this.multipleSelection.length == 0){
+                if (this.multipleSelection.length == 0) {
                     error('请选择需要删除的商品')
                     return
                 }
@@ -422,29 +432,37 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    $.post(url(methods.del), {'data': JSON.stringify(this.multipleSelection)}, v=>{
+                    $.post(url(methods.del), {'data': JSON.stringify(this.multipleSelection)}, v => {
                         success('删除成功')
                         this.getGoods()
                     })
-                }).catch(e=>{
+                }).catch(e => {
 
                 })
             },
             addAll() {
-                if(this.sj.type!=1){
-                    if (this.sj.name == '' || this.sj.price == '' || this.sj.stock == '' || this.sj.fre == '' ||
-                        this.sj.fee == '') {
-                        error('请填完以上信息')
-                        return
+                if (this.sj.type != 1) {
+                    if(this.sj.type == 3){
+                        if (this.sj.name == '' || this.sj.price == '' || this.sj.fre == '' ||
+                            this.sj.fee == '') {
+                            error('请填完以上信息')
+                            return
+                        }
+                    }else{
+                        if (this.sj.name == '' || this.sj.price == '' || this.sj.stock == '' || this.sj.fre == '' ||
+                            this.sj.fee == '') {
+                            error('请填完以上信息')
+                            return
+                        }
                     }
-                }else{
+                } else {
                     if (this.sj.name == '' || this.sj.price == '' || this.sj.stock == '') {
                         error('请填完以上信息')
                         return
                     }
                 }
 
-                if(this.sj.cid == '') {
+                if (this.sj.cid == '') {
                     error('请选择分类')
                     return
                 }
@@ -454,12 +472,12 @@
                         success('添加成功')
                         this.sj = {
                             type: '1', //产品，套盒，项目
-                                name: '',
-                                price: '',
-                                stock: '',
-                                fre: '',
-                                fee: '',
-                                cid: ''
+                            name: '',
+                            price: '',
+                            stock: '',
+                            fre: '',
+                            fee: '',
+                            cid: ''
                         }
                         this.zt = false
                         this.getGoods()
@@ -521,11 +539,11 @@
                 })
             },
             ok(v, file, fileList) {
-                if(v.code==0){
+                if (v.code == 0) {
                     success(v.msg)
                     this.getGoods()
-                }else{
-                    error('导入失败，请检查数据是否填写正确  '+v.msg)
+                } else {
+                    error('导入失败，请检查数据是否填写正确  ' + v.msg)
                 }
                 this.fileList = []
             },
@@ -544,7 +562,7 @@
                 this.getGoods()
                 this.getClassify()
                 loginState()
-                this.r = url(methods.upload)+'&type=2'
+                this.r = url(methods.upload) + '&type=2'
             })
         }
     })
