@@ -499,7 +499,7 @@
                 }
                 $.post(url(methods.addArrive), {'mid': this.now.id, 'room': this.room}, v => {
                     if (v.code == -1) {
-                        error(v.error)
+                        error(v.errorMsg)
                     } else {
                         success(v.Msg)
                         this.storeDialogVisible = false

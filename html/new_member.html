@@ -12,50 +12,50 @@
 <div id="app" class="customer">
     <template>
         <p class="cus_title">
-        <el-breadcrumb separator-class="el-icon-arrow-right">
-            <el-breadcrumb-item>工作台首页</el-breadcrumb-item>
-            <el-breadcrumb-item :to="{ path: '/' }">新客户追踪</el-breadcrumb-item>
-        </el-breadcrumb>
-    </p>
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+                <el-breadcrumb-item>工作台首页</el-breadcrumb-item>
+                <el-breadcrumb-item :to="{ path: '/' }">新客户追踪</el-breadcrumb-item>
+            </el-breadcrumb>
+        </p>
         <div class="cus_center">
             <el-input class="cus_seatch" style="float: left"
                       placeholder="请输入内容"
                       prefix-icon="el-icon-search"
                       v-model="input">
             </el-input>
-            <el-button type="success" class="fr" @click="del">批量删除</el-button>
-            <el-button type="success" class="fr" @click="addDialogVisible = true">添加新客</el-button>
         </div>
         <el-table border
                   ref="multipleTable"
-                  :data="list.filter(data => !input || data.name.toLowerCase().includes(input.toLowerCase()) ||
+                  :data="arr.filter(data => !input || data.name.toLowerCase().includes(input.toLowerCase()) ||
                   data.tel.toLowerCase().includes(input.toLowerCase()))"
                   tooltip-effect="dark"
-                  style="width: 100%"
-                  @selection-change="handleSelectionChange">
-            <el-table-column
+                  style="width: 100%">
+            <!--<el-table-column
                     type="selection"
                     width="55">
-            </el-table-column>
+            </el-table-column>-->
             <el-table-column
                     label="新客名"
-                    width="120"
                     prop="name">
             </el-table-column>
-            <el-table-column width="200"
-                             prop="tel"
-                             label="联系电话">
+            <el-table-column
+                    prop="tel"
+                    label="联系电话">
+            </el-table-column>
+            <el-table-column :formatter="formatter2"
+                             prop="sex"
+                             label="性别">
             </el-table-column>
             <el-table-column
                     label="操作"
-                    width="680"
+                    width="300"
                     fixed="right"
                     show-overflow-tooltip>
                 <template slot-scope="scope">
                     <el-button
                             size="mini"
                             type="success"
-                            @click="now=scope.row;setVal()">升级
+                            @click="user2=scope.row;zt=true">升级
                     </el-button>
                     <el-button
                             size="mini"
@@ -66,23 +66,10 @@
                             @click="jump(1, scope.row)" class="purple do_but">
                         消费
                     </el-button>
-                    <el-button
-                            size="mini"
-                            @click="jump(2, scope.row)" class="red_box do_but">
-                        消耗
-                    </el-button>
-                    <el-button
-                            size="mini"
-                            @click="leaveDialogVisible=true;now=scope.row" class="blue do_but">离店
-                    </el-button>
-                    <el-button
-                            size="mini"
-                            type="danger"
-                            @click="delOne(scope.row.id)">删除
-                    </el-button>
                 </template>
             </el-table-column>
         </el-table>
+
         <el-dialog
                 title="添加新客"
                 :visible.sync="addDialogVisible"
@@ -187,59 +174,54 @@
                 :before-close="close">
             <ul class="goods_edit">
                 <li>
-                    <span class="list_left">会员编号</span>
+                    <span class="list_left">会员名*</span>
                     <span class="list_right">
-                    <el-input placeholder=""></el-input>
+                    <el-input v-model="user2.name" placeholder="请输入会员名"></el-input>
                 </span>
                 </li>
                 <li>
-                    <span class="list_left">会员名</span>
+                    <span class="list_left">年龄*</span>
                     <span class="list_right">
-                    <el-input v-model="user.name" placeholder="请输入会员名"></el-input>
+                    <el-input v-model="user2.age" placeholder="请输入年龄"></el-input>
                 </span>
                 </li>
                 <li>
-                    <span class="list_left">年龄</span>
+                    <span class="list_left">手机号*</span>
                     <span class="list_right">
-                    <el-input v-model="user.age" placeholder="请输入年龄"></el-input>
-                </span>
-                </li>
-                <li>
-                    <span class="list_left">手机号</span>
-                    <span class="list_right">
-                    <el-input v-model="user.tel" placeholder="请输入手机号"></el-input>
+                    <el-input v-model="user2.tel" placeholder="请输入手机号"></el-input>
                 </span>
                 </li>
                 <li>
                     <span class="list_left">微信</span>
                     <span class="list_right">
-                    <el-input placeholder="请输入会员微信号"></el-input>
+                    <el-input placeholder="请输入会员微信号" v-model="user2.weixin"></el-input>
                 </span>
+                </li>
                 <li>
                     <span class="list_left">密码</span>
                     <span class="list_right">
-                    <el-input placeholder="密码默认为123456"></el-input>
+                    <el-input placeholder="密码默认为123456" v-model="pw"></el-input>
                 </span>
                 </li>
                 <li>
                     <span class="list_left">性别</span>
                     <span class="list_right">
-                    <el-radio v-model="user.sex" label="1">女</el-radio>
-                    <el-radio v-model="user.sex" label="2">男</el-radio>
+                    <el-radio v-model="user2.sex" label="1">女</el-radio>
+                    <el-radio v-model="user2.sex" label="2">男</el-radio>
                 </span>
                 </li>
                 <li>
                     <span class="list_left">生日类别</span>
                     <span class="list_right">
-                        <el-radio v-model="user.bir_type" label="1">阳历</el-radio>
-                        <el-radio v-model="user.bir_type" label="2">阴历</el-radio>
+                        <el-radio v-model="user2.bir_type" label="1">阳历</el-radio>
+                        <el-radio v-model="user2.bir_type" label="2">阴历</el-radio>
                     </span>
                 </li>
                 <li>
-                    <span class="list_left">生日</span>
+                    <span class="list_left">生日*</span>
                     <span class="list_right">
                     <el-date-picker
-                            v-model="user.birthday"
+                            v-model="user2.birthday"
                             type="date"
                             value-format="yyyy-MM-dd"
                             placeholder="选择生日">
@@ -249,27 +231,20 @@
                 <li>
                     <span class="list_left">婚姻</span>
                     <span class="list_right">
-                        <el-radio v-model="user.bir_type" label="1">已婚</el-radio>
-                        <el-radio v-model="user.bir_type" label="2">未婚</el-radio>
+                        <el-radio v-model="user2.marital" label="1">已婚</el-radio>
+                        <el-radio v-model="user2.marital" label="2">未婚</el-radio>
                     </span>
                 </li>
                 <li>
                     <span class="list_left">顾问</span>
                     <span class="list_right">
-                    <el-select v-model="value" placeholder="请选择">
-                        <el-option
-                                v-for="item in options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                        </el-option>
-                    </el-select>
+                    <el-input placeholder="请输入顾问姓名" v-model="user2.adviser"></el-input>
                 </span>
                 </li>
             </ul>
             <span slot="footer" class="dialog-footer">
             <el-button @click="cancel">取 消</el-button>
-            <el-button type="primary" @click="edit">确 定</el-button>
+            <el-button type="primary" @click="sub">确 定</el-button>
           </span>
         </el-dialog>
 
@@ -328,7 +303,11 @@
             },
             room: '',
             now: '',
-            zt: false
+            zt: false,
+
+            arr: [],
+            user2: {},
+            pw: '',
         },
         methods: {
             exportData() {
@@ -480,9 +459,10 @@
                     error('请输入房间号')
                     return
                 }
-                $.post(url(methods.addArrive), {'mid': this.now.id, 'room': this.room}, v => {
+                $.post(url(methods.addArrive), {
+                    'mid': this.now.id, 'room': this.room}, v => {
                     if (v.code == -1) {
-                        error(v.error)
+                        error(v.errorMsg)
                     } else {
                         success(v.Msg)
                         this.storeDialogVisible = false
@@ -569,11 +549,11 @@
                 }
             },
             ok(v, file, fileList) {
-                if(v.code==0){
+                if (v.code == 0) {
                     success(v.msg)
                     this.getMember()
-                }else{
-                    error('导入失败，请检查数据是否填写正确  '+v.msg)
+                } else {
+                    error('导入失败，请检查数据是否填写正确  ' + v.msg)
                 }
                 this.fileList = []
             },
@@ -595,13 +575,58 @@
                 } else {
                     return '农历'
                 }
-            }
+            },
+            getData() {
+                $.get(url(methods.guest), v => {
+                    for(let x of v.data.guests) {
+                        x['sex'] = x['sex'].toString()
+                        x['bir_type'] = x['bir_type'].toString()
+                        x['marital'] = x['marital'].toString()
+                    }
+                    this.arr = v.data.guests
+                })
+            },
+            formatter2(r, c) {
+                if (r.sex == 1) {
+                    return '女'
+                } else {
+                    return '男'
+                }
+            },
+            sub() {
+                if(this.user2['name'] == '' || this.user2['age'] == ''
+                    || this.user2['tel'] == '' || this.user2['birthday'] == ''||
+                    this.user2['birthday'] == null){
+                    return error('请填完星号内容');
+                }
+                $.post(url(methods.vipLevel), {
+                    name: this.user2['name'],
+                    age: this.user2['age'],
+                    password: this.pw,
+                    weixin: this.user2['weixin'],
+                    sex: this.user2['sex'],
+                    tel: this.user2['tel'],
+                    marital: this.user2['marital'],
+                    birthday: this.user2['birthday'],
+                    adviser: this.user2['adviser'],
+                    id: this.user2['id']
+                }, v=>{
+                    if(v.code==1){
+                        this.user2 = {}
+                        this.zt = false
+                        this.getData()
+                        return success(v['msg'])
+                    }else{
+                        return error(v['error'])
+                    }
+                })
+            },
         },
         mounted() {
             this.$nextTick(e => {
                 //初始化
                 that = this
-                this.getMember()
+                this.getData()
                 this.r = url(methods.upload)
                 loginState();
             })

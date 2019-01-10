@@ -12,14 +12,14 @@
 <div id="app" class="customer">
     <template>
         <p class="cus_title">
-        <el-breadcrumb separator-class="el-icon-arrow-right">
-            <el-breadcrumb-item :to="{ path: '/' }">工作台首页</el-breadcrumb-item>
-            <el-breadcrumb-item>今日操作汇总</el-breadcrumb-item>
-        </el-breadcrumb>
-    </p>
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+                <el-breadcrumb-item>工作台首页</el-breadcrumb-item>
+                <el-breadcrumb-item>今日操作汇总</el-breadcrumb-item>
+            </el-breadcrumb>
+        </p>
         <el-table class="tt_table"
-                :data="list"
-                style="width: 100%">
+                  :data="list"
+                  style="width: 100%">
             <el-table-column
                     :formatter="formatter"
                     prop="consume_type"
@@ -46,9 +46,9 @@
                     label="消耗次数">
             </el-table-column>
             <el-table-column
-                prop="time"
-                label="消耗时间">
-        </el-table-column>
+                    prop="time"
+                    label="消耗时间">
+            </el-table-column>
             <el-table-column
                     prop="operation"
                     label="美容师">
@@ -66,7 +66,7 @@
                     :total="400">
             </el-pagination>
         </p>-->
-        </template>
+    </template>
 </div>
 
 </body>
@@ -83,63 +83,63 @@
             tableData: [{
                 pro_item: '项目',
                 class: '身体',
-               pro_name: '肩颈理疗',
-                vip_name:'李思思',
-                con_money:'26526',
-                con_fre:'1',
-                time:'2019-02-12',
-                beautician:'丽萨'
+                pro_name: '肩颈理疗',
+                vip_name: '李思思',
+                con_money: '26526',
+                con_fre: '1',
+                time: '2019-02-12',
+                beautician: '丽萨'
             }, {
                 pro_item: '项目',
                 class: '身体',
                 pro_name: '肩颈理疗',
-                vip_name:'李思思',
-                con_money:'26526',
-                con_fre:'1',
-                time:'2019-02-12',
-                beautician:'丽萨'
+                vip_name: '李思思',
+                con_money: '26526',
+                con_fre: '1',
+                time: '2019-02-12',
+                beautician: '丽萨'
             }, {
                 pro_item: '项目',
                 class: '身体',
                 pro_name: '肩颈理疗',
-                vip_name:'李思思',
-                con_money:'26526',
-                con_fre:'1',
-                time:'2019-02-12',
-                beautician:'丽萨'
+                vip_name: '李思思',
+                con_money: '26526',
+                con_fre: '1',
+                time: '2019-02-12',
+                beautician: '丽萨'
             }, {
                 pro_item: '项目',
                 class: '身体',
                 pro_name: '肩颈理疗',
-                vip_name:'李思思',
-                con_money:'26526',
-                con_fre:'1',
-                time:'2019-02-12',
-                beautician:'丽萨'
+                vip_name: '李思思',
+                con_money: '26526',
+                con_fre: '1',
+                time: '2019-02-12',
+                beautician: '丽萨'
             }],
             list: [],
         },
         methods: {
             formatter(r, c) {
-                if(r.consume_type == 1){
+                if (r.consume_type == 1) {
                     return '套盒'
-                }else if(r.consume_type == 2) {
+                } else if (r.consume_type == 2) {
                     return '项目'
-                }else if(r.consume_type == 3) {
+                } else if (r.consume_type == 3) {
                     return '方案'
-                }else if(r.consume_type == 4) {
+                } else if (r.consume_type == 4) {
                     return '体验项目'
-                }else if(r.consume_type == 5) {
+                } else if (r.consume_type == 5) {
                     return '余额'
-                }else if(r.consume_type == 6) {
+                } else if (r.consume_type == 6) {
                     return '卡'
                 }
             },
             getData() {
-                $.post(url(methods.operationDetail), v=>{
-                    if(v.code==1){
+                $.post(url(methods.operationDetail), v => {
+                    if (v.code == 1) {
                         this.list = v.res.operations
-                    }else{
+                    } else {
                         error('请求失败')
                     }
                 })
@@ -152,7 +152,7 @@
             }
         },
         mounted() {
-            this.$nextTick(e=>{
+            this.$nextTick(e => {
                 //初始化
                 that = this;
                 loginState()
