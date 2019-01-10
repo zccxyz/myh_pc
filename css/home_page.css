@@ -75,3 +75,8 @@ iframe{
   padding: 0;
   background: #f7f7ff;
 }
+.span_img{
+    display: inline-block;
+    width: 32px;
+    text-align: center;
+}

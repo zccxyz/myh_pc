@@ -28,44 +28,75 @@
                     <el-menu :default-openeds="['2']" unique-opened="true">
                         <el-menu-item index="1">
                             <a href="home.html" target="iframe">
-                                <img src="../images/home.png" class="home_icon">
+                                <span class="span_img">
+                                    <img src="../images/home.png" class="home_icon">
+                                </span>
                                 <span slot="title">工作台首页</span>
                             </a>
                         </el-menu-item>
                         <el-menu-item index="2">
                             <a href="customer.html" target="iframe">
-                                <img src="../images/home_cus.png" class="home_icon">
+                                <span class="span_img">
+                                    <img src="../images/home_cus.png" class="home_icon">
+                                </span>
                                 <span slot="title">会员管理</span>
                             </a>
                         </el-menu-item>
                         <el-menu-item index="3">
                             <a href="goods.html" target="iframe">
-                                <img src="../images/home_goods.png" class="home_icon">
+                                <span class="span_img">
+                                    <img src="../images/home_goods.png" class="home_icon">
+                                </span>
                                 <span slot="title">商品管理</span>
                             </a>
                         </el-menu-item>
                         <el-menu-item index="4">
                             <a href="shop_store.html" target="iframe">
-                                <img src="../images/store.png" class="home_icon" style="width: 24px">
+                                <span class="span_img">
+                                    <img src="../images/store.png" class="home_icon" style="width: 24px">
+                                </span>
                                 <span slot="title">到店管理</span>
                             </a>
                         </el-menu-item>
                         <el-menu-item index="5">
                             <a href="card.html" target="iframe">
-                                <img src="../images/card.png" class="home_icon" style="height: 18px">
+                                <span class="span_img">
+                                    <img src="../images/card.png" class="home_icon" style="height: 18px">
+                                </span>
                                 <span slot="title">卡项管理</span>
                             </a>
                         </el-menu-item>
-                        <el-menu-item index="6" v-if="user.pid==0">
-                            <a href="branch_store.html" target="iframe">
-                                <img src="../images/branch.png" class="home_icon" style="height: 18px">
-                                <span slot="title">分店管理</span>
+
+                        <el-menu-item index="6">
+                            <a href="plan.html" target="iframe">
+                                <span class="span_img">
+                                    <img src="../images/plan.png" class="home_icon" style="height: 18px;width: 19px;">
+                                </span>
+                                <span slot="title">方案管理</span>
                             </a>
                         </el-menu-item>
                         <el-menu-item index="7">
-                            <a href="plan.html" target="iframe">
-                                <img src="../images/plan.png" class="home_icon" style="height: 18px">
-                                <span slot="title">方案管理</span>
+                            <a href="ware_mange.html" target="iframe">
+                                <span class="span_img">
+                                    <img src="../images/plan.png" class="home_icon" style="height: 18px;width: 19px;">
+                                </span>
+                                <span slot="title">仓库管理</span>
+                            </a>
+                        </el-menu-item>
+                        <el-menu-item index="8">
+                            <a href="consumeables.html" target="iframe">
+                                <span class="span_img">
+                                    <img src="../images/plan.png" class="home_icon" style="height: 18px;width: 19px;">
+                                </span>
+                                <span slot="title">院装消耗</span>
+                            </a>
+                        </el-menu-item>
+                        <el-menu-item index="9" v-if="user.pid==0">
+                            <a href="branch_store.html" target="iframe">
+                                <span class="span_img">
+                                    <img src="../images/branch.png" class="home_icon" style="height: 18px">
+                                </span>
+                                <span slot="title">分店管理</span>
                             </a>
                         </el-menu-item>
                     </el-menu>
@@ -98,16 +129,16 @@
                 }).then(() => {
                     $.post(url(methods.logout), v => {
                         localStorage.removeItem('user')
-                        setTimeout(()=>location.href = '../login.html', 100)
+                        setTimeout(() => location.href = '../login.html', 100)
                     })
-                }).catch(e=>{
+                }).catch(e => {
 
                 })
             }
         },
         mounted() {
             this.$nextTick(e => {
-                if(!isPC()){
+                if (!isPC()) {
                     window.location.href = 'https://myh.myhkj.cn';
                 }
                 //初始化

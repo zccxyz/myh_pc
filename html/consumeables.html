@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>院装消耗</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../css/goods.css">
+    <style>
+        .ul_list li{
+            padding-bottom: 10px;
+        }
+        .ul_list li:last-child{
+            border-bottom: 1px solid rgb(238,238,238);
+        }
+        .ul_list .list_left{
+            vertical-align: bottom;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app" class="customer">
+    <template>
+        <p class="cus_title">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+                <el-breadcrumb-item :to="{ path: '/' }">院装消耗</el-breadcrumb-item>
+            </el-breadcrumb>
+        </p>
+        <div class="cus_center">
+            <el-button type="success" class="fr" @click="getDetail=true"
+                       style="margin-bottom: 5px">新增耗材
+            </el-button>
+        </div>
+        <el-table
+                :data="court"
+                border
+                style="width: 100%">
+            <el-table-column
+                    prop="name"
+                    label="耗材名称"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="spec"
+                    label="规格">
+            </el-table-column>
+            <el-table-column
+                    prop="stock"
+                    label="库存">
+            </el-table-column>
+            <el-table-column
+                    label="操作"
+                    fixed="right"
+                    show-overflow-tooltip>
+                <template slot-scope="scope">
+                    <el-button
+                            size="mini"
+                            @click="getDetail=true">编辑
+                    </el-button>
+                    <el-button
+                            size="mini"
+                            type="danger"
+                            @click="del(scope.row.id)">删除
+                    </el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+
+        <!-- 耗材编辑 -->
+        <el-dialog style="margin-top: -50px"
+                title="耗材编辑"
+                :visible.sync="getDetail" width="460px"
+                center>
+            <ul class="ul_list">
+                <li>
+                    <span class="list_left">耗材类型</span>
+                    <span class="list_right">
+                        <el-radio v-model="sj.type" label="1">固定</el-radio>
+                        <el-radio v-model="sj.type" label="2">非固定</el-radio>
+                    </span>
+                </li>
+                <li>
+                    <span class="list_left">耗材编号</span>
+                    <span class="list_right">
+                    <el-input v-model="input" placeholder="请填写耗材编号(如无可不填)"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">耗材名称</span>
+                    <span class="list_right">
+                    <el-input v-model="input" placeholder="请输入耗材名称名称"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">库存数量</span>
+                    <span class="list_right">
+                    <el-input v-model="input" placeholder="请输入库存数量名称"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">单个容量</span>
+                    <span class="list_right">
+                    <el-input v-model="input" placeholder="请输入耗材容量名称"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">规格类型</span>
+                    <span class="list_right">
+                    <el-select v-model="value" placeholder="请选择" style="width: 100%">
+                        <el-option
+                                v-for="item in options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                      </el-select>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">单次消耗</span>
+                    <span class="list_right">
+                    <el-input v-model="input" placeholder="请输入商品名称"></el-input>
+                </span>
+                <li>
+                    <span class="list_left">实用项目数</span>
+                    <span class="list_right">
+                    10次（仅做参考）
+                </span>
+                </li>
+            </ul>
+            <span slot="footer" class="dialog-footer">
+            <el-button @click="getDetail = false">取 消</el-button>
+            <el-button type="primary" @click="">确 定</el-button>
+          </span>
+        </el-dialog>
+    </template>
+
+</div>
+
+</body>
+</html>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../js/func.js"></script>
+<script src="../js/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            sj: {
+                type: '1',
+            },
+            getDetail: false,
+            input:'',
+            court: [{
+                name: '肩颈油',
+                spec: '100ml',
+                stock:'12'
+            }, {
+                name: '肩颈油',
+                spec: '100ml',
+                stock:'12'
+            }, {
+                name: '肩颈油',
+                spec: '100ml',
+                stock:'12'
+            }],
+            options: [{
+                value: '选项1',
+                label: 'l(升)'
+            }, {
+                value: '选项2',
+                label: 'ml(毫升)'
+            }, {
+                value: '选项3',
+                label: 'g(克)'
+            }, {
+                value: '选项4',
+                label: 'kg(千克)'
+            }],
+            value:'',
+        },
+        methods: {
+            del(id) {
+                this.$confirm('是否删除?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    $.post(url(methods.delPlan), {id: id, type: 'del'}, v=>{
+                        if(v.code==1){
+                            success(v.Msg)
+                            this.getPlan()
+                        }else{
+                            error(v.error)
+                        }
+                    })
+                }).catch(e=>{
+
+                })
+            },
+        },
+        mounted() {
+            this.$nextTick(e => {
+                //初始化
+                that = this;
+                loginState()
+                this.getPlan()
+            })
+        }
+    })
+</script>
