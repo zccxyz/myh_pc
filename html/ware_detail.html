@@ -61,8 +61,7 @@
                 <div class="basic_inf">
                     <el-table
                             :data="table_data"
-                            style="width: 100%"
-                            @selection-change="">
+                            style="width: 100%">
                         <el-table-column
                                 prop="px"
                                 label="品项">
@@ -81,59 +80,186 @@
                         </el-table-column>
                         <el-table-column label="操作">
                             <template slot-scope="scope">
-                                <el-button type="success" size="mini" @click="del(1, scope.row, 2)">出库</el-button>
-                                <el-button type="danger" size="mini" @click="del(1, scope.row, 2)">入库</el-button>
+                                <el-button type="success" size="mini" @click="in_ware=true">入库</el-button>
+                                <el-button type="danger" size="mini" @click="out_ware=true">出库</el-button>
                             </template>
                         </el-table-column>
                     </el-table>
                 </div>
             </el-tab-pane>
             <el-tab-pane label="出库流水记录">
+                <div class="cus_center">
+                    <el-input  class="cus_seatch"
+                            placeholder="请输入商品名称/操作人"
+                            v-model="input">
+                        <i slot="prefix" class="el-input__icon el-icon-search"></i>
+                    </el-input>
+                    <el-date-picker  class="cus_seatch"
+                            v-model="value"
+                            type="date"
+                            placeholder="选择日期">
+                    </el-date-picker>
+                </div>
                 <div class="basic_inf">
-                    <el-button type="success" class="fr" @click="del(1)"
-                               style="margin:5px 10px;">批量删除
-                    </el-button>
                     <el-table
-                            :data="cpList"
-                            style="width: 100%"
-                            @selection-change="handle">
+                            :data="out_data"
+                            style="width: 100%">
                         <el-table-column
-                                type="selection"
-                                width="60">
-                        </el-table-column>
-                        <el-table-column
-                                prop="goods_name"
-                                label="产品名称">
+                                prop="out_time"
+                                label="出库时间">
                         </el-table-column>
                         <el-table-column
-                                prop="price"
-                                label="价格">
+                                prop="name"
+                                label="名称">
                         </el-table-column>
                         <el-table-column
-                                prop="time"
-                                label="时间">
+                                prop="handle"
+                                label="手动出库">
                         </el-table-column>
                         <el-table-column
-                                prop="sum"
-                                label="数量">
+                                prop="num"
+                                label="入库数量">
                         </el-table-column>
-                        <!--<el-table-column
-                                prop="dis_price"
-                                label="折后金额">-->
-                        </el-table-column>
-                        <el-table-column label="操作">
-                            <template slot-scope="scope">
-                                <el-button type="danger" size="mini" @click="del(1, scope.row, 2)">删除</el-button>
-                            </template>
+                        <el-table-column
+                                prop="do_per"
+                                label="操作人">
                         </el-table-column>
                     </el-table>
                 </div>
             </el-tab-pane>
             <el-tab-pane label="入库流水记录">
+                <div class="cus_center">
+                <el-input  class="cus_seatch"
+                        placeholder="请输入商品名称/操作人"
+                        v-model="input">
+                    <i slot="prefix" class="el-input__icon el-icon-search"></i>
+                </el-input>
+                    <el-date-picker  class="cus_seatch"
+                                     v-model="value"
+                                     type="date"
+                                     placeholder="选择日期">
+                    </el-date-picker>
+            </div>
                 <div class="basic_inf">
+                    <el-table
+                            :data="out_data"
+                            style="width: 100%">
+                        <el-table-column
+                                prop="out_time"
+                                label="入库时间">
+                        </el-table-column>
+                        <el-table-column
+                                prop="name"
+                                label="名称">
+                        </el-table-column>
+                        <el-table-column
+                                prop="num"
+                                label="入库数量">
+                        </el-table-column>
+                        <el-table-column
+                                prop="do_per"
+                                label="操作人">
+                        </el-table-column>
+                    </el-table>
                 </div>
             </el-tab-pane>
         </el-tabs>
+        <!--商品入库-->
+        <el-dialog title="商品入库"
+                   :visible.sync="in_ware"
+                   width="460px"
+                   center>
+            <ul class="goods_edit">
+                <li>
+                    <span class="list_left">品项</span>
+                    <span class="list_right">
+                        产品
+                    </span>
+                </li>
+                <li>
+                    <span class="list_left">商品名称</span>
+                    <span class="list_right">
+                    补水面膜
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">现有库存</span>
+                    <span class="list_right">
+                        12
+                    </span>
+                </li>
+                <li>
+                    <span class="list_left">入库数量</span>
+                    <span class="list_right">
+                        <el-input v-model="input" placeholder="请输入入库数量"></el-input>
+                    </span>
+                </li>
+                <li>
+                    <span class="list_left">进价</span>
+                    <span class="list_right">
+                    <el-input v-model="input" placeholder="请输入商品进价"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">总成本</span>
+                    <span class="list_right">
+                    0.00
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">入库人</span>
+                    <span class="list_right">
+                    <el-input placeholder="请填写入库操作人"></el-input>
+                </span>
+                </li>
+            </ul>
+            <span slot="footer" class="dialog-footer">
+            <el-button @click="in_ware = false">取 消</el-button>
+            <el-button type="primary" @click="">确 定</el-button>
+          </span>
+        </el-dialog>
+        <!--商品出库-->
+        <el-dialog title="商品出库"
+                   :visible.sync="out_ware"
+                   width="460px"
+                   center>
+            <ul class="goods_edit">
+                <li>
+                    <span class="list_left">品项</span>
+                    <span class="list_right">
+                        产品
+                    </span>
+                </li>
+                <li>
+                    <span class="list_left">商品名称</span>
+                    <span class="list_right">
+                    补水面膜
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">现有库存</span>
+                    <span class="list_right">
+                        12
+                    </span>
+                </li>
+                <li>
+                    <span class="list_left">出库数量</span>
+                    <span class="list_right">
+                        <el-input v-model="input" placeholder="请输入入库数量"></el-input>
+                    </span>
+                </li>
+                <li>
+                    <span class="list_left">出库人</span>
+                    <span class="list_right">
+                    <el-input placeholder="请填写出库操作人"></el-input>
+                </span>
+                </li>
+            </ul>
+            <span slot="footer" class="dialog-footer">
+            <el-button @click="out_ware = false">取 消</el-button>
+            <el-button type="primary" @click="">确 定</el-button>
+          </span>
+        </el-dialog>
     </template>
 </div>
 
@@ -149,12 +275,33 @@
         data: {
             checkList: '',
             dialogVisible: false,
+            in_ware: false,
+            out_ware: false,
             input: '',
             radio:'',
             table_data:[{
-                px:'',
-                name:'',
-
+                px:'产品',
+                name:'补水面膜',
+                stock:'15',
+                pre:'0'
+            },{
+                px:'套盒',
+                name:'肩颈套',
+                stock:'0',
+                pre:'3'
+            }],
+            out_data:[{
+                out_time:'2018-02-15',
+                name:'肩颈套',
+                handle:'手动出库',
+                num:'3',
+                do_per:'丽丽'
+                },{
+                out_time:'2018-02-15',
+                name:'肩颈套',
+                handle:'手动出库',
+                num:'3',
+                do_per:'丽丽'
             }],
             options: [{
                 value: '2',
