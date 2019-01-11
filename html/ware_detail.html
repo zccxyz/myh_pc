@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>会员档案</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../css/vip_information.css">
+    <link rel="stylesheet" type="text/css" href="../css/add_archives.css">
+    <style>
+        .line_input{
+            width: 50px;
+        }
+        .line_input input{
+            border: none;
+            border-bottom: 1px solid #dcdfe6;
+            border-radius: 0;
+            background: transparent;
+        }
+        .li_input{
+            width: 60px;
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body class="information">
+
+<div id="app" class="customer">
+    <template>
+        <p class="cus_title">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+                <el-breadcrumb-item :to="{ path: '/' }">仓库管理</el-breadcrumb-item>
+                <el-breadcrumb-item>美约会（总仓）</el-breadcrumb-item>
+            </el-breadcrumb>
+        </p>
+        <el-tabs type="card" @tab-click=""
+                 class="vip_infor">
+            <el-tab-pane label="出入库管理/其他设置">
+                <div class="cus_center">
+                    <el-input class="cus_seatch" style="float: left"
+                              placeholder="请输入内容"
+                              prefix-icon="el-icon-search"
+                              v-model="input">
+                    </el-input>
+                    <span>
+                            按数量查找：
+                        <el-radio v-model="radio" label="1">
+                            大于等于
+                            <el-input v-model="input" placeholder="" class="line_input"></el-input>个
+                        </el-radio>
+                        <el-radio v-model="radio" label="2">
+                          小于等于
+                            <el-input v-model="input" placeholder="" class="line_input"></el-input>个
+                      </el-radio>
+                        </span>
+                    <el-button type="success" class="fr" @click="">同步商品</el-button>
+                </div>
+                <div>
+                    库存预警设置：<el-input v-model="input" placeholder="" class="li_input"></el-input>至<el-input v-model="input" placeholder="" class="li_input"></el-input> <i class="blue_c">修改</i>
+                </div>
+                <div class="basic_inf">
+                    <el-table
+                            :data="table_data"
+                            style="width: 100%"
+                            @selection-change="">
+                        <el-table-column
+                                prop="px"
+                                label="品项">
+                        </el-table-column>
+                        <el-table-column
+                                prop="name"
+                                label="名称">
+                        </el-table-column>
+                        <el-table-column
+                                prop="stock"
+                                label="实时库存">
+                        </el-table-column>
+                        <el-table-column
+                                prop="pre"
+                                label="已预售">
+                        </el-table-column>
+                        <el-table-column label="操作">
+                            <template slot-scope="scope">
+                                <el-button type="success" size="mini" @click="del(1, scope.row, 2)">出库</el-button>
+                                <el-button type="danger" size="mini" @click="del(1, scope.row, 2)">入库</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+            </el-tab-pane>
+            <el-tab-pane label="出库流水记录">
+                <div class="basic_inf">
+                    <el-button type="success" class="fr" @click="del(1)"
+                               style="margin:5px 10px;">批量删除
+                    </el-button>
+                    <el-table
+                            :data="cpList"
+                            style="width: 100%"
+                            @selection-change="handle">
+                        <el-table-column
+                                type="selection"
+                                width="60">
+                        </el-table-column>
+                        <el-table-column
+                                prop="goods_name"
+                                label="产品名称">
+                        </el-table-column>
+                        <el-table-column
+                                prop="price"
+                                label="价格">
+                        </el-table-column>
+                        <el-table-column
+                                prop="time"
+                                label="时间">
+                        </el-table-column>
+                        <el-table-column
+                                prop="sum"
+                                label="数量">
+                        </el-table-column>
+                        <!--<el-table-column
+                                prop="dis_price"
+                                label="折后金额">-->
+                        </el-table-column>
+                        <el-table-column label="操作">
+                            <template slot-scope="scope">
+                                <el-button type="danger" size="mini" @click="del(1, scope.row, 2)">删除</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+            </el-tab-pane>
+            <el-tab-pane label="入库流水记录">
+                <div class="basic_inf">
+                </div>
+            </el-tab-pane>
+        </el-tabs>
+    </template>
+</div>
+
+</body>
+</html>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../js/func.js"></script>
+<script src="../js/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            checkList: '',
+            dialogVisible: false,
+            input: '',
+            radio:'',
+            table_data:[{
+                px:'',
+                name:'',
+
+            }]
+            options: [{
+                value: '2',
+                label: '男'
+            }, {
+                value: '1',
+                label: '女'
+            }],
+            calss: [{
+                value: 2,
+                label: '农历'
+            }, {
+                value: 1,
+                label: '阳历'
+            }],
+            status: [{
+                value: 1,
+                label: '已婚'
+            }, {
+                value: 2,
+                label: '未婚'
+            }],
+            value: '',
+            birth: '',
+            tableData: [{
+                classify: '面部',
+                name: '补水面膜',
+                price: '1235',
+                time: '2019-02-12',
+                discount: '4折',
+                dis_price: '262'
+            }, {
+                classify: '面部',
+                name: '补水面膜',
+                price: '1235',
+                time: '2019-02-12',
+                discount: '4折',
+                dis_price: '262'
+            }, {
+                classify: '面部',
+                name: '补水面膜',
+                price: '1235',
+                time: '2019-02-12',
+                discount: '4折',
+                dis_price: '262'
+            }, {
+                classify: '面部',
+                name: '补水面膜',
+                price: '1235',
+                time: '2019-02-12',
+                discount: '4折',
+                dis_price: '262'
+            }],
+
+            userId: 0,
+            userInfo: null,
+            cpList: [],
+            arrears: 0,
+            total: 0,
+            num: 0,
+            arrears2: 0,
+            itemsList: [],
+            num2: 0,
+            arrears3: 0,
+            boxList: [],
+            coupon: [],
+            card: [],
+            integer: [],
+            arrearsList: [],
+            totalArrears: 0,
+            arr: [],
+            arr2: [],
+            arr3: [],
+            list: [],
+            detail: '',
+        },
+        methods: {
+            delJK(id) {
+                this.$confirm('是否删除?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    $.post(url(methods.healthDel), {
+                        mid: this.userId, aid: id
+                    }, v=>{
+                        if(v.code==1){
+                            success(v.Msg)
+                            this.getDa()
+                        }else{
+                            error(v.error)
+                        }
+                    })
+                }).catch(e=>{
+
+                })
+            },
+            bk(id) {
+                localStorage.setItem('type', 2)
+                localStorage.setItem('bkId', id)
+                location.href = './pay_page.html'
+            },
+            handle(val) {
+                if (val.length == 0) {
+                    this.arr = []
+                    return
+                }
+                for (let v of val) {
+                    this.arr.push(v.id)
+                }
+            },
+            handle2(val) {
+                if (val.length == 0) {
+                    this.arr2 = []
+                    return
+                }
+                for (let v of val) {
+                    this.arr2.push(v.id)
+                }
+            },
+            handle3(val) {
+                if (val.length == 0) {
+                    this.arr3 = []
+                    return
+                }
+                for (let v of val) {
+                    this.arr3.push(v.id)
+                }
+            },
+            del(t, v, t2 = 1) {
+                this.$confirm('是否删除?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    let a = []
+                    if (t == 1) {
+                        if (t2 == 1 && this.arr.length == 0) {
+                            return
+                        }
+                        if (t2 == 1) {
+                            a = this.arr
+                        } else {
+                            a.push(v.id)
+                        }
+                    } else if (t == 2) {
+                        if (t2 == 1 && this.arr2.length == 0) {
+                            return
+                        }
+                        if (t2 == 1) {
+                            a = this.arr2
+                        } else {
+                            a.push(v.id)
+                        }
+                    } else if (t == 3) {
+                        if (t2 == 1 && this.arr3.length == 0) {
+                            return
+                        }
+                        if (t2 == 1) {
+                            a = this.arr3
+                        } else {
+                            a.push(v.id)
+                        }
+                    }
+                    $.post(url(methods.delWhich), {data: JSON.stringify(a), type: t}, v => {
+                        if (v.code == 0) {
+                            if (t == 1) {
+                                this.getCp()
+                            } else if (t == 2) {
+                                this.getBoxItems('items')
+                            } else if (t == 3) {
+                                this.getBoxItems('box')
+                            }
+                            success(v.data)
+                        } else {
+                            error(v.msg)
+                        }
+                    })
+                }).catch(e=>{
+
+                })
+            },
+            jump() {
+                location.href = './buy.html'
+            },
+            getArrears() {
+                this.totalArrears = 0
+                $.get(url(methods.aloneArrears) + `&mid=${this.userId}`, v => {
+                    this.arrearsList = v.list
+                    for (let x of v.list) {
+                        this.totalArrears += parseFloat(x.money)
+                    }
+                })
+            },
+            getIntegral() {
+                $.get(url(methods.integralRecord) + `&mid=${this.userId}`, v => {
+                    this.integer = v.record
+                })
+            },
+            formatter2(r, c) {
+                if (r.bir_type == 1) {
+                    return '赠送'
+                } else {
+                    return '划扣'
+                }
+            },
+            formatter(r, c) {
+                if (r.bir_type == 1) {
+                    return '无折扣消费卡'
+                } else {
+                    return '折扣消费卡'
+                }
+            },
+            getCard() {
+                $.get(url(methods.cardList) + `&mid=${this.userId}`, v => {
+                    this.card = v.res
+                })
+            },
+            getCoupon() {
+                $.post(url(methods.haveCoupon), {mid: this.userId}, v => {
+                    this.coupon = v.data
+                })
+            },
+            handleClick(tab, event) {
+                if (tab.index == 0) {
+                    this.getDetail()
+                } else if (tab.index == 1) {
+                    this.getCp()
+                } else if (tab.index == 2) {
+                    this.getBoxItems('items')
+                } else if (tab.index == 3) {
+                    this.getBoxItems('box')
+                } else if (tab.index == 4) {
+                    this.getCoupon()
+                } else if (tab.index == 5) {
+                    this.getCard()
+                } else if (tab.index == 6) {
+                    this.getIntegral()
+                } else if (tab.index == 7) {
+                    this.getArrears()
+                } else if (tab.index == 8) {
+                    this.getDa()
+                }
+            },
+            getDa() {
+                $.get(url(methods.healthList) + `&mid=${this.userId}`, v => {
+                    if (v.code == 1) {
+                        this.list = v.list
+                    }
+                })
+            },
+            getJK(id) {
+                this.dialogVisible = true
+                $.post(url(methods.healthDetail), {
+                    mid: this.userId, id: id
+                }, v => {
+                    if (v.code == 1) {
+                        this.detail = v.res
+                    }
+                })
+            },
+            getBoxItems(t) {
+                $.get(url(methods.boxItems) + `&mid=${this.userId}&type=${t}`, v => {
+                    if (v.code == 1) {
+                        if (t == 'items') {
+                            this.num = v.res.total_num
+                            this.itemsList = v.res.list
+                            this.arrears2 = v.res.total_arrears
+                        } else {
+                            this.num2 = v.res.total_num
+                            this.boxList = v.res.list
+                            this.arrears3 = v.res.total_arrears
+                        }
+                    } else {
+                        error('请求出错')
+                    }
+                })
+            },
+            getCp() {
+                $.post(url(methods.haveProductList), {mid: this.userId}, v => {
+                    if (v.code == 1) {
+                        let t = 0
+                        for (let x of v.list) {
+                            t += x.sum * x.price
+                        }
+                        this.total = t
+                        this.cpList = v.list
+                        this.arrears = v.arrears
+                    } else {
+                        error('请求出错')
+                    }
+                })
+            },
+            modifyUser() {
+                if (this.userInfo.name == '' || this.userInfo.tel == '' || this.userInfo.address == '' || this.userInfo.marital == ''
+                    || this.userInfo.id == '' || this.userInfo.bir_type == '' || this.userInfo.birthday == '' || this.userInfo.sex == '') {
+                    error('请填完以上内容')
+                    return
+                }
+                $.post(url(methods.editUser), {
+                    data: {
+                        name: this.userInfo.name,
+                        tel: this.userInfo.tel,
+                        address: this.userInfo.address,
+                        id: this.userInfo.id,
+                        bir_type: this.userInfo.bir_type,
+                        birthday: this.userInfo.yl,
+                        marital: this.userInfo.marital,
+                        sex: this.userInfo.sex,
+                    }
+                }, v => {
+                    if (v.code == 1) {
+                        success(v.Msg)
+                    } else {
+                        error(v.errorMsg)
+                    }
+                })
+            },
+            getDetail() {
+                $.get(url(methods.userInfo) + `&id=${this.userId}`, v => {
+                    if (v.code == 0) {
+                        v.data.sex = v.data.sex.toString()
+                        this.userInfo = v.data
+                    } else {
+                        error('请求出错')
+                    }
+                })
+            },
+        },
+        mounted() {
+            this.$nextTick(e => {
+                //初始化
+                that = this;
+                loginState()
+                this.userId = localStorage.getItem('user_id')
+                this.getDetail()
+                this.getDa()
+            })
+        }
+    })
+</script>
