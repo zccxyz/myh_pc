@@ -1,5 +1,5 @@
-const ym = 'https://www.myhkj.cn/apis/backend/';
-//const ym = 'http://admin.test.com/apis/backend/';
+//const ym = 'https://www.myhkj.cn/apis/backend/';
+const ym = 'http://admin.test.com/apis/backend/';
 
 const methods = {
     'login': 'login/login',
@@ -79,6 +79,11 @@ const methods = {
     'delPlan': 'Plan/del_plan',   //id,type=del
     'addPlan': 'Plan/add',   //get获取数据，post提交数据
     'getCate': 'items/getCategory',
+    'wareList': 'Ware/WareList',    //仓库列表
+    'stockOperation': 'Ware/StockOperation',
+    'wareIntoOutDetail': 'Ware/WareIntoOutDetail',  //出入库数据
+    'getRecordDetail': 'Ware/get_record_detail',  //出入库记录
+    'goodsManager': 'Ware/goods_manager',  //预警设置
 };
 let that;
 

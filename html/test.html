@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>tmp</title>
+    <title>test</title>
     <link rel="stylesheet" href="../css/index.css">
     <link rel="stylesheet" type="text/css" href="../css/common.css">
 </head>
@@ -19,6 +19,17 @@
 <script src="../js/func.js"></script>
 <script src="../js/index.js"></script>
 <script>
+    let ws = new WebSocket('ws://127.0.0.1:9501?id=1');
+    ws.onclose = function () {
+        console.log('连接断开')
+    }
+    ws.onopen = function () {
+        console.log('已连接')
+    }
+    ws.onmessage = function (ev) {
+        console.log('消息----', ev)
+    }
+
     new Vue({
         el: '#app',
         data: {},
@@ -27,7 +38,6 @@
             this.$nextTick(e=>{
                 //初始化
                 that = this;
-                loginState()
             })
         }
     })
