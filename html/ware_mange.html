@@ -5,13 +5,176 @@
     <title>仓库管理</title>
     <link rel="stylesheet" href="../css/index.css">
     <link rel="stylesheet" type="text/css" href="../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../css/vip_information.css">
+    <style>
+        .ware_list>li{
+            display: flex;
+        }
+        .store_img{
+            height: 20px;
+            vertical-align: text-bottom;
+            margin-right: 10px;
+        }
+        .click_a{
+            display: inline-block;
+           flex: 1;
+        }
+        .gr_b_d{
+            border-radius: 15px;
+            display: inline-block;
+            padding: 3px 8px;
+            line-height: 1;
+            color: #fff;
+            margin-right: 10px;
+            background: #13ce66;
+        }
+        .ware_mar{
+            margin-right:20px;
+        }
+    </style>
 </head>
 <body>
 
-<div id="app">
-
+<div id="app" class="customer">
+    <template>
+        <p class="cus_title">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+                <el-breadcrumb-item :to="{ path: '/' }">仓库管理</el-breadcrumb-item>
+            </el-breadcrumb>
+        </p>
+        <div class="cus_center over_hidden">
+            <el-button type="success" class="fr" @click="add_ware=true"
+                       style="margin-bottom: 5px;">新建仓库
+            </el-button>
+            <el-button type="success" class="fr" @click="ware_merge=true"
+                       style="margin-bottom: 5px;margin-right: 20px">仓库合并
+            </el-button>
+        </div>
+        <ul class="ul_list ware_list">
+            <li>
+                <a href="ware_detail.html" class="c_black click_a">
+                    <img src="../images/storemanage.png" alt="" class="store_img">
+                    美约会（总仓）
+                </a>
+                <el-button class="fr" @click="edit=true">编辑</el-button>
+                    <el-button type="danger" class="fr" @click="" style="margin-right: 20px">删除</el-button>
+            </li>
+            <li>
+                <a href="ware_detail.html" class="c_black click_a">
+                    <img src="../images/storemanage.png" alt="" class="store_img">
+                    美约会（总仓）
+                </a>
+                <el-button class="fr" @click="edit=true">编辑</el-button>
+                    <el-button type="danger" class="fr" @click="" style="margin-right: 20px">删除</el-button>
+            </li>
+        </ul>
+        <!--仓库合并-->
+        <el-dialog
+                title="仓库合并"
+                :visible.sync="ware_merge"
+                width="400px"
+                center
+                :before-close="close">
+            <div class="other_back linr_four">
+                请选择要合并的仓库
+            </div>
+            <p class="linr_four">
+                <el-checkbox-group v-model="checkList">
+                    <el-checkbox label="美约会"></el-checkbox>
+                    <el-checkbox label="美约会二仓"></el-checkbox>
+                </el-checkbox-group>
+            </p>
+            <ul class="ul_list" style="border-top: 10px solid #f6f6f6;border-bottom:1px solid #ddd">
+                <li>
+                    <span class="list_left">
+                新名称
+            </span>
+                    <span class="list_right">
+                <div class="am-form-group">
+                    <input type="text" placeholder="请输入合并后的仓库名称">
+                </div>
+            </span>
+                </li>
+            </ul>
+            <span slot="footer" class="dialog-footer">
+            <el-button @click="ware_merge=false">取 消</el-button>
+            <el-button type="primary" @click="">确 定</el-button>
+          </span>
+        </el-dialog>
+        <!--新建仓库-->
+        <el-dialog
+                title="新建仓库"
+                :visible.sync="add_ware"
+                width="400px"
+                center
+                :before-close="close">
+                <div class="other_back linr_four">
+                    现有仓库
+                </div>
+            <p class="linr_four">
+                <span class="ware_mar">
+                    <i class="gr_b_d linr_four">总仓</i>美约会
+                </span>
+                <span class="ware_mar">
+                    <i class="gr_b_d linr_four">分仓</i>美约会
+                </span>
+            </p>
+            <ul class="ul_list" style="border-top: 10px solid #f6f6f6;border-bottom:1px solid #ddd">
+                <li>
+                    <span class="list_left">
+                仓库名称
+            </span>
+                    <span class="list_right">
+                <div class="am-form-group">
+                            <input type="text" placeholder="请输入仓库名称">
+                </div>
+            </span>
+                </li>
+            </ul>
+            <span slot="footer" class="dialog-footer">
+            <el-button @click="add_ware=false">取 消</el-button>
+            <el-button type="primary" @click="">确 定</el-button>
+          </span>
+        </el-dialog>
+        <!--编辑仓库-->
+        <el-dialog
+                title="编辑仓库"
+                :visible.sync="edit"
+                width="400px"
+                center
+                :before-close="close">
+            <ul class="ul_list" style="border-bottom:1px solid #ddd">
+                <li>
+                    <span class="list_left" style="vertical-align: bottom">选择仓库</span>
+                    <span class="list_right">
+                    <el-select v-model="value" placeholder="请选择" style="width: 100%">
+                        <el-option
+                                v-for="item in options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                      </el-select>
+                </span>
+                <li>
+                    <span class="list_left">
+                新名称
+            </span>
+                    <span class="list_right">
+                <div class="am-form-group">
+                            <input type="text" placeholder="请输入新的仓库名称">
+                </div>
+            </span>
+                </li>
+            </ul>
+            <span slot="footer" class="dialog-footer">
+            <el-button @click="edit=false">取 消</el-button>
+            <el-button type="primary" @click="">确 定</el-button>
+          </span>
+        </el-dialog>
+</template>
 </div>
-
+</template>
 </body>
 </html>
 <script src="../js/jquery.min.js"></script>
@@ -21,7 +184,22 @@
 <script>
     new Vue({
         el: '#app',
-        data: {},
+        data: {
+            checkList:'',
+            input: '',
+            radio: '',
+            add_ware:false,
+            ware_merge:false,
+            edit:false,
+            options:[{
+                value: '选项1',
+                label: '美约会'
+            }, {
+                value: '选项2',
+                label: '美约会二仓'
+            },],
+            value:''
+        },
         methods: {},
         mounted() {
             this.$nextTick(e=>{

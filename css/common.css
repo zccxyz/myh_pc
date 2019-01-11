@@ -5,6 +5,9 @@ a{
 .cursor{
     cursor: pointer;
 }
+.c_black{
+    color: #333;
+}
 .butt_sub{
     display: block;
     width: 60%;
