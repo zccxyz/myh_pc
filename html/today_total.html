@@ -52,8 +52,17 @@
                     label="价格">
             </el-table-column>
             <el-table-column
+                    prop="beautician"
+                    label="美容师">
+            </el-table-column>
+            <el-table-column
                     prop="time"
                     label="时间">
+            </el-table-column>
+            <el-table-column label="操作">
+                <template slot-scope="scope">
+                    <a href="#" @click="jump(scope.row)">查看</a>
+                </template>
             </el-table-column>
         </el-table>
         <!--<p class="linr_four">
@@ -138,6 +147,10 @@
 
         },
         methods: {
+            jump(v) {
+                localStorage.setItem('user_id', v.uid)
+                location.href = 'vip_information.html'
+            },
             formatter(r, c) {
                 if(r.type == 1){
                     return '产品'

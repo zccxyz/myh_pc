@@ -31,6 +31,9 @@ const methods = {
     'editAll': 'Goods/editAll',
     'addAll': 'Goods/addAll',
     'del': 'Goods/del',
+    'getSpec': 'Goods/get_spec',
+    'conOperation': 'Goods/con_operation',
+    'consumablesList': 'Goods/ConsumablesList',
     'addVip': 'Member/addvip',
     'addArrive': 'Arrive/AddArrive',
     'leave': 'Arrive/leave',
@@ -64,6 +67,7 @@ const methods = {
     'removerCard': 'card/removerCard',
     'healthSearch': 'Healthy/HealthSearch',
     'healthAdd': 'Healthy/add',
+    'healthModify': 'Healthy/modify',
     'healthList': 'Healthy/get_healthy_detail',
     'healthDetail': 'Healthy/prescription_detail',
     'healthDel': 'Healthy/del',
@@ -74,6 +78,7 @@ const methods = {
     'planList': 'Plan/plan_list',
     'delPlan': 'Plan/del_plan',   //id,type=del
     'addPlan': 'Plan/add',   //get获取数据，post提交数据
+    'getCate': 'items/getCategory',
 };
 let that;
 
