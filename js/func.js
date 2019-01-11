@@ -85,6 +85,7 @@ const methods = {
     'getRecordDetail': 'Ware/get_record_detail',  //出入库记录
     'goodsManager': 'Ware/goods_manager',  //预警设置
     'wareSet': 'Ware/WareSet',
+    'warePull': 'Ware/pull',    //仓库同步
 };
 let that;
 

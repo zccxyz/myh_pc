@@ -43,7 +43,7 @@
                               prefix-icon="el-icon-search"
                               v-model="input">
                     </el-input>
-                    <span>
+                    <!--<span>
                             按数量查找：
                         <el-radio v-model="radio" label="1">
                             大于等于
@@ -53,16 +53,16 @@
                           小于等于
                             <el-input v-model="input" placeholder="" class="line_input"></el-input>个
                       </el-radio>
-                        </span>
-                    <el-button type="success" class="fr" @click="">同步商品</el-button>
+                        </span>-->
+                    <el-button type="success" class="fr" @click="pull">同步商品</el-button>
                 </div>
-                <div>
+                <!--<div>
                     库存预警设置：
                     <el-input v-model="warning.start_num" placeholder="" class="li_input"></el-input>
                     至
                     <el-input v-model="warning.end_num" placeholder="" class="li_input"></el-input>
                     <i class="blue_c">修改</i>
-                </div>
+                </div>-->
                 <div class="basic_inf">
                     <el-table
                             :data="list.filter(data => !input || data.name.toLowerCase().includes(input.toLowerCase()))"
@@ -102,6 +102,7 @@
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
                     </el-input>
                     <el-date-picker class="cus_seatch"
+                                    value-format="yyyy-MM-dd"
                                     v-model="value"
                                     type="date"
                                     placeholder="选择日期">
@@ -144,7 +145,8 @@
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
                     </el-input>
                     <el-date-picker class="cus_seatch"
-                                    v-model="value"
+                                    value-format="yyyy-MM-dd"
+                                    v-model="value2"
                                     type="date"
                                     placeholder="选择日期">
                     </el-date-picker>
@@ -351,12 +353,32 @@
             myIn: [],
             myOut: [],
             input2: '',
+            value2: '',
+        },
+        watch: {
+            value (v){
+                this.getRecord(v==null?'':v);
+            },
+            value2 (v){
+                this.getRecord(v==null?'':v);
+            }
         },
         methods: {
+            pull() {
+                if(this.list.length>0){
+                    return error('无需同步')
+                }
+                $.post(url(methods.warePull), {ware: this.id}, v=>{
+                    if(v['code'] == 1){
+                        success(v['Msg'])
+                        this.getData()
+                    }
+                })
+            },
             getRecord(day='') {
-                this.myIn = []
-                this.myOut = []
                 $.post(url(methods.getRecordDetail), {day: day, ware: this.id}, v=>{
+                    this.myIn = []
+                    this.myOut = []
                     for(let x of v['res']) {
                         if(x['status'] == 1){
                             this.myIn.push(x)
@@ -422,12 +444,15 @@
                 })
             },
             myClick(v, v2) {
+                this.myIn = []
+                this.myOut = []
                 if(v.index==0){
                     this.getData()
                 }else{
                     this.getRecord()
                 }
                 this.input2 = ''
+                this.value = ''
             }
         },
         mounted() {
