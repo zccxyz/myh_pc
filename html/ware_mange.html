@@ -7,19 +7,22 @@
     <link rel="stylesheet" type="text/css" href="../css/common.css">
     <link rel="stylesheet" type="text/css" href="../css/vip_information.css">
     <style>
-        .ware_list>li{
+        .ware_list > li {
             display: flex;
         }
-        .store_img{
+
+        .store_img {
             height: 20px;
             vertical-align: text-bottom;
             margin-right: 10px;
         }
-        .click_a{
+
+        .click_a {
             display: inline-block;
-           flex: 1;
+            flex: 1;
         }
-        .gr_b_d{
+
+        .gr_b_d {
             border-radius: 15px;
             display: inline-block;
             padding: 3px 8px;
@@ -28,8 +31,9 @@
             margin-right: 10px;
             background: #13ce66;
         }
-        .ware_mar{
-            margin-right:20px;
+
+        .ware_mar {
+            margin-right: 20px;
         }
     </style>
 </head>
@@ -46,26 +50,18 @@
             <el-button type="success" class="fr" @click="add_ware=true"
                        style="margin-bottom: 5px;">新建仓库
             </el-button>
-            <el-button type="success" class="fr" @click="ware_merge=true"
+            <!--<el-button type="success" class="fr" @click="ware_merge=true"
                        style="margin-bottom: 5px;margin-right: 20px">仓库合并
-            </el-button>
+            </el-button>-->
         </div>
         <ul class="ul_list ware_list">
-            <li>
-                <a href="ware_detail.html" class="c_black click_a">
+            <li v-for="v in list">
+                <a @click="jump(v.id)" class="c_black click_a">
                     <img src="../images/storemanage.png" alt="" class="store_img">
-                    美约会（总仓）
+                    {{v.name}}（{{v.ware_status==1?'总仓':'分仓'}}）
                 </a>
-                <el-button class="fr" @click="edit=true">编辑</el-button>
-                    <el-button type="danger" class="fr" @click="" style="margin-right: 20px">删除</el-button>
-            </li>
-            <li>
-                <a href="ware_detail.html" class="c_black click_a">
-                    <img src="../images/storemanage.png" alt="" class="store_img">
-                    美约会（总仓）
-                </a>
-                <el-button class="fr" @click="edit=true">编辑</el-button>
-                    <el-button type="danger" class="fr" @click="" style="margin-right: 20px">删除</el-button>
+                <el-button class="fr" @click="now=v;edit=true;">编辑</el-button>
+                <!--<el-button type="danger" class="fr" @click="" style="margin-right: 20px">删除</el-button>-->
             </li>
         </ul>
         <!--仓库合并-->
@@ -80,8 +76,7 @@
             </div>
             <p class="linr_four">
                 <el-checkbox-group v-model="checkList">
-                    <el-checkbox label="美约会"></el-checkbox>
-                    <el-checkbox label="美约会二仓"></el-checkbox>
+                    <el-checkbox v-for="v in list" :label="v.name"></el-checkbox>
                 </el-checkbox-group>
             </p>
             <ul class="ul_list" style="border-top: 10px solid #f6f6f6;border-bottom:1px solid #ddd">
@@ -91,14 +86,14 @@
             </span>
                     <span class="list_right">
                 <div class="am-form-group">
-                    <input type="text" placeholder="请输入合并后的仓库名称">
+                    <input type="text" placeholder="请输入合并后的仓库名称" v-model="name">
                 </div>
             </span>
                 </li>
             </ul>
             <span slot="footer" class="dialog-footer">
-            <el-button @click="ware_merge=false">取 消</el-button>
-            <el-button type="primary" @click="">确 定</el-button>
+            <el-button @click="close">取 消</el-button>
+            <el-button type="primary" @click="hb">确 定</el-button>
           </span>
         </el-dialog>
         <!--新建仓库-->
@@ -108,15 +103,12 @@
                 width="400px"
                 center
                 :before-close="close">
-                <div class="other_back linr_four">
-                    现有仓库
-                </div>
+            <div class="other_back linr_four">
+                现有仓库
+            </div>
             <p class="linr_four">
-                <span class="ware_mar">
-                    <i class="gr_b_d linr_four">总仓</i>美约会
-                </span>
-                <span class="ware_mar">
-                    <i class="gr_b_d linr_four">分仓</i>美约会
+                <span class="ware_mar" v-for="v in list">
+                    <i class="gr_b_d linr_four">{{v.ware_status==1?'总仓':'分仓'}}</i>{{v.name}}
                 </span>
             </p>
             <ul class="ul_list" style="border-top: 10px solid #f6f6f6;border-bottom:1px solid #ddd">
@@ -126,14 +118,14 @@
             </span>
                     <span class="list_right">
                 <div class="am-form-group">
-                            <input type="text" placeholder="请输入仓库名称">
+                            <input type="text" placeholder="请输入仓库名称" v-model="name">
                 </div>
             </span>
                 </li>
             </ul>
             <span slot="footer" class="dialog-footer">
-            <el-button @click="add_ware=false">取 消</el-button>
-            <el-button type="primary" @click="">确 定</el-button>
+            <el-button @click="close">取 消</el-button>
+            <el-button type="primary" @click="add">确 定</el-button>
           </span>
         </el-dialog>
         <!--编辑仓库-->
@@ -145,34 +137,27 @@
                 :before-close="close">
             <ul class="ul_list" style="border-bottom:1px solid #ddd">
                 <li>
-                    <span class="list_left" style="vertical-align: bottom">选择仓库</span>
+                    <span class="list_left" style="vertical-align: bottom">仓库名称</span>
                     <span class="list_right">
-                    <el-select v-model="value" placeholder="请选择" style="width: 100%">
-                        <el-option
-                                v-for="item in options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                        </el-option>
-                      </el-select>
-                </span>
+                        {{now.name}}
+                    </span>
                 <li>
                     <span class="list_left">
                 新名称
             </span>
                     <span class="list_right">
                 <div class="am-form-group">
-                            <input type="text" placeholder="请输入新的仓库名称">
+                            <input type="text" placeholder="请输入新的仓库名称" v-model="name">
                 </div>
             </span>
                 </li>
             </ul>
             <span slot="footer" class="dialog-footer">
-            <el-button @click="edit=false">取 消</el-button>
-            <el-button type="primary" @click="">确 定</el-button>
+            <el-button @click="close">取 消</el-button>
+            <el-button type="primary" @click="editName">确 定</el-button>
           </span>
         </el-dialog>
-</template>
+    </template>
 </div>
 </template>
 </body>
@@ -185,27 +170,106 @@
     new Vue({
         el: '#app',
         data: {
-            checkList:'',
+            checkList: [],
             input: '',
             radio: '',
-            add_ware:false,
-            ware_merge:false,
-            edit:false,
-            options:[{
+            add_ware: false,
+            ware_merge: false,
+            edit: false,
+            options: [{
                 value: '选项1',
                 label: '美约会'
             }, {
                 value: '选项2',
                 label: '美约会二仓'
             },],
-            value:''
+            value: '',
+
+            list: [],
+            now: {},
+            name: '',
         },
-        methods: {},
+        methods: {
+            jump(id){
+                localStorage.setItem('wareId', id.toString())
+                location.href = './ware_detail.html'
+            },
+            hb() {
+                if (this.name.length == 0) {
+                    return error('请输入仓库名称')
+                }
+
+            },
+            add(){
+                if (this.name.length == 0) {
+                    return error('请输入仓库名称')
+                }
+                let s = 1
+                this.$confirm('是否设置为主仓?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    $.post(url(methods.wareSet), {
+                        name: this.name, type: "add", status: 1
+                    }, v => {
+                        if(v['code'] == 1){
+                            this.close()
+                            success(v['Msg'])
+                            this.getData()
+                        }else{
+                            error(v['error'])
+                        }
+                    })
+                }).catch(()=>{
+                    $.post(url(methods.wareSet), {
+                        name: this.name, type: "add", status: 2
+                    }, v => {
+                        if(v['code'] == 1){
+                            this.close()
+                            success(v['Msg'])
+                            this.getData()
+                        }else{
+                            error(v['error'])
+                        }
+                    })
+                })
+            },
+            editName() {
+                if (this.name.length == 0) {
+                    return error('请输入仓库名称')
+                }
+                $.post(url(methods.wareSet), {
+                    id: this.now.id,
+                    name: this.name, type: "modify"
+                }, v => {
+                    if(v['code'] == 1){
+                        this.close()
+                        success(v['Msg'])
+                        this.getData()
+                    }else{
+                        error(v['error'])
+                    }
+                })
+            },
+            getData() {
+                $.get(url(methods.wareList), v => {
+                    this.list = v['res']
+                })
+            },
+            close() {
+                this.edit = false
+                this.add_ware = false
+                this.ware_merge = false
+                this.name = ''
+            }
+        },
         mounted() {
-            this.$nextTick(e=>{
+            this.$nextTick(e => {
                 //初始化
                 that = this;
                 loginState()
+                this.getData()
             })
         }
     })

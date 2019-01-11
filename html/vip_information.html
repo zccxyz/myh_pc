@@ -100,6 +100,11 @@
                                         placeholder="选择日期" class="time_wid">
                                 </el-date-picker>-->
                             </p>
+                            <p>
+                                会员余额：
+                                <el-input v-model="userInfo.balance" placeholder="请输入会员余额" disabled
+                                          class="infor_wid un_line_h"></el-input>
+                            </p>
                             <p>&nbsp;</p>
                     </ul>
                     <div class="bottom_but">
@@ -400,12 +405,13 @@
                     <li v-for="v in list">
                         {{v.create_time}}
                         <el-button class="fr" @click="getJK(v.id)">查看</el-button>
-<<<<<<< HEAD
-                        <el-button type="danger" class="fr mar_hun" @click="delJK(v.id)" style="margin-right: 20px">删除</el-button>
-=======
+                        <<<<<<< HEAD
+                        <el-button type="danger" class="fr mar_hun" @click="delJK(v.id)" style="margin-right: 20px">删除
+                        </el-button>
+                        =======
                         <el-button class="fr" @click="getJK2(v.id)" style="margin-right: 10px">编辑</el-button>
                         <el-button type="danger" class="fr" @click="delJK(v.id)">删除</el-button>
->>>>>>> 83c0971ccdee4790b9aa3e537e5fc379c2a620e4
+                        >>>>>>> 83c0971ccdee4790b9aa3e537e5fc379c2a620e4
                     </li>
                 </ul>
             </el-tab-pane>
@@ -648,11 +654,11 @@
             detail2: '',
         },
         methods: {
-            modify(){
-                $.post(url(methods.healthModify), {data: this.detail2.res}, v=>{
-                    if(v.code==1){
+            modify() {
+                $.post(url(methods.healthModify), {data: this.detail2.res}, v => {
+                    if (v.code == 1) {
                         success(v['Msg'])
-                    }else{
+                    } else {
                         error(v['Msg'])
                     }
                     this.detail2 = ''

@@ -1,5 +1,5 @@
-//const ym = 'https://www.myhkj.cn/apis/backend/';
-const ym = 'http://admin.test.com/apis/backend/';
+const ym = 'https://www.myhkj.cn/apis/backend/';
+//const ym = 'http://admin.test.com/apis/backend/';
 
 const methods = {
     'login': 'login/login',
@@ -84,6 +84,7 @@ const methods = {
     'wareIntoOutDetail': 'Ware/WareIntoOutDetail',  //出入库数据
     'getRecordDetail': 'Ware/get_record_detail',  //出入库记录
     'goodsManager': 'Ware/goods_manager',  //预警设置
+    'wareSet': 'Ware/WareSet',
 };
 let that;
 
