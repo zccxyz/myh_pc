@@ -91,7 +91,15 @@
                                 <span slot="title">院装消耗</span>
                             </a>
                         </el-menu-item>
-                        <el-menu-item index="9" v-if="user.pid==0">
+                        <el-menu-item index="9">
+                            <a href="order.html" target="iframe">
+                                <span class="span_img">
+                                    <img src="../images/order.png" class="home_icon" style="height: 18px;width: 22px;">
+                                </span>
+                                <span slot="title">订单中心</span>
+                            </a>
+                        </el-menu-item>
+                        <el-menu-item index="10" v-if="user.pid==0">
                             <a href="branch_store.html" target="iframe">
                                 <span class="span_img">
                                     <img src="../images/branch.png" class="home_icon" style="height: 18px">
