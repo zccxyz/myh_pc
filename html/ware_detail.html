@@ -43,18 +43,18 @@
                               prefix-icon="el-icon-search"
                               v-model="input">
                     </el-input>
-                    <!--<span>
+                    <span>
                             按数量查找：
                         <el-radio v-model="radio" label="1">
                             大于等于
-                            <el-input v-model="one" placeholder="" class="line_input"></el-input>个
+                            <el-input style="width: 80px" v-model="one" type="number" placeholder="" class="line_input"></el-input>个
                         </el-radio>
                         <el-radio v-model="radio" label="2">
                           小于等于
-                            <el-input v-model="two" placeholder="" class="line_input"></el-input>个
+                            <el-input style="width: 80px" v-model="two" type="number" placeholder="" class="line_input"></el-input>个
                       </el-radio>
-                        </span>-->
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </span>
+                    <!--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <span>
                         库存小于(x)预警：
                         <el-input v-model="warning.start_num" type="number" placeholder="" class="li_input"></el-input>
@@ -65,10 +65,10 @@
                         库存大于(x)预警：
                         <el-input v-model="warning.end_num" type="number" placeholder="" class="li_input"></el-input>
                         <i class="blue_c" @click="yjSet">修改</i>
-                    </span>
+                    </span>-->
                     <el-button type="success" class="fr" @click="pull">同步商品</el-button>
                 </div>
-                <!--<div>
+                <div>
                     库存小于(x)预警：
                     <el-input v-model="warning.start_num" type="number" placeholder="" class="li_input"></el-input>
                     <i class="blue_c" @click="yjSet">修改</i>
@@ -77,10 +77,11 @@
                     库存大于(x)预警：
                     <el-input v-model="warning.end_num" type="number" placeholder="" class="li_input"></el-input>
                     <i class="blue_c" @click="yjSet">修改</i>
-                </div>-->
+                </div>
                 <div class="basic_inf">
                     <el-table
-                            :data="list.filter( data => !input || data.name.toLowerCase().includes(input.toLowerCase()) )"
+                            :data="list.filter( data => (!input || data.name.toLowerCase().includes(input.toLowerCase()))
+                             && one>0?data.stock>=one:true && two>0?data.stock<=two:true)"
                             style="width: 100%">
                         <el-table-column
                                 prop="type"
