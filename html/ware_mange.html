@@ -61,7 +61,7 @@
                     {{v.name}}（{{v.ware_status==1?'总仓':'分仓'}}）
                 </a>
                 <el-button class="fr" @click="now=v;edit=true;">编辑</el-button>
-                <!--<el-button type="danger" class="fr" @click="" style="margin-right: 20px">删除</el-button>-->
+                <el-button type="danger" class="fr" @click="del(v)" style="margin-right: 20px">删除</el-button>
             </li>
         </ul>
         <!--仓库合并-->
@@ -190,6 +190,25 @@
             name: '',
         },
         methods: {
+            del(v){
+                this.$confirm('是否删除?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    $.post(url(methods.wareSet), {id: v.id, type: 'del'}, v=>{
+                        if(v['code'] == 1){
+                            this.close()
+                            success(v['Msg'])
+                            this.getData()
+                        }else{
+                            error(v['error'])
+                        }
+                    })
+                }).catch(e=>{
+
+                })
+            },
             jump(id){
                 localStorage.setItem('wareId', id.toString())
                 location.href = './ware_detail.html'

@@ -43,29 +43,44 @@
                               prefix-icon="el-icon-search"
                               v-model="input">
                     </el-input>
-                    <span>
+                    <!--<span>
                             按数量查找：
                         <el-radio v-model="radio" label="1">
                             大于等于
-                            <el-input v-model="input" placeholder="" class="line_input"></el-input>个
+                            <el-input v-model="one" placeholder="" class="line_input"></el-input>个
                         </el-radio>
                         <el-radio v-model="radio" label="2">
                           小于等于
-                            <el-input v-model="input" placeholder="" class="line_input"></el-input>个
+                            <el-input v-model="two" placeholder="" class="line_input"></el-input>个
                       </el-radio>
-                        </span>
+                        </span>-->
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span>
+                        库存小于(x)预警：
+                        <el-input v-model="warning.start_num" type="number" placeholder="" class="li_input"></el-input>
+                        <i class="blue_c" @click="yjSet">修改</i>
+                    </span>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span>
+                        库存大于(x)预警：
+                        <el-input v-model="warning.end_num" type="number" placeholder="" class="li_input"></el-input>
+                        <i class="blue_c" @click="yjSet">修改</i>
+                    </span>
                     <el-button type="success" class="fr" @click="pull">同步商品</el-button>
                 </div>
-                <div>
-                    库存预警设置：
+                <!--<div>
+                    库存小于(x)预警：
                     <el-input v-model="warning.start_num" type="number" placeholder="" class="li_input"></el-input>
-                    至
-                    <el-input v-model="warning.end_num" type="number" placeholder="" class="li_input"></el-input>
                     <i class="blue_c" @click="yjSet">修改</i>
                 </div>
+                <div>
+                    库存大于(x)预警：
+                    <el-input v-model="warning.end_num" type="number" placeholder="" class="li_input"></el-input>
+                    <i class="blue_c" @click="yjSet">修改</i>
+                </div>-->
                 <div class="basic_inf">
                     <el-table
-                            :data="list.filter(data => !input || data.name.toLowerCase().includes(input.toLowerCase()))"
+                            :data="list.filter( data => !input || data.name.toLowerCase().includes(input.toLowerCase()) )"
                             style="width: 100%">
                         <el-table-column
                                 prop="type"
@@ -292,7 +307,7 @@
             in_ware: false,
             out_ware: false,
             input: '',
-            radio: '',
+            radio: '1',
             table_data: [{
                 px: '产品',
                 name: '补水面膜',
@@ -354,6 +369,8 @@
             myOut: [],
             input2: '',
             value2: '',
+            one: '',
+            two: '',
         },
         watch: {
             value(v) {
@@ -361,6 +378,14 @@
             },
             value2(v) {
                 this.getRecord(v == null ? '' : v);
+            },
+            one(v) {
+                this.radio = '1'
+                this.two = ''
+            },
+            two(v) {
+                this.radio = '2'
+                this.one = ''
             }
         },
         methods: {
@@ -368,11 +393,18 @@
                 if (this.warning.start_num == '' || this.warning.end_num == '') {
                     return error('请填写整数数量')
                 }
-                if(parseInt(this.warning.start_num) > parseInt(this.warning.end_num)) {
+                /*if (parseInt(this.warning.start_num) > parseInt(this.warning.end_num)) {
                     return error('开始数量应该小于结束数量')
-                }
-                $.post(url(methods.goodsManager), {}, v => {
-
+                }*/
+                $.post(url(methods.goodsManager), {
+                    ware: this.id, end_num: this.warning.end_num, start_num: this.warning.start_num,
+                }, v => {
+                    if(v['code']==1){
+                        success(v['Msg'])
+                        this.getData()
+                    }else{
+                        error(v['error'])
+                    }
                 })
             },
             pull() {
