@@ -101,11 +101,17 @@
                                 </el-date-picker>-->
                             </p>
                             <p>
-                                会员余额：
-                                <el-input v-model="userInfo.balance" placeholder="请输入会员余额" disabled
+                                账户余额：
+                                <el-input v-model="userInfo.balance" placeholder="请输入会员余额" type="number"
                                           class="infor_wid un_line_h"></el-input>
                             </p>
-                            <p>&nbsp;</p>
+                            <p>
+                                赠送余额：
+                                <el-input v-model="userInfo.send_balance" placeholder="请输入会员余额" type="number"
+                                          class="infor_wid un_line_h"></el-input>
+                            </p>
+                            <p>&nbsp;
+                            </p>
                     </ul>
                     <div class="bottom_but">
                         <el-button type="success" @click="modifyUser">修改</el-button>
@@ -887,8 +893,8 @@
                 })
             },
             modifyUser() {
-                if (this.userInfo.name == '' || this.userInfo.tel == '' || this.userInfo.address == '' || this.userInfo.marital == ''
-                    || this.userInfo.id == '' || this.userInfo.bir_type == '' || this.userInfo.birthday == '' || this.userInfo.sex == '') {
+                if (this.userInfo.name == '' || this.userInfo.tel == '' || this.userInfo.bir_type == '' ||
+                    this.userInfo.yl == '') {
                     error('请填完以上内容')
                     return
                 }
@@ -902,6 +908,8 @@
                         birthday: this.userInfo.yl,
                         marital: this.userInfo.marital,
                         sex: this.userInfo.sex,
+                        balance: this.userInfo.balance,
+                        send_balance: this.userInfo.send_balance,
                     }
                 }, v => {
                     if (v.code == 1) {
