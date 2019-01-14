@@ -405,13 +405,8 @@
                     <li v-for="v in list">
                         {{v.create_time}}
                         <el-button class="fr" @click="getJK(v.id)">查看</el-button>
-                        <<<<<<< HEAD
-                        <el-button type="danger" class="fr mar_hun" @click="delJK(v.id)" style="margin-right: 20px">删除
-                        </el-button>
-                        =======
                         <el-button class="fr" @click="getJK2(v.id)" style="margin-right: 10px">编辑</el-button>
                         <el-button type="danger" class="fr" @click="delJK(v.id)">删除</el-button>
-                        >>>>>>> 83c0971ccdee4790b9aa3e537e5fc379c2a620e4
                     </li>
                 </ul>
             </el-tab-pane>

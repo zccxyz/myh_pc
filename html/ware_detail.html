@@ -43,7 +43,7 @@
                               prefix-icon="el-icon-search"
                               v-model="input">
                     </el-input>
-                    <!--<span>
+                    <span>
                             按数量查找：
                         <el-radio v-model="radio" label="1">
                             大于等于
@@ -53,16 +53,16 @@
                           小于等于
                             <el-input v-model="input" placeholder="" class="line_input"></el-input>个
                       </el-radio>
-                        </span>-->
+                        </span>
                     <el-button type="success" class="fr" @click="pull">同步商品</el-button>
                 </div>
-                <!--<div>
+                <div>
                     库存预警设置：
-                    <el-input v-model="warning.start_num" placeholder="" class="li_input"></el-input>
+                    <el-input v-model="warning.start_num" type="number" placeholder="" class="li_input"></el-input>
                     至
-                    <el-input v-model="warning.end_num" placeholder="" class="li_input"></el-input>
-                    <i class="blue_c">修改</i>
-                </div>-->
+                    <el-input v-model="warning.end_num" type="number" placeholder="" class="li_input"></el-input>
+                    <i class="blue_c" @click="yjSet">修改</i>
+                </div>
                 <div class="basic_inf">
                     <el-table
                             :data="list.filter(data => !input || data.name.toLowerCase().includes(input.toLowerCase()))"
@@ -356,33 +356,44 @@
             value2: '',
         },
         watch: {
-            value (v){
-                this.getRecord(v==null?'':v);
+            value(v) {
+                this.getRecord(v == null ? '' : v);
             },
-            value2 (v){
-                this.getRecord(v==null?'':v);
+            value2(v) {
+                this.getRecord(v == null ? '' : v);
             }
         },
         methods: {
+            yjSet() {
+                if (this.warning.start_num == '' || this.warning.end_num == '') {
+                    return error('请填写整数数量')
+                }
+                if(parseInt(this.warning.start_num) > parseInt(this.warning.end_num)) {
+                    return error('开始数量应该小于结束数量')
+                }
+                $.post(url(methods.goodsManager), {}, v => {
+
+                })
+            },
             pull() {
-                if(this.list.length>0){
+                if (this.list.length > 0) {
                     return error('无需同步')
                 }
-                $.post(url(methods.warePull), {ware: this.id}, v=>{
-                    if(v['code'] == 1){
+                $.post(url(methods.warePull), {ware: this.id}, v => {
+                    if (v['code'] == 1) {
                         success(v['Msg'])
                         this.getData()
                     }
                 })
             },
-            getRecord(day='') {
-                $.post(url(methods.getRecordDetail), {day: day, ware: this.id}, v=>{
+            getRecord(day = '') {
+                $.post(url(methods.getRecordDetail), {day: day, ware: this.id}, v => {
                     this.myIn = []
                     this.myOut = []
-                    for(let x of v['res']) {
-                        if(x['status'] == 1){
+                    for (let x of v['res']) {
+                        if (x['status'] == 1) {
                             this.myIn.push(x)
-                        }else{
+                        } else {
                             this.myOut.push(x)
                         }
                     }
@@ -411,7 +422,7 @@
 
                 this.data.goods_type = this.now.type;
                 $.post(url(methods.stockOperation), {
-                    id: this.now.id, type: type, ware: this.id, data: type == 'into' ? this.data:{
+                    id: this.now.id, type: type, ware: this.id, data: type == 'into' ? this.data : {
                         sum: this.data.sum,
                         human: this.data.human,
                         goods_type: this.data.goods_type,
@@ -446,9 +457,9 @@
             myClick(v, v2) {
                 this.myIn = []
                 this.myOut = []
-                if(v.index==0){
+                if (v.index == 0) {
                     this.getData()
-                }else{
+                } else {
                     this.getRecord()
                 }
                 this.input2 = ''
