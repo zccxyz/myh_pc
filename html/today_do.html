@@ -21,19 +21,6 @@
                   :data="list"
                   style="width: 100%">
             <el-table-column
-                    :formatter="formatter"
-                    prop="consume_type"
-                    label="品项">
-            </el-table-column>
-            <!--<el-table-column
-                    prop="class"
-                    label="类别">
-            </el-table-column>-->
-            <el-table-column
-                    prop="designation_name"
-                    label="消耗名称">
-            </el-table-column>
-            <el-table-column
                     prop="name"
                     label="会员名">
             </el-table-column>
@@ -55,7 +42,12 @@
             </el-table-column>
             <el-table-column label="操作">
                 <template slot-scope="scope">
-                    <a href="#" @click="jump(scope.row)">查看</a>
+                    <el-button
+                            size="mini" @click="@click="jump(scope.row)">查看会员详情
+                    <el-button
+                            size="mini" type="primary"
+                            @click="getDetail=true">明细
+                    </el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -71,6 +63,34 @@
                     :total="400">
             </el-pagination>
         </p>-->
+        <!-- 查看详情 -->
+        <el-dialog
+                title="方案详情"
+                :visible.sync="getDetail"
+                center>
+            <el-table border
+                      :data="detail"
+                      style="width: 100%">
+                <el-table-column
+                        prop="name"
+                        label="消耗名称"
+                        width="80">
+                </el-table-column>
+                <el-table-column
+                        prop="money"
+                        label="消耗金额"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="fre"
+                        label="次数">
+                </el-table-column>
+                <el-table-column
+                        prop="do_p"
+                        label="操作人">
+                </el-table-column>
+            </el-table>
+        </el-dialog>
     </template>
 </div>
 
@@ -84,6 +104,18 @@
     new Vue({
         el: '#app',
         data: {
+            getDetail: false,
+            detail: [{
+                name: '补水面膜',
+                money: '56',
+                fre: 'fre',
+               do_p: '丽丽',
+            }, {
+                name: '补水面膜',
+                money: '56',
+                fre: 'fre',
+                do_p: '丽丽',
+            }],
             currentPage4: 4,
             tableData: [{
                 pro_item: '项目',
