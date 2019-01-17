@@ -1,5 +1,5 @@
-const ym = 'https://www.myhkj.cn/apis/backend/';
-//const ym = 'http://admin.test.com/apis/backend/';
+//const ym = 'https://www.myhkj.cn/apis/backend/';
+const ym = 'http://admin.test.com/apis/backend/';
 
 const methods = {
     'login': 'login/login',
@@ -11,6 +11,7 @@ const methods = {
     'lostDetail': 'member/LostDetail',
     'unTimeDetail': 'member/UnTimeDetail',
     'guest': 'member/guest',
+    'getOrder': 'member/get_order',
     'vipLevel': 'member/vipLevel',
     'delMember': 'Member/DelMember',
     'editMember': 'Member/editMember',
@@ -76,16 +77,20 @@ const methods = {
     'firstCheck': 'Center/first_check',
     'switchStore': 'Center/switch_store',
     'planList': 'Plan/plan_list',
-    'delPlan': 'Plan/del_plan',   //id,type=del
-    'addPlan': 'Plan/add',   //get获取数据，post提交数据
+    'delPlan': 'Plan/del_plan',
+    'addPlan': 'Plan/add',
     'getCate': 'items/getCategory',
-    'wareList': 'Ware/WareList',    //仓库列表
+    'wareList': 'Ware/WareList',
     'stockOperation': 'Ware/StockOperation',
-    'wareIntoOutDetail': 'Ware/WareIntoOutDetail',  //出入库数据
-    'getRecordDetail': 'Ware/get_record_detail',  //出入库记录
-    'goodsManager': 'Ware/goods_manager',  //预警设置
+    'wareIntoOutDetail': 'Ware/WareIntoOutDetail',
+    'getRecordDetail': 'Ware/get_record_detail',
+    'goodsManager': 'Ware/goods_manager',
     'wareSet': 'Ware/WareSet',
-    'warePull': 'Ware/pull',    //仓库同步
+    'warePull': 'Ware/pull',
+    'checkArrears': 'member/check_arrears',
+    'cancelOrder': 'member/CancelOrder',
+    'refundOrder': 'member/refund_order',
+    'getConsume': 'store/getConsume',
 };
 let that;
 
@@ -93,6 +98,20 @@ let that;
 
 function url(m) {
     return ym + m + '?source=PC'
+}
+
+function classify(type) {
+    if(type==1){
+        return '产品'
+    }else if(type==2){
+        return '套盒'
+    }else if(type==3){
+        return '项目'
+    }else if(type==4){
+        return '方案'
+    }else if(type==5){
+        return '卡项'
+    }
 }
 
 function loginState() {

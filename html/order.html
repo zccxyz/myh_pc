@@ -16,473 +16,117 @@
                 <el-breadcrumb-item :to="{ path: '/' }">订单中心</el-breadcrumb-item>
             </el-breadcrumb>
         </p>
-        <el-tabs type="card" @tab-click=""
+        <el-tabs type="card" @tab-click="tab"
                  class="vip_infor">
             <el-tab-pane label="全部订单">
-                <div class="cus_center">
-                    <el-input class="cus_seatch" style="float: left"
-                              placeholder="请输入姓名/电话搜索"
-                              prefix-icon="el-icon-search"
-                              v-model="input">
-                    </el-input>
-                </div>
-                <div class="basic_inf">
-                    <el-table
-                            :data="all_order"
-                            style="width: 100%">
-                        <el-table-column
-                                prop="num"
-                                label="订单编号">
-                        </el-table-column>
-                        <el-table-column
-                                prop="time"
-                                label="订单时间">
-                        </el-table-column>
-                        <el-table-column
-                                prop="shop"
-                                label="店铺名称">
-                        </el-table-column>
-                        <el-table-column
-                                prop="vip"
-                                label="会员">
-                        </el-table-column>
-                        <el-table-column
-                                prop="px"
-                                label="品项">
-                        </el-table-column>
-                        <el-table-column
-                                prop="money"
-                                label="金额">
-                        </el-table-column>
-                        <el-table-column
-                                prop="staus"
-                                label="状态">
-                        </el-table-column>
-                        <el-table-column
-                                prop="arr"
-                                label="欠款">
-                        </el-table-column>
-                        <el-table-column
-                                label="操作"
-                                width="480"
-                                fixed="right"
-                                show-overflow-tooltip>
-                            <template slot-scope="scope">
-                                <el-button
-                                        size="mini"
-                                        @click="order_detail=true" type="success">订单详情
-                                </el-button>
-                                <el-button
-                                        size="mini"
-                                        @click="" type="primary">补款
-                                </el-button>
-                                <el-button
-                                        size="mini"
-                                        @click="" type="warning">退款/退货
-                                </el-button>
-                                <el-button
-                                        size="mini"
-                                        @click="" type="success">支付
-                                </el-button>
-                                <el-button
-                                        size="mini"
-                                        @click="" type="danger">取消订单
-                                </el-button>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                </div>
+
             </el-tab-pane>
             <el-tab-pane label="未付款">
-                <div class="cus_center">
-                    <el-input class="cus_seatch" style="float: left"
-                              placeholder="请输入姓名/电话搜索"
-                              prefix-icon="el-icon-search"
-                              v-model="input">
-                    </el-input>
-                </div>
-                <div class="basic_inf">
-                    <el-table
-                            :data="all_order"
-                            style="width: 100%">
-                        <el-table-column
-                                prop="num"
-                                label="订单编号">
-                        </el-table-column>
-                        <el-table-column
-                                prop="time"
-                                label="订单时间">
-                        </el-table-column>
-                        <el-table-column
-                                prop="shop"
-                                label="店铺名称">
-                        </el-table-column>
-                        <el-table-column
-                                prop="vip"
-                                label="会员">
-                        </el-table-column>
-                        <el-table-column
-                                prop="px"
-                                label="品项">
-                        </el-table-column>
-                        <el-table-column
-                                prop="money"
-                                label="金额">
-                        </el-table-column>
-                        <el-table-column
-                                prop="staus"
-                                label="状态">
-                        </el-table-column>
-                        <el-table-column
-                                prop="arr"
-                                label="欠款">
-                        </el-table-column>
-                        <el-table-column
-                                label="操作"
-                                width="480"
-                                fixed="right"
-                                show-overflow-tooltip>
-                            <template slot-scope="scope">
-                                <el-button
-                                        size="mini"
-                                        @click="order_detail=true" type="success">订单详情
-                                </el-button>
-                                <el-button
-                                        size="mini"
-                                        @click="" type="primary">补款
-                                </el-button>
-                                <el-button
-                                        size="mini"
-                                        @click="" type="warning">退款/退货
-                                </el-button>
-                                <el-button
-                                        size="mini"
-                                        @click="" type="success">支付
-                                </el-button>
-                                <el-button
-                                        size="mini"
-                                        @click="" type="danger">取消订单
-                                </el-button>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                </div>
+
             </el-tab-pane>
             <el-tab-pane label="未付清">
-                <div class="cus_center">
-                    <el-input class="cus_seatch" style="float: left"
-                              placeholder="请输入姓名/电话搜索"
-                              prefix-icon="el-icon-search"
-                              v-model="input">
-                    </el-input>
-                </div>
-                <div class="basic_inf">
-                    <el-table
-                            :data="all_order"
-                            style="width: 100%">
-                        <el-table-column
-                                prop="num"
-                                label="订单编号">
-                        </el-table-column>
-                        <el-table-column
-                                prop="time"
-                                label="订单时间">
-                        </el-table-column>
-                        <el-table-column
-                                prop="shop"
-                                label="店铺名称">
-                        </el-table-column>
-                        <el-table-column
-                                prop="vip"
-                                label="会员">
-                        </el-table-column>
-                        <el-table-column
-                                prop="px"
-                                label="品项">
-                        </el-table-column>
-                        <el-table-column
-                                prop="money"
-                                label="金额">
-                        </el-table-column>
-                        <el-table-column
-                                prop="staus"
-                                label="状态">
-                        </el-table-column>
-                        <el-table-column
-                                prop="arr"
-                                label="欠款">
-                        </el-table-column>
-                        <el-table-column
-                                label="操作"
-                                width="480"
-                                fixed="right"
-                                show-overflow-tooltip>
-                            <template slot-scope="scope">
-                                <el-button
-                                        size="mini"
-                                        @click="order_detail=true" type="success">订单详情
-                                </el-button>
-                                <el-button
-                                        size="mini"
-                                        @click="" type="primary">补款
-                                </el-button>
-                                <el-button
-                                        size="mini"
-                                        @click="" type="warning">退款/退货
-                                </el-button>
-                                <el-button
-                                        size="mini"
-                                        @click="" type="success">支付
-                                </el-button>
-                                <el-button
-                                        size="mini"
-                                        @click="" type="danger">取消订单
-                                </el-button>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                </div>
+
             </el-tab-pane>
             <el-tab-pane label="已付清">
-                <div class="cus_center">
-                    <el-input class="cus_seatch" style="float: left"
-                              placeholder="请输入姓名/电话搜索"
-                              prefix-icon="el-icon-search"
-                              v-model="input">
-                    </el-input>
-                </div>
-                <div class="basic_inf">
-                    <el-table
-                            :data="all_order"
-                            style="width: 100%">
-                        <el-table-column
-                                prop="num"
-                                label="订单编号">
-                        </el-table-column>
-                        <el-table-column
-                                prop="time"
-                                label="订单时间">
-                        </el-table-column>
-                        <el-table-column
-                                prop="shop"
-                                label="店铺名称">
-                        </el-table-column>
-                        <el-table-column
-                                prop="vip"
-                                label="会员">
-                        </el-table-column>
-                        <el-table-column
-                                prop="px"
-                                label="品项">
-                        </el-table-column>
-                        <el-table-column
-                                prop="money"
-                                label="金额">
-                        </el-table-column>
-                        <el-table-column
-                                prop="staus"
-                                label="状态">
-                        </el-table-column>
-                        <el-table-column
-                                prop="arr"
-                                label="欠款">
-                        </el-table-column>
-                        <el-table-column
-                                label="操作"
-                                width="480"
-                                fixed="right"
-                                show-overflow-tooltip>
-                            <template slot-scope="scope">
-                                <el-button
-                                        size="mini"
-                                        @click="order_detail=true" type="success">订单详情
-                                </el-button>
-                                <el-button
-                                        size="mini"
-                                        @click="" type="primary">补款
-                                </el-button>
-                                <el-button
-                                        size="mini"
-                                        @click="" type="warning">退款/退货
-                                </el-button>
-                                <el-button
-                                        size="mini"
-                                        @click="" type="success">支付
-                                </el-button>
-                                <el-button
-                                        size="mini"
-                                        @click="" type="danger">取消订单
-                                </el-button>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                </div>
+
             </el-tab-pane>
-            <el-tab-pane label="取消">
-                <div class="cus_center">
-                    <el-input class="cus_seatch" style="float: left"
-                              placeholder="请输入姓名/电话搜索"
-                              prefix-icon="el-icon-search"
-                              v-model="input">
-                    </el-input>
-                </div>
-                <div class="basic_inf">
-                    <el-table
-                            :data="all_order"
-                            style="width: 100%">
-                        <el-table-column
-                                prop="num"
-                                label="订单编号">
-                        </el-table-column>
-                        <el-table-column
-                                prop="time"
-                                label="订单时间">
-                        </el-table-column>
-                        <el-table-column
-                                prop="shop"
-                                label="店铺名称">
-                        </el-table-column>
-                        <el-table-column
-                                prop="vip"
-                                label="会员">
-                        </el-table-column>
-                        <el-table-column
-                                prop="px"
-                                label="品项">
-                        </el-table-column>
-                        <el-table-column
-                                prop="money"
-                                label="金额">
-                        </el-table-column>
-                        <el-table-column
-                                prop="staus"
-                                label="状态">
-                        </el-table-column>
-                        <el-table-column
-                                prop="arr"
-                                label="欠款">
-                        </el-table-column>
-                        <el-table-column
-                                label="操作"
-                                width="480"
-                                fixed="right"
-                                show-overflow-tooltip>
-                            <template slot-scope="scope">
-                                <el-button
-                                        size="mini"
-                                        @click="order_detail=true" type="success">订单详情
-                                </el-button>
-                                <el-button
-                                        size="mini"
-                                        @click="" type="primary">补款
-                                </el-button>
-                                <el-button
-                                        size="mini"
-                                        @click="" type="warning">退款/退货
-                                </el-button>
-                                <el-button
-                                        size="mini"
-                                        @click="" type="success">支付
-                                </el-button>
-                                <el-button
-                                        size="mini"
-                                        @click="" type="danger">取消订单
-                                </el-button>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                </div>
+            <el-tab-pane label="已取消">
+
             </el-tab-pane>
-            <el-tab-pane label="退款">
-                <div class="cus_center">
-                    <el-input class="cus_seatch" style="float: left"
-                              placeholder="请输入姓名/电话搜索"
-                              prefix-icon="el-icon-search"
-                              v-model="input">
-                    </el-input>
-                </div>
-                <div class="basic_inf">
-                    <el-table
-                            :data="all_order"
-                            style="width: 100%">
-                        <el-table-column
-                                prop="num"
-                                label="订单编号">
-                        </el-table-column>
-                        <el-table-column
-                                prop="time"
-                                label="订单时间">
-                        </el-table-column>
-                        <el-table-column
-                                prop="shop"
-                                label="店铺名称">
-                        </el-table-column>
-                        <el-table-column
-                                prop="vip"
-                                label="会员">
-                        </el-table-column>
-                        <el-table-column
-                                prop="px"
-                                label="品项">
-                        </el-table-column>
-                        <el-table-column
-                                prop="money"
-                                label="金额">
-                        </el-table-column>
-                        <el-table-column
-                                prop="staus"
-                                label="状态">
-                        </el-table-column>
-                        <el-table-column
-                                prop="arr"
-                                label="欠款">
-                        </el-table-column>
-                        <el-table-column
-                                label="操作"
-                                width="480"
-                                fixed="right"
-                                show-overflow-tooltip>
-                            <template slot-scope="scope">
-                                <el-button
-                                        size="mini"
-                                        @click="order_detail=true" type="success">订单详情
-                                </el-button>
-                                <el-button
-                                        size="mini"
-                                        @click="" type="primary">补款
-                                </el-button>
-                                <el-button
-                                        size="mini"
-                                        @click="" type="warning">退款/退货
-                                </el-button>
-                                <el-button
-                                        size="mini"
-                                        @click="" type="success">支付
-                                </el-button>
-                                <el-button
-                                        size="mini"
-                                        @click="" type="danger">取消订单
-                                </el-button>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                </div>
+            <el-tab-pane label="已退款">
+
             </el-tab-pane>
         </el-tabs>
+        <div class="cus_center">
+            <el-input class="cus_seatch" style="float: left"
+                      placeholder="请输入姓名/订单编号搜索"
+                      prefix-icon="el-icon-search"
+                      v-model="input">
+            </el-input>
+        </div>
+        <div class="basic_inf">
+            <el-table
+                    :data="list.filter(data => (!input || data.name.toLowerCase().includes(input.toLowerCase()) ||
+                    data.sn.toLowerCase().includes(input.toLowerCase())) && status==-1?true:data.status==status )"
+                    style="width: 100%">
+                <el-table-column
+                        prop="sn"
+                        label="订单编号">
+                </el-table-column>
+                <el-table-column
+                        prop="create_time"
+                        label="订单时间">
+                </el-table-column>
+                <el-table-column
+                        prop="store_name"
+                        label="店铺名称">
+                </el-table-column>
+                <el-table-column
+                        prop="name"
+                        label="会员">
+                </el-table-column>
+                <el-table-column
+                        prop="type"
+                        label="品项"
+                        :formatter="formatter">
+                </el-table-column>
+                <el-table-column
+                        prop="money"
+                        label="金额">
+                </el-table-column>
+                <el-table-column
+                        prop="status"
+                        label="状态"
+                        :formatter="formatter2">
+                </el-table-column>
+                <el-table-column
+                        prop="not_money"
+                        label="欠款">
+                </el-table-column>
+                <el-table-column
+                        label="操作"
+                        width="480"
+                        fixed="right"
+                        show-overflow-tooltip>
+                    <template slot-scope="scope">
+                        <el-button
+                                size="mini"
+                                @click="look(scope.row)" type="success">订单详情
+                        </el-button>
+                        <el-button v-show="scope.row.status==1"
+                                size="mini"
+                                @click="bk(scope.row.id)" type="primary">补款
+                        </el-button>
+                        <el-button  v-show="scope.row.status==2"
+                                size="mini"
+                                @click="refund(scope.row.id)" type="warning">退款/退货
+                        </el-button>
+                        <el-button
+                                size="mini" v-show="scope.row.status==0"
+                                @click="bk(scope.row.id)" type="success">支付
+                        </el-button>
+                        <el-button
+                                size="mini" v-show="scope.row.status==0"
+                                @click="cancel(scope.row.id)" type="danger">取消订单
+                        </el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </div>
         <!-- 订单详情 -->
         <el-dialog
                 title="订单详情"
                 :visible.sync="order_detail"
-                center>
+                center :before-close="close">
             <el-table border
-                      :data="detail"
+                      :data="now"
                       style="width: 100%">
                 <el-table-column
                         prop="name"
                         label="名称">
                 </el-table-column>
                 <el-table-column
-                        prop="num"
+                        prop="sum"
                         label="数量">
                 </el-table-column>
                 <el-table-column
@@ -505,85 +149,128 @@
     new Vue({
         el: '#app',
         data: {
-            order_detail:false,
-            detail:[{
-                name:'补水面膜',
-                num:'2',
-                price:'123'
-            },{
-            name:'补水面膜',
-            num:'2',
-            price:'123'
+            order_detail: false,
+            detail: [{
+                name: '补水面膜',
+                num: '2',
+                price: '123'
+            }, {
+                name: '补水面膜',
+                num: '2',
+                price: '123'
             }],
-            all_order:[{
-                num:'jdlsl',
-                time:'2019-02-12 10:30',
-                shop:'美约会',
-                vip:'lili',
-                px:'产品',
-                money:'2030',
-                sta:'0',
-                arr:'34'
-            },{
-                    num:'jdlsl',
-                    time:'2019-02-12 10:30',
-                    shop:'美约会',
-                    vip:'lili',
-                    px:'产品',
-                    money:'2030',
-                    status:'未付款',
-                    sta:'0',
-                    arr:'34'
-                },{
-                    num:'jdlsl',
-                    time:'2019-02-12 10:30',
-                    shop:'美约会',
-                    vip:'lili',
-                    px:'产品',
-                    money:'2030',
-                    status:'未付清',
-                    sta:'1',
-                    arr:'34'
-                },{
-                    num:'jdlsl',
-                    time:'2019-02-12 10:30',
-                    shop:'美约会',
-                    vip:'lili',
-                    px:'产品',
-                    money:'2030',
-                    status:'已付清',
-                    sta:'2',
-                    arr:'34'
-                },{
-                num:'jdlsl',
-                time:'2019-02-12 10:30',
-                shop:'美约会',
-                vip:'lili',
-                px:'产品',
-                money:'2030',
-                status:'已取消',
-                sta:'3',
-                arr:'34'
-            },{
-                num:'jdlsl',
-                time:'2019-02-12 10:30',
-                shop:'美约会',
-                vip:'lili',
-                px:'产品',
-                money:'2030',
-                status:'已退款',
-                sta:'4',
-                arr:'34'
-            }],
-            input:'',
+            input: '',
 
+            list: [],
+            details: [],
+            now: [],
+            status: -1,
         },
-        methods: {},
+        methods: {
+            bk(id) {
+                $.post(url(methods.checkArrears), {oid: id}, v=>{
+                    if(v.code==1){
+                        localStorage.setItem('type', 2)
+                        localStorage.setItem('bkId', v.res)
+                        location.href='./pay_page.html'
+                    }else{
+                        error(v['error'])
+                    }
+                })
+            },
+            refund(id) {
+                this.$confirm('是否退款?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    $.post(url(methods.refundOrder), {id: id}, v=>{
+                        if(v.code==1){
+                            success(v['Msg'])
+                            this.getData()
+                        }else{
+                            error(v['error'])
+                        }
+                    })
+                }).catch(e=>{
+
+                })
+            },
+            pay(id) {},
+            cancel(id) {
+                this.$confirm('是否取消订单?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    $.post(url(methods.cancelOrder), {id: id}, v=>{
+                        if(v.code==1){
+                            success(v['Msg'])
+                            this.getData()
+                        }else{
+                            error(v['error'])
+                        }
+                    })
+                }).catch(e=>{
+
+                })
+            },
+            close() {
+                this.order_detail = false
+                this.now = []
+            },
+            look(v) {
+                for (let x of this.details) {
+                    if (x.order_id == v.id) {
+                        this.now.push(x)
+                    }
+                }
+                this.order_detail = true
+            },
+            formatter(r) {
+                return classify(r.type)
+            },
+            formatter2(r) {
+                if (r.status == 0) {
+                    return '未付款'
+                } else if (r.status == 1) {
+                    return '未付清'
+                } else if (r.status == 2) {
+                    return '已付清'
+                } else if (r.status == 3) {
+                    return '已取消'
+                } else if (r.status == 4) {
+                    return '已退款'
+                }
+            },
+            tab(v) {
+                if(v.index==0){
+                    this.status = -1
+                }else if(v.index == 1){
+                    this.status = 0
+                }else if(v.index == 2){
+                    this.status = 1
+                }else if(v.index == 3){
+                    this.status = 2
+                }else if(v.index == 4){
+                    this.status = 3
+                }else if(v.index == 5){
+                    this.status = 4
+                }
+            },
+            getData() {
+                $.post(url(methods.getOrder) + '&type=all', v => {
+                    this.list = v.res.list
+                    this.details = v.res.orderDetail
+                })
+            }
+        },
         mounted() {
-            this.$nextTick(e=>{
+            this.$nextTick(e => {
                 //初始化
                 that = this;
                 loginState()
+                this.getData()
             })
         }
     })
