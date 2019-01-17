@@ -15,10 +15,11 @@
             <el-breadcrumb separator-class="el-icon-arrow-right">
                 <el-breadcrumb-item>工作台首页</el-breadcrumb-item>
                 <el-breadcrumb-item>今日操作汇总</el-breadcrumb-item>
+                <el-breadcrumb-item>退单记录</el-breadcrumb-item>
             </el-breadcrumb>
         </p>
         <div class="block">
-            <el-date-picker style="margin-top: 10px; margin-bottom: 10px;"
+            <el-date-picker
                     v-model="time"
                     type="daterange"
                     range-separator="至"
@@ -26,8 +27,6 @@
                     start-placeholder="开始日期"
                     end-placeholder="结束日期">
             </el-date-picker>
-            <el-button @click="jump2" type="primary" style="float: right; margin-top: 10px; margin-bottom: 10px;">退单记录
-            </el-button>
         </div>
         <el-table class="tt_table"
                   :data="list"
@@ -57,10 +56,6 @@
                     <el-button
                             size="mini" type="primary"
                             @click="look(scope.row.id)">查看
-                    </el-button>
-                    <el-button
-                            size="mini" type="danger"
-                            @click="refund(scope.row.id)">退单
                     </el-button>
                 </template>
             </el-table-column>
@@ -123,7 +118,7 @@
                 name: '补水面膜',
                 money: '56',
                 fre: 'fre',
-                do_p: '丽丽',
+               do_p: '丽丽',
             }, {
                 name: '补水面膜',
                 money: '56',
@@ -187,9 +182,6 @@
             }
         },
         methods: {
-            jump2(){
-                location.href='./refund.html'
-            },
             jump(v) {
                 localStorage.setItem('user_id', v.uid)
                 location.href = 'vip_information.html'
@@ -227,14 +219,14 @@
                         if (v.code == 0) {
                             this.getData()
                             success(v['data'])
-                        } else {
+                        }else{
                             error(v['msg'])
                         }
                     })
                 })
             },
             getData() {
-                $.post(url(methods.getConsume), {s: this.s, e: this.e}, v => {
+                $.post(url(methods.getConsume), {s: this.s, e: this.e, type: 1}, v=>{
                     if (v.code == 0) {
                         this.list = v.data
                     } else {
