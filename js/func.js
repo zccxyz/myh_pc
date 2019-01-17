@@ -1,5 +1,5 @@
-//const ym = 'https://www.myhkj.cn/apis/backend/';
-const ym = 'http://admin.test.com/apis/backend/';
+const ym = 'https://www.myhkj.cn/apis/backend/';
+//const ym = 'http://admin.test.com/apis/backend/';
 
 const methods = {
     'login': 'login/login',
@@ -91,6 +91,8 @@ const methods = {
     'cancelOrder': 'member/CancelOrder',
     'refundOrder': 'member/refund_order',
     'getConsume': 'store/getConsume',
+    'consumeDetail': 'store/consumeDetail',
+    'consumeRefund': 'store/consumeRefund',
 };
 let that;
 
