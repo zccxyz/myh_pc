@@ -29,7 +29,17 @@
                     end-placeholder="结束日期"
                     :picker-options="pickerOptions2">
             </el-date-picker>-->
-            <el-input class="total_sea"
+            <div class="block">
+                <el-date-picker style="float: left;"
+                        v-model="time"
+                        type="daterange"
+                        range-separator="至"
+                        value-format="yyyy-MM-dd"
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期">
+                </el-date-picker>
+            </div>
+            <el-input class="total_sea" style="float: right;"
                     placeholder="请输入内容"
                     prefix-icon="el-icon-search"
                     v-model="input">
@@ -144,7 +154,19 @@
 
             list: [],
             total: 0,
-
+            time: '',
+            s: '',
+            e: '',
+        },
+        watch: {
+            time(v){
+                if(v!=null){
+                    this.s = v[0]
+                    this.e = v[1]
+                }
+                this.getData()
+                console.log(v)
+            }
         },
         methods: {
             jump(v) {
@@ -167,7 +189,7 @@
                 }
             },
             getData() {
-                $.get(url(methods.total), v=>{
+                $.get(url(methods.total)+`&start=${this.s}&end=${this.e}`, v=>{
                     if(v.code==1){
                         this.list = v.res.arr
                         this.total = v.res.xf_total_money
