@@ -84,22 +84,22 @@
             input: '',
         },
         methods: {
-            onSubmit(key, value) {
+            onSubmit: function(key, value) {
                 if (this.name == '' || this.password == '') {
                     //this.$message.error('请填完以上内容');
                     error('请填完以上内容')
                     return
                 }
-                $.post(url(methods.login), {'username': this.name, 'type': this.type, 'password': this.password}, v => {
-                    let rs = verify(v)
+                $.post(url(methods.login), {'username': this.name, 'type': this.type, 'password': this.password}, function (v) {
+                    var rs = verify(v)
                     if (rs != false) {
-                        let user = JSON.stringify(rs)
+                        var user = JSON.stringify(rs)
                         localStorage.setItem('user', user)
                         location.href = 'html/home_page.html'
                     }
                 })
             },
-            isLogin() {
+            isLogin: function() {
                 /*let s = false;
                 $.post(url(methods.isLogin), v => {
                     if (v.data) {
@@ -107,21 +107,18 @@
                         location.href = 'html/home_page.html'
                     }
                 })*/
-                let user = localStorage.getItem('user')
+                var user = localStorage.getItem('user')
                 if (user != null) {
                     location.href = 'html/home_page.html'
                 }
             },
         },
         mounted() {
-            this.$nextTick(e => {
-                //初始化
-                if(!isPC()){
-                    window.location.href = 'https://myh.myhkj.cn';
-                }
-                that = this;
-                this.isLogin()
-            })
+            if(!isPC()){
+                window.location.href = 'https://myh.myhkj.cn';
+            }
+            that = this;
+            this.isLogin()
         }
     })
 </script>
