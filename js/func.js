@@ -1,7 +1,7 @@
-const ym = 'https://www.myhkj.cn/apis/backend/';
-//const ym = 'http://admin.test.com/apis/backend/';
+var ym = 'https://www.myhkj.cn/apis/backend/';
+//var ym = 'http://admin.test.com/apis/backend/';
 
-const methods = {
+var methods = {
     'login': 'login/login',
     'isLogin': 'login/isLogin',
     'total': 'Member/total',
@@ -94,7 +94,7 @@ const methods = {
     'consumeDetail': 'store/consumeDetail',
     'consumeRefund': 'store/consumeRefund',
 };
-let that;
+var that;
 
 //-----------------------------------------------------------
 
@@ -117,7 +117,7 @@ function classify(type) {
 }
 
 function loginState() {
-    $.post(url(methods.isLogin), v => {
+    $.post(url(methods.isLogin), function(v) {
         if (!v.data) {
             //登录后跳转
             localStorage.removeItem('user')
