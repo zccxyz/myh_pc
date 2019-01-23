@@ -97,7 +97,7 @@
                                 size="mini"
                                 @click="bk(scope.row.id)" type="primary">补款
                         </el-button>
-                        <el-button  v-show="scope.row.status==2"
+                        <el-button v-show="scope.row.status!=3 && scope.row.status!=4 && scope.row.status!=0"
                                 size="mini"
                                 @click="refund(scope.row.id)" type="warning">退款/退货
                         </el-button>

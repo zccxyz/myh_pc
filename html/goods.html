@@ -196,7 +196,7 @@
                 <li v-if="sj.type==3 && sj.is_bind==1">
                     <span class="list_left">耗材</span>
                     <span class="list_right">
-                        <el-select v-model="sj.spec_id" filterable placeholder="请选择">
+                        <el-select multiple v-model="sj.spec_id" filterable placeholder="请选择">
                             <el-option
                                     v-for="item in cate"
                                     :key="item.id"
@@ -379,6 +379,7 @@
                         <i class="el-icon-circle-plus green_c"></i>
                     </template>
                 </el-table-column>
+            </el-table>
         </el-dialog>
     </template>
 
