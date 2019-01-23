@@ -321,6 +321,26 @@
                         <el-input :value="v.rate" placeholder="请输入" class="in_wid t_input" disabled></el-input>&nbsp;%
                         <i class="el-icon-circle-close-outline close" @click="del(3, i)"></i>
                     </li>
+
+                    <li>
+                        店长
+                        <el-select v-model="four.id" placeholder="请选择" class="in_wid">
+                            <el-option
+                                    v-for="item in dz"
+                                    :key="item.value"
+                                    :label="item.name"
+                                    :value="item.id">
+                            </el-option>
+                        </el-select>
+                        <el-input v-model="four.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
+                        <p class="do_blue" @click="add(4)">添加</p>
+                    </li>
+                    <li v-for="(v, i) in fourArr" class="app_li">
+                        &nbsp;&nbsp;&nbsp;
+                        <div>{{v.name}}</div>
+                        <el-input :value="v.rate" placeholder="请输入" class="in_wid t_input" disabled></el-input>&nbsp;%
+                        <i class="el-icon-circle-close-outline close" @click="del(4, i)"></i>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -369,13 +389,16 @@
             myBox: [],
             gw: [],
             mrs: [],
+            dz: [],
             staff: [],
             one: {rate: '', id: ''},
             two: {rate: '', id: ''},
             three: {rate: '', id: ''},
+            four: {rate: '', id: ''},
             oneArr: [],
             twoArr: [],
             threeArr: [],
+            fourArr: [],
             balance: 0,
             balance2: 0,
             roomId: 0,
@@ -392,6 +415,7 @@
                     let arr = []
                     let arr2 = []
                     let arr3 = []
+                    let arr4 = []
                     if (this.oneArr.length > 0) {
                         for (let v of this.oneArr) {
                             arr.push({'money': v.rate, 'id': v.id})
@@ -407,11 +431,16 @@
                             arr3.push({'money': v.rate, 'id': v.id})
                         }
                     }
+                    if (this.fourArr.length > 0) {
+                        for (let v of this.fourArr) {
+                            arr4.push({'money': v.rate, 'id': v.id})
+                        }
+                    }
                     $.post(url(methods.entry), {
                         'data': JSON.stringify({
                             'box': this.myBox, 'items': this.myItems,
                             'amount_items': this.items, 'mid': this.userId,
-                            'arr': this.roomId, 's': arr, 'm': arr2, 'g': arr3,
+                            'arr': this.roomId, 's': arr, 'm': arr2, 'g': arr3, 'd': arr4,
                             'c_b': this.c_b==1?1:2, 'consume_card': this.c_b==1?0:this.c_b,
                         })
                     }, v => {
@@ -474,6 +503,8 @@
                     this.twoArr.splice(i, 1)
                 } else if (type == 3) {
                     this.threeArr.splice(i, 1)
+                } else if (type == 4) {
+                    this.fourArr.splice(i, 1)
                 }
             },
             add(type) {
@@ -525,6 +556,22 @@
                             this.threeArr.unshift({name: v.name, rate: this.three.rate, id: v.id})
                         }
                     }
+                } else if (type == 4) {
+                    if (this.four.id == '' || this.four.rate == '') {
+                        error('请选择店长或填写提成比例')
+                        return
+                    }
+                    for (let v of this.fourArr) {
+                        if (v.id == this.four.id) {
+                            error('店长已存在')
+                            return
+                        }
+                    }
+                    for (let v of this.dz) {
+                        if (v.id == this.four.id) {
+                            this.fourArr.unshift({name: v.name, rate: this.four.rate, id: v.id})
+                        }
+                    }
                 }
             },
             getDetail() {
@@ -544,6 +591,7 @@
                         this.myBox = v.back.boxArr
                         this.gw = v.back.g
                         this.mrs = v.back.m
+                        this.dz = v.back.d
                         this.staff = v.back.staff
                         this.balance = v.back.balance
                         this.balance2 = v.back.balance
