@@ -166,12 +166,13 @@
         },
         methods: {
             sub2() {
-                if (this.twoArr.length == 0 && this.threeArr.length == 0) {
+                if (this.twoArr.length == 0 && this.threeArr.length == 0 && this.fourArr.length == 0) {
                     error('请选择提成员工')
                     return
                 }
                 let arr2 = []
                 let arr3 = []
+                let arr4 = []
                 if (this.twoArr.length > 0) {
                     for (let v of this.twoArr) {
                         arr2.push({'money': v.rate, 'id': v.id, 'name': v.name})
@@ -182,10 +183,16 @@
                         arr3.push({'money': v.rate, 'id': v.id, 'name': v.name})
                     }
                 }
+                if (this.fourArr.length > 0) {
+                    for (let v of this.fourArr) {
+                        arr4.push({'money': v.rate, 'id': v.id, 'name': v.name})
+                    }
+                }
                 $.post(url(methods.saveCommission), {
                     data: JSON.stringify({
                         raise_m: arr2,
                         raise_g: arr3,
+                        raise_d: arr4,
                         type: 'supp',
                         supp: this.cost
                     })
@@ -199,12 +206,13 @@
                 })
             },
             sub() {
-                if (this.twoArr.length == 0 && this.threeArr.length == 0) {
+                if (this.twoArr.length == 0 && this.threeArr.length == 0 && this.fourArr.length == 0) {
                     error('请选择提成员工')
                     return
                 }
                 let arr2 = []
                 let arr3 = []
+                let arr4 = []
                 if (this.twoArr.length > 0) {
                     for (let v of this.twoArr) {
                         arr2.push({'money': v.rate, 'id': v.id, 'name': v.name})
@@ -215,11 +223,16 @@
                         arr3.push({'money': v.rate, 'id': v.id, 'name': v.name})
                     }
                 }
+                if (this.fourArr.length > 0) {
+                    for (let v of this.fourArr) {
+                        arr4.push({'money': v.rate, 'id': v.id, 'name': v.name})
+                    }
+                }
                 $.post(url(methods.saveCommission), {
                     data: JSON.stringify({
                         raise_m: arr2,
                         raise_g: arr3,
-                        raise_d: [],
+                        raise_d: arr4,
                         order: this.orderId,
                         type: '',
                         cost: this.cost
