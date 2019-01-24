@@ -113,8 +113,8 @@
             </el-collapse-item>
             <el-collapse-item name="3" class="th">
                 <template slot="title">
-                    <p class="th_list linr_four">
-                        会员项目消耗
+                    <p>
+                        会员自有项目
                     </p>
                 </template>
                 <div class="con_div" v-if="myItems.length>0">
@@ -136,6 +136,36 @@
                                      <i>{{v.check_num}}</i>
                                  </template>
                                  <i class="el-icon-circle-plus blue_c" @click="jia(3, i)"></i>
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </el-collapse-item>
+            <el-collapse-item name="4" class="plan">
+                <template slot="title">
+                    <p>
+                        会员自有方案
+                    </p>
+                </template>
+                <div class="con_div" v-if="myPlan.length>0">
+                    <ul class="consume_list">
+                        <li v-for="(v,i) in myPlan">
+                            <span class="g_name">
+                                 {{v.name}}
+                            </span>
+                            <span class="cr p_wid">￥298.00</span>
+                            <span class="huihui p_wid">
+                               剩余次数：{{v.current_num}}
+                           </span>
+                            <span class="huihui p_wid">
+                               共有次数：{{v.originally_num}}
+                           </span>
+                            <span class="fr mar_hun">
+                                 <template v-if="v.check_num>0">
+                                     <i class="el-icon-remove blue_c" @click="jian(4, i)"></i>
+                                     <i>{{v.check_num}}</i>
+                                 </template>
+                                 <i class="el-icon-circle-plus blue_c" @click="jia(4, i)"></i>
                             </span>
                         </li>
                     </ul>
@@ -366,27 +396,11 @@
             activeNames: ['2'],
             radio: '1',
             input: '',
-            options: [{
-                value: '选项1',
-                label: '张三'
-            }, {
-                value: '选项2',
-                label: '丽萨'
-            }],
-            value: '',
-            tableData3: [{
-                name: '张三',
-                number: '7000123',
-                tel: '15212645632'
-            }, {
-                name: '丽萨',
-                number: '7000125',
-                tel: '15212645632'
-            }],
             userId: 0,
             items: [],
             myItems: [],
             myBox: [],
+            myPlan: [],
             gw: [],
             mrs: [],
             dz: [],
@@ -438,7 +452,7 @@
                     }
                     $.post(url(methods.entry), {
                         'data': JSON.stringify({
-                            'box': this.myBox, 'items': this.myItems,
+                            'box': this.myBox, 'items': this.myItems, 'plan': this.myPlan,
                             'amount_items': this.items, 'mid': this.userId,
                             'arr': this.roomId, 's': arr, 'm': arr2, 'g': arr3, 'd': arr4,
                             'c_b': this.c_b==1?1:2, 'consume_card': this.c_b==1?0:this.c_b,
@@ -478,6 +492,10 @@
                     if (this.myItems[i].check_num > 0) {
                         this.myItems[i].check_num--
                     }
+                } else if (type == 4) {
+                    if (this.myPlan[i].check_num > 0) {
+                        this.myPlan[i].check_num--
+                    }
                 }
             },
             jia(type, i) {
@@ -485,7 +503,7 @@
                     this.items[i].check_num++
                 } else if (type == 2) {
                     if (this.myBox[i].current_num <= this.myBox[i].check_num) {
-                        error('数量不足')
+                        //error('数量不足')
                         return
                     }
                     this.myBox[i].check_num++
@@ -494,6 +512,11 @@
                         return
                     }
                     this.myItems[i].check_num++
+                } else if (type == 4) {
+                    if (this.myPlan[i].current_num <= this.myPlan[i].check_num) {
+                        return
+                    }
+                    this.myPlan[i].check_num++
                 }
             },
             del(type, i) {
@@ -589,6 +612,7 @@
                             x.check_num = 0
                         }
                         this.myBox = v.back.boxArr
+                        this.myPlan = v.back.planArr
                         this.gw = v.back.g
                         this.mrs = v.back.m
                         this.dz = v.back.d

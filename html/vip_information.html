@@ -215,6 +215,54 @@
                     </div>
                 </div>
             </el-tab-pane>
+            <el-tab-pane label="会员方案" :key="90">
+                <div class="basic_inf">
+                    <el-button type="success" class="fr" @click="del(2)" style="margin:5px 10px;">批量删除</el-button>
+                    <el-table
+                            :data="planList"
+                            style="width: 100%"
+                            @selection-change="handle2">
+                        <el-table-column
+                                type="selection"
+                                width="60">
+                        </el-table-column>
+                        <el-table-column
+                                prop="name"
+                                label="项目名称">
+                        </el-table-column>
+                        <el-table-column
+                                prop="price"
+                                label="价格">
+                        </el-table-column>
+                        <el-table-column
+                                prop="current_num"
+                                label="剩余次数">
+                        </el-table-column>
+                        <el-table-column
+                                prop="originally_num"
+
+                                label="总次数">
+                        </el-table-column>
+                        <!--<el-table-column
+                                prop="dis_price"
+                                label="折后金额">
+                        </el-table-column>-->
+                        <el-table-column label="操作">
+                            <template slot-scope="scope">
+                                <el-button type="danger" size="mini" @click="del(2, scope.row, 2)">删除</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                    <div class="total">
+                    <span class="fl">
+                          <p class="cr">汇总：</p>
+                        <p class="money_total">剩余次数：{{num3}}</p>
+                        <p class="money_total">欠款：{{arrears4}}</p>
+                    </span>
+                        <el-button type="success" class="go_buy fr" @click="jump">购买方案</el-button>
+                    </div>
+                </div>
+            </el-tab-pane>
             <el-tab-pane label="会员套盒">
                 <div class="basic_inf">
                     <el-button type="success" class="fr" @click="del(3)" style="margin:5px 10px;">批量删除</el-button>
@@ -642,6 +690,9 @@
             num2: 0,
             arrears3: 0,
             boxList: [],
+            num3: 0,
+            arrears4: 0,
+            planList: [],
             coupon: [],
             card: [],
             integer: [],
@@ -759,6 +810,7 @@
                                 this.getCp()
                             } else if (t == 2) {
                                 this.getBoxItems('items')
+                                this.getBoxItems('plan')
                             } else if (t == 3) {
                                 this.getBoxItems('box')
                             }
@@ -819,18 +871,21 @@
                     this.getCp()
                 } else if (tab.index == 2) {
                     this.getBoxItems('items')
-                } else if (tab.index == 3) {
-                    this.getBoxItems('box')
                 } else if (tab.index == 4) {
-                    this.getCoupon()
+                    this.getBoxItems('box')
                 } else if (tab.index == 5) {
-                    this.getCard()
+                    this.getCoupon()
                 } else if (tab.index == 6) {
-                    this.getIntegral()
+                    this.getCard()
                 } else if (tab.index == 7) {
-                    this.getArrears()
+                    this.getIntegral()
                 } else if (tab.index == 8) {
+                    this.getArrears()
+                } else if (tab.index == 9) {
                     this.getDa()
+                }
+                else if(tab.index == 3) {
+                    this.getBoxItems('plan')
                 }
             },
             getDa() {
@@ -867,10 +922,14 @@
                             this.num = v.res.total_num
                             this.itemsList = v.res.list
                             this.arrears2 = v.res.total_arrears
-                        } else {
+                        } else if(t == 'box') {
                             this.num2 = v.res.total_num
                             this.boxList = v.res.list
                             this.arrears3 = v.res.total_arrears
+                        } else if(t == 'plan') {
+                            this.num3 = v.res.total_num
+                            this.planList = v.res.list
+                            this.arrears4 = v.res.total_arrears
                         }
                     } else {
                         error('请求出错')
