@@ -169,7 +169,7 @@ img{
     margin-left: 0;
      margin-right: 20px; 
 }
-.customer .el-dialog__header {
+.el-dialog__header {
     line-height: 54px;
     padding: 0;
     color:#fff;
