@@ -77,15 +77,15 @@
                              :formatter="formatter">
             </el-table-column>
             <el-table-column
-                    label="操作"
-                    width="680"
-                    fixed="right"
-                    show-overflow-tooltip>
-                <template slot-scope="scope">
-                    <el-button
-                            size="mini"
-                            @click="storeDialogVisible=true;now=scope.row" class="green do_but">到店
-                    </el-button>
+                        label="操作"
+                        width="680"
+                        fixed="right"
+                        show-overflow-tooltip>
+                    <template slot-scope="scope">
+                        <el-button
+                                size="mini"
+                                @click="storeDialogVisible=true;now=scope.row" class="green do_but">到店
+                        </el-button>
                     <el-button
                             size="mini"
                             @click="jump(1, scope.row)" class="purple do_but">

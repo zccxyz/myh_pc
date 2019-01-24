@@ -1,4 +1,15 @@
 @charset "utf-8";
+.basic_inf{
+    border:1px solid  rgb(89, 89, 89);
+    background-color: rgb(255, 255, 255);
+    margin-top: 10px;
+}
+.basic_inf thead,.basic_inf thead th{
+    background-color: rgba(195, 158, 250,0.2);
+}
+.basic_inf th,.basic_inf td{
+    text-align: center;
+}
 a{
     text-decoration: none;
 }

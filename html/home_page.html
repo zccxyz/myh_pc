@@ -99,7 +99,15 @@
                                 <span slot="title">订单中心</span>
                             </a>
                         </el-menu-item>
-                        <el-menu-item index="10" v-if="user.pid==0">
+                        <el-menu-item index="10">
+                            <a href="performance_check.html" target="iframe">
+                                <span class="span_img">
+                                    <img src="../images/performance.png" class="home_icon">
+                                </span>
+                                <span slot="title">业绩核对</span>
+                            </a>
+                        </el-menu-item>
+                        <el-menu-item index="11" v-if="user.pid==0">
                             <a href="branch_store.html" target="iframe">
                                 <span class="span_img">
                                     <img src="../images/branch.png" class="home_icon" style="height: 18px">
