@@ -212,7 +212,6 @@
         methods: {
             sub2() {
                 let total = parseFloat(this.zfb_pay == '' ? 0 : this.zfb_pay) + parseFloat(this.wx_pay == '' ? 0 : this.wx_pay)
-                    + parseFloat(this.wx_pay == '' ? 0 : this.wx_pay)
                     + parseFloat(this.bank_pay == '' ? 0 : this.bank_pay) + parseFloat(this.dzdp_pay == '' ? 0 : this.dzdp_pay)
                     + parseFloat(this.sqb_pay == '' ? 0 : this.sqb_pay) + parseFloat(this.mt_pay == '' ? 0 : this.mt_pay)
                     + parseFloat(this.send_balance_pay == '' ? 0 : this.send_balance_pay) + parseFloat(this.balance_pay == '' ? 0 : this.balance_pay)
@@ -342,7 +341,7 @@
             },
             needPay() {
                 return parseFloat(this.order.price) - parseFloat(this.zfb_pay == '' ? 0 : this.zfb_pay) -
-                    parseFloat(this.wx_pay == '' ? 0 : this.wx_pay) - parseFloat(this.wx_pay == '' ? 0 : this.wx_pay)
+                    parseFloat(this.wx_pay == '' ? 0 : this.wx_pay)
                     - parseFloat(this.bank_pay == '' ? 0 : this.bank_pay) - parseFloat(this.dzdp_pay == '' ? 0 : this.dzdp_pay)
                     - parseFloat(this.sqb_pay == '' ? 0 : this.sqb_pay) - parseFloat(this.mt_pay == '' ? 0 : this.mt_pay)
                     - parseFloat(this.send_balance_pay == '' ? 0 : this.send_balance_pay) - parseFloat(this.balance_pay == '' ? 0 : this.balance_pay)
@@ -352,7 +351,6 @@
             },
             getTotal() {
                 return parseFloat(this.zfb_pay == '' ? 0 : this.zfb_pay) + parseFloat(this.wx_pay == '' ? 0 : this.wx_pay)
-                    + parseFloat(this.wx_pay == '' ? 0 : this.wx_pay)
                     + parseFloat(this.bank_pay == '' ? 0 : this.bank_pay) + parseFloat(this.dzdp_pay == '' ? 0 : this.dzdp_pay)
                     + parseFloat(this.sqb_pay == '' ? 0 : this.sqb_pay) + parseFloat(this.mt_pay == '' ? 0 : this.mt_pay)
                     + parseFloat(this.send_balance_pay == '' ? 0 : this.send_balance_pay) + parseFloat(this.balance_pay == '' ? 0 : this.balance_pay)
