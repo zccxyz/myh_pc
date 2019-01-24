@@ -23,6 +23,20 @@
             width: 60px;
             margin: 0 10px;
         }
+
+        .store_tabs{
+            width: 50%;
+            margin: 5px auto;
+            display: block;
+        }
+        .store_tabs label{
+            display:inline-block;
+            width: 50%;
+        }
+        .store_tabs label span{
+            display:inline-block;
+            width: 100%;
+        }
     </style>
 </head>
 <body class="information">
@@ -191,7 +205,194 @@
                     </el-table>
                 </div>
             </el-tab-pane>
+            <el-tab-pane label="商品调仓">
+                <div class="cus_center">
+                    <el-input class="cus_seatch"
+                              placeholder="请输入商品名称"
+                              v-model="input2">
+                        <i slot="prefix" class="el-input__icon el-icon-search"></i>
+                    </el-input>
+                </div>
+                <div class="basic_inf">
+                    <el-table
+                            :data="myIn.filter(data => !input2 || data.name.toLowerCase().includes(input2.toLowerCase()) ||
+                            data.operation_human.toLowerCase().includes(input2.toLowerCase()))"
+                            style="width: 100%">
+                        <el-table-column
+                                prop="name"
+                                label="名称">
+                        </el-table-column>
+                        <el-table-column
+                                prop="sum"
+                                label="剩余库存">
+                        </el-table-column>
+                        <el-table-column
+                                prop="operation_human"
+                                label="操作">
+                            <template slot-scope="scope">
+                                <el-button
+                                        size="mini" type="primary"
+                                        @click="d_cang_dio=true">调仓
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+            </el-tab-pane>
+            <el-tab-pane label="库存盘点">
+                <div class="cus_center">
+                <el-radio-group v-model="now" class="store_tabs">
+                    <el-radio-button label="产品"></el-radio-button>
+                    <el-radio-button label="套盒"></el-radio-button>
+                    <el-radio-button label="耗材"></el-radio-button>
+                </el-radio-group>
+                <el-input class="cus_seatch"
+                          placeholder="请输入商品名称"
+                          v-model="input2">
+                    <i slot="prefix" class="el-input__icon el-icon-search"></i>
+                </el-input>
+                <el-button type="success" class="fr" @click="y_k_dio=true">盈亏数</el-button>
+            </div>
+                <div class="basic_inf">
+                    <el-table
+                            :data="myOut.filter(data => !input2 || data.name.toLowerCase().includes(input2.toLowerCase()) ||
+                            data.operation_human.toLowerCase().includes(input2.toLowerCase()))"
+                            style="width: 100%">
+
+                        <el-table-column
+                                prop="name"
+                                label="名称">
+                        </el-table-column>
+                        <el-table-column
+                                prop="time"
+                                label="日期">
+                        </el-table-column>
+                        <el-table-column
+                                prop="sum"
+                                label="库存数量">
+                        </el-table-column>
+                        <el-table-column
+                                label="盘点数">
+                            <template slot-scope="scope">
+                                <el-input
+                                        placeholder="请输入现有数量"
+                                        v-model="input"
+                                        clearable>
+                                </el-input>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                label="盈亏数">
+                            <template slot-scope="scope">
+                                <el-input
+                                        placeholder="请输入盈亏数"
+                                        v-model="input"
+                                        clearable>
+                                </el-input>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+
+            </el-tab-pane>
         </el-tabs>
+        <!--盈亏数-->
+        <el-dialog title="商品调仓"
+                   :visible.sync="y_k_dio"
+                   width="460px"
+                   center
+                   :before-close="close">
+            <div class="cus_center">
+                <el-input class="cus_seatch"
+                          placeholder="请输入商品名称"
+                          v-model="input2">
+                    <i slot="prefix" class="el-input__icon el-icon-search"></i>
+                </el-input>
+            </div>
+            <div class="basic_inf">
+                <el-table
+                        :data="myOut.filter(data => !input2 || data.name.toLowerCase().includes(input2.toLowerCase()) ||
+                            data.operation_human.toLowerCase().includes(input2.toLowerCase()))"
+                        style="width: 100%">
+
+                    <el-table-column
+                            prop="name"
+                            label="名称">
+                    </el-table-column>
+                    <el-table-column
+                            prop="time"
+                            label="日期">
+                    </el-table-column>
+                    <el-table-column
+                            prop="sum"
+                            label="盈亏数量">
+                    </el-table-column>
+                </el-table>
+            </div>
+        </el-dialog>
+        <!--商品调仓-->
+        <el-dialog title="商品调仓"
+                   :visible.sync="d_cang_dio"
+                   width="460px"
+                   center
+                   :before-close="close">
+            <ul class="goods_edit">
+                <li>
+                    <span class="list_left">当前已选</span>
+                    <span class="list_right">
+                        补水面膜
+                    </span>
+                </li>
+                <li>
+                    <span class="list_left">当前库存</span>
+                    <span class="list_right">
+                    452
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">可选仓库</span>
+                    <span class="list_right">
+                        <el-select v-model="value" placeholder="请选择" style="width: 100%">
+                        <el-option
+                                v-for="item in options">
+                        </el-option>
+                        </el-select>
+                    </span>
+                </li>
+                <li>
+                    <span class="list_left">调拨至</span>
+                    <span class="list_right">
+                        <el-select v-model="value" placeholder="请选择" style="width: 100%">
+                        <el-option
+                                v-for="item in options">
+                        </el-option>
+                        </el-select>
+                    </span>
+                </li>
+                <li>
+                    <span class="list_left">调拨数量</span>
+                    <span class="list_right">
+                    <el-input type="number" placeholder="请输入调拨数量" v-model="input"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">操作人</span>
+                    <span class="list_right">
+                    <el-input type="number" placeholder="请输入操作人" v-model="input"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">调仓备注</span>
+                    <span class="list_right">
+                    <textarea placeholder="请输入调仓备注" v-model="data.human"></textarea>
+                </span>
+                </li>
+            </ul>
+            <span slot="footer" class="dialog-footer">
+            <el-button @click="close">取 消</el-button>
+            <el-button type="primary" @click="into()">确 定</el-button>
+          </span>
+        </el-dialog>
         <!--商品入库-->
         <el-dialog title="商品入库"
                    :visible.sync="in_ware"
@@ -304,6 +505,8 @@
         el: '#app',
         data: {
             checkList: '',
+            y_k_dio: false,
+            d_cang_dio: false,
             dialogVisible: false,
             in_ware: false,
             out_ware: false,
