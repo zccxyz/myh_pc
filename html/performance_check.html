@@ -22,7 +22,7 @@
                             type="month"
                             placeholder="选择月份查询">
             </el-date-picker>
-            <el-button type="success" class="fr" @click="time=null;getData()">本月总业绩</el-button>
+            <el-button type="success" class="fr" @click="time=null">本月总业绩</el-button>
         </div>
         <div>
             <el-button type="primary">消费总业绩：{{xf_zyj}}</el-button>
@@ -377,7 +377,7 @@
                 this.now = ''
                 this.money = ''
             },
-            getData() {
+            getData(type=1) {
                 this.xf_zyj = 0
                 this.xh_zyj = 0
                 this.zsg = 0
