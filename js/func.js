@@ -93,6 +93,15 @@ var methods = {
     'getConsume': 'store/getConsume',
     'consumeDetail': 'store/consumeDetail',
     'consumeRefund': 'store/consumeRefund',
+    'getPerDetail': 'Achievement/get_per_detail',
+    'performanceFeiDetails': 'Achievement/performance_fei_details',
+    'raiseDetailOperation': 'Achievement/raise_detail_operation',
+    'getCp': 'goods/getCp',
+    'getTh': 'goods/getTh',
+    'getHc': 'goods/getHc',
+    'pd': 'goods/pd',
+    'pdLogs': 'goods/pdLogs',
+    'getTransferGoods': 'Ware/get_transfer_goods',
 };
 var that;
 

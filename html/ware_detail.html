@@ -24,17 +24,19 @@
             margin: 0 10px;
         }
 
-        .store_tabs{
+        .store_tabs {
             width: 50%;
             margin: 5px auto;
             display: block;
         }
-        .store_tabs label{
-            display:inline-block;
-            width: 50%;
+
+        .store_tabs label {
+            display: inline-block;
+            width: 33.3%;
         }
-        .store_tabs label span{
-            display:inline-block;
+
+        .store_tabs label span {
+            display: inline-block;
             width: 100%;
         }
     </style>
@@ -61,11 +63,13 @@
                             按数量查找：
                         <el-radio v-model="radio" label="1">
                             大于等于
-                            <el-input style="width: 80px" v-model="one" type="number" placeholder="" class="line_input"></el-input>个
+                            <el-input style="width: 80px" v-model="one" type="number" placeholder=""
+                                      class="line_input"></el-input>个
                         </el-radio>
                         <el-radio v-model="radio" label="2">
                           小于等于
-                            <el-input style="width: 80px" v-model="two" type="number" placeholder="" class="line_input"></el-input>个
+                            <el-input style="width: 80px" v-model="two" type="number" placeholder=""
+                                      class="line_input"></el-input>个
                       </el-radio>
                         </span>
                     <!--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -205,34 +209,32 @@
                     </el-table>
                 </div>
             </el-tab-pane>
-            <el-tab-pane label="商品调仓">
+            <el-tab-pane label="商品调仓"  v-if="false">
                 <div class="cus_center">
                     <el-input class="cus_seatch"
                               placeholder="请输入商品名称"
-                              v-model="input2">
+                              v-model="input4">
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
                     </el-input>
                 </div>
                 <div class="basic_inf">
                     <el-table
-                            :data="myIn.filter(data => !input2 || data.name.toLowerCase().includes(input2.toLowerCase()) ||
-                            data.operation_human.toLowerCase().includes(input2.toLowerCase()))"
+                            :data="list2.filter(data => !input4 || data.name.toLowerCase().includes(input4.toLowerCase()) )"
                             style="width: 100%">
                         <el-table-column
                                 prop="name"
                                 label="名称">
                         </el-table-column>
                         <el-table-column
-                                prop="sum"
+                                prop="stock"
                                 label="剩余库存">
                         </el-table-column>
                         <el-table-column
-                                prop="operation_human"
                                 label="操作">
                             <template slot-scope="scope">
                                 <el-button
                                         size="mini" type="primary"
-                                        @click="d_cang_dio=true">调仓
+                                        @click="nowData=scope.row;d_cang_dio=true">调仓
                                 </el-button>
                             </template>
                         </el-table-column>
@@ -240,35 +242,35 @@
                 </div>
             </el-tab-pane>
             <el-tab-pane label="库存盘点">
+
                 <div class="cus_center">
-                <el-radio-group v-model="now" class="store_tabs">
-                    <el-radio-button label="产品"></el-radio-button>
-                    <el-radio-button label="套盒"></el-radio-button>
-                    <el-radio-button label="耗材"></el-radio-button>
-                </el-radio-group>
-                <el-input class="cus_seatch"
-                          placeholder="请输入商品名称"
-                          v-model="input2">
-                    <i slot="prefix" class="el-input__icon el-icon-search"></i>
-                </el-input>
-                <el-button type="success" class="fr" @click="y_k_dio=true">盈亏数</el-button>
-            </div>
+                    <el-radio-group v-model="nowPos" class="store_tabs">
+                        <el-radio-button label="产品"></el-radio-button>
+                        <el-radio-button label="套盒"></el-radio-button>
+                        <el-radio-button label="耗材"></el-radio-button>
+                    </el-radio-group>
+                    <el-input class="cus_seatch"
+                              placeholder="请输入商品名称"
+                              v-model="input3">
+                        <i slot="prefix" class="el-input__icon el-icon-search"></i>
+                    </el-input>
+                    <el-button type="success" class="fr" @click="getDetail">盈亏数</el-button>
+                </div>
                 <div class="basic_inf">
-                    <el-table
-                            :data="myOut.filter(data => !input2 || data.name.toLowerCase().includes(input2.toLowerCase()) ||
-                            data.operation_human.toLowerCase().includes(input2.toLowerCase()))"
-                            style="width: 100%">
+                    <el-table v-show="nowPos=='产品'"
+                              :data="goods.filter(data => !input3 || data.goods_name.toLowerCase().includes(input3.toLowerCase()) )"
+                              style="width: 100%">
 
                         <el-table-column
-                                prop="name"
+                                prop="goods_name"
                                 label="名称">
                         </el-table-column>
                         <el-table-column
-                                prop="time"
+                                prop="inventory_time"
                                 label="日期">
                         </el-table-column>
                         <el-table-column
-                                prop="sum"
+                                prop="stock"
                                 label="库存数量">
                         </el-table-column>
                         <el-table-column
@@ -276,7 +278,7 @@
                             <template slot-scope="scope">
                                 <el-input
                                         placeholder="请输入现有数量"
-                                        v-model="input"
+                                        v-model="scope.row.nowNum"
                                         clearable>
                                 </el-input>
                             </template>
@@ -286,22 +288,99 @@
                             <template slot-scope="scope">
                                 <el-input
                                         placeholder="请输入盈亏数"
-                                        v-model="input"
+                                        v-model="scope.row.pdNum"
+                                        clearable>
+                                </el-input>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+
+                    <el-table v-show="nowPos=='套盒'"
+                              :data="th.filter(data => !input3 || data.box_name.toLowerCase().includes(input3.toLowerCase()) )"
+                              style="width: 100%">
+
+                        <el-table-column
+                                prop="box_name"
+                                label="名称">
+                        </el-table-column>
+                        <el-table-column
+                                prop="inventory_time"
+                                label="日期">
+                        </el-table-column>
+                        <el-table-column
+                                prop="stock"
+                                label="库存数量">
+                        </el-table-column>
+                        <el-table-column
+                                label="盘点数">
+                            <template slot-scope="scope">
+                                <el-input
+                                        placeholder="请输入现有数量"
+                                        v-model="scope.row.nowNum"
+                                        clearable>
+                                </el-input>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                label="盈亏数">
+                            <template slot-scope="scope">
+                                <el-input
+                                        placeholder="请输入盈亏数"
+                                        v-model="scope.row.pdNum"
+                                        clearable>
+                                </el-input>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+
+                    <el-table v-show="nowPos=='耗材'"
+                              :data="hc.filter(data => !input3 || data.name.toLowerCase().includes(input3.toLowerCase()) )"
+                              style="width: 100%">
+
+                        <el-table-column
+                                prop="name"
+                                label="名称">
+                        </el-table-column>
+                        <el-table-column
+                                prop="inventory_time"
+                                label="日期">
+                        </el-table-column>
+                        <el-table-column
+                                prop="stock"
+                                label="库存数量">
+                        </el-table-column>
+                        <el-table-column
+                                label="盘点数">
+                            <template slot-scope="scope">
+                                <el-input
+                                        placeholder="请输入现有数量"
+                                        v-model="scope.row.nowNum"
+                                        clearable>
+                                </el-input>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                label="盈亏数">
+                            <template slot-scope="scope">
+                                <el-input
+                                        placeholder="请输入盈亏数"
+                                        v-model="scope.row.pdNum"
                                         clearable>
                                 </el-input>
                             </template>
                         </el-table-column>
                     </el-table>
                 </div>
-
+                <div style="margin: 0 auto;text-align: center">
+                    <el-button type="primary" style="width: 10%;margin-top: 5%" @click="sub">保存</el-button>
+                </div>
             </el-tab-pane>
         </el-tabs>
         <!--盈亏数-->
-        <el-dialog title="商品调仓"
+        <el-dialog title="盈亏数"
                    :visible.sync="y_k_dio"
                    width="460px"
-                   center
-                   :before-close="close">
+                   center>
             <div class="cus_center">
                 <el-input class="cus_seatch"
                           placeholder="请输入商品名称"
@@ -311,8 +390,7 @@
             </div>
             <div class="basic_inf">
                 <el-table
-                        :data="myOut.filter(data => !input2 || data.name.toLowerCase().includes(input2.toLowerCase()) ||
-                            data.operation_human.toLowerCase().includes(input2.toLowerCase()))"
+                        :data="logs.filter(data => !input2 || data.name.toLowerCase().includes(input2.toLowerCase()) )"
                         style="width: 100%">
 
                     <el-table-column
@@ -320,11 +398,11 @@
                             label="名称">
                     </el-table-column>
                     <el-table-column
-                            prop="time"
+                            prop="inventory_time"
                             label="日期">
                     </el-table-column>
                     <el-table-column
-                            prop="sum"
+                            prop="num"
                             label="盈亏数量">
                     </el-table-column>
                 </el-table>
@@ -335,18 +413,18 @@
                    :visible.sync="d_cang_dio"
                    width="460px"
                    center
-                   :before-close="close">
+                   :before-close="close2">
             <ul class="goods_edit">
                 <li>
                     <span class="list_left">当前已选</span>
                     <span class="list_right">
-                        补水面膜
+                        {{nowData.name}}
                     </span>
                 </li>
                 <li>
                     <span class="list_left">当前库存</span>
                     <span class="list_right">
-                    452
+                    {{nowData.stock}}
                 </span>
                 </li>
                 <li>
@@ -384,12 +462,16 @@
                 <li>
                     <span class="list_left">调仓备注</span>
                     <span class="list_right">
-                    <textarea placeholder="请输入调仓备注" v-model="data.human"></textarea>
+                        <el-input
+                                type="textarea"
+                                :rows="3"
+                                placeholder="请输入调仓备注">
+                        </el-input>
                 </span>
                 </li>
             </ul>
             <span slot="footer" class="dialog-footer">
-            <el-button @click="close">取 消</el-button>
+            <el-button @click="close2">取 消</el-button>
             <el-button type="primary" @click="into()">确 定</el-button>
           </span>
         </el-dialog>
@@ -572,9 +654,18 @@
             myIn: [],
             myOut: [],
             input2: '',
+            input3: '',
+            input4: '',
             value2: '',
             one: '',
             two: '',
+            goods: [],
+            hc: [],
+            th: [],
+            nowPos: '产品',
+            logs: [],
+            list2: [],
+            nowData: '',
         },
         watch: {
             value(v) {
@@ -590,6 +681,9 @@
             two(v) {
                 this.radio = '2'
                 this.one = ''
+            },
+            nowPos(v) {
+                this.input3 = ''
             }
         },
         methods: {
@@ -603,10 +697,10 @@
                 $.post(url(methods.goodsManager), {
                     ware: this.id, end_num: this.warning.end_num, start_num: this.warning.start_num,
                 }, v => {
-                    if(v['code']==1){
+                    if (v['code'] == 1) {
                         success(v['Msg'])
                         this.getData()
-                    }else{
+                    } else {
                         error(v['error'])
                     }
                 })
@@ -644,6 +738,9 @@
                     price: '',
                     human: '',
                 }
+            },
+            close2() {
+                this.d_cang_dio = false
             },
             into(type = 'into') {
                 if (type == 'into') {
@@ -695,11 +792,107 @@
                 this.myOut = []
                 if (v.index == 0) {
                     this.getData()
-                } else {
+                } else if (v.index == 1) {
                     this.getRecord()
+                } else if (v.index == 2) {
+                    this.getRecord()
+                } else if (v.index == 3) {
+                    //this.getDc()
+                    this.getCp()
+                    this.getHc()
+                    this.getTh()
+                } else if (v.index == 4) {
+                    this.getCp()
+                    this.getHc()
+                    this.getTh()
                 }
                 this.input2 = ''
                 this.value = ''
+            },
+            sub() {
+                let arr = []
+                for (let v of this.goods) {
+                    if (v.pdNum != '' && v.nowNum != '') {
+                        arr.push({type: v.type, name: v.goods_name, actual_num: v.nowNum, num: v.pdNum, goods_id: v.id})
+                    }
+                }
+                for (let v of this.th) {
+                    if (v.pdNum != '' && v.nowNum != '') {
+                        arr.push({type: v.type, name: v.box_name, actual_num: v.nowNum, num: v.pdNum, goods_id: v.id})
+                    }
+                }
+                for (let v of this.hc) {
+                    if (v.pdNum != '' && v.nowNum != '') {
+                        arr.push({type: v.type, name: v.name, actual_num: v.nowNum, num: v.pdNum, goods_id: v.id})
+                    }
+                }
+                if (arr.length == 0) {
+                    return error('没有填写数据')
+                }
+                $.post(url(methods.pd), {data: JSON.stringify(arr)}, v => {
+                    if (v.code == 0) {
+                        //location.reload()
+                        if (this.nowPos == '产品') {
+                            this.getCp()
+                        } else if (this.nowPos == '套盒') {
+                            this.getTh()
+                        } else if (this.nowPos == '耗材') {
+                            this.getHc()
+                        }
+                    } else {
+                        error(v['msg'])
+                    }
+                })
+            },
+            getCp() {
+                $.post(url(methods.getCp), v => {
+                    for (let x of v.data) {
+                        x.pdNum = ''
+                        x.nowNum = ''
+                        x.type = 1
+                    }
+                    this.goods = v.data
+                })
+            },
+            getTh() {
+                $.post(url(methods.getTh), v => {
+                    for (let x of v.data) {
+                        x.pdNum = ''
+                        x.nowNum = ''
+                        x.type = 2
+                    }
+                    this.th = v.data
+                })
+            },
+            getHc() {
+                $.post(url(methods.getHc), v => {
+                    for (let x of v.data) {
+                        x.pdNum = ''
+                        x.nowNum = ''
+                        x.type = 3
+                    }
+                    this.hc = v.data
+                })
+            },
+            getDetail() {
+                this.y_k_dio = true
+                $.post(url(methods.pdLogs), v => {
+                    this.logs = v.data
+                    /*for (let x of v.data){
+                        if(x.type==1){
+                            this.goods.push(x)
+                        }else if(x.type==2){
+                            this.th.push(x)
+                        }else if(x.type==3){
+                            this.hc.push(x)
+                        }
+                    }*/
+                })
+            },
+            getDc() {
+                $.get(url(methods.getTransferGoods), v => {
+                    this.list2 = v.res
+                })
             }
         },
         mounted() {

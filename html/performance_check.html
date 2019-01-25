@@ -21,201 +21,186 @@
                             type="month"
                             placeholder="选择月份查询">
             </el-date-picker>
-            <el-button type="success" class="fr" @click="">本月总业绩</el-button>
+            <el-button type="success" class="fr" @click="getData">本月总业绩</el-button>
         </div>
         <div>
-            <el-button type="primary" disabled>消费总业绩：1235</el-button>
-            <el-button type="danger" disabled>消耗总业绩：1235</el-button>
-            <el-button type="warning" disabled>总手工：1235</el-button>
-            <el-button type="success" disabled>总提成：1235</el-button>
+            <el-button type="primary">消费总业绩：{{xf_zyj}}</el-button>
+            <el-button type="danger">消耗总业绩：{{xh_zyj}}</el-button>
+            <el-button type="warning">总手工：{{zsg}}</el-button>
+            <el-button type="success">总提成：{{ztc}}</el-button>
         </div>
         <div class="basic_inf">
             <el-table
-                    :data="performance"
+                    :data="list"
                     style="width: 100%">
                 <el-table-column
-                        prop="staff"
+                        prop="name"
                         label="员工">
                 </el-table-column>
                 <el-table-column
                         label="总消费">
                     <template slot-scope="scope">
-                        <el-button type="primary" size="mini"  @click="zxf_dio=true">{{scope.row.zxf}}</el-button>
+                        <el-button type="primary" size="mini" @click="getDetail(scope.row.id, 1)">
+                            {{scope.row.xf_total}}
+                        </el-button>
                     </template>
                 </el-table-column>
                 <el-table-column
-                        prop="xftc"
+                        prop="xf_total_raise"
                         label="消费提成">
                 </el-table-column>
                 <el-table-column
                         label="总消耗">
                     <template slot-scope="scope">
-                        <el-button type="danger" size="mini" @click="zxh_dio=true">{{scope.row.zxh}}</el-button>
+                        <el-button type="danger" size="mini" @click="getDetail(scope.row.id, 2)">
+                            {{scope.row.xh_total}}
+                        </el-button>
                     </template>
                 </el-table-column>
                 <el-table-column
-                        prop="xftc"
+                        prop="xh_total_raise"
                         label="消耗提成">
                 </el-table-column>
                 <el-table-column
                         label="总手工">
                     <template slot-scope="scope">
-                        <el-button type="warning" size="mini"  @click="zsg_dio=true">{{scope.row.zsg}}</el-button>
+                        <el-button type="warning" size="mini" @click="getDetail(scope.row.id, 3)">
+                            {{scope.row.fee_total}}
+                        </el-button>
                     </template>
                 </el-table-column>
                 <el-table-column
-                        prop="zsgtc"
+                        :formatter="formatter"
+                        prop="xf_total_raise"
                         label="总提成">
                 </el-table-column>
 
             </el-table>
         </div>
-        <el-dialog
-                title="修改业绩"
-                :visible.sync="edit_per"
-                width="400px"
-                center append-to-body>
-                <ul class="goods_edit">
-                <li>
-                    <span class="list_left">总消费金额</span>
-                    <span class="list_right">
-                    <el-input v-model="xf" placeholder="请输入修改后的金额"></el-input>
-                </span>
-                </li>
-                <li>
-                    <span class="list_left">总消耗金额</span>
-                    <span class="list_right">
-                    <el-input v-model="xh" placeholder="请输入修改后的金额"></el-input>
-                </span>
-                </li>
-                <li>
-                    <span class="list_left">总手工</span>
-                    <span class="list_right">
-                    <el-input v-model="sg" placeholder="请输入修改后的金额"></el-input>
-                </span>
-                </li>
-            </ul>
-            <span slot="footer" class="dialog-footer">
-            <el-button @click="edit_per=false">取 消</el-button>
-            <el-button type="primary" @click="">确 定</el-button>
-          </span>
-        </el-dialog>
         <!-- 查看详情 -->
         <el-dialog
                 title="员工消费业绩详情"
-                :visible.sync="zxf_dio"
+                :visible.sync="state"
                 center>
             <el-table border
-                      :data="detail"
+                      :data="arr"
                       style="width: 100%">
                 <el-table-column
-                        prop="type"
+                        prop="raise_type"
+                        :formatter="formatter2"
                         label="提成类型">
                 </el-table-column>
                 <el-table-column
-                        prop="name"
+                        prop="c_name"
                         label="名称"
                         width="180">
                 </el-table-column>
                 <el-table-column
-                        prop="vip"
+                        prop="v_name"
                         label="客户">
                 </el-table-column>
                 <el-table-column
-                        prop="xf_mon"
+                        prop="actual"
                         label="消费金额">
                 </el-table-column>
                 <el-table-column
-                        prop="tc_yj"
+                        prop="money"
                         label="提成业绩">
                 </el-table-column>
                 <el-table-column
-                        prop="times"
+                        prop="time"
                         label="时间">
                 </el-table-column>
                 <el-table-column
                         label="操作"
                         show-overflow-tooltip>
                     <template slot-scope="scope">
-                        <el-button type="danger" plain size="mini" @click="zt=true">修改</el-button>
+                        <el-button type="danger" plain size="mini" @click="now=scope.row;type=1;zt=true;">修改</el-button>
                     </template>
                 </el-table-column>
             </el-table>
         </el-dialog>
+
         <el-dialog
                 title="员工消耗业绩详情"
-                :visible.sync="zxh_dio"
+                :visible.sync="state2"
                 center>
             <el-table border
-                      :data="detail"
+                      :data="arr"
                       style="width: 100%">
                 <el-table-column
-                        prop="type"
+                        prop="raise_type"
+                        :formatter="formatter2"
                         label="提成类型">
                 </el-table-column>
                 <el-table-column
-                        prop="name"
+                        prop="v_name"
                         label="名称"
                         width="180">
                 </el-table-column>
+                <!-- <el-table-column
+                         prop="vip"
+                         label="客户">
+                 </el-table-column>-->
                 <el-table-column
-                        prop="vip"
-                        label="客户">
-                </el-table-column>
-                <el-table-column
-                        prop="xf_mon"
+                        prop="total_price"
                         label="总消耗">
                 </el-table-column>
                 <el-table-column
-                        prop="tc_yj"
+                        prop="money"
                         label="提成业绩">
                 </el-table-column>
                 <el-table-column
-                        prop="times"
+                        prop="time"
                         label="时间">
                 </el-table-column>
                 <el-table-column
                         label="操作"
                         show-overflow-tooltip>
                     <template slot-scope="scope">
-                        <el-button type="danger" plain size="mini" @click="edit_per=true">修改</el-button>
+                        <el-button type="danger" plain size="mini" @click="now=scope.row;type=2;zt=true">修改</el-button>
                     </template>
                 </el-table-column>
             </el-table>
         </el-dialog>
+
         <el-dialog
                 title="员工手工业绩详情"
-                :visible.sync="zsg_dio"
+                :visible.sync="state3"
                 center>
             <el-table border
-                      :data="detail"
+                      :data="arr"
                       style="width: 100%">
+                <!-- <el-table-column
+                         prop="name"
+                         label="名称"
+                         width="180">
+                 </el-table-column>-->
                 <el-table-column
-                        prop="name"
-                        label="名称"
-                        width="180">
-                </el-table-column>
-                <el-table-column
-                        prop="vip"
+                        prop="v_name"
                         label="客户">
                 </el-table-column>
                 <el-table-column
-                        prop="xf_mon"
+                        prop="total_fee"
+                        label="总手工">
+                </el-table-column>
+                <el-table-column
+                        prop="fee"
                         label="获得手工">
                 </el-table-column>
-                <el-table-column
+                <!--<el-table-column
                         prop="tc_yj"
                         label="提成业绩">
-                </el-table-column>
+                </el-table-column>-->
                 <el-table-column
-                        prop="times"
+                        prop="time"
                         label="时间">
                 </el-table-column>
                 <el-table-column
                         label="操作"
                         show-overflow-tooltip>
                     <template slot-scope="scope">
-                        <el-button type="danger" plain size="mini" @click="edit_per=true">修改</el-button>
+                        <el-button type="danger" plain size="mini" @click="now=scope.row;type=3;zt=true">修改</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -231,25 +216,27 @@
                 <li>
                     <span class="list_left">总消费金额</span>
                     <span class="list_right">
-                    <el-input v-model="edit.xf" placeholder="请输入修改后的金额"></el-input>
+                    <el-input v-model="type==1?now.actual:type==2?now.total_price:now.total_fee" disabled
+                              placeholder="请输入修改后的金额"></el-input>
                 </span>
                 </li>
                 <li>
                     <span class="list_left">总消耗金额</span>
                     <span class="list_right">
-                    <el-input v-model="edit.xh" placeholder="请输入修改后的金额"></el-input>
+                    <el-input v-model="type==1?now.money:type==2?now.money:now.fee" disabled
+                              placeholder="请输入修改后的金额"></el-input>
                 </span>
                 </li>
                 <li>
-                    <span class="list_left">总手工</span>
+                    <span class="list_left">修改业绩</span>
                     <span class="list_right">
-                    <el-input v-model="edit.fee" placeholder="请输入修改后的金额"></el-input>
+                    <el-input v-model="money" placeholder="请输入要变更的业绩金额" type="number"></el-input>
                 </span>
                 </li>
             </ul>
             <span slot="footer" class="dialog-footer">
-            <el-button @click="edit_per=false">取 消</el-button>
-            <el-button type="primary" @click="">确 定</el-button>
+            <el-button @click="close">取 消</el-button>
+            <el-button type="primary" @click="edit">确 定</el-button>
           </span>
         </el-dialog>
     </template>
@@ -265,51 +252,29 @@
     new Vue({
         el: '#app',
         data: {
-            edit_per:false,
-            zxf_dio:false,
-            zxh_dio:false,
-            zsg_dio:false,
-            value:'',
-            xf:'452',
-            xh:'452',
-            sg:'452',
-            detail:[{
-                type:'按业绩',
-                name:'补水面膜',
-                vip:'汪洋',
-                xf_mon:'123',
-                tc_yj:'756',
-                times:'2019-12-02'
-            },{
-            type:'按业绩',
-            name:'补水面膜',
-            vip:'汪洋',
-            xf_mon:'123',
-            tc_yj:'756',
-            times:'2019-12-02'
-        }],
-            performance:[{
-                staff:'丽丽',
-                zxf:'3533',
-                xftc:'322',
-                zxh:'3232',
-                xhtc:'432',
-                zsg:'123',
-                zsgtc:'32'
-            },{
-                staff:'王莉',
-                zxf:'3533',
-                xftc:'322',
-                zxh:'3232',
-                xhtc:'432',
-                zsg:'123',
-                zsgtc:'32'}],
             edit_per: false,
-            zt: false,
+            zxf_dio: false,
+            zxh_dio: false,
+            zsg_dio: false,
             value: '',
             xf: '452',
             xh: '452',
-            tc: '452',
+            sg: '452',
+            detail: [{
+                type: '按业绩',
+                name: '补水面膜',
+                vip: '汪洋',
+                xf_mon: '123',
+                tc_yj: '756',
+                times: '2019-12-02'
+            }, {
+                type: '按业绩',
+                name: '补水面膜',
+                vip: '汪洋',
+                xf_mon: '123',
+                tc_yj: '756',
+                times: '2019-12-02'
+            }],
             performance: [{
                 staff: '丽丽',
                 zxf: '3533',
@@ -327,16 +292,112 @@
                 zsg: '123',
                 zsgtc: '32'
             }],
+            zt: false,
+            tc: '452',
 
-            edit: {
-                xf: '',
-                xh: '',
-                fee: '',
-            },
+            list: [],
+            xf_zyj: 0,
+            xh_zyj: 0,
+            zsg: 0,
+            ztc: 0,
+            state: false,
+            state2: false,
+            state3: false,
+            arr: [],
+            money: '',
+            now: '',
+            type: 1,
+            userId: '',
         },
         methods: {
+            edit() {
+                if (this.money == '') {
+                    return error('请输入金额')
+                }
+                if (this.type == 1) {
+                    if (parseFloat(this.money) > parseFloat(this.now.actual)) {
+                        return error('不能超出总业绩')
+                    }
+                } else if (this.type == 2) {
+                    if (parseFloat(this.money) > parseFloat(this.now.total_price)) {
+                        return error('不能超出总业绩')
+                    }
+                } else if (this.type == 3) {
+                    if (parseFloat(this.money) > parseFloat(this.now.total_fee)) {
+                        return error('不能超出总业绩')
+                    }
+                }
+
+                $.post(url(methods.raiseDetailOperation), {
+                    type: this.type,
+                    data: {new_raise_fee: this.type == 3 ? this.money : '', money: this.money},
+                    id: this.now.id
+                }, v => {
+                    if (v.code == 1) {
+                        success(v['Msg'])
+                        this.close()
+                        this.getData()
+                        this.getDetail(this.userId, this.type)
+                    } else {
+                        error(v['error'])
+                    }
+                })
+            },
+            getDetail(id, type) {
+                this.userId = id
+                if (type == 1) {
+                    this.state = true
+                } else if (type == 2) {
+                    this.state2 = true
+                } else if (type == 3) {
+                    this.state3 = true
+                }
+                $.post(url(methods.performanceFeiDetails), {staff: id, type: type, start: '', end: ''}, v => {
+                    if (v.code == 1) {
+                        this.arr = v.res
+                    } else {
+                        error(v.error)
+                    }
+                })
+            },
+            formatter(r, c) {
+                return (r.xf_total_raise + r.xh_total_raise).toFixed(2)
+            },
+            formatter2(r, c) {
+                if (r.raise_type == 1) {
+                    return '按提成'
+                } else if (r.raise_type == 2) {
+                    return '按业绩'
+                }
+            },
             close() {
-                this.zt = false;
+                this.zt = false
+                this.now = ''
+                this.money = ''
+            },
+            getData() {
+                this.xf_zyj = 0
+                this.xh_zyj = 0
+                this.zsg = 0
+                this.ztc = 0
+                this.list = []
+                $.get(url(methods.getPerDetail) + '&type=list', v => {
+                    if (v.code == 1) {
+                        for (let x of v.res.staffArr) {
+                            this.xf_zyj += x.xf_total
+                            this.xh_zyj += x.xh_total
+                            this.zsg += x.fee_total
+                            this.ztc += x.xf_total_raise + x.xh_total_raise
+                        }
+                        this.xf_zyj = this.xf_zyj.toFixed(2)
+                        this.xh_zyj = this.xh_zyj.toFixed(2)
+                        this.zsg = this.zsg.toFixed(2)
+                        this.ztc = this.ztc.toFixed(2)
+                        this.list = v.res.staffArr
+                    } else {
+                        error(v.error)
+                    }
+                })
             }
         },
         mounted() {
@@ -344,6 +405,7 @@
                 //初始化
                 that = this;
                 loginState()
+                this.getData()
             })
         }
     })
