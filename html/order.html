@@ -191,7 +191,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    $.post(url(methods.refundOrder), {id: id}, v=>{
+                    $.post(url(methods.refundOrder), {oid: id}, v=>{
                         if(v.code==1){
                             success(v['Msg'])
                             this.getData()
