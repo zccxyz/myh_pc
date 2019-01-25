@@ -255,6 +255,7 @@
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
                     </el-input>
                     <el-button type="success" class="fr" @click="getDetail">盈亏数</el-button>
+                    <el-button type="primary" class="fr" style="margin-right: 10px" @click="sub">保存</el-button>
                 </div>
                 <div class="basic_inf">
                     <el-table v-show="nowPos=='产品'"
@@ -370,9 +371,6 @@
                             </template>
                         </el-table-column>
                     </el-table>
-                </div>
-                <div style="margin: 0 auto;text-align: center">
-                    <el-button type="primary" style="width: 10%;margin-top: 5%" @click="sub">保存</el-button>
                 </div>
             </el-tab-pane>
         </el-tabs>
