@@ -17,7 +17,8 @@
         </p>
         <div class="cus_center">
             <el-date-picker class="cus_seatch"
-                            v-model="value"
+                            v-model="time"
+                            value-format="yyyy-MM-dd"
                             type="month"
                             placeholder="选择月份查询">
             </el-date-picker>
@@ -308,6 +309,7 @@
             now: '',
             type: 1,
             userId: '',
+            time: '',
         },
         methods: {
             edit() {
@@ -381,7 +383,7 @@
                 this.zsg = 0
                 this.ztc = 0
                 this.list = []
-                $.get(url(methods.getPerDetail) + '&type=list', v => {
+                $.get(url(methods.getPerDetail) + `&type=${this.time==null||this.time==''?'list':'search'}&time=`+this.time, v => {
                     if (v.code == 1) {
                         for (let x of v.res.staffArr) {
                             this.xf_zyj += x.xf_total
@@ -398,6 +400,11 @@
                         error(v.error)
                     }
                 })
+            }
+        },
+        watch: {
+            time(v) {
+                this.getData()
             }
         },
         mounted() {
