@@ -831,6 +831,7 @@
                 }
                 $.post(url(methods.pd), {data: JSON.stringify(arr)}, v => {
                     if (v.code == 0) {
+                        success('盘点成功')
                         //location.reload()
                         if (this.nowPos == '产品') {
                             this.getCp()
