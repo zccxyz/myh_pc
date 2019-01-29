@@ -218,7 +218,7 @@
                     + parseFloat(this.integral_pay == '' ? 0 : this.integral_pay) + parseFloat(this.send_money == '' ? 0 : this.send_money)
                     + parseFloat(this.cash_pay == '' ? 0 : this.cash_pay)
                     + parseFloat(this.card_pay == '' ? 0 : this.card_pay)
-                if(total != this.detail.money){
+                if(total != this.detail.money) {
                     error(`补款金额必须是${this.detail.money}元`)
                     return
                 }

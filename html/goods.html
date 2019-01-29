@@ -150,7 +150,7 @@
                 <li v-if="now.zt!=1">
                     <span class="list_left">手工费</span>
                     <span class="list_right">
-                    <el-input v-model="now.free" placeholder="请输入手工费"></el-input>
+                    <el-input v-model="now.fee" placeholder="请输入手工费"></el-input>
                 </span>
                 </li>
                 <li>
@@ -521,12 +521,19 @@
                     return
                 }
                 $.post(url(methods.editAll), {'data': JSON.stringify(this.now)}, v => {
-                    let rs = verify(v)
+                    if(v['code']==0){
+                        success('修改成功')
+                        this.centerDialogVisible = false
+                        this.getGoods()
+                    }else{
+                        error(v.msg)
+                    }
+                    /*let rs = verify(v)
                     if (rs != false) {
                         success('修改成功')
                         this.centerDialogVisible = false
                         this.getGoods()
-                    }
+                    }*/
                 })
             },
             getClassify() {
