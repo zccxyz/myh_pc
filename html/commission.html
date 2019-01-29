@@ -34,8 +34,8 @@
         <div class="">
             <div class="" style="margin:10px 0 15px;">
                 <div style="height: 50px;width: 100%;line-height:50px;padding-left:15px;font-size:1.8rem;background: white;">
-                    可提成金额 ：<span class="cr" style="font-size: 1.8rem;">&yen;{{total}}</span>
-                    <el-button style="float: right" type="warning" @click="location.href = './customer.html'">取消
+                    消费可提成金额 ：<span class="cr" style="font-size: 1.8rem;">&yen;{{total}}</span>
+                    <el-button style="float: right" type="warning" @click="location.href = './customer.html'">取消提成
                     </el-button>
                 </div>
                 <!--<p class="p_div_b">
@@ -127,6 +127,101 @@
                 </ul>
             </div>
         </div>
+
+        <div class="" v-if="ac_card_total>0">
+            <div class="" style="margin:10px 0 15px;">
+                <div style="height: 50px;width: 100%;line-height:50px;padding-left:15px;font-size:1.8rem;background: white;">
+                    卡扣可提成金额 ：<span class="cr" style="font-size: 1.8rem;">&yen;{{ac_card_total}}</span>
+                </div>
+                <!--<p class="p_div_b">
+                    消耗手工录入
+                </p>
+                <ul class="consume_list commission_list">
+                    <li>
+                        操作人
+                        <el-select v-model="one.id" placeholder="请选择" class="in_wid">
+                            <el-optionitemsArr
+                                    v-for="item in staff"
+                                    :label="item.name"
+                                    :value="item.id">
+                            </el-optionitemsArr>
+                        </el-select>
+                        <el-input v-model="one.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
+                        <p class="do_blue" @click="add(1)">添加</p>
+                    </li>
+                    <li v-for="(v, i) in oneArr">
+                        &nbsp;&nbsp;&nbsp;
+                        <div>{{v.name}}</div>
+                        <el-input :value="v.rate" placeholder="请输入" class="in_wid" disabled></el-input>&nbsp;%
+                        <i class="el-icon-circle-close-outline close" @click="del(1, i)"></i>
+                    </li>
+                </ul>-->
+            </div>
+            <div class="">
+                <p class="p_div_b">
+                    卡扣提成录入
+                </p>
+                <ul class="consume_list commission_list">
+                    <li>
+                        美容师
+                        <el-select type="number" v-model="two2.id" placeholder="请选择" class="in_wid">
+                            <el-option
+                                    v-for="item in m"
+                                    :label="item.name"
+                                    :value="item.id">
+                            </el-option>
+                        </el-select>
+                        <el-input type="number" v-model="two2.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
+                        <p class="do_blue" @click="add2(2)">添加</p>
+                    </li>
+                    <li v-for="(v, i) in twoArr2" style="background: #d5baf9;">
+                        &nbsp;&nbsp;&nbsp;
+                        <div>{{v.name}}</div>
+                        <el-input type="number" :value="v.rate" placeholder="请输入" class="in_wid t_input" disabled></el-input>&nbsp;%
+                        <i class="el-icon-circle-close-outline close" @click="del2(2, i)"></i>
+                    </li>
+                    <li>
+                        顾问
+                        <el-select v-model="three2.id" placeholder="请选择" class="in_wid">
+                            <el-option
+                                    v-for="item in g"
+                                    :key="item.value"
+                                    :label="item.name"
+                                    :value="item.id">
+                            </el-option>
+                        </el-select>
+                        <el-input type="number" v-model="three2.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
+                        <p class="do_blue" @click="add2(3)">添加</p>
+                    </li>
+                    <li v-for="(v, i) in threeArr2" style="background: #d5baf9;">
+                        &nbsp;&nbsp;&nbsp;
+                        <div>{{v.name}}</div>
+                        <el-input type="number" :value="v.rate" placeholder="请输入" class="in_wid t_input" disabled></el-input>&nbsp;%
+                        <i class="el-icon-circle-close-outline close" @click="del2(3, i)"></i>
+                    </li>
+
+                    <li>
+                        店长
+                        <el-select v-model="four2.id" placeholder="请选择" class="in_wid">
+                            <el-option
+                                    v-for="item in d"
+                                    :key="item.value"
+                                    :label="item.name"
+                                    :value="item.id">
+                            </el-option>
+                        </el-select>
+                        <el-input type="number" v-model="four2.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
+                        <p class="do_blue" @click="add2(4)">添加</p>
+                    </li>
+                    <li v-for="(v, i) in fourArr2" style="background: #d5baf9;">
+                        &nbsp;&nbsp;&nbsp;
+                        <div>{{v.name}}</div>
+                        <el-input type="number" :value="v.rate" placeholder="请输入" class="in_wid t_input" disabled></el-input>&nbsp;%
+                        <i class="el-icon-circle-close-outline close" @click="del2(4, i)"></i>
+                    </li>
+                </ul>
+            </div>
+        </div>
         <div class="bottom_submit">
             <el-button type="success" @click="sub" v-if="type==1">提交</el-button>
             <el-button type="success" @click="sub2" v-else>提交</el-button>
@@ -163,6 +258,16 @@
             m: [],
             type: 0,
             d: [],
+            ac_card_total: 0,
+
+            one2: {rate: '', id: ''},
+            two2: {rate: '', id: ''},
+            three2: {rate: '', id: ''},
+            four2: {rate: '', id: ''},
+            oneArr2: [],
+            twoArr2: [],
+            threeArr2: [],
+            fourArr2: [],
         },
         methods: {
             sub2() {
@@ -206,13 +311,18 @@
                 })
             },
             sub() {
-                if (this.twoArr.length == 0 && this.threeArr.length == 0 && this.fourArr.length == 0) {
+                if (this.twoArr.length == 0 && this.threeArr.length == 0 && this.fourArr.length == 0 && this.twoArr2.length == 0
+                    && this.threeArr2.length == 0 && this.fourArr2.length == 0) {
                     error('请选择提成员工')
                     return
                 }
                 let arr2 = []
                 let arr3 = []
                 let arr4 = []
+
+                let arr5 = []
+                let arr6 = []
+                let arr7 = []
                 if (this.twoArr.length > 0) {
                     for (let v of this.twoArr) {
                         arr2.push({'money': v.rate, 'id': v.id, 'name': v.name})
@@ -228,11 +338,29 @@
                         arr4.push({'money': v.rate, 'id': v.id, 'name': v.name})
                     }
                 }
+                if (this.twoArr2.length > 0) {
+                    for (let v of this.twoArr2) {
+                        arr5.push({'money': v.rate, 'id': v.id, 'name': v.name})
+                    }
+                }
+                if (this.threeArr2.length > 0) {
+                    for (let v of this.threeArr2) {
+                        arr6.push({'money': v.rate, 'id': v.id, 'name': v.name})
+                    }
+                }
+                if (this.fourArr2.length > 0) {
+                    for (let v of this.fourArr2) {
+                        arr7.push({'money': v.rate, 'id': v.id, 'name': v.name})
+                    }
+                }
                 $.post(url(methods.saveCommission), {
                     data: JSON.stringify({
                         raise_m: arr2,
                         raise_g: arr3,
                         raise_d: arr4,
+                        ka_raise_m: arr5,
+                        ka_raise_g: arr6,
+                        ka_raise_d: arr7,
                         order: this.orderId,
                         type: '',
                         cost: this.cost
@@ -318,6 +446,7 @@
                         this.g = v.res.g
                         this.m = v.res.m
                         this.d = v.res.d
+                        this.ac_card_total = v.res.ac_card_total
                     } else {
                         error(v.errorMsg)
                     }
@@ -350,6 +479,68 @@
                         error(v.errorMsg)
                     }
                 })
+            },
+            del2(type, i) {
+                if (type == 1) {
+                    this.oneArr2.splice(i, 1)
+                } else if (type == 2) {
+                    this.twoArr2.splice(i, 1)
+                } else if (type == 3) {
+                    this.threeArr2.splice(i, 1)
+                } else if (type == 4) {
+                    this.fourArr2.splice(i, 1)
+                }
+            },
+            add2(type) {
+                if (type == 2) {
+                    if (this.two2.id == '' || this.two2.rate == '') {
+                        error('请选择美容师或填写提成比例')
+                        return
+                    }
+                    for (let v of this.twoArr2) {
+                        if (v.id == this.two2.id) {
+                            error('美容师已存在')
+                            return
+                        }
+                    }
+                    for (let v of this.m) {
+                        if (v.id == this.two2.id) {
+                            this.twoArr2.unshift({name: v.name, rate: this.two2.rate, id: v.id})
+                        }
+                    }
+                } else if (type == 3) {
+                    if (this.three2.id == '' || this.three2.rate == '') {
+                        error('请选择顾问或填写提成比例')
+                        return
+                    }
+                    for (let v of this.threeArr2) {
+                        if (v.id == this.three2.id) {
+                            error('顾问已存在')
+                            return
+                        }
+                    }
+                    for (let v of this.g) {
+                        if (v.id == this.three2.id) {
+                            this.threeArr2.unshift({name: v.name, rate: this.three2.rate, id: v.id})
+                        }
+                    }
+                } else if (type == 4) {
+                    if (this.four2.id == '' || this.four2.rate == '') {
+                        error('请选择店长或填写提成比例')
+                        return
+                    }
+                    for (let v of this.fourArr2) {
+                        if (v.id == this.four2.id) {
+                            error('店长已存在')
+                            return
+                        }
+                    }
+                    for (let v of this.d) {
+                        if (v.id == this.four2.id) {
+                            this.fourArr2.unshift({name: v.name, rate: this.four2.rate, id: v.id})
+                        }
+                    }
+                }
             },
         },
         mounted() {

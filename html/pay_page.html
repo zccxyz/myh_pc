@@ -79,8 +79,9 @@
                             </el-option>
                           </el-select>
                      </span>
-                        <span style="width: 454.44px;display: inline-block;">
-                         卡内余额：{{getCard}}
+                        <span style="width: 450px;display: inline-block;">
+                         卡内余额：{{getCard}}&nbsp;&nbsp;&nbsp;
+                            <span v-if="cardDetail.discount>0">折扣：{{cardDetail.discount}}</span>
                          <span class="fr">划扣金额：<el-input type="number" v-model="card_pay" placeholder="0.00"
                                                          class="pay_input"></el-input></span>
                      </span>
@@ -208,6 +209,7 @@
             type: 0, //1购买，2补款
             bkId: 0,
             detail: '',
+            cardDetail: '',
         },
         methods: {
             sub2() {
@@ -315,6 +317,7 @@
             card(v) {
                 for (let x of this.cardList) {
                     if (x.id == v) {
+                        this.cardDetail = x
                         this.card_balance = x.amount
                     }
                 }
@@ -340,7 +343,11 @@
                 return parseFloat(this.member.send_balance) - parseFloat(this.send_balance_pay == "" ? 0 : this.send_balance_pay)
             },
             needPay() {
-                return parseFloat(this.order.price) - parseFloat(this.zfb_pay == '' ? 0 : this.zfb_pay) -
+                let orderPrice = parseFloat(this.order.price)
+                if(this.cardDetail!=''&&this.cardDetail!=null&&parseFloat(this.cardDetail.discount)>0){
+                    orderPrice *= parseFloat(this.cardDetail.discount)
+                }
+                return orderPrice - parseFloat(this.zfb_pay == '' ? 0 : this.zfb_pay) -
                     parseFloat(this.wx_pay == '' ? 0 : this.wx_pay)
                     - parseFloat(this.bank_pay == '' ? 0 : this.bank_pay) - parseFloat(this.dzdp_pay == '' ? 0 : this.dzdp_pay)
                     - parseFloat(this.sqb_pay == '' ? 0 : this.sqb_pay) - parseFloat(this.mt_pay == '' ? 0 : this.mt_pay)
