@@ -62,6 +62,11 @@
                     label="价格">
             </el-table-column>
             <el-table-column
+                    prop="status"
+                    label="类型"
+                    :formatter="formatter2">
+            </el-table-column>
+            <el-table-column
                     prop="beautician"
                     label="美容师">
             </el-table-column>
@@ -169,6 +174,18 @@
             }
         },
         methods: {
+            formatter2(r, c) {
+                if(r.one_total==0 || r.money==0){
+                    return '赠送'
+                }
+                if(r.status == 1 && r.type != 6){
+                    return '消费'
+                }else if(r.status == 2 && r.type != 6){
+                    return '消耗'
+                }else if(v.type == 6  && v.status == 1){
+                    return '充值'
+                }
+            },
             jump(v) {
                 localStorage.setItem('user_id', v.uid)
                 location.href = 'vip_information.html'

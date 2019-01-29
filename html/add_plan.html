@@ -22,14 +22,8 @@
                 <li>
                     <span class="list_left">方案名称</span>
                     <span class="list_right">
-                    <el-input v-model="name" placeholder="请输入方案名称"></el-input>
-                </span>
-                </li>
-                <li>
-                    <span class="list_left">售价</span>
-                    <span class="list_right">
-                    <el-input v-model="price" type="number" placeholder="请输入售价"></el-input>
-                </span>
+                        <el-input v-model="name" placeholder="请输入方案名称"></el-input>
+                    </span>
                 </li>
                 <li>
                     <span class="list_left">项目</span>
@@ -155,6 +149,12 @@
                             </li>
                         </ul>
                 </span>
+                </li>
+                <li>
+                    <span class="list_left">售价</span>
+                    <span class="list_right">
+                        <el-input v-model="price" type="number" placeholder="请输入售价"></el-input>
+                    </span>
                 </li>
             </ul>
             <el-button type="primary" class="bottom_wid" @click="sub">提交</el-button>
@@ -424,6 +424,25 @@
                     this.goods = v.data.goods
                     this.items = v.data.project
                 })
+            }
+        },
+        watch: {
+            need: {
+                handler(x) {
+                    this.price = 0
+                    for(let v of x) {
+                        let p = v.price
+                        if(v.state==0){
+                            p = v.price
+                        }else if(v.state==1) {
+                            p = v.price * v.dis/10
+                        }else if(v.state==2) {
+                            p = 0
+                        }
+                        this.price += parseFloat(p)
+                    }
+                },
+                deep: true
             }
         },
         mounted() {
