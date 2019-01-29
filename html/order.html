@@ -245,12 +245,16 @@
                 this.now = []
             },
             look(v) {
-                for (let x of this.details) {
+                $.post(url(methods.getOrderDetail), {oid: v.id}, v=>{
+                    this.now = v.res
+                    this.order_detail = true
+                })
+                /*for (let x of this.details) {
                     if (x.order_id == v.id) {
                         this.now.push(x)
                     }
                 }
-                this.order_detail = true
+                this.order_detail = true*/
             },
             formatter(r) {
                 return classify(r.type)

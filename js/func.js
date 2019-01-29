@@ -102,6 +102,7 @@ var methods = {
     'pd': 'goods/pd',
     'pdLogs': 'goods/pdLogs',
     'getTransferGoods': 'Ware/get_transfer_goods',
+    'getOrderDetail': 'member/get_order_detail',
 };
 var that;
 
