@@ -67,6 +67,11 @@
                     :formatter="formatter2">
             </el-table-column>
             <el-table-column
+                    prop="is_back"
+                    label="类型"
+                    :formatter="formatter3">
+            </el-table-column>
+            <el-table-column
                     prop="beautician"
                     label="美容师">
             </el-table-column>
@@ -174,6 +179,13 @@
             }
         },
         methods: {
+            formatter3(r, c) {
+                if(r.is_back==1){
+                    return '正常';
+                }else{
+                    return '退单'
+                }
+            },
             formatter2(r, c) {
                 if(r.one_total==0 || r.money==0){
                     return '赠送'
