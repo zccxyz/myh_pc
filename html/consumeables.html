@@ -99,13 +99,13 @@
                     <el-input v-model="now.stock" type="number" placeholder="请输入库存数量名称"></el-input>
                 </span>
                 </li>
-                <li>
+                <li v-if="now.consumables_type==2">
                     <span class="list_left">单个容量</span>
                     <span class="list_right">
                     <el-input v-model="now.spec" type="number" placeholder="请输入耗材容量名称"></el-input>
                 </span>
                 </li>
-                <li>
+                <li v-if="now.consumables_type==2">
                     <span class="list_left">规格类型</span>
                     <span class="list_right">
                     <el-select v-model="now.spec_type" placeholder="请选择" style="width: 100%">
@@ -118,12 +118,12 @@
                       </el-select>
                 </span>
                 </li>
-                <li>
+                <li v-if="now.consumables_type==2">
                     <span class="list_left">单次消耗</span>
                     <span class="list_right">
                     <el-input v-model="now.one_consume" type="number" placeholder="请输入商品名称"></el-input>
                 </span>
-                <li>
+                <li v-if="now.consumables_type==2">
                     <span class="list_left">实用项目数</span>
                     <span class="list_right">
                     {{ now.spec==''||now.stock==''||now.one_consume==''?0:(now.spec * now.stock/now.one_consume)<1?0:now.spec * now.stock/now.one_consume }}次（仅做参考）
@@ -166,13 +166,13 @@
                     <el-input v-model="now2.stock" disabled type="number" placeholder="请输入库存数量名称"></el-input>
                 </span>
                 </li>
-                <li>
+                <li v-if="now2.consumables_type==2">
                     <span class="list_left">单个容量</span>
                     <span class="list_right">
                     <el-input v-model="now2.spec" type="number" placeholder="请输入耗材容量名称"></el-input>
                 </span>
                 </li>
-                <li>
+                <li v-if="now2.consumables_type==2">
                     <span class="list_left">规格类型</span>
                     <span class="list_right">
                     <el-select v-model="now2.spec_type" placeholder="请选择" style="width: 100%">
@@ -185,16 +185,16 @@
                       </el-select>
                 </span>
                 </li>
-                <li>
+                <li v-if="now2.consumables_type==2">
                     <span class="list_left">单次消耗</span>
                     <span class="list_right">
                     <el-input v-model="now2.one_consume" type="number" placeholder="请输入商品名称"></el-input>
                 </span>
-                <li>
+                <li v-if="now2.consumables_type==2">
                     <span class="list_left">实用项目数</span>
                     <span class="list_right">
-                    {{ now2.spec==''||now2.stock==''||now2.one_consume==''?0:(now2.spec * now2.stock/now2.one_consume)<1?0:now2.spec * now2.stock/now2.one_consume }}次（仅做参考）
-                </span>
+                        {{ now2.spec==''||now2.stock==''||now2.one_consume==''?0:(now2.spec * now2.stock/now2.one_consume)<1?0:now2.spec * now2.stock/now2.one_consume }}次（仅做参考）
+                    </span>
                 </li>
             </ul>
             <span slot="footer" class="dialog-footer">
@@ -290,10 +290,16 @@
                 })
             },
             sub() {
-                if(this.now.name==''||this.now.stock==''||this.now.spec==''
-                    ||this.now.consumables_type==''||this.now.one_consume==''){
-                    return error('请填完以上内容')
+                if(this.now.consumables_type==2){
+                    if(this.now.name==''||this.now.stock==''||this.now.spec==''||this.now.one_consume==''){
+                        return error('请填完以上内容')
+                    }
+                }else{
+                    if(this.now.name==''||this.now.stock==''){
+                        return error('请填完以上内容')
+                    }
                 }
+
                 this.now['one_syxms'] = this.now.spec * this.now.stock/this.now.one_consume<1?0:this.now.spec * this.now.stock/this.now.one_consume
                 $.post(url(methods.conOperation), {
                     data: this.now, type: 'add'
@@ -331,6 +337,9 @@
                 })
             },
             formatter(r, c){
+                if(r.consumables_type==1) {
+                    return '-'
+                }
                 return r['spec']+r['spec_name']
             },
             getSpec() {

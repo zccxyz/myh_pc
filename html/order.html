@@ -48,6 +48,14 @@
                       prefix-icon="el-icon-search"
                       v-model="input">
             </el-input>
+            <el-date-picker
+                    v-model="time"
+                    type="daterange"
+                    value-format="yyyy-MM-dd"
+                    range-separator="至"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期">
+            </el-date-picker>
         </div>
         <div class="basic_inf">
             <el-table
@@ -172,6 +180,16 @@
             details: [],
             now: [],
             status: -1,
+            time: null,
+        },
+        watch: {
+            time(v) {
+                if(v==null){
+                    this.getData()
+                }else{
+                    this.getData(v[0], v[1])
+                }
+            }
         },
         methods: {
             bk(id) {
@@ -265,8 +283,8 @@
                     this.status = 4
                 }
             },
-            getData() {
-                $.post(url(methods.getOrder) + '&type=all', v => {
+            getData(s='', e='') {
+                $.get(url(methods.getOrder) + `&type=all&start=${s}&end=${e}&status=day`, v => {
                     this.list = v.res.list
                     this.details = v.res.orderDetail
                 })
