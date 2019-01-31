@@ -82,7 +82,16 @@
         <el-dialog
                 title="员工消费业绩详情"
                 :visible.sync="state"
+                :before-close="close2"
                 center>
+            <el-date-picker
+                    v-model="time2"
+                    type="datetimerange"
+                    value-format="yyyy-MM-dd HH:mm:ss"
+                    range-separator="至"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期">
+            </el-date-picker>
             <el-table border
                       :data="arr"
                       style="width: 100%">
@@ -125,7 +134,16 @@
         <el-dialog
                 title="员工消耗业绩详情"
                 :visible.sync="state2"
+                :before-close="close2"
                 center>
+            <el-date-picker
+                    v-model="time2"
+                    type="datetimerange"
+                    value-format="yyyy-MM-dd HH:mm:ss"
+                    range-separator="至"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期">
+            </el-date-picker>
             <el-table border
                       :data="arr"
                       style="width: 100%">
@@ -168,7 +186,16 @@
         <el-dialog
                 title="员工手工业绩详情"
                 :visible.sync="state3"
+                :before-close="close2"
                 center>
+            <el-date-picker
+                    v-model="time2"
+                    type="datetimerange"
+                    value-format="yyyy-MM-dd HH:mm:ss"
+                    range-separator="至"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期">
+            </el-date-picker>
             <el-table border
                       :data="arr"
                       style="width: 100%">
@@ -261,38 +288,6 @@
             xf: '452',
             xh: '452',
             sg: '452',
-            detail: [{
-                type: '按业绩',
-                name: '补水面膜',
-                vip: '汪洋',
-                xf_mon: '123',
-                tc_yj: '756',
-                times: '2019-12-02'
-            }, {
-                type: '按业绩',
-                name: '补水面膜',
-                vip: '汪洋',
-                xf_mon: '123',
-                tc_yj: '756',
-                times: '2019-12-02'
-            }],
-            performance: [{
-                staff: '丽丽',
-                zxf: '3533',
-                xftc: '322',
-                zxh: '3232',
-                xhtc: '432',
-                zsg: '123',
-                zsgtc: '32'
-            }, {
-                staff: '王莉',
-                zxf: '3533',
-                xftc: '322',
-                zxh: '3232',
-                xhtc: '432',
-                zsg: '123',
-                zsgtc: '32'
-            }],
             zt: false,
             tc: '452',
 
@@ -310,6 +305,8 @@
             type: 1,
             userId: '',
             time: '',
+            time2: '',
+            type2: 1,
         },
         methods: {
             edit() {
@@ -347,6 +344,7 @@
             },
             getDetail(id, type) {
                 this.userId = id
+                this.type2 = type
                 if (type == 1) {
                     this.state = true
                 } else if (type == 2) {
@@ -354,7 +352,12 @@
                 } else if (type == 3) {
                     this.state3 = true
                 }
-                $.post(url(methods.performanceFeiDetails), {staff: id, type: type, start: '', end: ''}, v => {
+                $.post(url(methods.performanceFeiDetails), {
+                    staff: id,
+                    type: type,
+                    start: this.time2 == '' || this.time2 == null ? '' : this.time2[0],
+                    end: this.time2 == '' || this.time2 == null ? '' : this.time2[1]
+                }, v => {
                     if (v.code == 1) {
                         this.arr = v.res
                     } else {
@@ -377,13 +380,19 @@
                 this.now = ''
                 this.money = ''
             },
-            getData(type=1) {
+            close2() {
+                this.state = false
+                this.state2 = false
+                this.state3 = false
+                this.time2 = ''
+            },
+            getData(type = 1) {
                 this.xf_zyj = 0
                 this.xh_zyj = 0
                 this.zsg = 0
                 this.ztc = 0
                 this.list = []
-                $.get(url(methods.getPerDetail) + `&type=${this.time==null||this.time==''?'list':'search'}&time=`+this.time, v => {
+                $.get(url(methods.getPerDetail) + `&type=${this.time == null || this.time == '' ? 'list' : 'search'}&time=` + this.time, v => {
                     if (v.code == 1) {
                         for (let x of v.res.staffArr) {
                             this.xf_zyj += x.xf_total
@@ -405,6 +414,11 @@
         watch: {
             time(v) {
                 this.getData()
+            },
+            time2() {
+                if(this.state || this.state2 || this.state3){
+                    this.getDetail(this.userId, this.type2)
+                }
             }
         },
         mounted() {
