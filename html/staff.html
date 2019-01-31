@@ -16,6 +16,7 @@
                         value-format="yyyy-MM"
                         placeholder="选择月">
         </el-date-picker>
+        <el-button plain style="margin-left: 10px">实发总工资：{{total}}</el-button>
         <el-button type="primary" style="float: right;margin-bottom: 10px" @click="dc">导出表格</el-button>
         <el-table
                 :data="list"
@@ -80,6 +81,7 @@
         data: {
             list: [],
             time: '',
+            total: 0,
         },
         watch: {
             time(v) {
@@ -92,7 +94,11 @@
         },
         methods: {
             getTimeData() {
+                this.total = 0
                 $.get(url(methods.checkMonth) + '&month=' + this.time, v => {
+                    for(let x of v.res.detail) {
+                        this.total += parseFloat(x.total_wages)
+                    }
                     this.list = v.res.detail
                 })
             },
@@ -103,7 +109,11 @@
                 location.href = url(methods.excel)+'&type=list&month=' + this.time
             },
             getData() {
+                this.total = 0
                 $.post(url(methods.getMemberWages), v => {
+                    for(let x of v.res) {
+                        this.total += parseFloat(x.total_wages)
+                    }
                     this.list = v.res
                 })
             }
