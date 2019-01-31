@@ -12,10 +12,10 @@
 <div id="app">
     <div class="index_top">
         <i style="font-size: 1.7rem;line-height: 56px;"><img src="../images/home_birth.png" class="home_birth"/>本周生日&nbsp;|&nbsp;</i>
-        <ul class="bir_ul"id="scrollobj">
+        <ul class="bir_ul" id="scrollobj">
             <li v-for="v in sj.bir_member">
                 <a href="birthday.html" target="iframe">
-                {{v.name}}&nbsp;{{v.birthday}}
+                    {{v.name}}&nbsp;{{v.birthday}}
                 </a>
             </li>
         </ul>
@@ -34,7 +34,7 @@
             <a href="today_do.html" target="iframe">
                 <p>消耗金额</p>
                 <span class="cr">
-                    {{sj.consume_total}}
+                    {{sj.consume_total | two}}
                 </span>
                 <p>操作项目数：{{sj.items_total}}</p>
                 <p class="index_detail">详情</p>
@@ -84,25 +84,32 @@
 <script src="../js/func.js"></script>
 <script src="../js/index.js"></script>
 <script type="text/javascript">
-    var ss=$("#scrollobj>li").length;
+    var ss = $("#scrollobj>li").length;
+
     function scroll(obj) {
-            var tmp = (obj.scrollLeft)++;
-            //当滚动条到达右边顶端时
-            if (obj.scrollLeft==tmp) obj.innerHTML += obj.innerHTML;
-            //当滚动条滚动了初始内容的宽度时滚动条回到最左端 (此处可以根据需要选择是否注释)
-            // if (obj.scrollLeft>=obj.firstChild.offsetWidth) obj.scrollLeft=0;
-        }
-        if(ss>=10){
-            setInterval("scroll(document.getElementById('scrollobj'))",20);
+        var tmp = (obj.scrollLeft)++;
+        //当滚动条到达右边顶端时
+        if (obj.scrollLeft == tmp) obj.innerHTML += obj.innerHTML;
+        //当滚动条滚动了初始内容的宽度时滚动条回到最左端 (此处可以根据需要选择是否注释)
+        // if (obj.scrollLeft>=obj.firstChild.offsetWidth) obj.scrollLeft=0;
+    }
 
-        }
+    if (ss >= 10) {
+        setInterval("scroll(document.getElementById('scrollobj'))", 20);
 
-    </script>
-        <script type="text/javascript">
-            new Vue({
+    }
+
+</script>
+<script type="text/javascript">
+    new Vue({
         el: '#app',
         data: {
             sj: '',
+        },
+        filters: {
+            two(v) {
+                return v.toFixed(2)
+            }
         },
         methods: {
             getData() {
