@@ -103,6 +103,9 @@ var methods = {
     'pdLogs': 'goods/pdLogs',
     'getTransferGoods': 'Ware/get_transfer_goods',
     'getOrderDetail': 'member/get_order_detail',
+    'getMemberWages': 'staff/get_member_wages',
+    'checkMonth': 'staff/check_month',
+    'excel': 'staff/excel',
 };
 var that;
 

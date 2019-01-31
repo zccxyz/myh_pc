@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>tmp</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+</head>
+<body>
+
+<div id="app" style="margin: 10px">
+    <template>
+        <el-date-picker style="float: left"
+                        v-model="time"
+                        type="month"
+                        value-format="yyyy-MM"
+                        placeholder="选择月">
+        </el-date-picker>
+        <el-button type="primary" style="float: right;margin-bottom: 10px" @click="dc">导出表格</el-button>
+        <el-table
+                :data="list"
+                style="width: 100%">
+            <el-table-column
+                    prop="name"
+                    label="员工">
+            </el-table-column>
+            <el-table-column
+                    prop="role_name"
+                    label="职位">
+            </el-table-column>
+            <el-table-column
+                    prop="salary"
+                    label="底薪">
+            </el-table-column>
+            <el-table-column
+                    prop="manual"
+                    label="手工">
+            </el-table-column>
+            <el-table-column
+                    prop="commission"
+                    label="提成">
+            </el-table-column>
+            <el-table-column
+                    prop="work_money"
+                    label="加班">
+            </el-table-column>
+            <el-table-column
+                    prop="bonus"
+                    label="奖金">
+            </el-table-column>
+            <el-table-column
+                    prop="amerce"
+                    label="扣罚">
+            </el-table-column>
+            <el-table-column
+                    prop="amerce"
+                    label="扣罚">
+            </el-table-column>
+            <el-table-column
+                    prop="operation"
+                    label="操作项目">
+            </el-table-column>
+            <el-table-column
+                    prop="total_wages"
+                    label="实发工资">
+            </el-table-column>
+        </el-table>
+    </template>
+</div>
+
+</body>
+</html>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../js/func.js"></script>
+<script src="../js/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            list: [],
+            time: '',
+        },
+        watch: {
+            time(v) {
+                if(v==null){
+                    this.getData()
+                }else{
+                    this.getTimeData()
+                }
+            }
+        },
+        methods: {
+            getTimeData() {
+                $.get(url(methods.checkMonth) + '&month=' + this.time, v => {
+                    this.list = v.res.detail
+                })
+            },
+            dc() {
+                if (this.list.length == 0) {
+                    return error('没有可导出的数据')
+                }
+                location.href = url(methods.excel)+'&type=list&month=' + this.time
+            },
+            getData() {
+                $.post(url(methods.getMemberWages), v => {
+                    this.list = v.res
+                })
+            }
+        },
+        mounted() {
+            this.$nextTick(e => {
+                //初始化
+                that = this;
+                loginState()
+                this.getData()
+            })
+        }
+    })
+</script>
