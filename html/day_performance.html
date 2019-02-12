@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>业绩核对</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/vip_information.css">
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+</head>
+<body>
+
+<div id="app" class="customer">
+    <template>
+        <p class="cus_title">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+                <el-breadcrumb-item :to="{ path: '/' }">业绩核对</el-breadcrumb-item>
+                <el-breadcrumb-item>每日业绩核对</el-breadcrumb-item>
+            </el-breadcrumb>
+        </p>
+        <div class="cus_center">
+            <el-date-picker class="cus_seatch"
+                            v-model="time"
+                            value-format="yyyy-MM-dd"
+                            type="date"
+                            placeholder="选择日期查询">
+            </el-date-picker>
+            <el-button type="success" class="fr" @click="time=null">本月总业绩</el-button>
+        </div>
+        <el-tabs type="card" @tab-click=""
+                 class="vip_infor">
+            <el-tab-pane label="总消费">
+                <div class="basic_inf">
+                    <el-table border
+                              :data="arr"
+                              style="width: 100%">
+                        <el-table-column
+                                prop="raise_type"
+                                :formatter="formatter2"
+                                label="提成类型">
+                        </el-table-column>
+                        <el-table-column
+                                prop="c_name"
+                                label="名称"
+                                width="180">
+                        </el-table-column>
+                        <el-table-column
+                                prop="v_name"
+                                label="客户">
+                        </el-table-column>
+                        <el-table-column
+                                prop="actual"
+                                label="消费金额">
+                        </el-table-column>
+                        <el-table-column
+                                prop="money"
+                                label="提成业绩">
+                        </el-table-column>
+                        <el-table-column
+                                prop="time"
+                                label="时间">
+                        </el-table-column>
+                        <el-table-column
+                                label="操作"
+                                show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <el-button type="danger" plain size="mini" @click="now=scope.row;type=1;zt=true;">修改</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+            </el-tab-pane>
+            <el-tab-pane label="总消耗">
+                <div class="basic_inf">
+                    <el-table border
+                              :data="arr"
+                              style="width: 100%">
+                        <el-table-column
+                                prop="raise_type"
+                                :formatter="formatter2"
+                                label="提成类型">
+                        </el-table-column>
+                        <el-table-column
+                                prop="v_name"
+                                label="名称"
+                                width="180">
+                        </el-table-column>
+                        <!-- <el-table-column
+                                 prop="vip"
+                                 label="客户">
+                         </el-table-column>-->
+                        <el-table-column
+                                prop="total_price"
+                                label="总消耗">
+                        </el-table-column>
+                        <el-table-column
+                                prop="money"
+                                label="提成业绩">
+                        </el-table-column>
+                        <el-table-column
+                                prop="time"
+                                label="时间">
+                        </el-table-column>
+                        <el-table-column
+                                label="操作"
+                                show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <el-button type="danger" plain size="mini" @click="now=scope.row;type=2;zt=true">修改</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+            </el-tab-pane>
+            <el-tab-pane label="总提成">
+                <div class="basic_inf">
+                    <el-table border
+                              :data="arr"
+                              style="width: 100%">
+                        <!-- <el-table-column
+                                 prop="name"
+                                 label="名称"
+                                 width="180">
+                         </el-table-column>-->
+                        <el-table-column
+                                prop="v_name"
+                                label="客户">
+                        </el-table-column>
+                        <el-table-column
+                                prop="total_fee"
+                                label="总手工">
+                        </el-table-column>
+                        <el-table-column
+                                prop="fee"
+                                label="获得手工">
+                        </el-table-column>
+                        <!--<el-table-column
+                                prop="tc_yj"
+                                label="提成业绩">
+                        </el-table-column>-->
+                        <el-table-column
+                                prop="time"
+                                label="时间">
+                        </el-table-column>
+                        <el-table-column
+                                label="操作"
+                                show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <el-button type="danger" plain size="mini" @click="now=scope.row;type=3;zt=true">修改</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+            </el-tab-pane>
+        </el-tabs>
+
+        <el-dialog
+                title="修改业绩"
+                :before-close="close"
+                :visible.sync="zt"
+                width="400px"
+                center>
+            <ul class="goods_edit">
+                <li>
+                    <span class="list_left">总消费金额</span>
+                    <span class="list_right">
+                    <el-input v-model="type==1?now.actual:type==2?now.total_price:now.total_fee" disabled
+                              placeholder="请输入修改后的金额"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">总消耗金额</span>
+                    <span class="list_right">
+                    <el-input v-model="type==1?now.money:type==2?now.money:now.fee" disabled
+                              placeholder="请输入修改后的金额"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">修改业绩</span>
+                    <span class="list_right">
+                    <el-input v-model="money" placeholder="请输入要变更的业绩金额" type="number"></el-input>
+                </span>
+                </li>
+            </ul>
+            <span slot="footer" class="dialog-footer">
+            <el-button @click="close">取 消</el-button>
+            <el-button type="primary" @click="edit">确 定</el-button>
+          </span>
+        </el-dialog>
+    </template>
+</div>
+
+</body>
+</html>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../js/func.js"></script>
+<script src="../js/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            edit_per: false,
+            zxf_dio: false,
+            zxh_dio: false,
+            zsg_dio: false,
+            value: '',
+            xf: '452',
+            xh: '452',
+            sg: '452',
+            zt: false,
+            tc: '452',
+
+            list: [],
+            xf_zyj: 0,
+            xh_zyj: 0,
+            zsg: 0,
+            ztc: 0,
+            state: false,
+            state2: false,
+            state3: false,
+            arr: [],
+            money: '',
+            now: '',
+            type: 1,
+            userId: '',
+            time: '',
+            time2: '',
+            type2: 1,
+        },
+        methods: {
+            edit() {
+                if (this.money == '') {
+                    return error('请输入金额')
+                }
+                if (this.type == 1) {
+                    if (parseFloat(this.money) > parseFloat(this.now.actual)) {
+                        return error('不能超出总业绩')
+                    }
+                } else if (this.type == 2) {
+                    if (parseFloat(this.money) > parseFloat(this.now.total_price)) {
+                        return error('不能超出总业绩')
+                    }
+                } else if (this.type == 3) {
+                    if (parseFloat(this.money) > parseFloat(this.now.total_fee)) {
+                        return error('不能超出总业绩')
+                    }
+                }
+
+                $.post(url(methods.raiseDetailOperation), {
+                    type: this.type,
+                    data: {new_raise_fee: this.type == 3 ? this.money : '', money: this.money},
+                    id: this.now.id
+                }, v => {
+                    if (v.code == 1) {
+                        success(v['Msg'])
+                        this.close()
+                        this.getData()
+                        this.getDetail(this.userId, this.type)
+                    } else {
+                        error(v['error'])
+                    }
+                })
+            },
+            getDetail(id, type) {
+                this.userId = id
+                this.type2 = type
+                if (type == 1) {
+                    this.state = true
+                } else if (type == 2) {
+                    this.state2 = true
+                } else if (type == 3) {
+                    this.state3 = true
+                }
+                $.post(url(methods.performanceFeiDetails), {
+                    staff: id,
+                    type: type,
+                    start: this.time2 == '' || this.time2 == null ? '' : this.time2[0],
+                    end: this.time2 == '' || this.time2 == null ? '' : this.time2[1]
+                }, v => {
+                    if (v.code == 1) {
+                        this.arr = v.res
+                    } else {
+                        error(v.error)
+                    }
+                })
+            },
+            formatter(r, c) {
+                return (r.xf_total_raise + r.xh_total_raise).toFixed(2)
+            },
+            formatter2(r, c) {
+                if (r.raise_type == 1) {
+                    return '按提成'
+                } else if (r.raise_type == 2) {
+                    return '按业绩'
+                }
+            },
+            close() {
+                this.zt = false
+                this.now = ''
+                this.money = ''
+            },
+            close2() {
+                this.state = false
+                this.state2 = false
+                this.state3 = false
+                this.time2 = ''
+            },
+            getData(type = 1) {
+                this.xf_zyj = 0
+                this.xh_zyj = 0
+                this.zsg = 0
+                this.ztc = 0
+                this.list = []
+                $.get(url(methods.getPerDetail) + `&type=${this.time == null || this.time == '' ? 'list' : 'search'}&time=` + this.time, v => {
+                    if (v.code == 1) {
+                        for (let x of v.res.staffArr) {
+                            this.xf_zyj += x.xf_total
+                            this.xh_zyj += x.xh_total
+                            this.zsg += x.fee_total
+                            this.ztc += x.xf_total_raise + x.xh_total_raise
+                        }
+                        this.xf_zyj = this.xf_zyj.toFixed(2)
+                        this.xh_zyj = this.xh_zyj.toFixed(2)
+                        this.zsg = this.zsg.toFixed(2)
+                        this.ztc = this.ztc.toFixed(2)
+                        this.list = v.res.staffArr
+                    } else {
+                        error(v.error)
+                    }
+                })
+            }
+        },
+        watch: {
+            time(v) {
+                this.getData()
+            },
+            time2() {
+                if(this.state || this.state2 || this.state3){
+                    this.getDetail(this.userId, this.type2)
+                }
+            }
+        },
+        mounted() {
+            this.$nextTick(e => {
+                //初始化
+                that = this;
+                loginState()
+                this.getData()
+            })
+        }
+    })
+</script>
