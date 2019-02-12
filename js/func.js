@@ -1,5 +1,5 @@
-var ym = 'https://www.myhkj.cn/apis/backend/';
-//var ym = 'http://admin.test.com/apis/backend/';
+//var ym = 'https://www.myhkj.cn/apis/backend/';
+var ym = 'http://admin.test.com/apis/backend/';
 
 var methods = {
     'login': 'login/login',
@@ -11,6 +11,7 @@ var methods = {
     'lostDetail': 'member/LostDetail',
     'unTimeDetail': 'member/UnTimeDetail',
     'guest': 'member/guest',
+    'addNew': 'member/AddNew',
     'getOrder': 'member/get_order',
     'vipLevel': 'member/vipLevel',
     'delMember': 'Member/DelMember',

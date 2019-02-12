@@ -145,12 +145,19 @@
                     <el-input v-model="user.tel" placeholder="请输入手机号"></el-input>
                 </span>
                 </li>
+                <!--<li>
+                    <span class="list_left">类别</span>
+                    <span class="list_right">
+                        <el-radio v-model="user.vip_status" label="1">会员</el-radio>
+                        <el-radio v-model="user.vip_status" label="2">散客</el-radio>
+                    </span>
+                </li>-->
                 <li>
                     <span class="list_left">性别</span>
                     <span class="list_right">
-                    <el-radio v-model="user.sex" label="1">女</el-radio>
-                    <el-radio v-model="user.sex" label="2">男</el-radio>
-                </span>
+                        <el-radio v-model="user.sex" label="1">女</el-radio>
+                        <el-radio v-model="user.sex" label="2">男</el-radio>
+                    </span>
                 </li>
                 <li>
                     <span class="list_left">生日类别</span>
@@ -275,13 +282,13 @@
                 <li>
                     <span class="list_left">生日</span>
                     <span class="list_right">
-                    <el-date-picker
-                            v-model="user.birthday"
-                            type="date"
-                            value-format="yyyy-MM-dd"
-                            placeholder="选择生日">
-                    </el-date-picker>
-                </span>
+                        <el-date-picker
+                                v-model="user.birthday"
+                                type="date"
+                                value-format="yyyy-MM-dd"
+                                placeholder="选择生日">
+                        </el-date-picker>
+                    </span>
                 </li>
             </ul>
             <span slot="footer" class="dialog-footer">
@@ -612,6 +619,21 @@
                 } else {
                     return '农历'
                 }
+            }
+        },
+        watch: {
+            user: {
+                handler(x) {
+                    if(x.birthday!='' && x.birthday!=null) {
+                        let arr = x.birthday.split('-')
+                        let bir_year = arr[0]
+                        let date = new Date()
+                        x.age = date.getUTCFullYear()-bir_year
+                    }else{
+                        x.age = ''
+                    }
+                },
+                deep: true
             }
         },
         mounted() {

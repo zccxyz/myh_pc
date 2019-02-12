@@ -14,7 +14,7 @@
         <p class="cus_title">
             <el-breadcrumb separator-class="el-icon-arrow-right">
                 <el-breadcrumb-item>工作台首页</el-breadcrumb-item>
-                <el-breadcrumb-item :to="{ path: '/' }">新客户追踪</el-breadcrumb-item>
+                <el-breadcrumb-item :to="{ path: '/' }">散客管理</el-breadcrumb-item>
             </el-breadcrumb>
         </p>
         <div class="cus_center">
@@ -23,6 +23,7 @@
                       prefix-icon="el-icon-search"
                       v-model="input">
             </el-input>
+            <el-button type="success" class="fr" @click="zt2 = true">新增散客</el-button>
         </div>
         <el-table border
                   ref="multipleTable"
@@ -70,17 +71,18 @@
             </el-table-column>
         </el-table>
 
+        <!--新增-->
         <el-dialog
-                title="添加新客"
-                :visible.sync="addDialogVisible"
+                title="新增散客"
+                :visible.sync="zt2"
                 width="400px"
                 center
                 :before-close="close">
             <ul class="goods_edit">
                 <li>
-                    <span class="list_left">姓名名</span>
+                    <span class="list_left">姓名*</span>
                     <span class="list_right">
-                    <el-input v-model="user.name" placeholder="请输入会员名"></el-input>
+                    <el-input v-model="user.name" placeholder="请输入姓名"></el-input>
                 </span>
                 </li>
                 <li>
@@ -90,20 +92,32 @@
                 </span>
                 </li>
                 <li>
-                    <span class="list_left">手机号</span>
+                    <span class="list_left">手机号*</span>
                     <span class="list_right">
-                    <el-input v-model="user.tel" placeholder="请输入手机号"></el-input>
-                </span>
+                        <el-input v-model="user.tel" placeholder="请输入手机号"></el-input>
+                    </span>
                 </li>
+                <!--<li>
+                    <span class="list_left">类别</span>
+                    <span class="list_right">
+                        <el-radio v-model="user.vip_status" label="1">会员</el-radio>
+                        <el-radio v-model="user.vip_status" label="2">散客</el-radio>
+                    </span>
+                </li>-->
                 <li>
                     <span class="list_left">性别</span>
                     <span class="list_right">
-                    <el-radio v-model="user.sex" label="1">女</el-radio>
-                    <el-radio v-model="user.sex" label="2">男</el-radio>
-                </span>
+                        <el-radio v-model="user.sex" label="1">女</el-radio>
+                        <el-radio v-model="user.sex" label="2">男</el-radio>
+                    </span>
                 </li>
-
                 <li>
+                    <span class="list_left">顾问</span>
+                    <span class="list_right">
+                        <el-input v-model="user.adviser" placeholder="请输入手顾问姓名"></el-input>
+                    </span>
+                </li>
+                <!--<li>
                     <span class="list_left">顾问</span>
                     <span class="list_right">
                     <el-select v-model="value" placeholder="请选择">
@@ -115,11 +129,11 @@
                         </el-option>
                     </el-select>
                 </span>
-                </li>
+                </li>-->
             </ul>
             <span slot="footer" class="dialog-footer">
-            <el-button @click="cancel">取 消</el-button>
-            <el-button type="primary" @click="add">确 定</el-button>
+            <el-button @click="close">取 消</el-button>
+            <el-button type="primary" @click="add2">确 定</el-button>
           </span>
         </el-dialog>
 
@@ -298,18 +312,33 @@
                 'age': '',
                 'tel': '',
                 'sex': '1',
-                'bir_type': '1',
-                'birthday': '',
+                'weixin': '',
+                'adviser': '',
             },
             room: '',
             now: '',
             zt: false,
+            zt2: false,
 
             arr: [],
             user2: {},
             pw: '',
         },
         methods: {
+            add2() {
+                if (this.user.name == '' || this.user.tel.length != 11) {
+                    return error('请输入姓名和11为手机号码')
+                }
+                $.post(url(methods.addNew), this.user, v => {
+                    if (v.code == 1) {
+                        success(v.Msg)
+                        this.close()
+                        this.getData()
+                    } else {
+                        error(v.error)
+                    }
+                })
+            },
             exportData() {
                 /*$.get(url(methods.exportMember), v=>{
 
@@ -460,7 +489,8 @@
                     return
                 }
                 $.post(url(methods.addArrive), {
-                    'mid': this.now.id, 'room': this.room}, v => {
+                    'mid': this.now.id, 'room': this.room
+                }, v => {
                     if (v.code == -1) {
                         error(v.errorMsg)
                     } else {
@@ -502,11 +532,12 @@
                     'age': '',
                     'tel': '',
                     'sex': '1',
-                    'bir_type': '1',
-                    'birthday': '',
+                    'weixin': '',
+                    'adviser': '',
                 }
                 this.addDialogVisible = false
                 this.zt = false
+                this.zt2 = false
             },
             cancel() {
                 this.addDialogVisible = false
@@ -578,12 +609,13 @@
             },
             getData() {
                 $.get(url(methods.guest), v => {
-                    for(let x of v.data.guests) {
+                    for (let x of v.data.guests) {
                         x['sex'] = x['sex'].toString()
                         x['bir_type'] = x['bir_type'].toString()
-                        x['marital'] = x['marital'].toString()
+                        //x['marital'] = x['marital'].toString()
                     }
                     this.arr = v.data.guests
+
                 })
             },
             formatter2(r, c) {
@@ -594,9 +626,9 @@
                 }
             },
             sub() {
-                if(this.user2['name'] == '' || this.user2['age'] == ''
-                    || this.user2['tel'] == '' || this.user2['birthday'] == ''||
-                    this.user2['birthday'] == null){
+                if (this.user2['name'] == '' || this.user2['age'] == ''
+                    || this.user2['tel'] == '' || this.user2['birthday'] == '' ||
+                    this.user2['birthday'] == null) {
                     return error('请填完星号内容');
                 }
                 $.post(url(methods.vipLevel), {
@@ -610,13 +642,13 @@
                     birthday: this.user2['birthday'],
                     adviser: this.user2['adviser'],
                     id: this.user2['id']
-                }, v=>{
-                    if(v.code==1){
+                }, v => {
+                    if (v.code == 1) {
                         this.user2 = {}
                         this.zt = false
                         this.getData()
                         return success(v['msg'])
-                    }else{
+                    } else {
                         return error(v['error'])
                     }
                 })
