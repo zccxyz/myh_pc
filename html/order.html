@@ -10,6 +10,9 @@
         div{
             white-space: nowrap;
         }
+        .basic_inf tr>td:last-child{
+            text-align: left;
+        }
     </style>
 </head>
 <body>
@@ -48,7 +51,7 @@
                       prefix-icon="el-icon-search"
                       v-model="input">
             </el-input>
-            <el-date-picker
+            <el-date-picker style="width: 400px"
                     v-model="time"
                     type="daterange"
                     value-format="yyyy-MM-dd"
@@ -64,11 +67,11 @@
                     style="width: 100%" fit="true">
                 <el-table-column
                         prop="sn"
-                        label="订单编号">
+                        label="订单编号" width="175">
                 </el-table-column>
                 <el-table-column
                         prop="create_time"
-                        label="订单时间">
+                        label="订单时间" width="190">
                 </el-table-column>
                 <el-table-column
                         prop="store_name"
