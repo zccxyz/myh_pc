@@ -108,6 +108,9 @@
         },
         filters: {
             two(v) {
+                if(v == undefined){
+                    return 0
+                }
                 return v.toFixed(2)
             }
         },
