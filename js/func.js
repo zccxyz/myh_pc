@@ -12,6 +12,7 @@ var methods = {
     'lostDetail': 'member/LostDetail',
     'unTimeDetail': 'member/UnTimeDetail',
     'guest': 'member/guest',
+    'addNew': 'member/AddNew',
     'getOrder': 'member/get_order',
     'vipLevel': 'member/vipLevel',
     'delMember': 'Member/DelMember',
