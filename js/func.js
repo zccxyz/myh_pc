@@ -1,5 +1,5 @@
-// var ym = 'https://www.myhkj.cn/apis/backend/';
-var ym = 'http://admin.test.com/apis/backend/';
+var ym = 'https://www.myhkj.cn/apis/backend/';
+//var ym = 'http://admin.test.com/apis/backend/';
 // var ym = 'http://127.0.0.1:8000/apis/backend/';
 
 var methods = {
@@ -108,6 +108,7 @@ var methods = {
     'getMemberWages': 'staff/get_member_wages',
     'checkMonth': 'staff/check_month',
     'excel': 'staff/excel',
+    'getDayAchievement': 'achievement/get_day_achievement',
 };
 var that;
 
