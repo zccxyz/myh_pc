@@ -257,7 +257,6 @@
                         success(v['Msg'])
                         this.close()
                         this.getData()
-                        this.getDetail(this.userId, this.type)
                     } else {
                         error(v['error'])
                     }
@@ -281,6 +280,7 @@
                 }, v => {
                     if (v.code == 1) {
                         this.arr = v.res
+                        success(v.Msg)
                     } else {
                         error(v.error)
                     }
