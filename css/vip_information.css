@@ -1,3 +1,6 @@
+div{
+    white-space: nowrap !important;
+}
 .vip_infor{
 	margin-top: 10px;
 }
