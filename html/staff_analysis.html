@@ -5,6 +5,11 @@
     <title>员工分析</title>
     <link rel="stylesheet" href="../css/index.css">
     <link rel="stylesheet" type="text/css" href="../css/common.css">
+    <style>
+        div{
+            white-space: nowrap !important;
+        }
+    </style>
 </head>
 <body>
 
@@ -27,45 +32,82 @@
             </el-date-picker>
         </div>
         <div class="basic_inf">
-            <el-table :data="a_staff_data">
+            <el-table :data="a_staff_data" fit="true">
                 <el-table-column
                         label="员工姓名"
                         prop="staff">
                 </el-table-column>
-                <el-table-column @click=""
-                        prop="sg_money"
+                <el-table-column
                         label="手工金额">
+                    <template slot-scope="scope">
+                        <el-button type="primary" plain size="mini" @click="han_dio=true">
+                            1236
+                        </el-button>
+                    </template>
                 </el-table-column>
                 <el-table-column
-                        prop="han_fre"
                         label="操作次数">
+                    <template slot-scope="scope">
+                        <el-button type="success" plain size="mini" @click="do_amout_dio=true">
+                            15
+                        </el-button>
+                    </template>
                 </el-table-column>
-                <el-table-column prop="xh_mon"
+                <el-table-column
                                  label="消耗金额">
+                    <template slot-scope="scope">
+                        <el-button type="warning" plain size="mini" @click="do_amout_dio=true">
+                            15
+                        </el-button>
+                    </template>
                 </el-table-column>
                 <el-table-column
-                        prop="new"
                         label="新客数">
+                    <template slot-scope="scope">
+                        <el-button type="info" plain size="mini" @click="new_dio=true">
+                            15
+                        </el-button>
+                    </template>
                 </el-table-column>
                 <el-table-column
-                        prop="amout"
                         label="客户数">
+                    <template slot-scope="scope">
+                        <el-button type="danger" plain size="mini" @click="amout_dio=true">
+                            13
+                        </el-button>
+                    </template>
                 </el-table-column>
                 <el-table-column
-                        prop="pro_per"
                         label="产品业绩">
+                    <template slot-scope="scope">
+                        <el-button type="info" plain size="mini" @click="pro_dio=true">
+                            3523
+                        </el-button>
+                    </template>
                 </el-table-column>
                 <el-table-column
-                        prop="th_per"
                         label="套盒业绩">
+                    <template slot-scope="scope">
+                        <el-button type="warning" plain size="mini" @click="pro_dio=true">
+                            3523
+                        </el-button>
+                    </template>
                 </el-table-column>
                 <el-table-column
-                        prop="item_per"
                         label="项目业绩">
+                    <template slot-scope="scope">
+                        <el-button type="success" plain size="mini" @click="pro_dio=true">
+                            3523
+                        </el-button>
+                    </template>
                 </el-table-column>
                 <el-table-column
-                        prop="big_per"
                         label="大项目业绩">
+                    <template slot-scope="scope">
+                        <el-button type="primary" plain size="mini" @click="pro_dio=true">
+                            3523
+                        </el-button>
+                    </template>
                 </el-table-column>
             </el-table>
         </div>
@@ -75,7 +117,7 @@
                 :visible.sync="han_dio"
                 center>
             <el-table border
-                      :data="han_data"
+                      :data="detail_data"
                       style="width: 100%">
                 <el-table-column
                         prop="v_name"
@@ -100,13 +142,13 @@
                 </el-table-column>
             </el-table>
         </el-dialog>
-        <!--操作数量和消耗金额详情-->
+        <!--操作数量及消耗金额详情-->
         <el-dialog
-                title="员工操作数量详情"
+                title="操作数量及消耗金额详情"
                 :visible.sync="do_amout_dio"
                 center>
             <el-table border
-                      :data="do_data"
+                      :data="detail_data"
                       style="width: 100%">
                 <el-table-column
                         prop="name"
@@ -133,15 +175,76 @@
         </el-dialog>
         <!--新客详情-->
         <el-dialog
-                title="员工操作数量详情"
-                :visible.sync="do_amout_dio"
+                title="新客详情"
+                :visible.sync="new_dio"
                 center>
             <el-table border
-                      :data="do_data"
+                      :data="detail_data"
                       style="width: 100%">
                 <el-table-column
                         prop="v_name"
                         label="新客名称">
+                </el-table-column>
+                <el-table-column
+                        prop="money"
+                        label="消费金额">
+                </el-table-column>
+                <el-table-column
+                        prop="name"
+                        label="品项名称">
+                </el-table-column>
+                <el-table-column
+                        prop="time"
+                        label="时间">
+                </el-table-column>
+            </el-table>
+        </el-dialog>
+        <!--客户详情-->
+        <el-dialog
+                title="客户详情"
+                :visible.sync="amout_dio"
+                center>
+            <el-table border
+                      :data="detail_data"
+                      style="width: 100%">
+                <el-table-column
+                        prop="v_name"
+                        label="客户名称">
+                </el-table-column>
+                <el-table-column
+                        prop="money"
+                        label="消费金额">
+                </el-table-column>
+                <el-table-column
+                        prop="name"
+                        label="消费品项名称">
+                </el-table-column>
+                <el-table-column
+                        prop="money"
+                        label="消耗金额">
+                </el-table-column>
+                <el-table-column
+                        prop="name"
+                        label="消耗品项名称">
+                </el-table-column>
+            </el-table>
+        </el-dialog>
+        <!--产品 套盒 项目 大项目 业绩详情-->
+        <el-dialog
+                title="产品业绩详情"
+                :visible.sync="pro_dio"
+                center>
+            <el-table border
+                      :data="detail_data"
+                      style="width: 100%">
+                <el-table-column
+                        prop="name"
+                        label="品项名称"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="v_name"
+                        label="客户">
                 </el-table-column>
                 <el-table-column
                         prop="number"
@@ -149,11 +252,7 @@
                 </el-table-column>
                 <el-table-column
                         prop="money"
-                        label="单次消耗金额">
-                </el-table-column>
-                <el-table-column
-                        prop="total_money"
-                        label="总消耗金额">
+                        label="消费金额">
                 </el-table-column>
             </el-table>
         </el-dialog>
@@ -173,13 +272,19 @@
             time:'',
             han_dio:false,
             do_amout_dio:false,
-            xh_mon_dio:false,
             new_dio:false,
             amout_dio:false,
             pro_dio:false,
-            item_dio:false,
-            th_dio:false,
-            big_item_dio:false,
+            detail_data:[{
+                name:'李丽',
+                v_name:'李飒',
+                number:'12',
+                fee:'13',
+                total_fee:'139',
+                money:'125',
+                total_money:'45632',
+                time:'2015-02-12',
+            }],
             a_staff_data:[{
                 staff:'李飒',
                 sg_money:'123',
@@ -187,7 +292,7 @@
                 xh_mon:'10002',
                 new:'6',
                 amout:'25',
-                pro_per:'1563',
+                pro_per:'15635555555555555555555555555555555555555555555555',
                 th_per:'4562',
                 item_per:'125',
                 big_per:'12563',
