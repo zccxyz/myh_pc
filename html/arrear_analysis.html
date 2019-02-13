@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>负债分析</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/vip_information.css">
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+</head>
+<body>
+
+<div id="app" class="customer">
+    <template>
+        <p class="cus_title">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+                <el-breadcrumb-item :to="{ path: '/' }">店务分析</el-breadcrumb-item>
+                <el-breadcrumb-item>负债分析</el-breadcrumb-item>
+            </el-breadcrumb>
+        </p>
+        <div class="cus_center">
+            <el-input class="cus_seatch" style="float: left"
+                      placeholder="请输入品项名称"
+                      prefix-icon="el-icon-search"
+                      v-model="input">
+            </el-input>
+            <el-date-picker style="width: 400px"
+                            v-model="time"
+                            type="daterange"
+                            value-format="yyyy-MM-dd"
+                            range-separator="至"
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期">
+            </el-date-picker>
+        </div>
+                <p class="total" style="font-size: 1.8rem;
+padding: 0 30px">
+                    总剩余次数：525
+                    <span class="cr"  style="font-size: 1.8rem;margin-left:100px">总负债：123562</span>
+                </p>
+        <div class="basic_inf">
+
+            <el-table :data="arrear_data" fit="true">
+                <el-table-column
+                        label="项目名称"
+                        prop="name">
+                </el-table-column>
+                <el-table-column
+                        label="剩余次数/负债金额">
+                    <template slot-scope="scope">
+                        <el-button type="primary" plain size="mini" @click="arrear_dio=true">
+                            121/36236
+                        </el-button>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        label="套盒名称"
+                        prop="name">
+                </el-table-column>
+                <el-table-column
+                        label="剩余次数/负债金额">
+                    <template slot-scope="scope">
+                        <el-button type="success" plain size="mini" @click="arrear_dio=true">
+                            15/1256
+                        </el-button>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        label="方案名称"
+                        prop="name">
+                </el-table-column>
+                <el-table-column
+                        label="剩余次数/负债金额">
+                    <template slot-scope="scope">
+                        <el-button type="warning" plain size="mini" @click="arrear_dio=true">
+                            15/4532
+                        </el-button>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        label="卡项名称"
+                        prop="name">
+                </el-table-column>
+                <el-table-column
+                        label="剩余/总金额">
+                    <template slot-scope="scope">
+                        <el-button type="info" plain size="mini" @click="arrear_dio=true">
+                            1532/15236
+                        </el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </div>
+        <!--客户详情-->
+        <el-dialog
+                title="客户详情"
+                :visible.sync="arrear_dio"
+                center>
+            <el-table border
+                      :data="detail_data"
+                      style="width: 100%">
+                <el-table-column
+                        prop="v_name"
+                        label="客户名称">
+                </el-table-column>
+                <el-table-column
+                        prop="fre"
+                        label="剩余次数">
+                </el-table-column>
+                <el-table-column
+                        prop="money"
+                        label="单次金额">
+                </el-table-column>
+                <el-table-column
+                        prop="total_money"
+                        label="剩余金额">
+                </el-table-column>
+            </el-table>
+        </el-dialog>
+    </template>
+</div>
+
+</body>
+</html>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../js/func.js"></script>
+<script src="../js/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            input:'',
+            time:'',
+            arrear_dio:false,
+            detail_data:[{
+                v_name:'丽丽',
+                fre:'12',
+                money:'120',
+                total_money:'1200',
+            },{
+                v_name:'丽丽',
+                    fre:'12',
+                    money:'120',
+                    total_money:'1200',
+            }],
+            arrear_data:[{
+                name:'肩颈',
+            },{
+                name:'头疗',
+            }]
+        },
+        methods: {},
+        mounted() {
+            this.$nextTick(e=>{
+                //初始化
+                that = this;
+                loginState()
+            })
+        }
+    })
+</script>

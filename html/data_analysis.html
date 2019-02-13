@@ -2,14 +2,278 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>tmp</title>
+    <title>数据分析</title>
     <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/vip_information.css">
     <link rel="stylesheet" type="text/css" href="../css/common.css">
 </head>
 <body>
 
-<div id="app">
+<div id="app" class="customer">
+    <template>
+        <p class="cus_title">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+                <el-breadcrumb-item :to="{ path: '/' }">店务分析</el-breadcrumb-item>
+                <el-breadcrumb-item>数据分析</el-breadcrumb-item>
+            </el-breadcrumb>
+        </p>
+        <div class="cus_center">
+            <el-date-picker style="width: 400px"
+                            v-model="time"
+                            type="daterange"
+                            value-format="yyyy-MM-dd"
+                            range-separator="至"
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期">
+            </el-date-picker>
+        </div>
+        <el-tabs type="card"
+                 class="vip_infor">
+            <el-tab-pane label="收入合计">
+                <div class="cus_center">
+                    <el-input class="cus_seatch" style="float: left"
+                              placeholder="请输入内容"
+                              prefix-icon="el-icon-search"
+                              v-model="input">
+                    </el-input>
+                </div>
+                <div class="basic_inf">
+                    <el-table :data="data">
+                        <el-table-column
+                                label="项目名称"
+                                prop="name">
+                        </el-table-column>
+                        <el-table-column  fit="true"
+                                label="项目数量/业绩">
+                            <template slot-scope="scope">
+                                <el-button type="primary" plain size="mini" @click="detail_dio=true">
+                                    12/4536
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                label="套盒名称"
+                                prop="name">
+                        </el-table-column>
+                        <el-table-column
+                                label="套盒数量/业绩">
+                            <template slot-scope="scope">
+                                <el-button type="success" plain size="mini" @click="detail_dio=true">
+                                    15/5635
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                label="产品名称"
+                                prop="name">
+                        </el-table-column>
+                        <el-table-column
+                                label="产品数量/业绩">
+                            <template slot-scope="scope">
+                                <el-button type="warning" plain size="mini" @click="detail_dio=true">
+                                    20/52364
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                label="方案名称"
+                                prop="name">
+                        </el-table-column>
+                        <el-table-column
+                                label="方案数量/业绩">
+                            <template slot-scope="scope">
+                                <el-button type="info" plain size="mini" @click="detail_dio=true">
+                                    6/6396
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                label="卡项名称"
+                                prop="name">
+                        </el-table-column>
+                        <el-table-column
+                                label="充值次数/金额">
+                            <template slot-scope="scope">
+                                <el-button type="info" plain size="mini" @click="new_dio=true">
+                                    55/12356
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+            </el-tab-pane>
+            <el-tab-pane label="消耗合计">
+                <div class="cus_center">
+                    <el-input class="cus_seatch" style="float: left"
+                              placeholder="请输入内容"
+                              prefix-icon="el-icon-search"
+                              v-model="input">
+                    </el-input>
+                </div>
+                <div class="basic_inf">
+                    <el-table :data="data">
+                        <el-table-column
+                                label="项目名称"
+                                prop="name">
+                        </el-table-column>
+                        <el-table-column
+                                label="项目消耗次数/金额">
+                            <template slot-scope="scope">
+                                <el-button type="primary" plain size="mini" @click="new_dio=true">
+                                    55/12356
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                label="套盒名称"
+                                prop="name">
+                        </el-table-column>
+                        <el-table-column
+                                label="套盒消耗次数/金额">
+                            <template slot-scope="scope">
+                                <el-button type="primary" plain size="mini" @click="new_dio=true">
+                                    55/12356
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                label="卡项名称"
+                                prop="name">
+                        </el-table-column>
+                        <el-table-column
+                                label="卡扣次数/金额">
+                            <template slot-scope="scope">
+                                <el-button type="warning" plain size="mini" @click="new_dio=true">
+                                    55/12356
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                label="余额消耗">
+                            <template slot-scope="scope">
+                                <el-button type="warning" plain size="mini" @click="new_dio=true">
+                                    12356
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+            </el-tab-pane>
+            <el-tab-pane label="赠送合计">
+                <div class="cus_center">
+                    <el-input class="cus_seatch" style="float: left"
+                              placeholder="请输入内容"
+                              prefix-icon="el-icon-search"
+                              v-model="input">
+                    </el-input>
+                </div>
+                <div class="basic_inf">
+                    <el-table :data="data">
+                    <el-table-column
+                            label="项目名称"
+                            prop="name">
+                    </el-table-column>
+                        <el-table-column  fit="true"
+                                          label="项目数量">
+                            <template slot-scope="scope">
+                                <el-button type="primary" plain size="mini" @click="detail_dio=true">
+                                    12
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                label="套盒名称"
+                                prop="name">
+                        </el-table-column>
+                        <el-table-column
+                                label="套盒数量">
+                            <template slot-scope="scope">
+                                <el-button type="success" plain size="mini" @click="detail_dio=true">
+                                    15
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                label="产品名称"
+                                prop="name">
+                        </el-table-column>
+                        <el-table-column
+                                label="产品数量">
+                            <template slot-scope="scope">
+                                <el-button type="warning" plain size="mini" @click="detail_dio=true">
+                                    20
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                label="方案名称"
+                                prop="name">
+                        </el-table-column>
+                        <el-table-column
+                                label="方案数量">
+                            <template slot-scope="scope">
+                                <el-button type="info" plain size="mini" @click="detail_dio=true">
+                                    6
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                label="卡项名称"
+                                prop="name">
+                        </el-table-column>
+                        <el-table-column
+                                label="卡项数量">
+                            <template slot-scope="scope">
+                                <el-button type="info" plain size="mini" @click="new_dio=true">
+                                    55
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                label="余额">
+                            <template slot-scope="scope">
+                                <el-button type="info" plain size="mini" @click="new_dio=true">
+                                    5525
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+            </el-tab-pane>
+        </el-tabs>
+        <!--产品 套盒 项目 方案 等 业绩详情-->
+        <el-dialog
+                title="业绩详情"
+                :visible.sync="detail_dio"
+                center>
+            <el-table border
+                      :data="detail_data"
+                      style="width: 100%">
+                <el-table-column
+                        prop="v_name"
+                        label="客户">
+                </el-table-column>
+                <el-table-column
+                        prop="name"
+                        label="品项名称"
+                        width="180">
+                </el-table-column>
 
+                <el-table-column
+                        prop="number"
+                        label="数量">
+                </el-table-column>
+                <el-table-column
+                        prop="money"
+                        label="金额">
+                </el-table-column>
+                <el-table-column
+                        prop="time"
+                        label="时间">
+                </el-table-column>
+            </el-table>
+        </el-dialog>
+    </template>
 </div>
 
 </body>
@@ -21,7 +285,44 @@
 <script>
     new Vue({
         el: '#app',
-        data: {},
+        data: {
+            input:'',
+            time:'',
+            detail_dio:false,
+            detail_data:[{
+                name:'李丽',
+                v_name:'李飒',
+                number:'12',
+                fee:'13',
+                total_fee:'139',
+                money:'125',
+                total_money:'45632',
+                time:'2015-02-12',
+            }],
+            data:[{
+                name:'李飒',
+                sg_money:'123',
+                han_fre:'20',
+                xh_mon:'10002',
+                new:'6',
+                amout:'25',
+                pro_per:'1563',
+                th_per:'4562',
+                item_per:'125',
+                big_per:'12563',
+            },{
+                name:'李飒',
+                sg_money:'123',
+                han_fre:'20',
+                xh_mon:'10002',
+                new:'6',
+                amout:'25',
+                pro_per:'1563',
+                th_per:'4562',
+                item_per:'125',
+                big_per:'12563',
+            }]
+        },
         methods: {},
         mounted() {
             this.$nextTick(e=>{
