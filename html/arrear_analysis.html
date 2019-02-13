@@ -6,6 +6,12 @@
     <link rel="stylesheet" href="../css/index.css">
     <link rel="stylesheet" href="../css/vip_information.css">
     <link rel="stylesheet" type="text/css" href="../css/common.css">
+    <style>
+        .arrear .el-table{
+            width: 20%;
+            float: left;
+        }
+        </style>
 </head>
 <body>
 
@@ -37,7 +43,7 @@ padding: 0 30px">
                     总剩余次数：525
                     <span class="cr"  style="font-size: 1.8rem;margin-left:100px">总负债：123562</span>
                 </p>
-        <div class="basic_inf">
+        <div class="basic_inf arrear">
 
             <el-table :data="arrear_data" fit="true">
                 <el-table-column
@@ -52,6 +58,8 @@ padding: 0 30px">
                         </el-button>
                     </template>
                 </el-table-column>
+            </el-table>
+            <el-table :data="arrear_data">
                 <el-table-column
                         label="套盒名称"
                         prop="name">
@@ -64,6 +72,8 @@ padding: 0 30px">
                         </el-button>
                     </template>
                 </el-table-column>
+            </el-table>
+            <el-table :data="arrear_data">
                 <el-table-column
                         label="方案名称"
                         prop="name">
@@ -76,6 +86,8 @@ padding: 0 30px">
                         </el-button>
                     </template>
                 </el-table-column>
+            </el-table>
+            <el-table :data="arrear_data">
                 <el-table-column
                         label="卡项名称"
                         prop="name">

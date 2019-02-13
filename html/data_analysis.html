@@ -6,6 +6,26 @@
     <link rel="stylesheet" href="../css/index.css">
     <link rel="stylesheet" href="../css/vip_information.css">
     <link rel="stylesheet" type="text/css" href="../css/common.css">
+    <style>
+        .shouru .el-table{
+            width: 20%;
+            float: left;
+        }
+        .xiaohao .el-table{
+            width: 29%;
+            float: left;
+        }
+        .xiaohao .el-table:last-child{
+            width: 13%;
+        }
+        .give .el-table{
+            width: 18.5%;
+            float: left;
+        }
+        .give .el-table:last-child{
+            width: 7.5%;
+        }
+    </style>
 </head>
 <body>
 
@@ -37,7 +57,7 @@
                               v-model="input">
                     </el-input>
                 </div>
-                <div class="basic_inf">
+                <div class="basic_inf shouru">
                     <el-table :data="data">
                         <el-table-column
                                 label="项目名称"
@@ -51,6 +71,8 @@
                                 </el-button>
                             </template>
                         </el-table-column>
+                    </el-table>
+                    <el-table :data="data">
                         <el-table-column
                                 label="套盒名称"
                                 prop="name">
@@ -63,6 +85,8 @@
                                 </el-button>
                             </template>
                         </el-table-column>
+                    </el-table>
+                    <el-table :data="data">
                         <el-table-column
                                 label="产品名称"
                                 prop="name">
@@ -75,6 +99,8 @@
                                 </el-button>
                             </template>
                         </el-table-column>
+                    </el-table>
+                    <el-table :data="data">
                         <el-table-column
                                 label="方案名称"
                                 prop="name">
@@ -87,6 +113,8 @@
                                 </el-button>
                             </template>
                         </el-table-column>
+                    </el-table>
+                    <el-table :data="data">
                         <el-table-column
                                 label="卡项名称"
                                 prop="name">
@@ -110,7 +138,7 @@
                               v-model="input">
                     </el-input>
                 </div>
-                <div class="basic_inf">
+                <div class="basic_inf xiaohao">
                     <el-table :data="data">
                         <el-table-column
                                 label="项目名称"
@@ -124,6 +152,8 @@
                                 </el-button>
                             </template>
                         </el-table-column>
+                    </el-table>
+                    <el-table :data="data">
                         <el-table-column
                                 label="套盒名称"
                                 prop="name">
@@ -136,6 +166,8 @@
                                 </el-button>
                             </template>
                         </el-table-column>
+                    </el-table>
+                    <el-table :data="data">
                         <el-table-column
                                 label="卡项名称"
                                 prop="name">
@@ -148,6 +180,8 @@
                                 </el-button>
                             </template>
                         </el-table-column>
+                    </el-table>
+                    <el-table :data="data">
                         <el-table-column
                                 label="余额消耗">
                             <template slot-scope="scope">
@@ -167,7 +201,7 @@
                               v-model="input">
                     </el-input>
                 </div>
-                <div class="basic_inf">
+                <div class="basic_inf give">
                     <el-table :data="data">
                     <el-table-column
                             label="项目名称"
@@ -181,6 +215,8 @@
                                 </el-button>
                             </template>
                         </el-table-column>
+                    </el-table>
+                    <el-table :data="data">
                         <el-table-column
                                 label="套盒名称"
                                 prop="name">
@@ -193,6 +229,8 @@
                                 </el-button>
                             </template>
                         </el-table-column>
+                    </el-table>
+                    <el-table :data="data">
                         <el-table-column
                                 label="产品名称"
                                 prop="name">
@@ -205,6 +243,8 @@
                                 </el-button>
                             </template>
                         </el-table-column>
+                    </el-table>
+                    <el-table :data="data">
                         <el-table-column
                                 label="方案名称"
                                 prop="name">
@@ -217,6 +257,8 @@
                                 </el-button>
                             </template>
                         </el-table-column>
+                    </el-table>
+                    <el-table :data="data">
                         <el-table-column
                                 label="卡项名称"
                                 prop="name">
@@ -229,6 +271,8 @@
                                 </el-button>
                             </template>
                         </el-table-column>
+                    </el-table>
+                    <el-table :data="data">
                         <el-table-column
                                 label="余额">
                             <template slot-scope="scope">
