@@ -6,6 +6,22 @@
     <link rel="stylesheet" href="../css/index.css">
     <link rel="stylesheet" type="text/css" href="../css/common.css">
     <link rel="stylesheet" type="text/css" href="../css/customer.css">
+    <style>
+        .choice_in{
+            width: 60px;
+        }
+        .choice_in>input{
+            text-align: center;
+            height:30px;
+            padding: 0;
+        }
+        .in_left{
+            margin-right:10px;
+        }
+        .in_right{
+            margin:0 30px 0 10px;
+        }
+    </style>
 </head>
 <body>
 
@@ -41,6 +57,12 @@
             </a>
             <el-button type="success" class="fr" @click="del">批量删除</el-button>
             <el-button type="success" class="fr" @click="addDialogVisible = true">新增会员</el-button>
+        </div>
+        <div class="cus_center">
+            每月到店：<el-input v-model="input" placeholder="次" class="choice_in in_left"></el-input>至<el-input v-model="input" placeholder="次" class="choice_in in_right"></el-input>
+            剩余次数：<el-input v-model="input" placeholder="次" class="choice_in in_left"></el-input>至<el-input v-model="input" placeholder="次" class="choice_in in_right"></el-input>
+            会员余额：<el-input v-model="input" placeholder="元" class="choice_in in_left"></el-input>至<el-input v-model="input" placeholder="元" class="choice_in in_right"></el-input>
+            <el-button type="primary" style="height: 30px;padding: 0 15px">查询</el-button>
         </div>
         <el-table border
                   ref="multipleTable"

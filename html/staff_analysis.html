@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>员工分析</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+</head>
+<body>
+
+<div id="app" class="customer">
+    <template>
+        <p class="cus_title">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+                <el-breadcrumb-item :to="{ path: '/' }">店务分析</el-breadcrumb-item>
+                <el-breadcrumb-item>员工分析</el-breadcrumb-item>
+            </el-breadcrumb>
+        </p>
+        <div class="cus_center">
+            <el-date-picker style="width: 400px"
+                            v-model="time"
+                            type="daterange"
+                            value-format="yyyy-MM-dd"
+                            range-separator="至"
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期">
+            </el-date-picker>
+        </div>
+        <div class="basic_inf">
+            <el-table :data="a_staff_data">
+                <el-table-column
+                        label="员工姓名"
+                        prop="staff">
+                </el-table-column>
+                <el-table-column @click=""
+                        prop="sg_money"
+                        label="手工金额">
+                </el-table-column>
+                <el-table-column
+                        prop="han_fre"
+                        label="操作次数">
+                </el-table-column>
+                <el-table-column prop="xh_mon"
+                                 label="消耗金额">
+                </el-table-column>
+                <el-table-column
+                        prop="new"
+                        label="新客数">
+                </el-table-column>
+                <el-table-column
+                        prop="amout"
+                        label="客户数">
+                </el-table-column>
+                <el-table-column
+                        prop="pro_per"
+                        label="产品业绩">
+                </el-table-column>
+                <el-table-column
+                        prop="th_per"
+                        label="套盒业绩">
+                </el-table-column>
+                <el-table-column
+                        prop="item_per"
+                        label="项目业绩">
+                </el-table-column>
+                <el-table-column
+                        prop="big_per"
+                        label="大项目业绩">
+                </el-table-column>
+            </el-table>
+        </div>
+        <!--手工业绩详情-->
+        <el-dialog
+                title="员工手工业绩详情"
+                :visible.sync="han_dio"
+                center>
+            <el-table border
+                      :data="han_data"
+                      style="width: 100%">
+                <el-table-column
+                        prop="v_name"
+                        label="客户">
+                </el-table-column>
+                <el-table-column
+                         prop="name"
+                         label="名称"
+                         width="180">
+                 </el-table-column>
+                    <el-table-column
+                            prop="number"
+                            label="数量">
+                    </el-table-column>
+                    <el-table-column
+                            prop="fee"
+                            label="单次手工">
+                    </el-table-column>
+                <el-table-column
+                        prop="total_fee"
+                        label="总手工">
+                </el-table-column>
+            </el-table>
+        </el-dialog>
+        <!--操作数量和消耗金额详情-->
+        <el-dialog
+                title="员工操作数量详情"
+                :visible.sync="do_amout_dio"
+                center>
+            <el-table border
+                      :data="do_data"
+                      style="width: 100%">
+                <el-table-column
+                        prop="name"
+                        label="操作项目名称"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="v_name"
+                        label="客户">
+                </el-table-column>
+                <el-table-column
+                        prop="number"
+                        label="数量">
+                </el-table-column>
+                <el-table-column
+                        prop="money"
+                        label="单次消耗金额">
+                </el-table-column>
+                <el-table-column
+                        prop="total_money"
+                        label="总消耗金额">
+                </el-table-column>
+            </el-table>
+        </el-dialog>
+        <!--新客详情-->
+        <el-dialog
+                title="员工操作数量详情"
+                :visible.sync="do_amout_dio"
+                center>
+            <el-table border
+                      :data="do_data"
+                      style="width: 100%">
+                <el-table-column
+                        prop="v_name"
+                        label="新客名称">
+                </el-table-column>
+                <el-table-column
+                        prop="number"
+                        label="数量">
+                </el-table-column>
+                <el-table-column
+                        prop="money"
+                        label="单次消耗金额">
+                </el-table-column>
+                <el-table-column
+                        prop="total_money"
+                        label="总消耗金额">
+                </el-table-column>
+            </el-table>
+        </el-dialog>
+    </template>
+</div>
+
+</body>
+</html>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../js/func.js"></script>
+<script src="../js/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            time:'',
+            han_dio:false,
+            do_amout_dio:false,
+            xh_mon_dio:false,
+            new_dio:false,
+            amout_dio:false,
+            pro_dio:false,
+            item_dio:false,
+            th_dio:false,
+            big_item_dio:false,
+            a_staff_data:[{
+                staff:'李飒',
+                sg_money:'123',
+                han_fre:'20',
+                xh_mon:'10002',
+                new:'6',
+                amout:'25',
+                pro_per:'1563',
+                th_per:'4562',
+                item_per:'125',
+                big_per:'12563',
+            },{
+        staff:'李飒',
+            sg_money:'123',
+            han_fre:'20',
+            xh_mon:'10002',
+            new:'6',
+            amout:'25',
+            pro_per:'1563',
+            th_per:'4562',
+            item_per:'125',
+            big_per:'12563',
+    }]
+        },
+        methods: {},
+        mounted() {
+            this.$nextTick(e=>{
+                //初始化
+                that = this;
+                loginState()
+            })
+        }
+    })
+</script>
