@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>客户分析</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+    <style>
+        .choice_in{
+            width: 60px;
+        }
+        .choice_in>input{
+            text-align: center;
+            height:30px;
+            padding: 0;
+        }
+        .in_left{
+            margin-right:10px;
+        }
+        .in_right{
+            margin:0 30px 0 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app" class="customer">
+    <template>
+        <p class="cus_title">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+                <el-breadcrumb-item :to="{ path: '/' }">店务分析</el-breadcrumb-item>
+                <el-breadcrumb-item>客户分析</el-breadcrumb-item>
+            </el-breadcrumb>
+        </p>
+        <div class="cus_center">
+            每月到店：<el-input v-model="input" placeholder="次" class="choice_in in_left"></el-input>至<el-input v-model="input" placeholder="次" class="choice_in in_right"></el-input>
+            剩余次数：<el-input v-model="input" placeholder="次" class="choice_in in_left"></el-input>至<el-input v-model="input" placeholder="次" class="choice_in in_right"></el-input>
+            会员余额：<el-input v-model="input" placeholder="元" class="choice_in in_left"></el-input>至<el-input v-model="input" placeholder="元" class="choice_in in_right"></el-input>
+            <el-button type="success" style="height: 30px;padding: 0 15px">查询</el-button>
+        </div>
+        <div class="basic_inf">
+        <el-table :data="a_vip_list">
+            <el-table-column
+                    label="会员名"
+                    prop="name">
+            </el-table-column>
+            <el-table-column
+                    prop="time"
+                    label="加入时间">
+            </el-table-column>
+            <el-table-column
+                    prop="sex"
+                    label="性别">
+            </el-table-column>
+            <el-table-column width="200"
+                             prop="tel"
+                             label="会员电话">
+            </el-table-column>
+            <el-table-column
+                    prop="mon_fre"
+                    label="每月到店">
+            </el-table-column>
+            <el-table-column
+                    prop="have_fre"
+                    label="剩余次数">
+            </el-table-column>
+            <el-table-column
+                    prop="h_money"
+                    label="余额">
+            </el-table-column>
+            <el-table-column
+                    prop="adviser"
+                    label="美容师">
+            </el-table-column>
+        </el-table>
+        </div>
+    </template>
+
+</div>
+
+</body>
+</html>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../js/func.js"></script>
+<script src="../js/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            input:'',
+            a_vip_list:[
+                {
+                name:'丽萨',
+                time:'2018-02-04',
+                sex:'女',
+                tel:'15326535648',
+                mon_fre:'3',
+                have_fre:'15',
+                h_money:'1500',
+                adviser:'李丽',
+            },{
+                    name:'丽萨',
+                    time:'2018-02-04',
+                    sex:'女',
+                    tel:'15326535648',
+                    mon_fre:'3',
+                    have_fre:'15',
+                    h_money:'1500',
+                    adviser:'李丽',
+                },{
+                    name:'丽萨',
+                    time:'2018-02-04',
+                    sex:'女',
+                    tel:'15326535648',
+                    mon_fre:'3',
+                    have_fre:'15',
+                    h_money:'1500',
+                    adviser:'李丽',
+                }]
+        },
+        methods: {},
+        mounted() {
+            this.$nextTick(e=>{
+                //初始化
+                that = this;
+                loginState()
+            })
+        }
+    })
+</script>
