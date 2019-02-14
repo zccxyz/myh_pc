@@ -118,7 +118,7 @@ padding: 0 30px">
                         <el-table-column
                                 label="负债金额">
                             <template slot-scope="scope">
-                                <el-button type="info" plain size="mini" @click="arrear_dio=true">
+                                <el-button type="info" plain size="mini" @click="ka_arrear_dio=true">
                                     15236
                                 </el-button>
                             </template>
@@ -227,7 +227,7 @@ padding: 0 30px">
                         <el-table-column
                                 label="负债金额">
                             <template slot-scope="scope">
-                                <el-button type="info" plain size="mini" @click="arrear_dio=true">
+                                <el-button type="info" plain size="mini" @click="ka_arrear_dio=true">
                                     15236
                                 </el-button>
                             </template>
@@ -262,6 +262,25 @@ padding: 0 30px">
                 </el-table-column>
             </el-table>
         </el-dialog>
+        <!--卡项详情-->
+        <el-dialog
+                title="卡项详情"
+                :visible.sync="ka_arrear_dio"
+                center>
+            <el-table border
+                      :data="detail_data"
+                      style="width: 100%">
+                <el-table-column
+                        prop="v_name"
+                        label="客户名称">
+                </el-table-column>
+
+                <el-table-column
+                        prop="total_money"
+                        label="卡项余额">
+                </el-table-column>
+            </el-table>
+        </el-dialog>
     </template>
 </div>
 
@@ -280,6 +299,7 @@ padding: 0 30px">
             time:'',
             radio:'项目',
             arrear_dio:false,
+            ka_arrear_dio:false,
             detail_data:[{
                 v_name:'丽丽',
                 fre:'12',
