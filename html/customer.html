@@ -7,19 +7,22 @@
     <link rel="stylesheet" type="text/css" href="../css/common.css">
     <link rel="stylesheet" type="text/css" href="../css/customer.css">
     <style>
-        .choice_in{
+        .choice_in {
             width: 60px;
         }
-        .choice_in>input{
+
+        .choice_in > input {
             text-align: center;
-            height:30px;
+            height: 30px;
             padding: 0;
         }
-        .in_left{
-            margin-right:10px;
+
+        .in_left {
+            margin-right: 10px;
         }
-        .in_right{
-            margin:0 30px 0 10px;
+
+        .in_right {
+            margin: 0 30px 0 10px;
         }
     </style>
 </head>
@@ -59,15 +62,35 @@
             <el-button type="success" class="fr" @click="addDialogVisible = true">新增会员</el-button>
         </div>
         <div class="cus_center">
-            每月到店：<el-input v-model="input" placeholder="次" class="choice_in in_left"></el-input>至<el-input v-model="input" placeholder="次" class="choice_in in_right"></el-input>
-            剩余次数：<el-input v-model="input" placeholder="次" class="choice_in in_left"></el-input>至<el-input v-model="input" placeholder="次" class="choice_in in_right"></el-input>
-            会员余额：<el-input v-model="input" placeholder="元" class="choice_in in_left"></el-input>至<el-input v-model="input" placeholder="元" class="choice_in in_right"></el-input>
-            <el-button type="primary" style="height: 30px;padding: 0 15px">查询</el-button>
+            每月到店：
+            <el-input v-model="ddNum" type="number" placeholder="次" class="choice_in in_left"></el-input>
+            至
+            <el-input v-model="ddNum2" type="number" placeholder="次" class="choice_in in_right"></el-input>
+            剩余次数：
+            <el-input v-model="syNum" type="number" placeholder="次" class="choice_in in_left"></el-input>
+            至
+            <el-input v-model="syNum2" type="number" placeholder="次" class="choice_in in_right"></el-input>
+            会员余额：
+            <el-input v-model="memberBalance" type="number" placeholder="元" class="choice_in in_left"></el-input>
+            至
+            <el-input v-model="memberBalance2" type="number" placeholder="元" class="choice_in in_right"></el-input>
+            <!--<el-button type="primary" style="height: 30px;padding: 0 15px">查询</el-button>-->
         </div>
         <el-table border
                   ref="multipleTable"
-                  :data="list.filter(data => !input || data.name.toLowerCase().includes(input.toLowerCase()) ||
-                  data.tel.toLowerCase().includes(input.toLowerCase()))"
+                  :data="list.filter(
+                  data => (!input || data.name.toLowerCase().includes(input.toLowerCase()) ||
+                  data.tel.toLowerCase().includes(input.toLowerCase())) &&
+
+                  ((!memberBalance || parseFloat(data.balance)>=parseFloat(memberBalance)) &&
+                  (!memberBalance2 || parseFloat(data.balance)<=parseFloat(memberBalance2))) &&
+
+                  ((!syNum || parseFloat(data.num)>=parseFloat(syNum)) &&
+                  (!syNum2 || parseFloat(data.num)<=parseFloat(syNum2))) &&
+
+                  ((!ddNum || parseFloat(data.arrival_num)>=parseFloat(ddNum)) &&
+                  (!ddNum2 || parseFloat(data.arrival_num)<=parseFloat(ddNum2)))
+                  )"
                   tooltip-effect="dark"
                   style="width: 100%"
                   @selection-change="handleSelectionChange">
@@ -83,15 +106,27 @@
                     prop="num"
                     label="会员编号">
             </el-table-column>
-            <el-table-column width="200"
+            <el-table-column
+                    label="余额"
+                    prop="balance">
+            </el-table-column>
+            <el-table-column width="120"
                              prop="tel"
                              label="会员电话">
             </el-table-column>
-            <el-table-column width="180"
+            <el-table-column width="120"
                              prop="birthday"
                              label="会员生日">
             </el-table-column>
-            <el-table-column width="100"
+            <el-table-column
+                    prop="arrival_num"
+                    label="每月到店">
+            </el-table-column>
+            <el-table-column
+                    prop="num"
+                    label="剩余次数">
+            </el-table-column>
+            <el-table-column
                              prop="bir_type"
                              label="类型"
                              :formatter="formatter">
@@ -372,7 +407,14 @@
             },
             room: '',
             now: '',
-            zt: false
+            zt: false,
+
+            ddNum: '',
+            ddNum2: '',
+            syNum: '',
+            syNum2: '',
+            memberBalance: '',
+            memberBalance2: '',
         },
         methods: {
             exportData() {
@@ -536,7 +578,7 @@
                 })
             },
             add() {
-                if (this.user.name == '' || this.user.age == '' || this.user.tel == '' || this.user.birthday == '') {
+                if (this.user.name == '' || this.user.age === '' || this.user.tel == '' || this.user.birthday == '') {
                     error('请填完以上内容')
                     return
                 }
