@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="../css/index.css">
     <link rel="stylesheet" href="../css/vip_information.css">
     <link rel="stylesheet" type="text/css" href="../css/common.css">
+
 </head>
 <body>
 
@@ -32,6 +33,7 @@
                             end-placeholder="结束日期">
             </el-date-picker>-->
         </div>
+<<<<<<< HEAD
         <p class="total" style="font-size: 1.8rem;
 padding: 0 30px">
             总剩余次数：525
@@ -39,6 +41,108 @@ padding: 0 30px">
         </p>
         <el-collapse v-model="activeNames">
             <el-collapse-item title="项目" name="1">
+=======
+        <el-tabs type="card"
+                 class="vip_infor">
+            <el-tab-pane label="全部">
+                <p class="total" style="
+padding: 0 30px">
+
+                    总剩余次数：525
+                    <span class="cr"  style="margin-left:100px">总负债：123562</span>
+                </p>
+                <div class="basic_inf arrear">
+
+                    <el-table :data="arrear_data" fit=true show-overflow-tooltip>
+                        <el-table-column
+                                label="项目名称"
+                                prop="name">
+                        </el-table-column>
+                        <el-table-column
+                                label="剩余次数"
+                                prop="number">
+                        </el-table-column>
+                        <el-table-column
+                                label="负债金额">
+                            <template slot-scope="scope">
+                                <el-button type="primary" plain size="mini" @click="arrear_dio=true">
+                                    36236
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+
+                <div class="basic_inf arrear">
+                    <el-table :data="arrear_data">
+                        <el-table-column
+                                label="套盒名称"
+                                prop="name">
+                        </el-table-column>
+                        <el-table-column
+                                label="剩余次数"
+                                prop="number">
+                        </el-table-column>
+                        <el-table-column
+                                label="负债金额">
+                            <template slot-scope="scope">
+                                <el-button type="success" plain size="mini" @click="arrear_dio=true">
+                                    1256
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+
+                <div class="basic_inf arrear">
+                    <el-table :data="arrear_data">
+                        <el-table-column
+                                label="方案名称"
+                                prop="name">
+                        </el-table-column>
+                        <el-table-column
+                                label="剩余次数"
+                                prop="number">
+                        </el-table-column>
+                        <el-table-column
+                                label="负债金额">
+                            <template slot-scope="scope">
+                                <el-button type="warning" plain size="mini" @click="arrear_dio=true">
+                                    4532
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+
+                <div class="basic_inf arrear">
+                    <el-table :data="arrear_data">
+                        <el-table-column
+                                label="卡项名称"
+                                prop="name">
+                        </el-table-column>
+                        <el-table-column
+                                label="总金额"
+                                prop="number">
+                        </el-table-column>
+                        <el-table-column
+                                label="负债金额">
+                            <template slot-scope="scope">
+                                <el-button type="info" plain size="mini" @click="arrear_dio=true">
+                                    15236
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+            </el-tab-pane>
+            <el-tab-pane label="项目">
+                <p class="total" style="
+padding: 0 30px">
+                    项目剩余次数：525
+                    <span class="cr"  style="margin-left:100px">项目负债：123562</span>
+                </p>
+>>>>>>> 5b82b9c802c84d57458f24691383ea9e25b80900
                 <div class="basic_inf arrear">
 
                     <el-table :data="items" fit=true show-overflow-tooltip>
@@ -60,8 +164,13 @@ padding: 0 30px">
                         </el-table-column>
                     </el-table>
                 </div>
-            </el-collapse-item>
-            <el-collapse-item title="套盒" name="2">
+            </el-tab-pane>
+            <el-tab-pane label="套盒">
+                <p class="total" style="
+padding: 0 30px">
+                    套盒剩余次数：525
+                    <span class="cr"  style="margin-left:100px">套盒负债：123562</span>
+                </p>
                 <div class="basic_inf arrear">
                     <el-table :data="arrear_data">
                         <el-table-column
@@ -82,8 +191,13 @@ padding: 0 30px">
                         </el-table-column>
                     </el-table>
                 </div>
-            </el-collapse-item>
-            <el-collapse-item title="方案" name="3">
+            </el-tab-pane>
+            <el-tab-pane label="方案">
+                <p class="total" style="
+padding: 0 30px">
+                    方案剩余次数：525
+                    <span class="cr"  style="margin-left:100px">方案负债：123562</span>
+                </p>
                 <div class="basic_inf arrear">
                     <el-table :data="arrear_data">
                         <el-table-column
@@ -104,8 +218,13 @@ padding: 0 30px">
                         </el-table-column>
                     </el-table>
                 </div>
-            </el-collapse-item>
-            <el-collapse-item title="卡项" name="4">
+            </el-tab-pane>
+            <el-tab-pane label="卡项">
+                <p class="total" style="
+padding: 0 30px">
+                    卡项剩余次数：525
+                    <span class="cr"  style="margin-left:100px">卡项负债：123562</span>
+                </p>
                 <div class="basic_inf arrear">
                     <el-table :data="arrear_data">
                         <el-table-column
@@ -126,8 +245,8 @@ padding: 0 30px">
                         </el-table-column>
                     </el-table>
                 </div>
-            </el-collapse-item>
-        </el-collapse>
+            </el-tab-pane>
+        </el-tabs>
         <!--客户详情-->
         <el-dialog
                 title="客户详情"
