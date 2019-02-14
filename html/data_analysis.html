@@ -7,39 +7,44 @@
     <link rel="stylesheet" href="../css/vip_information.css">
     <link rel="stylesheet" type="text/css" href="../css/common.css">
     <style>
-        .data_div{
+        .data_div {
             background-color: rgb(255, 255, 255);
             margin-top: 10px;
             overflow: hidden;
             margin-bottom: 30px;
         }
-        p{
-            height:40px;
+
+        p {
+            height: 40px;
             line-height: 40px;
             font-size: 1.8rem;
             text-align: center;
         }
-        .total_income{
-            font-size:1.8rem;
+
+        .total_income {
+            font-size: 1.8rem;
             background-image: -webkit-linear-gradient(bottom, #6c83f7, #c69ffa);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .pay_way{
+
+        .pay_way {
             background: #fff;
             width: 100%;
             display: flex;
             flex-wrap: wrap;
-            margin-bottom:10px;
+            margin-bottom: 10px;
             padding: 15px 10px 0;
             padding-left: 20px;
         }
-        .pay_way img{
+
+        .pay_way img {
             margin-right: 10px;
             width: 22px;
         }
-        .pay_way i{
-            width:25%;
+
+        .pay_way i {
+            width: 25%;
             display: inline-block;
             margin-bottom: 10px;
         }
@@ -66,7 +71,7 @@
             </el-date-picker>
         </div>
         <p class="other_back">
-            <i class="total_income">收入合计：56236</i>
+            <i class="total_income">收入合计：{{pay_total}}</i>
         </p>
         <div class="data_div">
             <el-table :data="data">
@@ -74,8 +79,8 @@
                         label="项目数量"
                         prop="number">
                 </el-table-column>
-                <el-table-column  fit="true"
-                                  label="项目业绩">
+                <el-table-column fit="true"
+                                 label="项目业绩">
                     <template slot-scope="scope">
                         <el-button type="primary" plain size="mini" @click="detail_dio=true">
                             4536
@@ -133,143 +138,143 @@
             </el-table>
             <div class="pay_way">
                 <i>
-                    <img src="../images/pay(1).png"/>现金：123
+                    <img src="../images/pay(1).png"/>现金：{{pay_type_data.cash}}
                 </i>
                 <i>
-                    <img src="../images/pay(4).png"/>刷卡：566
+                    <img src="../images/pay(4).png"/>刷卡：{{pay_type_data.pos}}
                 </i>
                 <i>
-                    <img src="../images/pay(2).png"/>微信：26
+                    <img src="../images/pay(2).png"/>微信：{{pay_type_data.wx}}
                 </i>
                 <i>
-                    <img src="../images/pay(3).png"/>支付宝：210
+                    <img src="../images/pay(3).png"/>支付宝：{{pay_type_data.zfb}}
                 </i>
                 <i>
-                    <img src="../images/pay_way4.png"/>美团：1251
+                    <img src="../images/pay_way4.png"/>美团：{{pay_type_data.mt}}
                 </i>
                 <i>
-                    <img src="../images/pay_way2.png"/>大众点评：562
+                    <img src="../images/pay_way2.png"/>大众点评：{{pay_type_data.dz}}
                 </i>
                 <i>
-                    <img src="../images/pay_way3.png"/>收钱吧：4564
+                    <img src="../images/pay_way3.png"/>收钱吧：{{pay_type_data.sqb}}
                 </i>
             </div>
         </div>
         <p class="other_back">
-            <i class="total_income">消耗合计：56236</i>
+            <i class="total_income">消耗合计：{{consume_total}}</i>
         </p>
-                <div class="data_div">
-                    <el-table :data="data">
+        <div class="data_div">
+            <el-table :data="data">
 
-                        <el-table-column
-                                label="项目消耗次数"
-                                prop="number">
-                        </el-table-column>
-                        <el-table-column
-                                label="项目消耗金额">
-                            <template slot-scope="scope">
-                                <el-button type="primary" plain size="mini" @click="xh_detail_dio=true">
-                                    12356
-                                </el-button>
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                                label="套盒消耗次数"
-                                prop="number">
-                        </el-table-column>
-                        <el-table-column
-                                label="套盒消耗金额">
-                            <template slot-scope="scope">
-                                <el-button type="success" plain size="mini" @click="xh_detail_dio=true">
-                                    12356
-                                </el-button>
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                                label="卡扣次数"
-                                prop="number">
-                        </el-table-column>
-                        <el-table-column
-                                label="卡扣金额">
-                            <template slot-scope="scope">
-                                <el-button type="warning" plain size="mini" @click="kk_detail_dio=true">
-                                    12356
-                                </el-button>
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                                label="余额消耗">
-                            <template slot-scope="scope">
-                                <el-button type="danger" plain size="mini" @click="yue_detail_dio=true">
-                                    12356
-                                </el-button>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                </div>
+                <el-table-column
+                        label="项目消耗次数"
+                        prop="number">
+                </el-table-column>
+                <el-table-column
+                        label="项目消耗金额">
+                    <template slot-scope="scope">
+                        <el-button type="primary" plain size="mini" @click="xh_detail_dio=true">
+                            12356
+                        </el-button>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        label="套盒消耗次数"
+                        prop="number">
+                </el-table-column>
+                <el-table-column
+                        label="套盒消耗金额">
+                    <template slot-scope="scope">
+                        <el-button type="success" plain size="mini" @click="xh_detail_dio=true">
+                            12356
+                        </el-button>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        label="卡扣次数"
+                        prop="number">
+                </el-table-column>
+                <el-table-column
+                        label="卡扣金额">
+                    <template slot-scope="scope">
+                        <el-button type="warning" plain size="mini" @click="kk_detail_dio=true">
+                            12356
+                        </el-button>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        label="余额消耗">
+                    <template slot-scope="scope">
+                        <el-button type="danger" plain size="mini" @click="yue_detail_dio=true">
+                            12356
+                        </el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </div>
         <p class="other_back">
-            <i class="total_income">赠送合计：56236</i>
+            <i class="total_income">赠送合计</i>
         </p>
-                <div class="data_div">
-                    <el-table :data="data">
-                        <el-table-column  fit="true"
-                                          label="项目数量">
-                            <template slot-scope="scope">
-                                <el-button type="primary" plain size="mini" @click="give_detail_dio=true">
-                                    12
-                                </el-button>
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                                label="套盒数量">
-                            <template slot-scope="scope">
-                                <el-button type="success" plain size="mini" @click="give_detail_dio=true">
-                                    15
-                                </el-button>
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                                label="产品数量">
-                            <template slot-scope="scope">
-                                <el-button type="warning" plain size="mini" @click="give_detail_dio=true">
-                                    20
-                                </el-button>
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                                label="方案数量">
-                            <template slot-scope="scope">
-                                <el-button type="info" plain size="mini" @click="give_detail_dio=true">
-                                    6
-                                </el-button>
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                                label="卡项数量">
-                            <template slot-scope="scope">
-                                <el-button type="danger" plain size="mini" @click="give_detail_dio=true">
-                                    55
-                                </el-button>
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                                label="余额">
-                            <template slot-scope="scope">
-                                <el-button plain size="mini" @click="give_yue_dio=true">
-                                    5525
-                                </el-button>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                </div>
+        <div class="data_div">
+            <el-table :data="data">
+                <el-table-column fit="true"
+                                 label="项目">
+                    <template slot-scope="scope">
+                        <el-button type="primary" plain size="mini" @click="give_detail_dio=true">
+                            {{send_data.s_item}}
+                        </el-button>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        label="套盒">
+                    <template slot-scope="scope">
+                        <el-button type="success" plain size="mini" @click="give_detail_dio=true">
+                            {{send_data.s_box}}
+                        </el-button>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        label="产品">
+                    <template slot-scope="scope">
+                        <el-button type="warning" plain size="mini" @click="give_detail_dio=true">
+                            {{send_data.s_pro}}
+                        </el-button>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        label="方案">
+                    <template slot-scope="scope">
+                        <el-button type="info" plain size="mini" @click="give_detail_dio=true">
+                            {{send_data.s_plan}}
+                        </el-button>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        label="卡项">
+                    <template slot-scope="scope">
+                        <el-button type="danger" plain size="mini" @click="give_detail_dio=true">
+                            {{send_data.s_card}}
+                        </el-button>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        label="余额">
+                    <template slot-scope="scope">
+                        <el-button plain size="mini" @click="give_yue_dio=true">
+                            {{send_data.s_balance}}
+                        </el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </div>
         <!--产品 套盒 项目 方案 业绩详情-->
         <el-dialog
                 title="业绩详情"
                 :visible.sync="detail_dio"
                 center>
             <el-table
-                      :data="detail_data"
-                      style="width: 100%">
+                    :data="detail_data"
+                    style="width: 100%">
                 <el-table-column
                         prop="name"
                         label="品项名称"
@@ -281,19 +286,19 @@
                 </el-table-column>
                 <el-table-column
                         label="金额">
-                        <template slot-scope="scope">
-                            <el-button type="primary" plain size="mini" @click="more_detail_dio=true">
-                                6253
-                            </el-button>
-                        </template>
+                    <template slot-scope="scope">
+                        <el-button type="primary" plain size="mini" @click="more_detail_dio=true">
+                            6253
+                        </el-button>
+                    </template>
                 </el-table-column>
             </el-table>
         </el-dialog>
         <!--对应品项名称详情-->
         <el-dialog append-to-body
-                title="品项名称详情"
-                :visible.sync="more_detail_dio"
-                center>
+                   title="品项名称详情"
+                   :visible.sync="more_detail_dio"
+                   center>
             <el-table
                     :data="detail_data"
                     style="width: 100%">
@@ -561,51 +566,72 @@
     new Vue({
         el: '#app',
         data: {
-            input:'',
-            time:'',
+            input: '',
+            time: '',
             activeNames: ['1'],
-            detail_dio:false,
-            more_detail_dio:false,
-            card_detail_dio:false,
-            card_more_detail_dio:false,
-            xh_detail_dio:false,
-            xh_more_detail_dio:false,
-            kk_detail_dio:false,
-            kk_more_detail_dio:false,
-            yue_detail_dio:false,
-            give_detail_dio:false,
-            give_more_detail_dio:false,
-            give_yue_dio:false,
-            detail_data:[{
-                name:'李丽',
-                v_name:'李飒',
-                number:'12',
-                fee:'13',
-                total_fee:'139',
-                money:'125',
-                total_money:'45632',
-                time:'2015-02-12',
+            detail_dio: false,
+            more_detail_dio: false,
+            card_detail_dio: false,
+            card_more_detail_dio: false,
+            xh_detail_dio: false,
+            xh_more_detail_dio: false,
+            kk_detail_dio: false,
+            kk_more_detail_dio: false,
+            yue_detail_dio: false,
+            give_detail_dio: false,
+            give_more_detail_dio: false,
+            give_yue_dio: false,
+            detail_data: [{
+                name: '李丽',
+                v_name: '李飒',
+                number: '12',
+                fee: '13',
+                total_fee: '139',
+                money: '125',
+                total_money: '45632',
+                time: '2015-02-12',
             }],
-            data:[{
-                name:'李飒',
-                number:'6',
-                sg_money:'123',
-                han_fre:'20',
-                xh_mon:'10002',
-                new:'6',
-                amout:'25',
-                pro_per:'1563',
-                th_per:'4562',
-                item_per:'125',
-                big_per:'12563',
-            }]
+            data: [{
+                name: '李飒',
+                number: '6',
+                sg_money: '123',
+                han_fre: '20',
+                xh_mon: '10002',
+                new: '6',
+                amout: '25',
+                pro_per: '1563',
+                th_per: '4562',
+                item_per: '125',
+                big_per: '12563',
+            }],
+
+            end: '',
+            start: '',
+            cate_data: '',
+            consume_data: '',
+            consume_total: '',
+            pay_total: '',
+            pay_type_data: '',
+            send_data: '',
         },
-        methods: {},
+        methods: {
+            getData() {
+                $.post(url(methods.indexDetail)+'&start='+this.start+'&end='+this.end, v=>{
+                    this.cate_data = v.res['cate_data']
+                    this.consume_data = v.res['consume_data']
+                    this.consume_total = v.res['consume_total']
+                    this.pay_total = v.res['pay_total']
+                    this.pay_type_data = v.res['pay_type_data']
+                    this.send_data = v.res['send_data']
+                })
+            }
+        },
         mounted() {
-            this.$nextTick(e=>{
+            this.$nextTick(e => {
                 //初始化
                 that = this;
                 loginState()
+                this.getData()
             })
         }
     })

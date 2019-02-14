@@ -23,32 +23,32 @@
                       prefix-icon="el-icon-search"
                       v-model="input">
             </el-input>
-            <el-date-picker style="width: 400px"
+            <!--<el-date-picker style="width: 400px"
                             v-model="time"
                             type="daterange"
                             value-format="yyyy-MM-dd"
                             range-separator="至"
                             start-placeholder="开始日期"
                             end-placeholder="结束日期">
-            </el-date-picker>
+            </el-date-picker>-->
         </div>
-                <p class="total" style="font-size: 1.8rem;
+        <p class="total" style="font-size: 1.8rem;
 padding: 0 30px">
-                    总剩余次数：525
-                    <span class="cr"  style="font-size: 1.8rem;margin-left:100px">总负债：123562</span>
-                </p>
+            总剩余次数：525
+            <span class="cr" style="font-size: 1.8rem;margin-left:100px">总负债：123562</span>
+        </p>
         <el-collapse v-model="activeNames">
             <el-collapse-item title="项目" name="1">
                 <div class="basic_inf arrear">
 
-                    <el-table :data="arrear_data" fit=true show-overflow-tooltip>
+                    <el-table :data="items" fit=true show-overflow-tooltip>
                         <el-table-column
                                 label="项目名称"
                                 prop="name">
                         </el-table-column>
                         <el-table-column
                                 label="剩余次数"
-                                prop="number">
+                                prop="current_num">
                         </el-table-column>
                         <el-table-column
                                 label="负债金额">
@@ -168,34 +168,49 @@ padding: 0 30px">
         el: '#app',
         data: {
             activeNames: ['1'],
-            input:'',
-            time:'',
-            arrear_dio:false,
-            detail_data:[{
-                v_name:'丽丽',
-                fre:'12',
-                money:'120',
-                total_money:'1200',
-            },{
-                v_name:'丽丽',
-                    fre:'12',
-                    money:'120',
-                    total_money:'1200',
+            input: '',
+            time: '',
+            arrear_dio: false,
+            detail_data: [{
+                v_name: '丽丽',
+                fre: '12',
+                money: '120',
+                total_money: '1200',
+            }, {
+                v_name: '丽丽',
+                fre: '12',
+                money: '120',
+                total_money: '1200',
             }],
-            arrear_data:[{
-                name:'肩颈',
-                number:'6',
-            },{
-                name:'头疗',
-                number:'6',
-            }]
+            arrear_data: [{
+                name: '肩颈',
+                number: '6',
+            }, {
+                name: '头疗',
+                number: '6',
+            }],
+
+            box: [],
+            items: [],
+            plan: [],
+            card: [],
         },
-        methods: {},
+        methods: {
+            getData() {
+                $.post(url(methods.loadRate), v => {
+                    this.box = v.data['box']
+                    this.items = v.data['items']
+                    this.plan = v.data['plan']
+                    this.card = v.data['card']
+                })
+            }
+        },
         mounted() {
-            this.$nextTick(e=>{
+            this.$nextTick(e => {
                 //初始化
                 that = this;
                 loginState()
+                this.getData()
             })
         }
     })
