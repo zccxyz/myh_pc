@@ -217,43 +217,64 @@
         </p>
         <div class="data_div">
             <el-table :data="data">
+
+                <el-table-column
+                        prop="number"
+                        label="项目数量">
+                </el-table-column>
                 <el-table-column fit="true"
-                                 label="项目">
+                                 label="项目总金额">
                     <template slot-scope="scope">
                         <el-button type="primary" plain size="mini" @click="give_detail_dio=true">
-                            {{send_data.s_item}}
+                            12
                         </el-button>
                     </template>
                 </el-table-column>
                 <el-table-column
-                        label="套盒">
+                        prop="number"
+                        label="套盒数量">
+                </el-table-column>
+                <el-table-column
+                        label="套盒总金额">
                     <template slot-scope="scope">
                         <el-button type="success" plain size="mini" @click="give_detail_dio=true">
-                            {{send_data.s_box}}
+                            15
                         </el-button>
                     </template>
                 </el-table-column>
                 <el-table-column
-                        label="产品">
+                        prop="number"
+                        label="产品数量">
+                </el-table-column>
+                <el-table-column
+                        label="产品总金额">
                     <template slot-scope="scope">
                         <el-button type="warning" plain size="mini" @click="give_detail_dio=true">
-                            {{send_data.s_pro}}
+                            20
                         </el-button>
                     </template>
                 </el-table-column>
                 <el-table-column
-                        label="方案">
+                        prop="number"
+                        label="方案数量">
+                </el-table-column>
+                <el-table-column
+                        label="方案总金额">
                     <template slot-scope="scope">
                         <el-button type="info" plain size="mini" @click="give_detail_dio=true">
-                            {{send_data.s_plan}}
+                            6
                         </el-button>
                     </template>
                 </el-table-column>
                 <el-table-column
-                        label="卡项">
+                        prop="number"
+                        label="卡项数量">
+                </el-table-column>
+                <el-table-column
+                        label="卡项总金额">
                     <template slot-scope="scope">
                         <el-button type="danger" plain size="mini" @click="give_detail_dio=true">
-                            {{send_data.s_card}}
+                            55
                         </el-button>
                     </template>
                 </el-table-column>
@@ -261,7 +282,7 @@
                         label="余额">
                     <template slot-scope="scope">
                         <el-button plain size="mini" @click="give_yue_dio=true">
-                            {{send_data.s_balance}}
+                            5525
                         </el-button>
                     </template>
                 </el-table-column>
@@ -500,7 +521,11 @@
                         label="品项名称">
                 </el-table-column>
                 <el-table-column
+                        prop="number"
                         label="赠送数量">
+                </el-table-column>
+                <el-table-column
+                        label="金额">
                     <template slot-scope="scope">
                         <el-button type="primary" plain size="mini" @click="give_more_detail_dio=true">
                             6
@@ -526,8 +551,8 @@
                         label="赠送数量">
                 </el-table-column>
                 <el-table-column
-                        prop="time"
-                        label="时间">
+                        prop="money"
+                        label="金额">
                 </el-table-column>
             </el-table>
         </el-dialog>
@@ -616,7 +641,7 @@
         },
         methods: {
             getData() {
-                $.post(url(methods.indexDetail)+'&start='+this.start+'&end='+this.end, v=>{
+                $.post(url(methods.indexDetail) + '&start=' + this.start + '&end=' + this.end, v => {
                     this.cate_data = v.res['cate_data']
                     this.consume_data = v.res['consume_data']
                     this.consume_total = v.res['consume_total']

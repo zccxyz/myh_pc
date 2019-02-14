@@ -24,32 +24,23 @@
                       prefix-icon="el-icon-search"
                       v-model="input">
             </el-input>
-            <!--<el-date-picker style="width: 400px"
+            <el-date-picker style="width: 400px"
                             v-model="time"
                             type="daterange"
                             value-format="yyyy-MM-dd"
                             range-separator="至"
                             start-placeholder="开始日期"
                             end-placeholder="结束日期">
-            </el-date-picker>-->
+            </el-date-picker>
         </div>
-<<<<<<< HEAD
-        <p class="total" style="font-size: 1.8rem;
-padding: 0 30px">
-            总剩余次数：525
-            <span class="cr" style="font-size: 1.8rem;margin-left:100px">总负债：123562</span>
-        </p>
-        <el-collapse v-model="activeNames">
-            <el-collapse-item title="项目" name="1">
-=======
         <el-tabs type="card"
                  class="vip_infor">
             <el-tab-pane label="全部">
                 <p class="total" style="
 padding: 0 30px">
 
-                    总剩余次数：525
-                    <span class="cr"  style="margin-left:100px">总负债：123562</span>
+                    总剩余次数：{{allNum}}
+                    <span class="cr"  style="margin-left:100px">总负债：{{money}}</span>
                 </p>
                 <div class="basic_inf arrear">
 
@@ -142,17 +133,16 @@ padding: 0 30px">
                     项目剩余次数：525
                     <span class="cr"  style="margin-left:100px">项目负债：123562</span>
                 </p>
->>>>>>> 5b82b9c802c84d57458f24691383ea9e25b80900
                 <div class="basic_inf arrear">
 
-                    <el-table :data="items" fit=true show-overflow-tooltip>
+                    <el-table :data="arrear_data" fit=true show-overflow-tooltip>
                         <el-table-column
                                 label="项目名称"
                                 prop="name">
                         </el-table-column>
                         <el-table-column
                                 label="剩余次数"
-                                prop="current_num">
+                                prop="number">
                         </el-table-column>
                         <el-table-column
                                 label="负债金额">
@@ -287,45 +277,50 @@ padding: 0 30px">
         el: '#app',
         data: {
             activeNames: ['1'],
-            input: '',
-            time: '',
-            arrear_dio: false,
-            detail_data: [{
-                v_name: '丽丽',
-                fre: '12',
-                money: '120',
-                total_money: '1200',
-            }, {
-                v_name: '丽丽',
-                fre: '12',
-                money: '120',
-                total_money: '1200',
+            input:'',
+            time:'',
+            radio:'项目',
+            arrear_dio:false,
+            detail_data:[{
+                v_name:'丽丽',
+                fre:'12',
+                money:'120',
+                total_money:'1200',
+            },{
+                v_name:'丽丽',
+                fre:'12',
+                money:'120',
+                total_money:'1200',
             }],
-            arrear_data: [{
-                name: '肩颈',
-                number: '6',
-            }, {
-                name: '头疗',
-                number: '6',
+            arrear_data:[{
+                name:'肩颈',
+                number:'6',
+            },{
+                name:'头疗',
+                number:'6',
             }],
 
-            box: [],
-            items: [],
-            plan: [],
-            card: [],
+            boxAll: [],
+            itemsAll: [],
+            planAll: [],
+            cardAll: [],
+            money: 0,
+            allNum: 0,
         },
         methods: {
             getData() {
-                $.post(url(methods.loadRate), v => {
-                    this.box = v.data['box']
-                    this.items = v.data['items']
-                    this.plan = v.data['plan']
-                    this.card = v.data['card']
+                $.post(url(methods.loadRate), v=>{
+                    this.boxAll = v.data['boxAll']
+                    this.itemsAll = v.data['itemsAll']
+                    this.planAll = v.data['planAll']
+                    this.cardAll = v.data['cardAll']
+                    this.money = v.data['money']
+                    this.allNum = v.data['allNum']
                 })
             }
         },
         mounted() {
-            this.$nextTick(e => {
+            this.$nextTick(e=>{
                 //初始化
                 that = this;
                 loginState()
