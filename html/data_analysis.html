@@ -7,16 +7,17 @@
     <link rel="stylesheet" href="../css/vip_information.css">
     <link rel="stylesheet" type="text/css" href="../css/common.css">
     <style>
+
         .shouru .el-table{
             width: 20%;
             float: left;
         }
         .xiaohao .el-table{
-            width: 29%;
+            width: 30%;
             float: left;
         }
         .xiaohao .el-table:last-child{
-            width: 13%;
+            width: 10%;
         }
         .give .el-table{
             width: 18.5%;
@@ -63,11 +64,15 @@
                                 label="项目名称"
                                 prop="name">
                         </el-table-column>
+                        <el-table-column
+                                label="项目数量"
+                                prop="number">
+                        </el-table-column>
                         <el-table-column  fit="true"
-                                label="项目数量/业绩">
+                                label="项目业绩">
                             <template slot-scope="scope">
                                 <el-button type="primary" plain size="mini" @click="detail_dio=true">
-                                    12/4536
+                                    4536
                                 </el-button>
                             </template>
                         </el-table-column>
@@ -78,10 +83,14 @@
                                 prop="name">
                         </el-table-column>
                         <el-table-column
-                                label="套盒数量/业绩">
+                                label="套盒数量"
+                                prop="number">
+                        </el-table-column>
+                        <el-table-column
+                                label="套盒业绩">
                             <template slot-scope="scope">
                                 <el-button type="success" plain size="mini" @click="detail_dio=true">
-                                    15/5635
+                                    5635
                                 </el-button>
                             </template>
                         </el-table-column>
@@ -92,10 +101,14 @@
                                 prop="name">
                         </el-table-column>
                         <el-table-column
-                                label="产品数量/业绩">
+                                label="产品数量"
+                                prop="number">
+                        </el-table-column>
+                        <el-table-column
+                                label="产品业绩">
                             <template slot-scope="scope">
                                 <el-button type="warning" plain size="mini" @click="detail_dio=true">
-                                    20/52364
+                                   52364
                                 </el-button>
                             </template>
                         </el-table-column>
@@ -106,10 +119,14 @@
                                 prop="name">
                         </el-table-column>
                         <el-table-column
-                                label="方案数量/业绩">
+                                label="方案数量"
+                                prop="number">
+                        </el-table-column>
+                        <el-table-column
+                                label="方案业绩">
                             <template slot-scope="scope">
                                 <el-button type="info" plain size="mini" @click="detail_dio=true">
-                                    6/6396
+                                    6396
                                 </el-button>
                             </template>
                         </el-table-column>
@@ -120,10 +137,14 @@
                                 prop="name">
                         </el-table-column>
                         <el-table-column
-                                label="充值次数/金额">
+                                label="充值次数"
+                                prop="number">
+                        </el-table-column>
+                        <el-table-column
+                                label="充值金额">
                             <template slot-scope="scope">
-                                <el-button type="info" plain size="mini" @click="new_dio=true">
-                                    55/12356
+                                <el-button type="danger" plain size="mini" @click="new_dio=true">
+                                    12356
                                 </el-button>
                             </template>
                         </el-table-column>
@@ -145,10 +166,14 @@
                                 prop="name">
                         </el-table-column>
                         <el-table-column
-                                label="项目消耗次数/金额">
+                                label="项目消耗次数"
+                                prop="number">
+                        </el-table-column>
+                        <el-table-column
+                                label="项目消耗金额">
                             <template slot-scope="scope">
                                 <el-button type="primary" plain size="mini" @click="new_dio=true">
-                                    55/12356
+                                    12356
                                 </el-button>
                             </template>
                         </el-table-column>
@@ -159,10 +184,14 @@
                                 prop="name">
                         </el-table-column>
                         <el-table-column
-                                label="套盒消耗次数/金额">
+                                label="套盒消耗次数"
+                                prop="number">
+                        </el-table-column>
+                        <el-table-column
+                                label="套盒消耗金额">
                             <template slot-scope="scope">
-                                <el-button type="primary" plain size="mini" @click="new_dio=true">
-                                    55/12356
+                                <el-button type="success" plain size="mini" @click="new_dio=true">
+                                    12356
                                 </el-button>
                             </template>
                         </el-table-column>
@@ -173,10 +202,14 @@
                                 prop="name">
                         </el-table-column>
                         <el-table-column
-                                label="卡扣次数/金额">
+                                label="卡扣次数"
+                                prop="number">
+                        </el-table-column>
+                        <el-table-column
+                                label="卡扣金额">
                             <template slot-scope="scope">
                                 <el-button type="warning" plain size="mini" @click="new_dio=true">
-                                    55/12356
+                                    12356
                                 </el-button>
                             </template>
                         </el-table-column>
@@ -185,7 +218,7 @@
                         <el-table-column
                                 label="余额消耗">
                             <template slot-scope="scope">
-                                <el-button type="warning" plain size="mini" @click="new_dio=true">
+                                <el-button type="danger" plain size="mini" @click="new_dio=true">
                                     12356
                                 </el-button>
                             </template>
@@ -266,7 +299,7 @@
                         <el-table-column
                                 label="卡项数量">
                             <template slot-scope="scope">
-                                <el-button type="info" plain size="mini" @click="new_dio=true">
+                                <el-button type="danger" plain size="mini" @click="new_dio=true">
                                     55
                                 </el-button>
                             </template>
@@ -276,7 +309,7 @@
                         <el-table-column
                                 label="余额">
                             <template slot-scope="scope">
-                                <el-button type="info" plain size="mini" @click="new_dio=true">
+                                <el-button plain size="mini" @click="new_dio=true">
                                     5525
                                 </el-button>
                             </template>
@@ -345,6 +378,7 @@
             }],
             data:[{
                 name:'李飒',
+                number:'6',
                 sg_money:'123',
                 han_fre:'20',
                 xh_mon:'10002',
@@ -356,6 +390,7 @@
                 big_per:'12563',
             },{
                 name:'李飒',
+                number:'6',
                 sg_money:'123',
                 han_fre:'20',
                 xh_mon:'10002',
