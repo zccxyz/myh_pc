@@ -130,7 +130,7 @@
                  </el-table-column>
                     <el-table-column
                             prop="number"
-                            label="数量">
+                            label="次数">
                     </el-table-column>
                     <el-table-column
                             prop="fee"
@@ -151,14 +151,15 @@
                       :data="detail_data"
                       style="width: 100%">
                 <el-table-column
+                        prop="v_name"
+                        label="客户">
+                </el-table-column>
+                <el-table-column
                         prop="name"
                         label="操作项目名称"
                         width="180">
                 </el-table-column>
-                <el-table-column
-                        prop="v_name"
-                        label="客户">
-                </el-table-column>
+
                 <el-table-column
                         prop="number"
                         label="数量">
@@ -238,14 +239,15 @@
                       :data="detail_data"
                       style="width: 100%">
                 <el-table-column
+                        prop="v_name"
+                        label="客户">
+                </el-table-column>
+                <el-table-column
                         prop="name"
                         label="品项名称"
                         width="180">
                 </el-table-column>
-                <el-table-column
-                        prop="v_name"
-                        label="客户">
-                </el-table-column>
+
                 <el-table-column
                         prop="number"
                         label="数量">
