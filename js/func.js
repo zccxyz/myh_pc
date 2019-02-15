@@ -112,6 +112,7 @@ var methods = {
     'loadRate': 'analysis/loadRate',
     'indexDetail': 'analysis/index_detail',
     'staffAnalysis': 'analysis/staff_analysis',
+    'staffAnalysisDetails': 'analysis/staff_analysis_details',
 };
 var that;
 

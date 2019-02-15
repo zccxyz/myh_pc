@@ -40,7 +40,7 @@
                 <el-table-column
                         label="手工金额">
                     <template slot-scope="scope">
-                        <el-button type="primary" plain size="mini" @click="han_dio=true">
+                        <el-button type="primary" plain size="mini" @click="getDetail(scope.row.id, 1);han_dio=true">
                             {{scope.row.manual | isNull}}
                         </el-button>
                     </template>
@@ -56,7 +56,7 @@
                 <el-table-column
                         label="消耗金额">
                     <template slot-scope="scope">
-                        <el-button type="warning" plain size="mini" @click="do_amout_dio=true">
+                        <el-button type="warning" plain size="mini" @click="getDetail(scope.row.id, 3);do_amout_dio=true">
                             {{scope.row.consume_money | isNull}}
                         </el-button>
                     </template>
@@ -64,7 +64,7 @@
                 <el-table-column
                         label="新客数">
                     <template slot-scope="scope">
-                        <el-button type="info" plain size="mini" @click="new_dio=true">
+                        <el-button type="info" plain size="mini" @click="getDetail(scope.row.id, 4);new_dio=true">
                             {{scope.row.new_member | isNull}}
                         </el-button>
                     </template>
@@ -72,7 +72,7 @@
                 <el-table-column
                         label="客户数">
                     <template slot-scope="scope">
-                        <el-button type="danger" plain size="mini" @click="amout_dio=true">
+                        <el-button type="danger" plain size="mini" @click="getDetail(scope.row.id, 5);amout_dio=true">
                             {{scope.row.dis_member | isNull}}
                         </el-button>
                     </template>
@@ -80,7 +80,7 @@
                 <el-table-column
                         label="产品业绩">
                     <template slot-scope="scope">
-                        <el-button type="info" plain size="mini" @click="pro_dio=true">
+                        <el-button type="info" plain size="mini" @click="getDetail(scope.row.id, 6);pro_dio=true">
                             {{scope.row.goods_ach | isNull}}
                         </el-button>
                     </template>
@@ -88,7 +88,7 @@
                 <el-table-column
                         label="套盒业绩">
                     <template slot-scope="scope">
-                        <el-button type="warning" plain size="mini" @click="pro_dio=true">
+                        <el-button type="warning" plain size="mini" @click="getDetail(scope.row.id, 7);pro_dio=true">
                             {{scope.row.box_ach | isNull}}
                         </el-button>
                     </template>
@@ -96,7 +96,7 @@
                 <el-table-column
                         label="项目业绩">
                     <template slot-scope="scope">
-                        <el-button type="success" plain size="mini" @click="pro_dio=true">
+                        <el-button type="success" plain size="mini" @click="getDetail(scope.row.id, 8);pro_dio=true">
                             {{scope.row.items_ach | isNull}}
                         </el-button>
                     </template>
@@ -314,6 +314,7 @@
             start: '',
             end: '',
             list: '',
+            type: '',
         },
         watch: {
             time(v) {
@@ -324,7 +325,7 @@
         },
         filters: {
             isNull(v) {
-                if(v == undefined){
+                if (v == undefined) {
                     return 0
                 }
                 return parseFloat(v).toFixed(2)
@@ -334,6 +335,12 @@
             getData() {
                 $.post(url(methods.staffAnalysis), {start: this.start, end: this.end}, v => {
                     this.list = v.res
+                })
+            },
+            getDetail(id, type) {
+                $.post(url(methods.staffAnalysisDetails), {
+                    id: id, start: this.start, end: this.end, type: type}, v => {
+
                 })
             }
         },
