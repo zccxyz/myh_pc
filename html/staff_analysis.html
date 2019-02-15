@@ -48,7 +48,7 @@
                 <el-table-column
                         label="操作次数">
                     <template slot-scope="scope">
-                        <el-button type="success" plain size="mini" @click="do_amout_dio=true">
+                        <el-button type="success" plain size="mini">
                             {{scope.row.operation_num | isNull}}
                         </el-button>
                     </template>
@@ -113,31 +113,31 @@
         </div>
         <!--手工业绩详情-->
         <el-dialog
-                title="员工手工业绩详情"
+                title="手工业绩详情"
                 :visible.sync="han_dio"
                 center>
             <el-table border
-                      :data="detail_data"
+                      :data="data"
                       style="width: 100%">
                 <el-table-column
-                        prop="v_name"
+                        prop="member_name"
                         label="客户">
                 </el-table-column>
-                <el-table-column
+                <!--<el-table-column
                         prop="name"
                         label="名称"
                         width="180">
-                </el-table-column>
-                <el-table-column
+                </el-table-column>-->
+                <!--<el-table-column
                         prop="number"
                         label="次数">
-                </el-table-column>
-                <el-table-column
+                </el-table-column>-->
+                <!--<el-table-column
                         prop="fee"
                         label="单次手工">
-                </el-table-column>
+                </el-table-column>-->
                 <el-table-column
-                        prop="total_fee"
+                        prop="fee"
                         label="总手工">
                 </el-table-column>
             </el-table>
@@ -148,13 +148,13 @@
                 :visible.sync="do_amout_dio"
                 center>
             <el-table border
-                      :data="detail_data"
+                      :data="data"
                       style="width: 100%">
                 <el-table-column
-                        prop="v_name"
+                        prop="member_name"
                         label="客户">
                 </el-table-column>
-                <el-table-column
+                <!--<el-table-column
                         prop="name"
                         label="操作项目名称"
                         width="180">
@@ -167,9 +167,9 @@
                 <el-table-column
                         prop="money"
                         label="单次消耗金额">
-                </el-table-column>
+                </el-table-column>-->
                 <el-table-column
-                        prop="total_money"
+                        prop="money"
                         label="总消耗金额">
                 </el-table-column>
             </el-table>
@@ -180,39 +180,47 @@
                 :visible.sync="new_dio"
                 center>
             <el-table border
-                      :data="detail_data"
+                      :data="data"
                       style="width: 100%">
                 <el-table-column
-                        prop="v_name"
+                        prop="name"
                         label="新客名称">
                 </el-table-column>
                 <el-table-column
+                        prop="tel"
+                        label="电话">
+                </el-table-column>
+                <!--<el-table-column
                         prop="money"
                         label="消费金额">
-                </el-table-column>
-                <el-table-column
+                </el-table-column>-->
+                <!--<el-table-column
                         prop="name"
                         label="品项名称">
-                </el-table-column>
+                </el-table-column>-->
                 <el-table-column
-                        prop="time"
+                        prop="create_time"
                         label="时间">
                 </el-table-column>
             </el-table>
         </el-dialog>
         <!--客户详情-->
         <el-dialog
-                title="客户详情"
+                title="客户数"
                 :visible.sync="amout_dio"
                 center>
             <el-table border
                       :data="detail_data"
                       style="width: 100%">
                 <el-table-column
-                        prop="v_name"
+                        prop="name"
                         label="客户名称">
                 </el-table-column>
                 <el-table-column
+                        prop="tel"
+                        label="电话">
+                </el-table-column>
+                <!--<el-table-column
                         prop="money"
                         label="消费金额">
                 </el-table-column>
@@ -227,7 +235,7 @@
                 <el-table-column
                         prop="name"
                         label="消耗品项名称">
-                </el-table-column>
+                </el-table-column>-->
             </el-table>
         </el-dialog>
         <!--产品 套盒 项目 大项目 业绩详情-->
@@ -236,22 +244,22 @@
                 :visible.sync="pro_dio"
                 center>
             <el-table border
-                      :data="detail_data"
+                      :data="data"
                       style="width: 100%">
                 <el-table-column
-                        prop="v_name"
+                        prop="m_name"
                         label="客户">
                 </el-table-column>
                 <el-table-column
-                        prop="name"
+                        prop="buy_content"
                         label="品项名称"
                         width="180">
                 </el-table-column>
 
-                <el-table-column
+                <!--<el-table-column
                         prop="number"
                         label="数量">
-                </el-table-column>
+                </el-table-column>-->
                 <el-table-column
                         prop="money"
                         label="消费金额">
@@ -315,11 +323,14 @@
             end: '',
             list: '',
             type: '',
+            data: [],
         },
         watch: {
             time(v) {
-                this.start = v[0]
-                this.end = v[1]
+                if(v != null){
+                    this.start = v[0]
+                    this.end = v[1]
+                }
                 this.getData()
             }
         },
@@ -340,7 +351,7 @@
             getDetail(id, type) {
                 $.post(url(methods.staffAnalysisDetails), {
                     id: id, start: this.start, end: this.end, type: type}, v => {
-
+                    this.data = v.res
                 })
             }
         },
