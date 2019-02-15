@@ -460,8 +460,13 @@
                     type: 'warning'
                 }).then(() => {
                     $.post(url(methods.del), {'data': JSON.stringify(this.multipleSelection)}, v => {
-                        success('删除成功')
-                        this.getGoods()
+                        if(v.code==0){
+                            success('删除成功')
+                            this.multipleSelection = []
+                            this.getGoods()
+                        }else{
+                            error(v.msg)
+                        }
                     })
                 }).catch(e => {
 

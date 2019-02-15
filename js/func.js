@@ -1,5 +1,5 @@
-// var ym = 'https://www.myhkj.cn/apis/backend/';
-var ym = 'http://admin.test.com/apis/backend/';
+var ym = 'https://www.myhkj.cn/apis/backend/';
+// var ym = 'http://admin.test.com/apis/backend/';
 // var ym = 'http://127.0.0.1:8000/apis/backend/';
 
 var methods = {
@@ -111,6 +111,7 @@ var methods = {
     'getDayAchievement': 'achievement/get_day_achievement',
     'loadRate': 'analysis/loadRate',
     'indexDetail': 'analysis/index_detail',
+    'staffAnalysis': 'analysis/staff_analysis',
 };
 var that;
 

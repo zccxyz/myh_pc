@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="../css/index.css">
     <link rel="stylesheet" type="text/css" href="../css/common.css">
     <style>
-        div{
+        div {
             white-space: nowrap !important;
         }
     </style>
@@ -32,16 +32,16 @@
             </el-date-picker>
         </div>
         <div class="basic_inf">
-            <el-table :data="a_staff_data" fit="true">
+            <el-table :data="list" fit="true">
                 <el-table-column
                         label="员工姓名"
-                        prop="staff">
+                        prop="name">
                 </el-table-column>
                 <el-table-column
                         label="手工金额">
                     <template slot-scope="scope">
                         <el-button type="primary" plain size="mini" @click="han_dio=true">
-                            1236
+                            {{scope.row.manual | isNull}}
                         </el-button>
                     </template>
                 </el-table-column>
@@ -49,15 +49,15 @@
                         label="操作次数">
                     <template slot-scope="scope">
                         <el-button type="success" plain size="mini" @click="do_amout_dio=true">
-                            15
+                            {{scope.row.operation_num | isNull}}
                         </el-button>
                     </template>
                 </el-table-column>
                 <el-table-column
-                                 label="消耗金额">
+                        label="消耗金额">
                     <template slot-scope="scope">
                         <el-button type="warning" plain size="mini" @click="do_amout_dio=true">
-                            15
+                            {{scope.row.consume_money | isNull}}
                         </el-button>
                     </template>
                 </el-table-column>
@@ -65,7 +65,7 @@
                         label="新客数">
                     <template slot-scope="scope">
                         <el-button type="info" plain size="mini" @click="new_dio=true">
-                            15
+                            {{scope.row.new_member | isNull}}
                         </el-button>
                     </template>
                 </el-table-column>
@@ -73,7 +73,7 @@
                         label="客户数">
                     <template slot-scope="scope">
                         <el-button type="danger" plain size="mini" @click="amout_dio=true">
-                            13
+                            {{scope.row.dis_member | isNull}}
                         </el-button>
                     </template>
                 </el-table-column>
@@ -81,7 +81,7 @@
                         label="产品业绩">
                     <template slot-scope="scope">
                         <el-button type="info" plain size="mini" @click="pro_dio=true">
-                            3523
+                            {{scope.row.goods_ach | isNull}}
                         </el-button>
                     </template>
                 </el-table-column>
@@ -89,7 +89,7 @@
                         label="套盒业绩">
                     <template slot-scope="scope">
                         <el-button type="warning" plain size="mini" @click="pro_dio=true">
-                            3523
+                            {{scope.row.box_ach | isNull}}
                         </el-button>
                     </template>
                 </el-table-column>
@@ -97,18 +97,18 @@
                         label="项目业绩">
                     <template slot-scope="scope">
                         <el-button type="success" plain size="mini" @click="pro_dio=true">
-                            3523
+                            {{scope.row.items_ach | isNull}}
                         </el-button>
                     </template>
                 </el-table-column>
-                <el-table-column
+                <!--<el-table-column
                         label="大项目业绩">
                     <template slot-scope="scope">
                         <el-button type="primary" plain size="mini" @click="pro_dio=true">
-                            3523
+                            {{scope.row.items_ach}}
                         </el-button>
                     </template>
-                </el-table-column>
+                </el-table-column>-->
             </el-table>
         </div>
         <!--手工业绩详情-->
@@ -124,18 +124,18 @@
                         label="客户">
                 </el-table-column>
                 <el-table-column
-                         prop="name"
-                         label="名称"
-                         width="180">
-                 </el-table-column>
-                    <el-table-column
-                            prop="number"
-                            label="次数">
-                    </el-table-column>
-                    <el-table-column
-                            prop="fee"
-                            label="单次手工">
-                    </el-table-column>
+                        prop="name"
+                        label="名称"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="number"
+                        label="次数">
+                </el-table-column>
+                <el-table-column
+                        prop="fee"
+                        label="单次手工">
+                </el-table-column>
                 <el-table-column
                         prop="total_fee"
                         label="总手工">
@@ -271,52 +271,78 @@
     new Vue({
         el: '#app',
         data: {
-            time:'',
-            han_dio:false,
-            do_amout_dio:false,
-            new_dio:false,
-            amout_dio:false,
-            pro_dio:false,
-            detail_data:[{
-                name:'李丽',
-                v_name:'李飒',
-                number:'12',
-                fee:'13',
-                total_fee:'139',
-                money:'125',
-                total_money:'45632',
-                time:'2015-02-12',
+            time: '',
+            han_dio: false,
+            do_amout_dio: false,
+            new_dio: false,
+            amout_dio: false,
+            pro_dio: false,
+            detail_data: [{
+                name: '李丽',
+                v_name: '李飒',
+                number: '12',
+                fee: '13',
+                total_fee: '139',
+                money: '125',
+                total_money: '45632',
+                time: '2015-02-12',
             }],
-            a_staff_data:[{
-                staff:'李飒',
-                sg_money:'123',
-                han_fre:'20',
-                xh_mon:'10002',
-                new:'6',
-                amout:'25',
-                pro_per:'1563',
-                th_per:'4562',
-                item_per:'125',
-                big_per:'12563',
-            },{
-        staff:'李飒',
-            sg_money:'123',
-            han_fre:'20',
-            xh_mon:'10002',
-            new:'6',
-            amout:'25',
-            pro_per:'1563',
-            th_per:'4562',
-            item_per:'125',
-            big_per:'12563',
-    }]
+            a_staff_data: [{
+                staff: '李飒',
+                sg_money: '123',
+                han_fre: '20',
+                xh_mon: '10002',
+                new: '6',
+                amout: '25',
+                pro_per: '1563',
+                th_per: '4562',
+                item_per: '125',
+                big_per: '12563',
+            }, {
+                staff: '李飒',
+                sg_money: '123',
+                han_fre: '20',
+                xh_mon: '10002',
+                new: '6',
+                amout: '25',
+                pro_per: '1563',
+                th_per: '4562',
+                item_per: '125',
+                big_per: '12563',
+            }],
+
+            start: '',
+            end: '',
+            list: '',
         },
-        methods: {},
+        watch: {
+            time(v) {
+                this.start = v[0]
+                this.end = v[1]
+                this.getData()
+            }
+        },
+        filters: {
+            isNull(v) {
+                if(v == undefined){
+                    return 0
+                }
+                return parseFloat(v).toFixed(2)
+            }
+        },
+        methods: {
+            getData() {
+                $.post(url(methods.staffAnalysis), {start: this.start, end: this.end}, v => {
+                    this.list = v.res
+                })
+            }
+        },
         mounted() {
-            this.$nextTick(e=>{
+            this.$nextTick(e => {
                 //初始化
                 that = this;
                 loginState()
+                this.getData()
             })
         }
     })
