@@ -296,6 +296,34 @@
                 </el-table-column>
             </el-table>
         </el-dialog>
+        <el-button type="primary" @click="state=!state">主要按钮</el-button>
+        <el-dialog
+                title="卡项详情"
+                :visible.sync="state"
+                center>
+            <el-table
+                    :data="itemsAll"
+                    fit=true show-overflow-tooltip>
+                <el-table-column
+                        label="项目名称"
+                        prop="name"
+                        :formatter="formatter">
+                </el-table-column>
+                <el-table-column
+                        label="剩余次数"
+                        prop="number"
+                        :formatter="formatter2">
+                </el-table-column>
+                <el-table-column
+                        label="负债金额">
+                    <template slot-scope="scope">
+                        <el-button type="primary" plain size="mini" @click="nowData=scope.row;arrear_dio=true">
+                            {{fz(scope.row)}}
+                        </el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </el-dialog>
     </template>
 </div>
 
@@ -309,6 +337,7 @@
     new Vue({
         el: '#app',
         data: {
+            state: true,
             activeNames: ['1'],
             input: '',
             time: '',
