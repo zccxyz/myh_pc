@@ -278,6 +278,10 @@
                 let arr2 = []
                 let arr3 = []
                 let arr4 = []
+
+                let arr5 = []
+                let arr6 = []
+                let arr7 = []
                 if (this.twoArr.length > 0) {
                     for (let v of this.twoArr) {
                         arr2.push({'money': v.rate, 'id': v.id, 'name': v.name})
@@ -293,6 +297,21 @@
                         arr4.push({'money': v.rate, 'id': v.id, 'name': v.name})
                     }
                 }
+                if (this.twoArr2.length > 0) {
+                    for (let v of this.twoArr2) {
+                        arr5.push({'money': v.rate, 'id': v.id, 'name': v.name})
+                    }
+                }
+                if (this.threeArr2.length > 0) {
+                    for (let v of this.threeArr2) {
+                        arr6.push({'money': v.rate, 'id': v.id, 'name': v.name})
+                    }
+                }
+                if (this.fourArr2.length > 0) {
+                    for (let v of this.fourArr2) {
+                        arr7.push({'money': v.rate, 'id': v.id, 'name': v.name})
+                    }
+                }
                 $.post(url(methods.saveCommission), {
                     data: JSON.stringify({
                         raise_m: arr2,
@@ -300,9 +319,9 @@
                         raise_d: arr4,
                         type: 'supp',
                         supp: this.cost,
-                        ka_raise_m: arr2,
-                        ka_raise_g: arr3,
-                        ka_raise_d: arr4,
+                        ka_raise_m: arr5,
+                        ka_raise_g: arr6,
+                        ka_raise_d: arr7,
                     })
                 }, v => {
                     if (v.code == 1) {
