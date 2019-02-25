@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>负债分析</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/vip_information.css">
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+</head>
+<body>
+
+<div id="app" class="customer">
+    <template>
+        <p class="cus_title">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+                <el-breadcrumb-item :to="{ path: '/' }">店务分析</el-breadcrumb-item>
+                <el-breadcrumb-item>负债分析</el-breadcrumb-item>
+            </el-breadcrumb>
+        </p>
+        <div class="cus_center">
+            <!--<el-input class="cus_seatch" style="float: left"
+                      placeholder="请输入品项名称"
+                      prefix-icon="el-icon-search"
+                      v-model="input">
+            </el-input>-->
+            <!--<el-date-picker style="width: 400px"
+                            v-model="time"
+                            type="daterange"
+                            value-format="yyyy-MM-dd"
+                            range-separator="至"
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期">
+            </el-date-picker>-->
+        </div>
+        <el-tabs type="card"
+                 class="vip_infor">
+            <el-tab-pane label="全部">
+                <p class="total" style="padding: 0 30px">
+                    总剩余次数：{{allNum}}
+                    <span class="cr" style="margin-left:100px">总负债：{{money}}</span>
+                </p>
+                <div class="basic_inf arrear">
+
+                    <el-table
+                            :data="itemsAll"
+                            fit=true show-overflow-tooltip>
+                        <el-table-column
+                                label="项目名称"
+                                prop="name"
+                                :formatter="formatter">
+                        </el-table-column>
+                        <el-table-column
+                                label="剩余次数"
+                                prop="number"
+                                :formatter="formatter2">
+                        </el-table-column>
+                        <el-table-column
+                                label="负债金额">
+                            <template slot-scope="scope">
+                                <el-button type="primary" plain size="mini" @click="nowData=scope.row;arrear_dio=true">
+                                    {{fz(scope.row)}}
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+
+                <div class="basic_inf arrear">
+                    <el-table :data="boxAll">
+                        <el-table-column
+                                label="套盒名称"
+                                prop="name"
+                                :formatter="formatter">
+                        </el-table-column>
+                        <el-table-column
+                                label="剩余次数"
+                                prop="number"
+                                :formatter="formatter2">
+                        </el-table-column>
+                        <el-table-column
+                                label="负债金额">
+                            <template slot-scope="scope">
+                                <el-button type="success" plain size="mini" @click="nowData=scope.row;arrear_dio=true">
+                                    {{fz(scope.row)}}
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+
+                <div class="basic_inf arrear">
+                    <el-table :data="planAll">
+                        <el-table-column
+                                label="方案名称"
+                                prop="name"
+                                :formatter="formatter">
+                        </el-table-column>
+                        <el-table-column
+                                label="剩余次数"
+                                prop="number"
+                                :formatter="formatter2">
+                        </el-table-column>
+                        <el-table-column
+                                label="负债金额">
+                            <template slot-scope="scope">
+                                <el-button type="warning" plain size="mini" @click="nowData=scope.row;arrear_dio=true">
+                                    {{fz(scope.row)}}
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+
+                <div class="basic_inf arrear">
+                    <el-table :data="cardAll">
+                        <el-table-column
+                                label="卡项名称"
+                                prop="name"
+                                :formatter="formatter">
+                        </el-table-column>
+                        <el-table-column
+                                label="价格"
+                                prop="price"
+                                :formatter="formatter3">
+                        </el-table-column>
+                        <el-table-column
+                                label="负债金额">
+                            <template slot-scope="scope">
+                                <el-button type="info" plain size="mini" @click="nowData2=scope.row;ka_arrear_dio=true">
+                                    {{cardFz(scope.row)}}
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+            </el-tab-pane>
+            <el-tab-pane label="项目">
+                <p class="total" style="padding: 0 30px">
+                    项目剩余次数：{{xmCs()}}
+                    <span class="cr" style="margin-left:100px">项目负债：{{xmFzl()}}</span>
+                </p>
+                <div class="basic_inf arrear">
+
+                    <el-table :data="itemsAll" fit=true show-overflow-tooltip>
+                        <el-table-column
+                                label="项目名称"
+                                prop="name"
+                                :formatter="formatter">
+                        </el-table-column>
+                        <el-table-column
+                                label="剩余次数"
+                                prop="number"
+                                :formatter="formatter2">
+                        </el-table-column>
+                        <el-table-column
+                                label="负债金额">
+                            <template slot-scope="scope">
+                                <el-button type="primary" plain size="mini" @click="nowData=scope.row;arrear_dio=true">
+                                    {{fz(scope.row)}}
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+            </el-tab-pane>
+            <el-tab-pane label="套盒">
+                <p class="total" style="padding: 0 30px">
+                    套盒剩余次数：{{xmCs(2)}}
+                    <span class="cr" style="margin-left:100px">套盒负债：{{xmFzl(2)}}</span>
+                </p>
+                <div class="basic_inf arrear">
+                    <el-table :data="boxAll">
+                        <el-table-column
+                                label="套盒名称"
+                                prop="name"
+                                :formatter="formatter">
+                        </el-table-column>
+                        <el-table-column
+                                label="剩余次数"
+                                prop="number"
+                                :formatter="formatter2">
+                        </el-table-column>
+                        <el-table-column
+                                label="负债金额">
+                            <template slot-scope="scope">
+                                <el-button type="success" plain size="mini" @click="nowData=scope.row;arrear_dio=true">
+                                    {{fz(scope.row)}}
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+            </el-tab-pane>
+            <el-tab-pane label="方案">
+                <p class="total" style="padding: 0 30px">
+                    方案剩余次数：{{xmCs(3)}}
+                    <span class="cr" style="margin-left:100px">方案负债：{{xmFzl(3)}}</span>
+                </p>
+                <div class="basic_inf arrear">
+                    <el-table :data="planAll">
+                        <el-table-column
+                                label="方案名称"
+                                prop="name"
+                                :formatter="formatter">
+                        </el-table-column>
+                        <el-table-column
+                                label="剩余次数"
+                                prop="number"
+                                :formatter="formatter2">
+                        </el-table-column>
+                        <el-table-column
+                                label="负债金额">
+                            <template slot-scope="scope">
+                                <el-button type="warning" plain size="mini" @click="nowData=scope.row;arrear_dio=true">
+                                    {{fz(scope.row)}}
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+            </el-tab-pane>
+            <el-tab-pane label="卡项">
+                <p class="total" style="padding: 0 30px">
+                    <!--卡项剩余次数：525-->
+                    卡项负债：{{xmFzl(4)}}
+                    <!--<span class="cr" style="margin-left:100px">卡项负债：{{xmFzl(4)}}</span>-->
+                </p>
+                <div class="basic_inf arrear">
+                    <el-table :data="cardAll">
+                        <el-table-column
+                                label="卡项名称"
+                                prop="name"
+                                :formatter="formatter">
+                        </el-table-column>
+                        <el-table-column
+                                label="价格"
+                                prop="price"
+                                :formatter="formatter3">
+                        </el-table-column>
+                        <el-table-column
+                                label="负债金额">
+                            <template slot-scope="scope">
+                                <el-button type="info" plain size="mini" @click="nowData2=scope.row;ka_arrear_dio=true">
+                                    {{cardFz(scope.row)}}
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+            </el-tab-pane>
+        </el-tabs>
+        <!--客户详情-->
+        <el-dialog
+                title="客户详情"
+                :visible.sync="arrear_dio"
+                center>
+            <el-table border
+                      :data="nowData"
+                      style="width: 100%">
+                <el-table-column
+                        prop="user_name"
+                        label="客户名称">
+                </el-table-column>
+                <el-table-column
+                        prop="current_num"
+                        label="剩余次数">
+                </el-table-column>
+                <el-table-column
+                        prop="unit_price"
+                        label="单次金额"
+                        :formatter="two">
+                </el-table-column>
+                <el-table-column
+                        prop="unit_price"
+                        label="剩余金额"
+                        :formatter="sy">
+                </el-table-column>
+            </el-table>
+        </el-dialog>
+        <!--卡项详情-->
+        <el-dialog
+                title="卡项详情"
+                :visible.sync="ka_arrear_dio"
+                center>
+            <el-table border
+                      :data="nowData2"
+                      style="width: 100%">
+                <el-table-column
+                        prop="user_name"
+                        label="客户名称">
+                </el-table-column>
+
+                <el-table-column
+                        prop="amount"
+                        label="卡项余额">
+                </el-table-column>
+            </el-table>
+        </el-dialog>
+
+        <el-dialog
+                title="卡项详情"
+                :visible.sync="state"
+                center>
+            <el-table
+                    :data="itemsAll"
+                    fit=true show-overflow-tooltip>
+                <el-table-column
+                        label="项目名称"
+                        prop="name"
+                        :formatter="formatter">
+                </el-table-column>
+                <el-table-column
+                        label="剩余次数"
+                        prop="number"
+                        :formatter="formatter2">
+                </el-table-column>
+                <el-table-column
+                        label="负债金额">
+                    <template slot-scope="scope">
+                        <el-button type="primary" plain size="mini" @click="nowData=scope.row;arrear_dio=true">
+                            {{fz(scope.row)}}
+                        </el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </el-dialog>
+    </template>
+</div>
+
+</body>
+</html>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../js/func.js"></script>
+<script src="../js/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            state: false,
+            activeNames: ['1'],
+            input: '',
+            time: '',
+            radio: '项目',
+            arrear_dio: false,
+            ka_arrear_dio: false,
+            detail_data: [{
+                v_name: '丽丽',
+                fre: '12',
+                money: '120',
+                total_money: '1200',
+            }, {
+                v_name: '丽丽',
+                fre: '12',
+                money: '120',
+                total_money: '1200',
+            }],
+            arrear_data: [{
+                name: '肩颈',
+                number: '6',
+            }, {
+                name: '头疗',
+                number: '6',
+            }],
+
+            boxAll: [],
+            itemsAll: [],
+            planAll: [],
+            cardAll: [],
+            money: 0,
+            allNum: 0,
+            nowData: [],
+            nowData2: [],
+            items: [],
+            box: [],
+            plan: [],
+            card: [],
+        },
+        computed: {
+            fz() {
+                return function (v) {
+                    let num = 0
+                    for (let x of v) {
+                        num += parseFloat(x['current_num']) * parseFloat(x['unit_price'])
+                    }
+                    return num.toFixed(2)
+                }
+            },
+            cardFz() {
+                return function (v) {
+                    let m = 0
+                    for (let x of v) {
+                        m += parseFloat(x['amount'])
+                    }
+                    return m.toFixed(2)
+                }
+            },
+            xmCs() {
+                return function (type=1) {
+                    let m = 0
+                    if(type==1){
+                        for (let x of this.items) {
+                            m += parseInt(x['current_num'])
+                        }
+                    }
+                    if(type==2){
+                        for (let x of this.box) {
+                            m += parseInt(x['current_num'])
+                        }
+                    }
+                    if(type==3){
+                        for (let x of this.plan) {
+                            m += parseInt(x['current_num'])
+                        }
+                    }
+                    return m
+                }
+            },
+            xmFzl() {
+                return function (type=1) {
+                    let m = 0
+                    if(type==1){
+                        for (let x of this.items) {
+                            m += parseInt(x['current_num']) * parseFloat(x['unit_price'])
+                        }
+                    }
+                    if(type==2){
+                        for (let x of this.box) {
+                            m += parseInt(x['current_num']) * parseFloat(x['unit_price'])
+                        }
+                    }
+                    if(type==3){
+                        for (let x of this.plan) {
+                            m += parseInt(x['current_num']) * parseFloat(x['unit_price'])
+                        }
+                    }
+                    if(type==4){
+                        for (let x of this.card) {
+                            m += parseFloat(x['amount'])
+                        }
+                    }
+                    return m.toFixed(2)
+                }
+            }
+        },
+        methods: {
+            two(v) {
+                return v.unit_price.toFixed(2)
+            },
+            sy(v) {
+                return (parseFloat(v.current_num) * parseFloat(v.unit_price)).toFixed(2)
+            },
+            formatter(v) {
+                return v[0]['name']
+            },
+            formatter2(v) {
+                let num = 0
+                for (let x of v) {
+                    num += parseFloat(x['current_num'])
+                }
+                return num.toFixed(2)
+            },
+            formatter3(v) {
+                return v[0]['price']
+            },
+            getData() {
+                $.post(url(methods.loadRate), v => {
+                    this.boxAll = v.data['boxAll']
+                    this.itemsAll = v.data['itemsAll']
+                    this.planAll = v.data['planAll']
+                    this.cardAll = v.data['cardAll']
+                    this.money = v.data['money']
+                    this.allNum = v.data['allNum']
+                    this.items = v.data['items']
+                    this.box = v.data['box']
+                    this.plan = v.data['plan']
+                    this.card = v.data['card']
+                })
+            }
+        },
+        mounted() {
+            this.$nextTick(e => {
+                //初始化
+                that = this;
+                loginState()
+                this.getData()
+            })
+        }
+    })
+</script>

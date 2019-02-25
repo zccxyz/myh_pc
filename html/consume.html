@@ -308,10 +308,72 @@
                         <i class="el-icon-circle-close-outline close" @click="del(1, i)"></i>
                     </li>
                 </ul>
+                <p class="p_div_b" style="margin-top: 15px">
+                    消耗提成录入
+                </p>
+                <ul class="consume_list commission_list">
+                    <li>
+                        美容师
+                        <el-select v-model="two.id" placeholder="请选择" class="in_wid">
+                            <el-option
+                                    v-for="item in mrs"
+                                    :label="item.name"
+                                    :value="item.id">
+                            </el-option>
+                        </el-select>
+                        <el-input v-model="two.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
+                        <p class="do_blue" @click="add(2)">添加</p>
+                    </li>
+                    <li v-for="(v, i) in twoArr" class="app_li">
+                        &nbsp;&nbsp;&nbsp;
+                        <div>{{v.name}}</div>
+                        <el-input :value="v.rate" placeholder="请输入" class="in_wid t_input" disabled></el-input>&nbsp;%
+                        <i class="el-icon-circle-close-outline close" @click="del(2, i)"></i>
+                    </li>
+                    <li>
+                        顾问
+                        <el-select v-model="three.id" placeholder="请选择" class="in_wid">
+                            <el-option
+                                    v-for="item in gw"
+                                    :key="item.value"
+                                    :label="item.name"
+                                    :value="item.id">
+                            </el-option>
+                        </el-select>
+                        <el-input v-model="three.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
+                        <p class="do_blue" @click="add(3)">添加</p>
+                    </li>
+                    <li v-for="(v, i) in threeArr" class="app_li">
+                        &nbsp;&nbsp;&nbsp;
+                        <div>{{v.name}}</div>
+                        <el-input :value="v.rate" placeholder="请输入" class="in_wid t_input" disabled></el-input>&nbsp;%
+                        <i class="el-icon-circle-close-outline close" @click="del(3, i)"></i>
+                    </li>
+
+                    <li>
+                        店长
+                        <el-select v-model="four.id" placeholder="请选择" class="in_wid">
+                            <el-option
+                                    v-for="item in dz"
+                                    :key="item.value"
+                                    :label="item.name"
+                                    :value="item.id">
+                            </el-option>
+                        </el-select>
+                        <el-input v-model="four.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
+                        <p class="do_blue" @click="add(4)">添加</p>
+                    </li>
+                    <li v-for="(v, i) in fourArr" class="app_li">
+                        &nbsp;&nbsp;&nbsp;
+                        <div>{{v.name}}</div>
+                        <el-input :value="v.rate" placeholder="请输入" class="in_wid t_input" disabled></el-input>&nbsp;%
+                        <i class="el-icon-circle-close-outline close" @click="del(4, i)"></i>
+                    </li>
+                </ul>
             </div>
             <div class="fr">
                 <p class="p_div_b">
-                    消耗提成录入
+                    卡扣提成录入
                 </p>
                 <ul class="consume_list commission_list">
                     <li>
