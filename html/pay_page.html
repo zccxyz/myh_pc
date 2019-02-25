@@ -67,7 +67,7 @@
                         <el-input type="number" v-model="mt_pay" placeholder="0.00" class="fr pay_input"></el-input>
                     </li>
                 </ul>
-                <template v-if="type==1">
+                <template>
                     <p><img src="../images/pay(9).png" height="100%">会员储值卡</p>
                     <div class="pay_other">
                      <span class="pay_have">
@@ -89,51 +89,53 @@
                     <p><img src="../images/pay(5).png" height="100%">余额抵扣</p>
                     <div class="pay_other">
                      <span class="pay_have">
-                         会员余额：{{myBalance}}&nbsp;&nbsp;&nbsp;
-                         会员赠额：{{mySendBalance}}
+                         会员余额：{{type==1?myBalance:detail.balance}}&nbsp;&nbsp;&nbsp;
+                         <span v-if="type==1">会员赠额：{{mySendBalance}}</span>
                      </span>
                         <span>
                          使用余额：<el-input type="number" v-model="balance_pay" placeholder="0.00"
                                         class="pay_input"></el-input>
-                         使用赠额：<el-input type="number" v-model="send_balance_pay" placeholder="0.00"
-                                        class="pay_input"></el-input>
+                         <span v-if="type==1">使用赠额：<el-input type="number" v-model="send_balance_pay" placeholder="0.00"
+                                                             class="pay_input"></el-input></span>
                      </span>
                     </div>
-                    <p><img src="../images/pay(8).png" height="100%">积分抵扣</p>
-                    <div class="pay_other">
-                     <span class="pay_have">
-                         累计积分：0.0&#12288;可用积分：{{canUseIntegral}}
-                     </span>
-                        <span>
-                         使用积分：<el-input type="number" v-model="integral" placeholder="0.00"
-                                        class="pay_input"></el-input>&#12288;
-                         抵扣金额：<el-input type="number" v-model="integral_pay" placeholder="0.00"
-                                        class="pay_input"></el-input>
-                     </span>
-                    </div>
-                    <p><img src="../images/pay(7).png" height="100%">赠送</p>
-                    <div class="pay_other">
-                     <span class="pay_have">
-                        赠送积分：<el-input v-model="send_integral" placeholder="0" class="pay_input"></el-input>
-                     </span>
-                        <span>
-                         赠送金额：<el-input v-model="send_money" placeholder="0.00" class="pay_input"></el-input>
-                         &#12288;经手人：<el-input v-model="person" placeholder="请填写经手人" class="pay_input"></el-input>
-                     </span>
-                    </div>
-                    <template v-if="couponList.length>0">
-                        <p><img src="../images/pay(6).png" height="100%">使用优惠券（共{{couponList.length}}张优惠券）</p>
-                        <div class="pay_coupon">
-                            <el-tabs type="border-card">
-                                <el-tab-pane label="可用优惠券">
-                                    以下是该订单可用优惠券，你可以查看优惠券规则说明
-                                </el-tab-pane>
-                                <el-tab-pane label="不可用优惠券">
-                                    以下是该订单不可用优惠券，你可以查看优惠券规则说明
-                                </el-tab-pane>
-                            </el-tabs>
+                    <span v-if="type==1">
+                        <p><img src="../images/pay(8).png" height="100%">积分抵扣</p>
+                        <div class="pay_other">
+                         <span class="pay_have">
+                             累计积分：0.0&#12288;可用积分：{{canUseIntegral}}
+                         </span>
+                            <span>
+                             使用积分：<el-input type="number" v-model="integral" placeholder="0.00"
+                                            class="pay_input"></el-input>&#12288;
+                             抵扣金额：<el-input type="number" v-model="integral_pay" placeholder="0.00"
+                                            class="pay_input"></el-input>
+                         </span>
                         </div>
-                    </template>
+                        <p><img src="../images/pay(7).png" height="100%">赠送</p>
+                        <div class="pay_other">
+                         <span class="pay_have">
+                            赠送积分：<el-input v-model="send_integral" placeholder="0" class="pay_input"></el-input>
+                         </span>
+                            <span>
+                             赠送金额：<el-input v-model="send_money" placeholder="0.00" class="pay_input"></el-input>
+                             &#12288;经手人：<el-input v-model="person" placeholder="请填写经手人" class="pay_input"></el-input>
+                         </span>
+                        </div>
+                        <template v-if="couponList.length>0">
+                            <p><img src="../images/pay(6).png" height="100%">使用优惠券（共{{couponList.length}}张优惠券）</p>
+                            <div class="pay_coupon">
+                                <el-tabs type="border-card">
+                                    <el-tab-pane label="可用优惠券">
+                                        以下是该订单可用优惠券，你可以查看优惠券规则说明
+                                    </el-tab-pane>
+                                    <el-tab-pane label="不可用优惠券">
+                                        以下是该订单不可用优惠券，你可以查看优惠券规则说明
+                                    </el-tab-pane>
+                                </el-tabs>
+                            </div>
+                        </template>
+                    </span>
                 </template>
             </div>
         </div>
@@ -220,7 +222,7 @@
                     + parseFloat(this.integral_pay == '' ? 0 : this.integral_pay) + parseFloat(this.send_money == '' ? 0 : this.send_money)
                     + parseFloat(this.cash_pay == '' ? 0 : this.cash_pay)
                     + parseFloat(this.card_pay == '' ? 0 : this.card_pay)
-                if(total != this.detail.money) {
+                if (total != this.detail.money) {
                     error(`补款金额必须是${this.detail.money}元`)
                     return
                 }
@@ -234,12 +236,15 @@
                         'mt_pay': this.mt_pay,
                         'sqb_pay': this.sqb_pay,
                         'bank_pay': this.bank_pay,
+                        'card_pay': this.card_pay,
+                        'balance_pay': this.balance_pay,
+                        'card_id': this.card,
                     })
                 }, v => {
                     if (v.code == 1) {
-                        if(this.type==1){
+                        if (this.type == 1) {
                             localStorage.setItem('cost', v.cost)
-                        }else{
+                        } else {
                             localStorage.setItem('cost', v.supp)
                         }
                         success(v.Msg)
@@ -344,7 +349,7 @@
             },
             needPay() {
                 let orderPrice = parseFloat(this.order.price)
-                if(this.cardDetail!=''&&this.cardDetail!=null&&parseFloat(this.cardDetail.discount)>0){
+                if (this.cardDetail != '' && this.cardDetail != null && parseFloat(this.cardDetail.discount) > 0) {
                     orderPrice *= parseFloat(this.cardDetail.discount)
                 }
                 return orderPrice - parseFloat(this.zfb_pay == '' ? 0 : this.zfb_pay) -
