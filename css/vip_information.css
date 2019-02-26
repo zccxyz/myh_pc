@@ -1,4 +1,4 @@
-div{
+table td div{
     white-space: nowrap !important;
 }
 .vip_infor{
@@ -131,9 +131,9 @@ border-bottom:1px solid rgba(89, 89, 89, 0.2);
     padding:15px;
 }
 .information .el-checkbox {
-    margin: 0 15px 0 10px;
+    margin: 0 15px 10px 10px;
 }
-.information .el-checkbox+.el-checkbox {
+.information .el-checkbox{
     margin-left: 0;
 }
 .choiced{
@@ -161,4 +161,7 @@ position: fixed;
     line-height: 50px;
     text-align: center;
     box-shadow: 0px 1px 0px 0px rgba(6, 6, 6, 0.2),0px -1px 0px 0px rgba(6, 6, 6, 0.2);
+}
+.pro_div .el-button--mini,.pro_div .el-button--mini.is-round {
+    margin-bottom: 10px;
 }
