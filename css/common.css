@@ -1,4 +1,9 @@
 @charset "utf-8";
+.el-dialog{
+    margin-top: 10% !important;
+    max-height: 80%;
+    max-width: 80%;
+}
 .el-dialog__title {
     color: #fff;
 }
