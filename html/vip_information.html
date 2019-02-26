@@ -41,7 +41,7 @@
                                 </el-select>
                             </p>
                             <p>会员编号：
-                                <el-input v-model="userInfo.num" placeholder="请输入" disabled
+                                <el-input v-model="userInfo.shop_num" placeholder="请输入"
                                           class="infor_wid un_line_h"></el-input>
                             </p>
                         </li>
@@ -956,9 +956,8 @@
                 })
             },
             modifyUser() {
-                if (this.userInfo.name == '' || this.userInfo.tel == '' || this.userInfo.bir_type == '' ||
-                    this.userInfo.yl == '') {
-                    error('请填完以上内容')
+                if (this.userInfo.name == '' || this.userInfo.tel == '') {
+                    error('请填些姓名和电话')
                     return
                 }
                 $.post(url(methods.editUser), {
@@ -973,6 +972,7 @@
                         sex: this.userInfo.sex,
                         balance: this.userInfo.balance,
                         send_balance: this.userInfo.send_balance,
+                        shop_num: this.userInfo.shop_num,
                     }
                 }, v => {
                     if (v.code == 1) {
