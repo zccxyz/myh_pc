@@ -7,11 +7,6 @@
     <link rel="stylesheet" type="text/css" href="../css/common.css">
     <link rel="stylesheet" type="text/css" href="../css/customer.css">
     <link rel="stylesheet" type="text/css" href="../css/goods.css">
-    <style>
-        .el-dialog{
-            overflow-y: scroll;
-        }
-    </style>
 </head>
 <body>
 
@@ -77,19 +72,7 @@
             </el-table-column>
             <el-table-column
                     prop="sn"
-                    label="编号">
-            </el-table-column>
-            <el-table-column
-                    prop=""
-                    label="颜色">
-            </el-table-column>
-            <el-table-column
-                    prop=""
-                    label="大小">
-            </el-table-column>
-            <el-table-column
-                    prop=""
-                    label="单位">
+                    label="商品编号">
             </el-table-column>
             <el-table-column
                     prop="price"
@@ -145,75 +128,11 @@
                     <span class="list_right">{{now.type}}</span>
                 </li>
                 <li>
-                    <span class="list_left">类别</span>
-                    <span class="list_right">
-                    <el-radio v-for="v in classify" v-if="now.zt==v.type" v-model="now.cid"
-                              :label="v.id">{{v.name}}</el-radio>
-                </span>
-                </li>
-                <li>
                     <span class="list_left">商品名称</span>
                     <span class="list_right">
                     <el-input placeholder="请输入商品名称" v-model="now.name"></el-input>
                 </span>
                 </li>
-
-
-                <li v-if="sj.cid==21">
-                    <span class="list_left">单位</span>
-                    <span class="list_right">
-                          <el-select v-model="value" placeholder="请选择">
-                            <el-option
-                                    v-for="item in unit_options"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
-                            </el-option>
-                          </el-select>
-                    </span>
-                </li>
-                <li v-if="sj.cid==21">
-                    <span class="list_left">大小</span>
-                    <span class="list_right">
-                        <el-radio label="1">型号
-                            <el-select v-model="value" placeholder="请选择" style="width: 175px;margin:5px">
-                            <el-option
-                                    v-for="item in unit_options"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
-                            </el-option>
-                          </el-select>
-                        </el-radio>
-                        <el-radio label="2">尺码
-                            <el-select v-model="value" placeholder="请选择" style="width: 92px;margin:5px">
-                            <el-option
-                                    v-for="item in unit_options"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
-                            </el-option>
-                          </el-select>
-                            <el-select v-model="value" placeholder="请选择" style="width: 92px;margin:5px">
-                            <el-option
-                                    v-for="item in unit_options"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
-                            </el-option>
-                          </el-select>
-                        </el-radio>
-                    </span>
-                </li>
-                <li v-if="sj.cid==21">
-                    <span class="list_left">颜色</span>
-                    <span class="list_right">
-                        <el-input v-model="sj.price" placeholder="请输入颜色"></el-input>
-                    </span>
-                </li>
-
-
-
                 <li>
                     <span class="list_left">售价</span>
                     <span class="list_right">
@@ -238,7 +157,13 @@
                     <el-input v-model="now.fee" placeholder="请输入手工费"></el-input>
                 </span>
                 </li>
-
+                <li>
+                    <span class="list_left">类别</span>
+                    <span class="list_right">
+                    <el-radio v-for="v in classify" v-if="now.zt==v.type" v-model="now.cid"
+                              :label="v.id">{{v.name}}</el-radio>
+                </span>
+                </li>
             </ul>
             <span slot="footer" class="dialog-footer">
             <el-button @click="centerDialogVisible = false">取 消</el-button>
@@ -257,14 +182,6 @@
                         <el-radio v-model="sj.type" label="1">产品</el-radio>
                         <el-radio v-model="sj.type" label="2">套盒</el-radio>
                         <el-radio v-model="sj.type" label="3">项目</el-radio>
-                    </span>
-                </li>
-                <li>
-                    <span class="list_left">类别</span>
-                    <span class="list_right">
-                        <el-radio v-for="v in classify" v-if="sj.type==v.type" v-model="sj.cid"
-                                  :label="v.id">{{v.name}}
-                        </el-radio>
                     </span>
                 </li>
                 <li>
@@ -293,61 +210,6 @@
                           </el-select>
                     </span>
                 </li>
-
-                <li v-if="sj.cid==21">
-                    <span class="list_left">单位</span>
-                    <span class="list_right">
-                          <el-select v-model="value" placeholder="请选择">
-                            <el-option
-                                    v-for="item in unit_options"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
-                            </el-option>
-                          </el-select>
-                    </span>
-                </li>
-                <li v-if="sj.cid==21">
-                    <span class="list_left">大小</span>
-                    <span class="list_right">
-                        <el-radio label="1">型号
-                            <el-select v-model="value" placeholder="请选择" style="width: 175px;margin:5px">
-                            <el-option
-                                    v-for="item in unit_options"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
-                            </el-option>
-                          </el-select>
-                        </el-radio>
-                        <el-radio label="2">尺码
-                            <el-select v-model="value" placeholder="请选择" style="width: 92px;margin:5px">
-                            <el-option
-                                    v-for="item in unit_options"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
-                            </el-option>
-                          </el-select>
-                            <el-select v-model="value" placeholder="请选择" style="width: 92px;margin:5px">
-                            <el-option
-                                    v-for="item in unit_options"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
-                            </el-option>
-                          </el-select>
-                        </el-radio>
-                    </span>
-                </li>
-                <li v-if="sj.cid==21">
-                    <span class="list_left">颜色</span>
-                    <span class="list_right">
-                        <el-input v-model="sj.price" placeholder="请输入颜色"></el-input>
-                    </span>
-                </li>
-
-
                 <li>
                     <span class="list_left">售价</span>
                     <span class="list_right">
@@ -372,7 +234,14 @@
                         <el-input v-model="sj.fee" placeholder="请输入手工费"></el-input>
                     </span>
                 </li>
-
+                <li>
+                    <span class="list_left">类别</span>
+                    <span class="list_right">
+                        <el-radio v-for="v in classify" v-if="sj.type==v.type" v-model="sj.cid"
+                                  :label="v.id">{{v.name}}
+                        </el-radio>
+                    </span>
+                </li>
             </ul>
             <span slot="footer" class="dialog-footer">
             <el-button @click="zt = false">取 消</el-button>
@@ -530,20 +399,6 @@
     new Vue({
         el: '#app',
         data: {
-            unit_options: [{
-                value: '选项1',
-                label: '件'
-            }, {
-                value: '选项2',
-                label: '条'
-            }, {
-                value: '选项3',
-                label: '双'
-            }, {
-                value: '选项4',
-                label: '套'
-            }],
-            value: '',
             input: '',
             radio: '',
             centerDialogVisible: false,
@@ -759,8 +614,7 @@
                 this.getClassify()
                 this.getCate()
                 loginState()
-                // this.r = url(methods.upload) + '&type=2'
-                this.r = url(methods.upload) + '&type=3'
+                this.r = url(methods.upload) + '&type=2'
             })
         }
     })
