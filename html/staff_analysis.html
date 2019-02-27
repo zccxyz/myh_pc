@@ -9,6 +9,13 @@
         div {
             white-space: nowrap !important;
         }
+        .basic_inf{
+            overflow: scroll;
+        }
+        .basic_inf .el-table{
+            width: 1800px;
+            max-width: 2300px;
+        }
     </style>
 </head>
 <body>
@@ -32,7 +39,7 @@
             </el-date-picker>
         </div>
         <div class="basic_inf">
-            <el-table :data="list" fit="true">
+            <el-table :data="list">
                 <el-table-column
                         label="员工姓名"
                         prop="name">
