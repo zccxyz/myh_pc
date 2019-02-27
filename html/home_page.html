@@ -58,7 +58,7 @@
                                 <span slot="title">商品管理</span>
                             </a>
                         </el-menu-item>
-                        <el-menu-item index="14">
+                        <el-menu-item index="14" v-if="user.mode==1">
                             <a href="goods2.html" target="iframe">
                                 <span class="span_img">
                                     <img src="../images/wear.png" class="home_icon">

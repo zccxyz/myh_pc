@@ -1,5 +1,5 @@
-// var ym = 'https://www.myhkj.cn/apis/backend/';
-var ym = 'http://admin.test.com/apis/backend/';
+var ym = 'https://www.myhkj.cn/apis/backend/';
+// var ym = 'http://admin.test.com/apis/backend/';
 // var ym = 'http://127.0.0.1:8000/apis/backend/';
 
 var methods = {
@@ -34,7 +34,9 @@ var methods = {
     'editAll': 'Goods/editAll',
     'addAll': 'Goods/addAll',
     'del': 'Goods/del',
+    'underwearOperation': 'Goods/underwear_operation',
     'getSpec': 'Goods/get_spec',
+    'getUnderwear': 'Goods/get_underwear',
     'conOperation': 'Goods/con_operation',
     'consumablesList': 'Goods/ConsumablesList',
     'addVip': 'Member/addvip',
@@ -48,6 +50,7 @@ var methods = {
     'buyItems': 'buy/buyItems',
     'buyPlan': 'buy/buyPlan',
     'buyCard': 'buy/buyCard',
+    'buyClothes': 'buy/buyClothes',
     'print': 'buy/consume_print',
     'saveCommission': 'buy/save_commission',
     'getDetails': 'Consume/getDetails',

@@ -308,6 +308,68 @@
                     </el-table-column>
                 </el-table>
             </el-tab-pane>
+
+            <el-tab-pane v-if="user.mode==1" label="内衣">
+                <div>
+                    <el-input style="margin:5px 0;" class="cus_seatch"
+                              placeholder="请输入商品名称"
+                              prefix-icon="el-icon-search"
+                              v-model="input">
+                    </el-input>
+                </div>
+                <el-table border
+                          ref="multipleTable"
+                          :data="yf.filter(data => (!input || data.name.toLowerCase().includes(input.toLowerCase())))"
+                          tooltip-effect="dark"
+                          style="width: 100%">
+                    <el-table-column
+                            label="编号"
+                            prop="sn">
+                    </el-table-column>
+                    <el-table-column
+                            label="类型"
+                            prop="type">
+                    </el-table-column>
+                    <el-table-column
+                            prop="name"
+                            label="名称"
+                            width="120">
+                    </el-table-column>
+                    <el-table-column
+                            prop="price"
+                            label="价格">
+                    </el-table-column>
+                    <el-table-column
+                            prop="color"
+                            label="颜色">
+                    </el-table-column>
+                    <el-table-column
+                            prop="size"
+                            label="尺码">
+                    </el-table-column>
+                    <el-table-column
+                            prop="cup"
+                            label="罩杯">
+                    </el-table-column>
+                    <el-table-column
+                            prop="unit"
+                            label="单位">
+                    </el-table-column>
+                    <el-table-column
+                            prop="sum"
+                            label="数量">
+                    </el-table-column>
+                    <el-table-column
+                            label="加入购物车"
+                            show-overflow-tooltip>
+                        <template slot-scope="scope">
+                            <i class="el-icon-remove blue_c" @click="remove3(scope.row)" v-if="scope.row.needNum>0"></i>
+                            <i v-if="scope.row.needNum>0">{{scope.row.needNum}}</i>
+                            <i class="el-icon-circle-plus blue_c" @click="add3(scope.row)"></i>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </el-tab-pane>
         </el-tabs>
 
 
@@ -398,6 +460,46 @@
                 <span class="red_box pay" @click="subCard" style="cursor: pointer">提交订单</span>
             </div>
         </div>
+
+        <div v-if="need3.length>0" class="cart_div" style="z-index: 10">
+            <p class="cart_title">
+                已选择（{{need3.length}}）
+                <span class="fr mar_hun" @click="allRemove">
+                <img src="../images/delete.png">&nbsp;全部清空
+               </span>
+            </p>
+            <div style="height: 200px;background: white;overflow: scroll;">
+                <ul class="consume_list" style="margin-bottom: 50px">
+                    <li v-for="v in need3" class="linr_four">
+                        <span class="g_name">
+                             {{v.name}}
+                        </span>
+                        <span class="p_wid">￥{{v.yh==1?v.price * v.discount/10:v.yh==2?0:v.price2}}</span>
+                        <span class="span_bold">
+                            优惠方式
+                            <el-radio v-model="v.yh" label="1">打折</el-radio>
+                            <el-input v-if="v.yh==1" v-model="v.discount" placeholder="请输入1到10的数字"
+                                      class="in_wid und_line"></el-input>
+                            <el-radio v-model="v.yh" label="3">改价</el-radio>
+                            <el-input v-if="v.yh==3" v-model="v.price2" placeholder="请输入价格"
+                                      class="in_wid und_line"></el-input>
+                            <el-radio v-model="v.yh" label="2" v-if="v.send==1">赠送</el-radio>
+                        </span>
+                        <span class="fr mar_hun">
+                             <i class="el-icon-remove blue_c" @click="remove3(v)"></i>
+                             <i>{{v.needNum}}</i>
+                             <i class="el-icon-circle-plus blue_c" @click="add3(v)"></i>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <div class="cart_total">
+                 <span class="fl cr total_money">
+                     合计：{{total3}}
+                 </span>
+                <span class="red_box pay" @click="buyClothes()" style="cursor: pointer">提交订单</span>
+            </div>
+        </div>
     </template>
 
 </div>
@@ -446,8 +548,27 @@
             tabIndex: 0,
             card: [],
             need2: [],
+            user: '',
+            yf: [],
+            need3: [],
         },
         methods: {
+            buyClothes() {
+                if(this.need3.length==0){
+                    return error('请选择内衣')
+                }
+                $.post(url(methods.buyClothes), {data: this.need3, uid: this.user_id}, v=>{
+                    this.need3 = []
+                    for (let v of this.yf) {
+                        v.needNum = 0;
+                    }
+                    success('购买成功')
+                    localStorage.setItem('orderId', v.data.id)
+                    localStorage.setItem('arrearsRes', v.data.arrearsRes)
+                    localStorage.setItem('type', 1)
+                    setTimeout(()=>location.href = './pay_page.html', 1000)
+                })
+            },
             subCard() {
                 if(this.need2.length==0){
                     return
@@ -718,6 +839,20 @@
                     }
                 }
             },
+            remove3(v) {
+                if (v.needNum > 0) {
+                    v.needNum--
+                    for (let i in this.need3) {
+                        if (v.id == this.need3[i].id && this.need3[i].needNum > 0) {
+                            z = false
+                            break
+                        }
+                        if (this.need3[i].needNum == 0) {
+                            this.need3.splice(i, 1)
+                        }
+                    }
+                }
+            },
             add(v) {
                 v.needNum++
                 let z = true;
@@ -742,6 +877,19 @@
                 }
                 if (z) {
                     this.need2.unshift(v)
+                }
+            },
+            add3(v) {
+                v.needNum++
+                let z = true;
+                for (let x of this.need3) {
+                    if (v.id == x.id) {
+                        z = false
+                        break
+                    }
+                }
+                if (z) {
+                    this.need3.unshift(v)
                 }
             },
             toggleSelection(rows) {
@@ -793,10 +941,14 @@
                 this.tabIndex = tab.index
                 this.need = []
                 this.need2 = []
+                this.need3 = []
                 for (let v of this.list) {
                     v.needNum = 0;
                 }
                 for (let v of this.card) {
+                    v.needNum = 0;
+                }
+                for (let v of this.yf) {
                     v.needNum = 0;
                 }
             },
@@ -813,6 +965,19 @@
                     }else{
                         error(v.error)
                     }
+                })
+            },
+            getYf() {
+                $.get(url(methods.getUnderwear), v => {
+                    for (let x of v.res) {
+                        x['type'] = x['type'].toString()
+                        x['needNum'] = 0
+                        x['discount'] = 10
+                        x['yh'] = 0
+                        x['price2'] = x['price']
+                    }
+                    this.yf = v.res
+                    console.log(this.yf)
                 })
             },
         },
@@ -842,13 +1007,30 @@
                     }
                 }
                 return all
-            }
+            },
+            total3() {
+                let all = 0
+                for (let v of this.need3) {
+                    if(v.yh==2) {
+                        continue
+                    }else if(v.yh==1){
+                        all += v.discount / 10 * v.price * v.needNum
+                    }else{
+                        all += v.price2 * v.needNum
+                    }
+                }
+                return all
+            },
         },
         mounted() {
             this.$nextTick(e => {
                 //初始化
                 that = this;
                 this.user_id = localStorage.getItem('user_id')
+                this.user = JSON.parse(localStorage.getItem('user'))
+                if(this.user.mode==0){
+                    this.getYf()
+                }
                 this.getGoods()
                 loginState()
                 this.r = url(methods.upload + '?type=2')
