@@ -101,14 +101,46 @@
                         </el-button>
                     </template>
                 </el-table-column>
-                <!--<el-table-column
-                        label="大项目业绩">
+                <el-table-column
+                        label="方案业绩">
                     <template slot-scope="scope">
                         <el-button type="primary" plain size="mini" @click="pro_dio=true">
-                            {{scope.row.items_ach}}
+                            0.00
                         </el-button>
                     </template>
-                </el-table-column>-->
+                </el-table-column>
+                <el-table-column
+                        label="卡项业绩">
+                    <template slot-scope="scope">
+                        <el-button type="success" plain size="mini" @click="pro_dio=true">
+                            0.00
+                        </el-button>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        label="卡扣业绩">
+                    <template slot-scope="scope">
+                        <el-button type="warning" plain size="mini" @click="pro_dio=true">
+                            0.00
+                        </el-button>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        label="充值业绩">
+                    <template slot-scope="scope">
+                        <el-button type="info" plain size="mini" @click="pro_dio=true">
+                            0.00
+                        </el-button>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        label="大项目业绩">
+                    <template slot-scope="scope">
+                        <el-button type="danger" plain size="mini" @click="pro_dio=true">
+                            0.00
+                        </el-button>
+                    </template>
+                </el-table-column>
             </el-table>
         </div>
         <!--手工业绩详情-->
