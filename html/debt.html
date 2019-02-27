@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>负债分析</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/vip_information.css">
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+</head>
+<body>
+
+<div id="app" class="customer">
+    <template>
+        <p class="cus_title">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+                <el-breadcrumb-item :to="{ path: '/' }">店务分析</el-breadcrumb-item>
+                <el-breadcrumb-item>负债分析</el-breadcrumb-item>
+            </el-breadcrumb>
+        </p>
+        <div class="basic_inf arrear">
+            <el-table :data="arrear_All">
+                <el-table-column
+                        label="次/金额(元)"
+                        prop="name">
+                </el-table-column>
+                <el-table-column
+                        label="剩余次数"
+                        prop="number">
+                </el-table-column>
+                <el-table-column
+                        label="负债金额">
+                    <template slot-scope="scope">
+                        <el-button type="success" plain size="mini" @click="debt_etail(scope.$index);arrear_dio_detail=true">
+                            {{scope.row.money}}
+                        </el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </div>
+        <!--套盒 项目 方案负债详情-->
+        <el-dialog
+                title="负债详情"
+                :visible.sync="arrear_dio_detail"
+                center>
+            <div class="cus_center">
+                <el-input class="cus_seatch" style="float: left"
+                          placeholder="请输入品项/会员名称"
+                          prefix-icon="el-icon-search"
+                          v-model="input">
+                </el-input>
+            </div>
+            <el-table
+                    :data="list"
+                    fit=true show-overflow-tooltip>
+                <el-table-column
+                        label="客户">
+                    <template slot-scope="scope">
+                        {{scope.row.v_name?scope.row.v_name:scope.row.name}}
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        label="名称">
+                    <template slot-scope="scope">
+                        {{scope.row.v_name?scope.row.name:--}}
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        label="剩余次数"
+                        prop="current_num">
+                </el-table-column>
+                <el-table-column
+                        label="总次数"
+                        prop="originally_num">
+                </el-table-column>
+                <el-table-column
+                        label="负债金额"
+                        prop="money">
+                </el-table-column>
+            </el-table>
+
+        </el-dialog>
+        <!--卡项详情-->
+        <el-dialog
+                title="卡项负债详情"
+                :visible.sync="card"
+                center>
+
+        </el-dialog>
+        <!--余额负债详情-->
+        <el-dialog
+                title="余额负债详情"
+                :visible.sync="ka_arrear_dio"
+                center>
+
+        </el-dialog>
+    </template>
+</div>
+
+</body>
+</html>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../js/func.js"></script>
+<script src="../js/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            pin_x:[],
+            card:[],
+            banlance:[],
+            all_list:[],
+            see_list:[],
+            list:[],
+            th_list:[],
+            xm_list:[],
+            fa_list:[],
+            input: '',
+            time: '',
+            radio: '项目',
+            arrear_dio: false,
+            ka_arrear_dio: false,
+            arrear_dio_detail: false,
+            detail_data: [{
+                v_name: '丽丽',
+                fre: '12',
+                money: '120',
+                total_money: '1200',
+            }, {
+                v_name: '丽丽',
+                fre: '12',
+                money: '120',
+                total_money: '1200',
+            }],
+            arrear_data: [{
+                name: '肩颈',
+                number: '6',
+            }, {
+                name: '头疗',
+                number: '6',
+            }],
+
+            arrear_All:[{
+                name: '总负债',
+                number: 0,
+                money:0
+            },{
+                name: '项目',
+                number: 0,
+                money:0
+            },{
+                name: '套盒',
+                number: 0,
+                money:0
+            },{
+                name: '方案',
+                number: 0,
+                money:0
+            },{
+                name: '卡项',
+                number: '--',
+                money:0
+            },{
+                name: '余额',
+                number:  '--',
+                money:0
+            }]
+        },
+        computed: {
+
+        },
+        methods: {
+
+            getData() {
+                $.post(url(methods.get_liabilities_detail), v => {
+                    console.log(v.res);
+                    this.arrear_All[0].number= v.res['not_num']
+                    this.arrear_All[0].money= v.res['total'].toFixed(2)
+
+                    this.arrear_All[1].number= v.res['xm_not_num']
+                    this.arrear_All[1].money= v.res['xm_total'].toFixed(2)
+
+                    this.arrear_All[2].number= v.res['th_not_num']
+                    this.arrear_All[2].money= v.res['th_total'].toFixed(2)
+
+                    this.arrear_All[3].number= v.res['programme_not_num']
+                    this.arrear_All[3].money= v.res['fa_total'].toFixed(2)
+
+                    this.arrear_All[4].money= v.res['cr_total'].toFixed(2)
+                    this.arrear_All[5].money= v.res['balance_total'].toFixed(2)
+                    this.card=v.res.res_card;
+                    this.banlance=v.res.balance_list;
+                    this.list=v.res.res;
+                })
+            },
+            debt_etail(index){
+                $.post(url(methods.get_liabilities_detail), v => {
+
+                    for(let v of this.list){
+                        switch (v['type'])
+                        {
+                            case 1:
+                                this.th_list.push(v);
+                            case 2:
+                                this.xm_list.push(v);
+                            case 3:
+                                this.fa_list.push(v);
+                            default:
+                                this.all_list.push(v);
+                        }
+                    }
+                    for(let v of this.card){
+                        this.all_list.push(v);
+                    }
+                    for(let v of this.banlance){
+                        this.all_list.push(v);
+                    }
+                    switch (index)
+                    {
+                        case 0:
+                            this.see_list=this.all_list
+                            break;
+                        case 1:
+                            this.see_list=this.th_list
+                            break;
+                        case 2:
+                            this.see_list=this.xm_list
+                            break;
+                        case 3:
+                            this.see_list=this.fa_list
+                            break;
+                        case 4:
+                            this.see_list=this.card
+                            break;
+                        case 5:
+                            this.see_list=this.balance
+                            break;
+                        default:
+                    }
+                })
+            }
+        },
+        mounted() {
+            this.$nextTick(e => {
+                //初始化
+                that = this;
+                loginState()
+                this.getData()
+            })
+        }
+    })
+</script>

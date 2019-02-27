@@ -112,6 +112,7 @@ var methods = {
     'checkMonth': 'staff/check_month',
     'excel': 'staff/excel',
     'getDayAchievement': 'achievement/get_day_achievement',
+    'get_liabilities_detail':'analysis/get_liabilities_detail',
     'loadRate': 'analysis/loadRate',
     'indexDetail': 'analysis/index_detail',
     'staffAnalysis': 'analysis/staff_analysis',
