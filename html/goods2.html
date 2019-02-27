@@ -19,13 +19,13 @@
     <p class="cus_title">
         <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '/' }">信息管理</el-breadcrumb-item>
-            <el-breadcrumb-item>商品管理</el-breadcrumb-item>
+            <el-breadcrumb-item>内衣管理</el-breadcrumb-item>
         </el-breadcrumb>
     </p>
     <template>
         <div class="cus_center">
             <el-input style="float:left;" class="cus_seatch"
-                      placeholder="请输入商品名称"
+                      placeholder="请输入内衣名称"
                       prefix-icon="el-icon-search"
                       v-model="input">
             </el-input>
@@ -39,12 +39,12 @@
                     :before-upload="beforeUpload2"
                     :on-success="ok"
                     :file-list="fileList">
-                <el-button type="primary">导入商品表</el-button>
+                <el-button type="primary">导入内衣</el-button>
                 <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
             </el-upload>
             <el-button type="success" @click="exportData">导出商品表</el-button>
             <a href="https://www.myhkj.cn/商品导入.xlsx">
-                <el-button type="success">商品表模板下载</el-button>
+                <el-button type="success">内衣表模板下载</el-button>
             </a>
             <el-button type="success" class="fr" @click="del">批量删除</el-button>
             <el-button type="success" class="fr" @click="zt = true">新增商品</el-button>
@@ -62,48 +62,47 @@
                     width="55">
             </el-table-column>
             <el-table-column
-                    label="品项"
-                    width="120"
-                    prop="type">
-            </el-table-column>
-            <el-table-column
-                    prop="class"
-                    label="类别"
-                    width="120">
+                    prop="sn"
+                    label="编号">
             </el-table-column>
             <el-table-column
                     prop="name"
                     label="商品名称">
             </el-table-column>
             <el-table-column
-                    prop="sn"
-                    label="编号">
+                    prop="type"
+                    label="类型"
+                    width="120">
             </el-table-column>
             <el-table-column
                     prop=""
                     label="颜色">
             </el-table-column>
             <el-table-column
-                    prop=""
+                    prop="size"
                     label="大小">
             </el-table-column>
             <el-table-column
-                    prop=""
+                    prop="unit"
                     label="单位">
+            </el-table-column>
+            <el-table-column
+                    prop="cup"
+                    label="罩杯">
             </el-table-column>
             <el-table-column
                     prop="price"
                     label="零售价">
             </el-table-column>
             <el-table-column
-                    prop="stock"
+                    prop="sum"
                     label="库存">
             </el-table-column>
-            <el-table-column
+            <!--<el-table-column
                     prop="beforehand_num"
                     label="预售">
-            </el-table-column>
-            <el-table-column
+            </el-table-column>-->
+            <!--<el-table-column
                     prop="fre"
                     label="次数">
             </el-table-column>
@@ -114,7 +113,7 @@
             <el-table-column
                     prop="give"
                     label="赠送">
-            </el-table-column>
+            </el-table-column>-->
             <el-table-column
                     label="操作"
                     fixed="right"
@@ -755,9 +754,9 @@
             this.$nextTick(e => {
                 //初始化
                 that = this;
-                this.getGoods()
+                /*this.getGoods()
                 this.getClassify()
-                this.getCate()
+                this.getCate()*/
                 loginState()
                 // this.r = url(methods.upload) + '&type=2'
                 this.r = url(methods.upload) + '&type=3'
