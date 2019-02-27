@@ -8,9 +8,7 @@
     <link rel="stylesheet" type="text/css" href="../css/customer.css">
     <link rel="stylesheet" type="text/css" href="../css/goods.css">
     <style>
-        .el-dialog{
-            overflow-y: scroll;
-        }
+
     </style>
 </head>
 <body>
@@ -139,26 +137,28 @@
                    width="400px"
                    center>
             <ul class="goods_edit">
-                <li>
-                    <span class="list_left">品项</span>
-                    <span class="list_right">{{now.type}}</span>
-                </li>
-                <li>
-                    <span class="list_left">类别</span>
-                    <span class="list_right">
-                    <el-radio v-for="v in classify" v-if="now.zt==v.type" v-model="now.cid"
-                              :label="v.id">{{v.name}}</el-radio>
-                </span>
-                </li>
+
                 <li>
                     <span class="list_left">商品名称</span>
                     <span class="list_right">
-                    <el-input placeholder="请输入商品名称" v-model="now.name"></el-input>
+                    <el-input placeholder="请输入商品名称" v-model="name"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">商品单位</span>
+                    <span class="list_right">
+                    <el-input placeholder="请输入商品名称" v-model="name"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">商品大小</span>
+                    <span class="list_right">
+                    <el-input placeholder="请输入商品名称" v-model="name"></el-input>
                 </span>
                 </li>
 
 
-                <li v-if="sj.cid==21">
+                <!--<li>
                     <span class="list_left">单位</span>
                     <span class="list_right">
                           <el-select v-model="value" placeholder="请选择">
@@ -170,8 +170,8 @@
                             </el-option>
                           </el-select>
                     </span>
-                </li>
-                <li v-if="sj.cid==21">
+                </li>-->
+                <!--<li>
                     <span class="list_left">大小</span>
                     <span class="list_right">
                         <el-radio label="1">型号
@@ -203,11 +203,11 @@
                           </el-select>
                         </el-radio>
                     </span>
-                </li>
-                <li v-if="sj.cid==21">
+                </li>-->
+                <li>
                     <span class="list_left">颜色</span>
                     <span class="list_right">
-                        <el-input v-model="sj.price" placeholder="请输入颜色"></el-input>
+                        <el-input v-model="price" placeholder="请输入颜色"></el-input>
                     </span>
                 </li>
 
@@ -216,27 +216,16 @@
                 <li>
                     <span class="list_left">售价</span>
                     <span class="list_right">
-                    <el-input v-model="now.price" placeholder="请输入售价"></el-input>
+                    <el-input v-model="price" placeholder="请输入售价"></el-input>
                 </span>
                 </li>
-                <li v-if="now.zt!=3">
+                <li>
                     <span class="list_left">库存</span>
                     <span class="list_right">
-                    <el-input v-model="now.stock" placeholder="请输入库存"></el-input>
+                    <el-input v-model="stock" placeholder="请输入库存"></el-input>
                 </span>
                 </li>
-                <li v-if="now.zt!=1">
-                    <span class="list_left">次数</span>
-                    <span class="list_right">
-                    <el-input v-model="now.fre" placeholder="请输入次数"></el-input>
-                </span>
-                </li>
-                <li v-if="now.zt!=1">
-                    <span class="list_left">手工费</span>
-                    <span class="list_right">
-                    <el-input v-model="now.fee" placeholder="请输入手工费"></el-input>
-                </span>
-                </li>
+
 
             </ul>
             <span slot="footer" class="dialog-footer">
@@ -250,50 +239,27 @@
                    width="460px"
                    center>
             <ul class="goods_edit">
-                <li>
-                    <span class="list_left">品项</span>
-                    <span class="list_right">
-                        <el-radio v-model="sj.type" label="1">产品</el-radio>
-                        <el-radio v-model="sj.type" label="2">套盒</el-radio>
-                        <el-radio v-model="sj.type" label="3">项目</el-radio>
-                    </span>
-                </li>
-                <li>
-                    <span class="list_left">类别</span>
-                    <span class="list_right">
-                        <el-radio v-for="v in classify" v-if="sj.type==v.type" v-model="sj.cid"
-                                  :label="v.id">{{v.name}}
-                        </el-radio>
-                    </span>
-                </li>
+
                 <li>
                     <span class="list_left">商品名称</span>
                     <span class="list_right">
-                    <el-input v-model="sj.name" placeholder="请输入商品名称"></el-input>
+                    <el-input v-model="name" placeholder="请输入商品名称"></el-input>
                 </span>
                 </li>
-                <li v-if="sj.type==3">
-                    <span class="list_left">绑定商品</span>
+                <li>
+                    <span class="list_left">商品单位</span>
                     <span class="list_right">
-                        <el-radio label="1" v-model="sj.is_bind">是</el-radio>
-                        <el-radio label="2" v-model="sj.is_bind">否</el-radio>
-                    </span>
+                    <el-input placeholder="请输入商品名称" v-model="name"></el-input>
+                </span>
                 </li>
-                <li v-if="sj.type==3 && sj.is_bind==1">
-                    <span class="list_left">耗材</span>
+                <li>
+                    <span class="list_left">商品大小</span>
                     <span class="list_right">
-                        <el-select multiple v-model="sj.spec_id" filterable placeholder="请选择">
-                            <el-option
-                                    v-for="item in cate"
-                                    :key="item.id"
-                                    :label="item.name"
-                                    :value="item.id">
-                            </el-option>
-                          </el-select>
-                    </span>
+                    <el-input placeholder="请输入商品名称" v-model="name"></el-input>
+                </span>
                 </li>
 
-                <li v-if="sj.cid==21">
+                <!--<li>
                     <span class="list_left">单位</span>
                     <span class="list_right">
                           <el-select v-model="value" placeholder="请选择">
@@ -306,7 +272,7 @@
                           </el-select>
                     </span>
                 </li>
-                <li v-if="sj.cid==21">
+                <li>
                     <span class="list_left">大小</span>
                     <span class="list_right">
                         <el-radio label="1">型号
@@ -338,11 +304,11 @@
                           </el-select>
                         </el-radio>
                     </span>
-                </li>
-                <li v-if="sj.cid==21">
+                </li>-->
+                <li>
                     <span class="list_left">颜色</span>
                     <span class="list_right">
-                        <el-input v-model="sj.price" placeholder="请输入颜色"></el-input>
+                        <el-input v-model="price" placeholder="请输入颜色"></el-input>
                     </span>
                 </li>
 
@@ -350,26 +316,14 @@
                 <li>
                     <span class="list_left">售价</span>
                     <span class="list_right">
-                    <el-input v-model="sj.price" placeholder="请输入售价"></el-input>
+                    <el-input v-model="price" placeholder="请输入售价"></el-input>
                 </span>
                 </li>
-                <li v-if="sj.type!=3">
+                <li>
                     <span class="list_left">库存</span>
                     <span class="list_right">
-                    <el-input v-model="sj.stock" placeholder="请输入库存"></el-input>
+                    <el-input v-model="stock" placeholder="请输入库存"></el-input>
                 </span>
-                </li>
-                <li v-if="sj.type!=1">
-                    <span class="list_left">次数</span>
-                    <span class="list_right">
-                    <el-input v-model="sj.fre" placeholder="请输入次数"></el-input>
-                </span>
-                </li>
-                <li v-if="sj.type!=1">
-                    <span class="list_left">手工费</span>
-                    <span class="list_right">
-                        <el-input v-model="sj.fee" placeholder="请输入手工费"></el-input>
-                    </span>
                 </li>
 
             </ul>
@@ -378,143 +332,7 @@
             <el-button type="primary" @click="addAll">确 定</el-button>
           </span>
         </el-dialog>
-        <!-- 新增方案 -->
-        <el-dialog
-                title="添加方案"
-                :visible.sync="addPlan"
-                width="500px" center>
-            <ul class="goods_l">
-                <li>
-                    <span class="list_left">方案名称</span>
-                    <span class="list_right">
-                    <el-input v-model="sj.name" placeholder="请输入方案名称"></el-input>
-                </span>
-                </li>
-                <li>
-                    <span class="list_left">售价</span>
-                    <span class="list_right">
-                    <el-input v-model="sj.price" placeholder="请输入售价"></el-input>
-                </span>
-                </li>
-                <li>
-                    <span class="list_left">项目</span>
-                    <span class="list_right">
-                        <p class="other_back" style="height:40px" @click="good_list=true">
-                            <i class="fr el-icon-circle-plus-outline"
-                               style="font-size: 2.2rem;color:#ad97f9;line-height:40px;margin-right: 20px;"></i>
-                        </p>
-                        <ul class="p_g_list">
-                            <li>
-                                <p class="linr_four">
-                                    <span class="p_name">肩颈理疗 </span>
-                                    <i class="cr pri_wid">￥100</i>
-                                    <span class="huihui">次数：12</span>
-                                    <i class="el-icon-circle-close-outline fr"
-                                       style="font-size: 2.2rem;line-height:40px;margin-right: 20px;"></i>
-                                </p>
-                                <p class="linr_four">
-                                    <i>优惠方式</i>
-                                    <el-checkbox label="打折"></el-checkbox>
-                                    <el-checkbox label="赠送"></el-checkbox>
-                                    <el-checkbox label="修改次数"></el-checkbox>
-                                </p>
-                                <p class="linr_four">
-                                   <span class="list_left"> 打折</span><el-input v-model="input" placeholder="请输入"
-                                                                               class="in_wid und_line"></el-input>元
-                                </p>
-                                <p class="linr_four">
-                                    <span class="list_left">折后</span><el-input v-model="input" placeholder="请输入"
-                                                                               class="in_wid und_line"></el-input>元
-                                </p>
-                                <p class="linr_four" style="margin-bottom: 15px">
-                                  <span class="list_left"> 修改次数</span><el-input v-model="input" placeholder="请输入"
-                                                                                class="in_wid und_line"></el-input>次
-                                </p>
-                            </li>
-                            <li>
-                                <p class="linr_four">
-                                    <span class="p_name">肩颈理疗 </span>
-                                    <i class="cr pri_wid">￥100</i>
-                                    <span class="huihui">次数：12</span>
-                                    <i class="el-icon-circle-close-outline fr"
-                                       style="font-size: 2.2rem;line-height:40px;margin-right: 20px;"></i>
-                                </p>
-                            </li>
-                        </ul>
-                </span>
-                </li>
-                <li>
-                    <span class="list_left">套盒</span>
-                    <span class="list_right">
-                         <p class="other_back" style="height:40px" @click="good_list=true">
-                            <i class="fr el-icon-circle-plus-outline"
-                               style="font-size: 2.2rem;color:#ad97f9;line-height:40px;margin-right: 20px;"></i>
-                        </p>
-                        <ul class="p_g_list">
-                        </ul>
-                </span>
-                </li>
-                <li>
-                    <span class="list_left">产品</span>
-                    <span class="list_right">
-                        <p class="other_back" style="height:40px" @click="good_list=true">
-                            <i class="fr el-icon-circle-plus-outline"
-                               style="font-size: 2.2rem;color:#ad97f9;line-height:40px;margin-right: 20px;"></i>
-                        </p>
-                        <ul class="p_g_list">
-                        </ul>
-                </span>
-                </li>
-            </ul>
-            <span slot="footer" class="dialog-footer">
-            <el-button @click="addPlan = false">取 消</el-button>
-            <el-button type="primary" @click="addPlan = false">确 定</el-button>
-          </span>
-        </el-dialog>
-        <!-- 商品列表 -->
-        <el-dialog
-                title=""
-                :visible.sync="good_list"
-                width="500px"
-                center append-to-body>
-            <el-input class="g_search"
-                      placeholder="请输入商品名称"
-                      prefix-icon="el-icon-search"
-                      v-model="input">
-            </el-input>
-            <el-table border
-                      ref="multipleTable"
-                      :data="tableData3"
-                      tooltip-effect="dark"
-                      style="width: 100%"
-                      @selection-change="handleSelectionChange">
-                <el-table-column
-                        prop="class"
-                        label="类别"
-                        width="120">
-                </el-table-column>
-                <el-table-column
-                        prop="name"
-                        label="商品名称">
-                </el-table-column>
-                <el-table-column
-                        prop="price"
-                        label="零售价">
-                </el-table-column>
-                <el-table-column
-                        prop="fre"
-                        label="次数">
-                </el-table-column>
-                <el-table-column
-                        label="数量">
-                    <template slot-scope="scope">
-                        <i class="el-icon-remove green_c"></i>
-                        <i>5</i>
-                        <i class="el-icon-circle-plus green_c"></i>
-                    </template>
-                </el-table-column>
-            </el-table>
-        </el-dialog>
+        
     </template>
 
 </div>
@@ -542,6 +360,15 @@
                 value: '选项4',
                 label: '套'
             }],
+            type: '1', //产品，套盒，项目
+            name: '',
+            stock: '',
+            fre: '',
+            fee: '',
+            cid: '',
+            is_bind: '2',
+            spec_id: '',
+            price:'',
             value: '',
             input: '',
             radio: '',
@@ -617,33 +444,33 @@
                 })
             },
             addAll() {
-                if (this.sj.type != 1) {
-                    if(this.sj.type == 3){
-                        if (this.sj.name == '' || this.sj.price == '' || this.sj.fre == '' ||
-                            this.sj.fee == '') {
+                if (this.type != 1) {
+                    if(this.type == 3){
+                        if (this.name == '' || this.price == '' || this.fre == '' ||
+                            this.fee == '') {
                             error('请填完以上信息')
                             return
                         }
-                        if(this.sj.is_bind==1){
-                            if(this.sj.spec_id==''){
+                        if(this.is_bind==1){
+                            if(this.spec_id==''){
                                 return error('请选择耗材')
                             }
                         }
                     }else{
-                        if (this.sj.name == '' || this.sj.price == '' || this.sj.stock == '' || this.sj.fre == '' ||
-                            this.sj.fee == '') {
+                        if (this.name == '' || this.price == '' || this.stock == '' || this.fre == '' ||
+                            this.fee == '') {
                             error('请填完以上信息')
                             return
                         }
                     }
                 } else {
-                    if (this.sj.name == '' || this.sj.price == '' || this.sj.stock == '') {
+                    if (this.name == '' || this.price == '' || this.stock == '') {
                         error('请填完以上信息')
                         return
                     }
                 }
 
-                if (this.sj.cid == '') {
+                if (this.cid == '') {
                     error('请选择分类')
                     return
                 }
@@ -668,8 +495,8 @@
                 })
             },
             editAll() {
-                if (this.now.name == '' || this.now.price == '' || this.now.stock == '' || this.now.fre == '' ||
-                    this.now.fee == '') {
+                if (this.name == '' || this.price == '' || this.stock == '' || this.fre == '' ||
+                    this.fee == '') {
                     error('请填完以上信息')
                     return
                 }
