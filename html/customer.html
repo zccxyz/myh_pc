@@ -183,11 +183,17 @@
                 :before-close="close">
             <ul class="goods_edit">
                 <li>
+                    <span class="list_left">会员编号</span>
+                    <span class="list_right">
+                    <el-input v-model="user.number" placeholder="请输入会员编号"></el-input>
+                </span>
+                </li>
+                <li>
                     <span class="list_left">会员名</span>
                     <span class="list_right">
                     <el-input v-model="user.name" placeholder="请输入会员名"></el-input>
                 </span>
-                </li>
+
                 <li>
                     <span class="list_left">年龄</span>
                     <span class="list_right">
@@ -198,6 +204,12 @@
                     <span class="list_left">手机号</span>
                     <span class="list_right">
                     <el-input v-model="user.tel" placeholder="请输入手机号"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">密码</span>
+                    <span class="list_right">
+                    <el-input v-model="user.tel" placeholder="默认密码为123456"></el-input>
                 </span>
                 </li>
                 <!--<li>
@@ -212,6 +224,13 @@
                     <span class="list_right">
                         <el-radio v-model="user.sex" label="1">女</el-radio>
                         <el-radio v-model="user.sex" label="2">男</el-radio>
+                    </span>
+                </li>
+                <li>
+                    <span class="list_left">婚姻状况</span>
+                    <span class="list_right">
+                        <el-radio v-model="user.sex" label="1">已婚</el-radio>
+                        <el-radio v-model="user.sex" label="2">未婚</el-radio>
                     </span>
                 </li>
                 <li>
@@ -232,7 +251,8 @@
                     </el-date-picker>
                 </span>
                 </li>
-                <!--<li>
+
+                <li>
                     <span class="list_left">顾问</span>
                     <span class="list_right">
                     <el-select v-model="value" placeholder="请选择">
@@ -244,7 +264,7 @@
                         </el-option>
                     </el-select>
                 </span>
-                </li>-->
+                </li>
             </ul>
             <span slot="footer" class="dialog-footer">
             <el-button @click="cancel">取 消</el-button>
@@ -374,6 +394,7 @@
             leaveDialogVisible: false,
             birthday: '',
             name: '',
+            adviser_list:[],
             options: [{
                 value: '选项1',
                 label: '张三'
@@ -408,7 +429,6 @@
             room: '',
             now: '',
             zt: false,
-
             ddNum: '',
             ddNum2: '',
             syNum: '',
@@ -460,10 +480,15 @@
                         this.user = {
                             'name': '',
                             'age': '',
-                            'tel': '',
+                            'num':'',
+                            'password':'',
+                            'weixin':'',
                             'sex': '1',
-                            'bir_type': '1',
+                            'tel': '',
+                            'marital': '',
+                            'bir_type': '',
                             'birthday': '',
+                            'adviser':''
                         }
                         success('修改成功')
                         this.getMember()
