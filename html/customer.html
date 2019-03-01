@@ -185,7 +185,7 @@
                 <li>
                     <span class="list_left">会员编号</span>
                     <span class="list_right">
-                    <el-input v-model="user.number" placeholder="请输入会员编号"></el-input>
+                    <el-input v-model="user.num" placeholder="请输入会员编号"></el-input>
                 </span>
                 </li>
                 <li>
@@ -209,7 +209,13 @@
                 <li>
                     <span class="list_left">密码</span>
                     <span class="list_right">
-                    <el-input v-model="user.tel" placeholder="默认密码为123456"></el-input>
+                    <el-input v-model="user.password" placeholder="默认密码为123456"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">微信</span>
+                    <span class="list_right">
+                    <el-input v-model="user.weixin" placeholder="请输入微信"></el-input>
                 </span>
                 </li>
                 <!--<li>
@@ -229,8 +235,8 @@
                 <li>
                     <span class="list_left">婚姻状况</span>
                     <span class="list_right">
-                        <el-radio v-model="user.sex" label="1">已婚</el-radio>
-                        <el-radio v-model="user.sex" label="2">未婚</el-radio>
+                        <el-radio v-model="user.marital" label="1">已婚</el-radio>
+                        <el-radio v-model="user.marital" label="2">未婚</el-radio>
                     </span>
                 </li>
                 <li>
@@ -255,12 +261,10 @@
                 <li>
                     <span class="list_left">顾问</span>
                     <span class="list_right">
-                    <el-select v-model="value" placeholder="请选择">
+                    <el-select v-model="user.adviser" placeholder="请选择">
                         <el-option
-                                v-for="item in options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
+                                v-for="item in adviser_list"
+                                :value="item.name">
                         </el-option>
                     </el-select>
                 </span>
@@ -389,7 +393,7 @@
             max_ht:0,
             input: '',
             radio: '',
-            addDialogVisible: false,
+            addDialogVisible: true,
             deleteDialogVisible: false,
             storeDialogVisible: false,
             leaveDialogVisible: false,
@@ -414,7 +418,6 @@
                 tel: '15212645632'
             }],
             multipleSelection: [],
-
             total: 0,
             list: [],
             fileList: [],
@@ -422,10 +425,15 @@
             user: {
                 'name': '',
                 'age': '',
-                'tel': '',
-                'sex': '1',
-                'bir_type': '1',
+                'num': '',
+                'password':'',
+                'weixin':'',
+                'sex':'',
+                'tel':'',
+                'marital': '',
+                'bir_type': '',
                 'birthday': '',
+                'adviser': '',
             },
             room: '',
             now: '',
@@ -438,6 +446,11 @@
             memberBalance2: '',
         },
         methods: {
+            get_advister(){
+                $.get(url(methods.get_advister),v=>{
+                    this.adviser_list=v.res;
+                })
+            },
             height(){
                     var height=window.innerHeight;
                     this.max_ht=window.innerHeight-142;
@@ -619,10 +632,15 @@
                         this.user = {
                             'name': '',
                             'age': '',
-                            'tel': '',
-                            'sex': '1',
+                            'num': '',
+                            'password':'',
+                            'weixin':'',
+                            'sex':'1',
+                            'tel':'',
+                            'marital': '',
                             'bir_type': '1',
                             'birthday': '',
+                            'adviser': '',
                         }
                         this.addDialogVisible = false
                         this.getMember()
@@ -636,10 +654,15 @@
                 this.user = {
                     'name': '',
                     'age': '',
-                    'tel': '',
-                    'sex': '1',
+                    'num': '',
+                    'password':'',
+                    'weixin':'',
+                    'sex':'1',
+                    'tel':'',
+                    'marital': '',
                     'bir_type': '1',
                     'birthday': '',
+                    'adviser': '',
                 }
                 this.addDialogVisible = false
                 this.zt = false
@@ -650,10 +673,15 @@
                 this.user = {
                     'name': '',
                     'age': '',
-                    'tel': '',
-                    'sex': '1',
-                    'bir_type': 1,
+                    'num': '',
+                    'password':'',
+                    'weixin':'',
+                    'sex':'1',
+                    'tel':'',
+                    'marital': '',
+                    'bir_type': '1',
                     'birthday': '',
+                    'adviser': '',
                 };
             },
             toggleSelection(rows) {
@@ -733,6 +761,7 @@
                 //初始化
                 that = this
                 this.getMember()
+                this.get_advister()
                 this.height()
                 this.r = url(methods.upload)
                 loginState();

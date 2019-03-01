@@ -32,6 +32,7 @@ var methods = {
     'logout': 'Center/logout',
     'check': 'Center/check',
     'ModifyPassword': 'Center/ModifyPassword',
+    'get_advister':'Member/get_advister',
     'DailyIncomeDetail':'Store/DailyIncomeDetail',
     'getClassify': 'Goods/getClassify',
     'editAll': 'Goods/editAll',
