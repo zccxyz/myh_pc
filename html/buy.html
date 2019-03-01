@@ -20,7 +20,7 @@
     </p>
     <template>
 
-        <el-tabs @tab-click="handleClick"><!---->
+        <el-tabs type="card" @tab-click="handleClick" class="vip_infor" ><!---->
             <el-tab-pane label="产品">
                 <div>
                     <el-input style="margin:5px 0;" class="cus_seatch"
@@ -29,7 +29,7 @@
                               v-model="input">
                     </el-input>
                 </div>
-                <el-table border
+                <el-table border :max-height="max_ht"
                           ref="multipleTable"
                           :data="list.filter(data => (!input || data.name.toLowerCase().includes(input.toLowerCase())) && data.type=='产品')"
                           tooltip-effect="dark"
@@ -46,7 +46,8 @@
                     </el-table-column>
                     <el-table-column
                             prop="name"
-                            label="商品名称">
+                            label="商品名称"
+                           min-width="210">
                     </el-table-column>
 
                     <!--<el-table-column
@@ -102,7 +103,7 @@
                               v-model="input">
                     </el-input>
                 </div>
-                <el-table border
+                <el-table border :max-height="max_ht"
                           ref="multipleTable"
                           :data="list.filter(data => (!input || data.name.toLowerCase().includes(input.toLowerCase())) && data.type=='项目')"
                           tooltip-effect="dark"
@@ -119,7 +120,7 @@
                     </el-table-column>
                     <el-table-column
                             prop="name"
-                            label="商品名称">
+                            label="商品名称" min-width="210">
                     </el-table-column>
                     <el-table-column
                             prop="price"
@@ -161,7 +162,7 @@
                               v-model="input">
                     </el-input>
                 </div>
-                <el-table border
+                <el-table border :max-height="max_ht"
                           ref="multipleTable"
                           :data="list.filter(data => (!input || data.name.toLowerCase().includes(input.toLowerCase())) && data.type=='套盒')"
                           tooltip-effect="dark"
@@ -178,7 +179,7 @@
                     </el-table-column>
                     <el-table-column
                             prop="name"
-                            label="商品名称">
+                            label="商品名称" min-width="210">
                     </el-table-column>
                     <el-table-column
                             prop="price"
@@ -220,14 +221,14 @@
                               v-model="input">
                     </el-input>
                 </div>
-                <el-table border
+                <el-table border :max-height="max_ht"
                           ref="multipleTable"
                           :data="list.filter(data => (!input || data.name.toLowerCase().includes(input.toLowerCase())) && data.type=='方案')"
                           tooltip-effect="dark"
                           style="width: 100%">
                     <el-table-column
                             prop="name"
-                            label="商品名称">
+                            label="商品名称" min-width="210">
                     </el-table-column>
                     <el-table-column
                             prop="sale"
@@ -257,7 +258,7 @@
                               v-model="input">
                     </el-input>
                 </div>
-                <el-table border
+                <el-table border :max-height="max_ht"
                           ref="multipleTable"
                           :data="card.filter(data => (!input || data.card_name.toLowerCase().includes(input.toLowerCase())))"
                           tooltip-effect="dark"
@@ -270,7 +271,7 @@
                     <el-table-column
                             prop="card_name"
                             label="名称"
-                            width="120">
+                            width="160">
                     </el-table-column>
                     <el-table-column
                             prop="amount"
@@ -324,7 +325,7 @@
                           style="width: 100%">
                     <el-table-column
                             label="编号"
-                            prop="sn">
+                            prop="sn" min-width="140">
                     </el-table-column>
                     <el-table-column
                             label="类型"
@@ -333,7 +334,7 @@
                     <el-table-column
                             prop="name"
                             label="名称"
-                            width="120">
+                            min-width="210">
                     </el-table-column>
                     <el-table-column
                             prop="price"
@@ -514,6 +515,7 @@
     new Vue({
         el: '#app',
         data: {
+            max_ht:0,
             input: '',
             radio: '',
             checked: '',
@@ -553,6 +555,10 @@
             need3: [],
         },
         methods: {
+            height(){
+                var height=window.innerHeight;
+                this.max_ht=window.innerHeight-161;
+            },
             buyClothes() {
                 if(this.need3.length==0){
                     return error('请选择内衣')
@@ -1034,7 +1040,7 @@
                 this.getGoods()
                 loginState()
                 this.r = url(methods.upload + '?type=2')
-                this.getCard()
+                this.height()
             })
         }
     })
