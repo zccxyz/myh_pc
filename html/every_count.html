@@ -12,7 +12,7 @@
     <template>
         <p class="cus_title">
             <el-breadcrumb separator-class="el-icon-arrow-right">
-                <el-breadcrumb-item :to="{ path: 'home.html' }">工作台首页</el-breadcrumb-item>
+                <el-breadcrumb-item :to="{ path: '' }">工作台首页</el-breadcrumb-item>
                 <el-breadcrumb-item>每日流水</el-breadcrumb-item>
             </el-breadcrumb>
         </p>
@@ -25,54 +25,48 @@
             </el-date-picker>
         </div>
         <el-tabs type="card" @tab-click="handleClick"
-                 class="vip_infor" v-if="list != null">
+                 class="vip_infor">
             <el-tab-pane label="全部">
                 <div class="basic_inf">
-                    <el-table
+                    <el-table :max-height="max_ht"
                             :data="list"
                             style="width: 100%">
                         <el-table-column
                                 label="品项">
                             <template slot-scope="scope">
-                                <i v-if="type==1">产品</i>
-                                <i v-if="type==2">套盒</i>
-                                <i v-if="type==3">项目</i>
-                                <i v-if="type==4">方案</i>
-                                <i v-if="type==5">卡项</i>
-                                <i v-if="type==6">账户</i>
-                                <i v-if="type==7">内衣</i>
+                                <i v-if="scope.row.type==1">产品</i>
+                                <i v-if="scope.row.type==2">套盒</i>
+                                <i v-if="scope.row.type==3">项目</i>
+                                <i v-if="scope.row.type==4">方案</i>
+                                <i v-if="scope.row.type==5">卡项</i>
+                                <i v-if="scope.row.type==6">账户</i>
+                                <i v-if="scope.row.type==7">内衣</i>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                label="姓名">
+                            <template slot-scope="scope">
+                                <i class="cursor" @click="">{{scope.row.m_name}}</i>
                             </template>
                         </el-table-column>
                         <el-table-column
                                 prop="name"
-                                label="姓名">
-                        </el-table-column>
-                        <el-table-column
-                                prop="m_name"
                                 label="名称">
                         </el-table-column>
                         <el-table-column
                                 label="类型">
                             <template slot-scope="scope">
-                                <i v-if="status==1&&type！=6">产品</i>
-                                <i v-if="status==2&&type！=6">消耗</i>
-                                <i v-if="status==1&&type==6">充值</i>
-                                <i v-if="one_total==0 || money==0" v-if="status == 1 && type != 6">赠送</i>
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                                label="状态">
-                            <template slot-scope="scope">
-                                <i v-if="is_back == 1">正常</i>
-                                <i v-if="is_back == 2">退单</i>
+                                <i v-if="scope.row.status==1&&scope.row.money!=0">消费</i>
+                                <i v-if="scope.row.status==2&&scope.row.money!=0">消耗</i>
+                                <i v-if="scope.row.money==0">欠款</i>
                             </template>
                         </el-table-column>
                         <el-table-column
                                 label="金额">
                             <template slot-scope="scope">
-                                <i v-if="status==1|| status == 2">{{scope.row.one_total}}</i>
-                                <i v-if="status==3">{{scope.row.money}}</i>
-                                <i v-if="status==1&&type==6">充值</i>
+                                <i v-if="scope.row.money!=0&& scope.row.status == 1">{{scope.row.money}}</i>
+                                <i v-if="scope.row.money!=0&& scope.row.status == 2">{{scope.row.money*scope.row.num}}</i>
+                                <i v-if="scope.row.money==0">{{scope.row.total_price}}</i>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -93,14 +87,19 @@
     new Vue({
         el: '#app',
         data: {
+            max_ht:0,
             time:'',
             list:[]
         },
         methods: {
+            height(){
+                var height=window.innerHeight;
+                this.max_ht=window.innerHeight-167;
+            },
             get_list(){
                 $.post(url(methods.DailyIncomeDetail),{day:this.time},v=>{
-                    this.list=v.res;
-                console.log(v);
+                    this.list=v.res.res;
+                    console.log(this.list)
                 })
             },
             handleClick(){
@@ -111,6 +110,7 @@
             this.$nextTick(e=>{
                 //初始化
                 this.get_list()
+                this.height()
                 that = this;
                 loginState()
             })

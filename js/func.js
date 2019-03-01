@@ -143,7 +143,10 @@ function classify(type) {
         return '卡项'
     }
 }
-
+function jump(v) {
+    localStorage.setItem('user_id', v.uid)
+    location.href = 'vip_information.html'
+}
 function loginState() {
     $.post(url(methods.isLogin), function(v) {
         if (!v.data) {

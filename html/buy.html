@@ -465,7 +465,7 @@
         <div v-if="need3.length>0" class="cart_div" style="z-index: 10">
             <p class="cart_title">
                 已选择（{{need3.length}}）
-                <span class="fr mar_hun" @click="allRemove">
+                <span class="fr mar_hun cursor" @click="allRemove">
                 <img src="../images/delete.png">&nbsp;全部清空
                </span>
             </p>
@@ -799,6 +799,10 @@
                     for (let v of this.card) {
                         v.needNum = 0;
                     }
+                    this.need3 = []
+                    for (let v of this.yf) {
+                        v.needNum = 0;
+                    }
                 }).catch(e=>{
 
                 })
@@ -983,7 +987,6 @@
                         x['price2'] = x['price']
                     }
                     this.yf = v.res
-                    console.log(this.yf)
                 })
             },
         },
