@@ -386,8 +386,8 @@
                     <li v-for="v in need" class="linr_four">
                         <span class="g_name">
                              {{v.name}}
-                        </span>
-                        <span class="p_wid">￥{{v.yh==1?v.price * v.discount/10:v.yh==2?0:v.price2}}</span>
+                        </span><!--{{v.yh==1?v.price * v.discount/10*v.needNum:v.yh==2?0:v.price2}}-->
+                        <span class="p_wid">￥{{js(v)}}</span>
                         <span>
                             优惠方式
                             <el-radio v-model="v.yh" label="1">打折</el-radio>
@@ -553,6 +553,24 @@
             need3: [],
         },
         methods: {
+            js(v){
+                if(v.yh==0){
+                    return parseFloat(v.price) * parseInt(v.needNum)
+                }
+                if(v.yh==1){
+                    //打折
+                    return parseFloat(v.price) * v.discount/10 * parseInt(v.needNum)
+                }
+                if(v.yh==2){
+                    //赠送
+                    return 0
+                }
+                if(v.yh==3){
+                    //改价
+                    return parseFloat(v.price2)
+                }
+                return parseFloat(v.price) * parseInt(v.needNum)
+            },
             buyClothes() {
                 if(this.need3.length==0){
                     return error('请选择内衣')
@@ -988,9 +1006,11 @@
                     if(v.yh==2) {
                         continue
                     }else if(v.yh==1){
-                        all += v.discount / 10 * v.price * v.needNum
+                        all += v.discount / 10 * parseFloat(v.price) * parseInt(v.needNum)
+                    }else if(v.yh==3){
+                        all += parseFloat(v.price2)
                     }else{
-                        all += v.price2 * v.needNum
+                        all += parseFloat(v.price) * parseInt(v.needNum)
                     }
                 }
                 return all
