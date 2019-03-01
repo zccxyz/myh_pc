@@ -80,7 +80,7 @@
                   ref="multipleTable"
                   :data="list.filter(
                   data => (!input || data.name.toLowerCase().includes(input.toLowerCase()) ||
-                  data.tel.toLowerCase().includes(input.toLowerCase())) &&
+                  data.tel.toLowerCase().includes(input.toLowerCase())||(data.shop_num==null?false:data.shop_num.toLowerCase().includes(input.toLowerCase()))) &&
 
                   ((!memberBalance || parseFloat(data.balance)>=parseFloat(memberBalance)) &&
                   (!memberBalance2 || parseFloat(data.balance)<=parseFloat(memberBalance2))) &&
@@ -514,9 +514,14 @@
                 })
             },
             setVal() {
+                this.user.num = this.now.num
                 this.user.name = this.now.name
                 this.user.age = this.now.age
                 this.user.tel = this.now.tel
+                this.user.password = this.now.password
+                this.user.weixin = this.now.weixin
+                this.user.adviser = this.now.adviser
+                this.user.marital = this.now.marital
                 this.user.sex = this.now.sex == null ? '1' : '2'
                 this.user.bir_type = this.now.bir_type + ''
                 this.user.birthday = this.now.birthday
