@@ -1,5 +1,5 @@
-var ym = 'https://www.myhkj.cn/apis/backend/';
-// var ym = 'http://admin.test.com/apis/backend/';
+// var ym = 'https://www.myhkj.cn/apis/backend/';
+var ym = 'http://admin.test.com/apis/backend/';
 // var ym = 'http://127.0.0.1:8000/apis/backend/';
 
 var methods = {
@@ -30,6 +30,9 @@ var methods = {
     'upload': 'Commodity/upload',
     'getAllGoods': 'Commodity/getAllGoods',
     'logout': 'Center/logout',
+    'check': 'Center/check',
+    'ModifyPassword': 'Center/ModifyPassword',
+    'DailyIncomeDetail':'Store/DailyIncomeDetail',
     'getClassify': 'Goods/getClassify',
     'editAll': 'Goods/editAll',
     'addAll': 'Goods/addAll',

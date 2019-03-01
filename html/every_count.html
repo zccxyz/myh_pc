@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>每日流水</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+</head>
+<body>
+
+<div id="app" class="customer">
+    <template>
+        <p class="cus_title">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+                <el-breadcrumb-item :to="{ path: 'home.html' }">工作台首页</el-breadcrumb-item>
+                <el-breadcrumb-item>每日流水</el-breadcrumb-item>
+            </el-breadcrumb>
+        </p>
+        <div class="cus_center">
+            <el-date-picker class="cus_seatch"
+                            v-model="time"
+                            value-format="yyyy-MM-dd"
+                            type="date"
+                            placeholder="选择日期查询">
+            </el-date-picker>
+        </div>
+        <el-tabs type="card" @tab-click="handleClick"
+                 class="vip_infor" v-if="list != null">
+            <el-tab-pane label="全部">
+                <div class="basic_inf">
+                    <el-table
+                            :data="list"
+                            style="width: 100%">
+                        <el-table-column
+                                label="品项">
+                            <template slot-scope="scope">
+                                <i v-if="type==1">产品</i>
+                                <i v-if="type==2">套盒</i>
+                                <i v-if="type==3">项目</i>
+                                <i v-if="type==4">方案</i>
+                                <i v-if="type==5">卡项</i>
+                                <i v-if="type==6">账户</i>
+                                <i v-if="type==7">内衣</i>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                prop="name"
+                                label="姓名">
+                        </el-table-column>
+                        <el-table-column
+                                prop="m_name"
+                                label="名称">
+                        </el-table-column>
+                        <el-table-column
+                                label="类型">
+                            <template slot-scope="scope">
+                                <i v-if="status==1&&type！=6">产品</i>
+                                <i v-if="status==2&&type！=6">消耗</i>
+                                <i v-if="status==1&&type==6">充值</i>
+                                <i v-if="one_total==0 || money==0" v-if="status == 1 && type != 6">赠送</i>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                label="状态">
+                            <template slot-scope="scope">
+                                <i v-if="is_back == 1">正常</i>
+                                <i v-if="is_back == 2">退单</i>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                label="金额">
+                            <template slot-scope="scope">
+                                <i v-if="status==1|| status == 2">{{scope.row.one_total}}</i>
+                                <i v-if="status==3">{{scope.row.money}}</i>
+                                <i v-if="status==1&&type==6">充值</i>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+            </el-tab-pane>
+        </el-tabs>
+    </template>
+
+</div>
+
+</body>
+</html>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../js/func.js"></script>
+<script src="../js/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            time:'',
+            list:[]
+        },
+        methods: {
+            get_list(){
+                $.post(url(methods.DailyIncomeDetail),{day:this.time},v=>{
+                    this.list=v.res;
+                console.log(v);
+                })
+            },
+            handleClick(){
+
+            }
+        },
+        mounted() {
+            this.$nextTick(e=>{
+                //初始化
+                this.get_list()
+                that = this;
+                loginState()
+            })
+        }
+    })
+</script>
