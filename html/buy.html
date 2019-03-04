@@ -20,7 +20,7 @@
     </p>
     <template>
 
-        <el-tabs type="card" @tab-click="handleClick" class="vip_infor" ><!---->
+        <el-tabs type="card" @tab-click="handleClick" class="vip_infor"><!---->
             <el-tab-pane label="产品">
                 <div>
                     <el-input style="margin:5px 0;" class="cus_seatch"
@@ -47,7 +47,7 @@
                     <el-table-column
                             prop="name"
                             label="商品名称"
-                           min-width="210">
+                            min-width="210">
                     </el-table-column>
 
                     <!--<el-table-column
@@ -390,13 +390,13 @@
                         </span><!--{{v.yh==1?v.price * v.discount/10*v.needNum:v.yh==2?0:v.price2}}-->
                         <span class="p_wid">￥{{v.one*v.needNum}}</span>
                         <span>
-                            优惠方式{{v.one}}
+                            优惠方式{{v.one}}-{{v.price2}}
                             <el-radio v-model="v.yh" label="1">打折</el-radio>
                             <el-input v-if="v.yh==1" v-model="v.discount" placeholder="请输入1到10的数字"
-                                      class="in_wid und_line"></el-input>
-                            <el-radio v-model="v.yh" label="3">改价</el-radio>
+                                      class="in_wid und_line" type="number" v-on:input="getDis(v)"></el-input>
+                            <el-radio v-model="v.yh" @change="v.discount=10" label="3">改价</el-radio>
                             <el-input v-if="v.yh==3" v-model="v.price2" placeholder="请输入价格"
-                                      class="in_wid und_line"></el-input>
+                                      class="in_wid und_line" type="number" v-on:input="getPrice(v)"></el-input>
                             <el-radio v-model="v.yh" label="2" v-if="v.free==1">赠送</el-radio>
                             <template v-if="v.type!='产品' && v.type!='方案'">
                                 <i class="check_box">
@@ -437,12 +437,12 @@
                         </span>
                         <span class="p_wid">￥{{v.one*v.needNum}}</span>
                         <span class="span_bold">
-                            优惠方式
+                            优惠方式{{v.one}}-{{v.price2}}
                             <el-radio v-model="v.yh" label="1">打折</el-radio>
-                            <el-input v-if="v.yh==1" v-model="v.dis" placeholder="请输入1到10的数字"
+                            <el-input v-if="v.yh==1" v-model="v.discount" v-on:input="getDis(v)" placeholder="请输入1到10的数字"
                                       class="in_wid und_line"></el-input>
-                            <el-radio v-model="v.yh" label="3">改价</el-radio>
-                            <el-input v-if="v.yh==3" v-model="v.price2" placeholder="请输入价格"
+                            <el-radio v-model="v.yh" label="3" @change="v.discount=10">改价</el-radio>
+                            <el-input v-if="v.yh==3" v-model="v.price2" v-on:input="getPrice(v)" placeholder="请输入价格"
                                       class="in_wid und_line"></el-input>
                             <el-radio v-model="v.yh" label="2" v-if="v.send==1">赠送</el-radio>
                         </span>
@@ -479,10 +479,10 @@
                         <span class="span_bold">
                             优惠方式
                             <el-radio v-model="v.yh" label="1">打折</el-radio>
-                            <el-input v-if="v.yh==1" v-model="v.discount" placeholder="请输入1到10的数字"
+                            <el-input v-if="v.yh==1" v-on:input="getDis(v)" v-model="v.discount" placeholder="请输入1到10的数字"
                                       class="in_wid und_line"></el-input>
-                            <el-radio v-model="v.yh" label="3">改价</el-radio>
-                            <el-input v-if="v.yh==3" v-model="v.price2" placeholder="请输入价格"
+                            <el-radio v-model="v.yh" @change="v.discount=10" label="3">改价</el-radio>
+                            <el-input v-if="v.yh==3" v-model="v.price2" v-on:input="getPrice(v)" placeholder="请输入价格"
                                       class="in_wid und_line"></el-input>
                             <el-radio v-model="v.yh" label="2" v-if="v.send==1">赠送</el-radio>
                         </span>
@@ -516,7 +516,7 @@
         el: '#app',
         data: {
             index: 0,
-            max_ht:0,
+            max_ht: 0,
             input: '',
             radio: '',
             checked: '',
@@ -554,38 +554,39 @@
             user: '',
             yf: [],
             need3: [],
+            nowData: '',
+            p: null,
         },
         watch: {
-            need: {
+            /*need: {
                 handler(x) {
-                    for(let v of this.need){
+                    for (let v of x) {
                         let all = 0
-                        //let one = parseFloat(v.price)
-
+                        console.log('----')
                         if (v.yh == 0) {
                             //all = parseFloat(v.price) * parseInt(v.needNum)
                             v.one = parseFloat(v.price)
-                        }else
-                        if (v.yh == 1) {
+                        } else if (v.yh == 1) {
                             //打折
-                            all = parseFloat(v.price) * v.discount / 10 * parseInt(v.needNum)
-                            v.one = (all/parseInt(v.needNum))
-                            v.price2 = ""
-                        }else
-                        if (v.yh == 2) {
+                            all = parseFloat(v.price2) * v.discount / 10
+//console.log(v.price2)
+                            v.one = all / parseInt(v.needNum)
+                            v.bf = all
+                        } else if (v.yh == 2) {
                             //赠送
                             //return 0
                             v.one = 0
-                        }else
-                        if (v.yh == 3) {
+                            v.price2 = 0
+                            v.discount = 10
+                        } else if (v.yh == 3) {
                             //改价
-                            if(v.price2==''){
-                                //all = parseFloat(v.price) * parseInt(v.needNum)
-                                v.one = parseFloat(v.price)
-                            }else{
-                                all = parseFloat(v.price2)
-                                v.one = (all/parseInt(v.needNum))
+                            v.discount = 10
+                            if(v.bf!=null){
+                                v.price2 = v.one * v.needNum
+                                v.bf = null
                             }
+
+                            v.one = parseFloat(v.price2)/parseInt(v.needNum)
                         }
                     }
                 },
@@ -593,34 +594,33 @@
             },
             need2: {
                 handler(x) {
-                    for(let v of this.need2){
+                    for (let v of this.need2) {
                         let all = 0
-                        //let one = parseFloat(v.price)
-
+                        console.log('----')
                         if (v.yh == 0) {
                             //all = parseFloat(v.price) * parseInt(v.needNum)
                             v.one = parseFloat(v.price)
-                        }else
-                        if (v.yh == 1) {
+                        } else if (v.yh == 1) {
                             //打折
-                            all = parseFloat(v.price) * parseFloat(v.dis) / 10 * parseInt(v.needNum)
-                            v.one = (all/parseInt(v.needNum))
-                            v.price2 = ""
-                        }else
-                        if (v.yh == 2) {
+                            all = parseFloat(v.price2) * v.discount / 10
+//console.log(v.price2)
+                            v.one = all / parseInt(v.needNum)
+                            this.p = all
+                        } else if (v.yh == 2) {
                             //赠送
                             //return 0
                             v.one = 0
-                        }else
-                        if (v.yh == 3) {
+                            v.price2 = 0
+                            v.discount = 10
+                        } else if (v.yh == 3) {
                             //改价
-                            if(v.price2==''){
-                                //all = parseFloat(v.price) * parseInt(v.needNum)
-                                v.one = parseFloat(v.price)
-                            }else{
-                                all = parseFloat(v.price2)
-                                v.one = (all/parseInt(v.needNum))
+                            v.discount = 10
+                            if(this.p!=null){
+                                v.price2 = v.one * v.needNum
+                                this.p = null
                             }
+
+                            v.one = parseFloat(v.price2)/parseInt(v.needNum)
                         }
                     }
                 },
@@ -628,41 +628,49 @@
             },
             need3: {
                 handler(x) {
-                    for(let v of this.need3){
+                    for (let v of this.need) {
                         let all = 0
-                        //let one = parseFloat(v.price)
-
+                        console.log('----')
                         if (v.yh == 0) {
                             //all = parseFloat(v.price) * parseInt(v.needNum)
                             v.one = parseFloat(v.price)
-                        }else
-                        if (v.yh == 1) {
+                        } else if (v.yh == 1) {
                             //打折
-                            all = parseFloat(v.price) * v.discount / 10 * parseInt(v.needNum)
-                            v.one = (all/parseInt(v.needNum))
-                            v.price2 = ""
-                        }else
-                        if (v.yh == 2) {
+                            all = parseFloat(v.price2) * v.discount / 10
+//console.log(v.price2)
+                            v.one = all / parseInt(v.needNum)
+                            this.p = all
+                        } else if (v.yh == 2) {
                             //赠送
                             //return 0
                             v.one = 0
-                        }else
-                        if (v.yh == 3) {
+                            v.price2 = 0
+                            v.discount = 10
+                        } else if (v.yh == 3) {
                             //改价
-                            if(v.price2==''){
-                                //all = parseFloat(v.price) * parseInt(v.needNum)
-                                v.one = parseFloat(v.price)
-                            }else{
-                                all = parseFloat(v.price2)
-                                v.one = (all/parseInt(v.needNum))
+                            v.discount = 10
+                            if(this.p!=null){
+                                v.price2 = v.one * v.needNum
+                                this.p = null
                             }
+
+                            v.one = parseFloat(v.price2)/parseInt(v.needNum)
                         }
                     }
                 },
                 deep: true
-            },
+            },*/
         },
         methods: {
+            getPrice(v){
+                v.one = parseFloat(v.price2)/parseFloat(v.needNum)
+            },
+            getDis(v){
+                v.price2 = parseFloat(v.price2)*parseFloat(v.discount)/10
+                v.one = parseFloat(v.price2)/parseInt(v.needNum)
+                console.log(v)
+
+            },
             js(v) {
                 let all = 0
                 let one = parseFloat(v.price)
@@ -672,7 +680,7 @@
                 if (v.yh == 1) {
                     //打折
                     all = parseFloat(v.price) * v.discount / 10 * parseInt(v.needNum)
-                    one = (all/parseInt(v.needNum))
+                    one = (all / parseInt(v.needNum))
                 }
                 if (v.yh == 2) {
                     //赠送
@@ -680,25 +688,25 @@
                 }
                 if (v.yh == 3) {
                     //改价
-                    if(v.price2==''){
+                    if (v.price2 == '') {
                         all = parseFloat(v.price) * parseInt(v.needNum)
-                    }else{
+                    } else {
                         all = parseFloat(v.price2)
-                        one = (all/parseInt(v.needNum))
+                        one = (all / parseInt(v.needNum))
                     }
                 }
                 v.one = one.toFixed(2)
                 return all
             },
-            height(){
-                var height=window.innerHeight;
-                this.max_ht=window.innerHeight-161;
+            height() {
+                var height = window.innerHeight;
+                this.max_ht = window.innerHeight - 161;
             },
             buyClothes() {
-                if(this.need3.length==0){
+                if (this.need3.length == 0) {
                     return error('请选择内衣')
                 }
-                $.post(url(methods.buyClothes), {data: this.need3, uid: this.user_id}, v=>{
+                $.post(url(methods.buyClothes), {data: this.need3, uid: this.user_id}, v => {
                     this.need3 = []
                     for (let v of this.yf) {
                         v.needNum = 0;
@@ -707,25 +715,27 @@
                     localStorage.setItem('orderId', v.data.id)
                     localStorage.setItem('arrearsRes', v.data.arrearsRes)
                     localStorage.setItem('type', 1)
-                    setTimeout(()=>location.href = './pay_page.html', 1000)
+                    setTimeout(() => location.href = './pay_page.html', 1000)
                 })
             },
             subCard() {
-                if(this.need2.length==0){
+                if (this.need2.length == 0) {
                     return
                 }
                 let card = []
-                for(let v of this.need2) {
-                    if(v.yh==0 || v.yh==3){
+                for (let v of this.need2) {
+                    if (v.yh == 0 || v.yh == 3) {
                         card.push({'price': v.price2, 'id': v.id, 'sum': v.needNum})
-                    }else{
-                        card.push({'price': v.yh==1?v.price * v.dis/10:0, [`p_dis_t${v.id}`]: v.yh,
-                            'id': v.id, 'sum': v.needNum})
+                    } else {
+                        card.push({
+                            'price': v.yh == 1 ? v.price * v.dis / 10 : 0, [`p_dis_t${v.id}`]: v.yh,
+                            'id': v.id, 'sum': v.needNum
+                        })
                     }
                 }
                 //type>0传1 =0传2
-                $.post(url(methods.buyCard)+`&id=${this.user_id}`, {data: JSON.stringify(card)}, v=>{
-                    if(v.code==1){
+                $.post(url(methods.buyCard) + `&id=${this.user_id}`, {data: JSON.stringify(card)}, v => {
+                    if (v.code == 1) {
                         this.need = []
                         for (let v of this.list) {
                             v.needNum = 0;
@@ -734,8 +744,8 @@
                         localStorage.setItem('orderId', v.res.orderId)
                         localStorage.setItem('arrearsRes', v.res.arrearsRes)
                         localStorage.setItem('type', 1)
-                        setTimeout(()=>location.href = './pay_page.html', 1000)
-                    }else{
+                        setTimeout(() => location.href = './pay_page.html', 1000)
+                    } else {
                         error(v.error)
                     }
                 })
@@ -743,23 +753,27 @@
             subItems() {
                 let items = []
                 let all = 0
-                for(let v of this.need) {
+                for (let v of this.need) {
                     all += parseFloat(v.one) * parseInt(v.needNum)
-                    if(v.type == '项目') {
-                        if(v.yh!=0 && v.yh!=3){
-                            items.push({'price': v.one, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
-                                'name': v.name, 'sum': v.needNum, 'times': v.fre, 'is_rate': v.yh})
-                        }else{
-                            items.push({'price': v.one, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
-                                'name': v.name, 'sum': v.needNum, 'times': v.fre})
+                    if (v.type == '项目') {
+                        if (v.yh != 0 && v.yh != 3) {
+                            items.push({
+                                'price': v.one, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
+                                'name': v.name, 'sum': v.needNum, 'times': v.fre, 'is_rate': v.yh
+                            })
+                        } else {
+                            items.push({
+                                'price': v.one, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
+                                'name': v.name, 'sum': v.needNum, 'times': v.fre
+                            })
                         }
                     }
                 }
-                $.post(url(methods.buyItems)+`&id=${this.user_id}`, {
+                $.post(url(methods.buyItems) + `&id=${this.user_id}`, {
                     data: JSON.stringify(items),
-                    type: all > 0?1:2
-                }, v=>{
-                    if(v.code==1){
+                    type: all > 0 ? 1 : 2
+                }, v => {
+                    if (v.code == 1) {
                         this.need = []
                         for (let v of this.list) {
                             v.needNum = 0;
@@ -768,8 +782,8 @@
                         localStorage.setItem('orderId', v.res.orderId)
                         localStorage.setItem('arrearsRes', v.res.arrearsRes)
                         localStorage.setItem('type', 1)
-                        setTimeout(()=>location.href = './pay_page.html', 1000)
-                    }else{
+                        setTimeout(() => location.href = './pay_page.html', 1000)
+                    } else {
                         error(v.error)
                     }
                 })
@@ -777,23 +791,27 @@
             subBox() {
                 let th = []
                 let all = 0
-                for(let v of this.need){
+                for (let v of this.need) {
                     all += parseFloat(v.one) * parseInt(v.needNum)
-                    if(v.type == '套盒') {
-                        if(v.yh!=0 && v.yh!=3){
-                            th.push({'price': v.one, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
-                                'name': v.name, 'sum': v.needNum, 'times': v.fre, 'is_rate': v.yh})
-                        }else{
-                            th.push({'price': v.one, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
-                                'name': v.name, 'sum': v.needNum, 'times': v.fre})
+                    if (v.type == '套盒') {
+                        if (v.yh != 0 && v.yh != 3) {
+                            th.push({
+                                'price': v.one, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
+                                'name': v.name, 'sum': v.needNum, 'times': v.fre, 'is_rate': v.yh
+                            })
+                        } else {
+                            th.push({
+                                'price': v.one, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
+                                'name': v.name, 'sum': v.needNum, 'times': v.fre
+                            })
                         }
                     }
                 }
-                $.post(url(methods.buyTh)+`&id=${this.user_id}`, {
+                $.post(url(methods.buyTh) + `&id=${this.user_id}`, {
                     data: JSON.stringify(th),
-                    type: all > 0?1:2
-                }, v=>{
-                    if(v.code==1){
+                    type: all > 0 ? 1 : 2
+                }, v => {
+                    if (v.code == 1) {
                         this.need = []
                         for (let v of this.list) {
                             v.needNum = 0;
@@ -802,8 +820,8 @@
                         localStorage.setItem('orderId', v.res.orderId)
                         localStorage.setItem('arrearsRes', v.res.arrearsRes)
                         localStorage.setItem('type', 1)
-                        setTimeout(()=>location.href = './pay_page.html', 1000)
-                    }else{
+                        setTimeout(() => location.href = './pay_page.html', 1000)
+                    } else {
                         error(v.error)
                     }
                 })
@@ -811,23 +829,32 @@
             subCp() {
                 let goods = []
                 let all = 0
-                for(let v of this.need) {
+                for (let v of this.need) {
                     all += parseFloat(v.one) * parseInt(v.needNum)
-                    if(v.type == '产品') {
-                        if(v.yh != 0 && v.yh!=3){
-                            goods.push({'price': v.yh==1?v.price * v.discount/10:0, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
-                                'name': v.name, 'sum': v.needNum, 'spec': v.spec, 'is_rate': v.yh})
-                        }else{
-                            goods.push({'price': v.price2, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
-                                'name': v.name, 'sum': v.needNum, 'spec': v.spec})
+                    if (v.type == '产品') {
+                        if (v.yh != 0 && v.yh != 3) {
+                            goods.push({
+                                'price': v.yh == 1 ? v.price * v.discount / 10 : 0,
+                                [`p_dis_t${v.id}`]: v.discount,
+                                'id': v.id,
+                                'name': v.name,
+                                'sum': v.needNum,
+                                'spec': v.spec,
+                                'is_rate': v.yh
+                            })
+                        } else {
+                            goods.push({
+                                'price': v.price2, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
+                                'name': v.name, 'sum': v.needNum, 'spec': v.spec
+                            })
                         }
                     }
                 }
-                $.post(url(methods.buyGoods)+`&id=${this.user_id}`, {
+                $.post(url(methods.buyGoods) + `&id=${this.user_id}`, {
                     data: JSON.stringify(goods),
-                    type: all > 0?1:2,
-                }, v=>{
-                    if(v.code==1){
+                    type: all > 0 ? 1 : 2,
+                }, v => {
+                    if (v.code == 1) {
                         this.need = []
                         for (let v of this.list) {
                             v.needNum = 0;
@@ -836,27 +863,31 @@
                         localStorage.setItem('orderId', v.res.orderId)
                         localStorage.setItem('arrearsRes', v.res.arrearsRes)
                         localStorage.setItem('type', 1)
-                        setTimeout(()=>location.href = './pay_page.html', 1000)
-                    }else{
+                        setTimeout(() => location.href = './pay_page.html', 1000)
+                    } else {
                         error(v.error)
                     }
                 })
             },
             subPlan() {
                 let goods = []
-                for(let v of this.need) {
-                    if(v.type == '方案') {
-                        if(v.yh != 0 && v.yh!=3){
-                            goods.push({'price': v.yh==1?v.price * v.discount/10:0, 'id': v.id, 'sum': v.needNum})
-                        }else{
+                for (let v of this.need) {
+                    if (v.type == '方案') {
+                        if (v.yh != 0 && v.yh != 3) {
+                            goods.push({
+                                'price': v.yh == 1 ? v.price * v.discount / 10 : 0,
+                                'id': v.id,
+                                'sum': v.needNum
+                            })
+                        } else {
                             goods.push({'price': v.price2, 'id': v.id, 'sum': v.needNum})
                         }
                     }
                 }
-                $.post(url(methods.buyPlan)+`&id=${this.user_id}`, {
+                $.post(url(methods.buyPlan) + `&id=${this.user_id}`, {
                     data: JSON.stringify(goods)
-                }, v=>{
-                    if(v.code==1){
+                }, v => {
+                    if (v.code == 1) {
                         this.need = []
                         for (let v of this.list) {
                             v.needNum = 0;
@@ -865,20 +896,20 @@
                         localStorage.setItem('orderId', v.res.orderId)
                         localStorage.setItem('arrearsRes', v.res.arrearsRes)
                         localStorage.setItem('type', 1)
-                        setTimeout(()=>location.href = './pay_page.html', 1000)
-                    }else{
+                        setTimeout(() => location.href = './pay_page.html', 1000)
+                    } else {
                         error(v.error)
                     }
                 })
             },
             sub() {
-                if(this.tabIndex==0){
+                if (this.tabIndex == 0) {
                     this.subCp()
-                }else if(this.tabIndex==1) {
+                } else if (this.tabIndex == 1) {
                     this.subItems()
-                }else if(this.tabIndex==2) {
+                } else if (this.tabIndex == 2) {
                     this.subBox()
-                }else if(this.tabIndex==3) {
+                } else if (this.tabIndex == 3) {
                     this.subPlan()
                 }
                 /*if (this.need.length == 0) {
@@ -939,16 +970,22 @@
                     this.need = []
                     for (let v of this.list) {
                         v.needNum = 0;
+                        v.price2 = v.price
+                        v.yh = 0
                     }
                     this.need2 = []
                     for (let v of this.card) {
                         v.needNum = 0;
+                        v.price2 = v.price
+                        v.yh = 0
                     }
                     this.need3 = []
                     for (let v of this.yf) {
                         v.needNum = 0;
+                        v.price2 = v.price
+                        v.yh = 0
                     }
-                }).catch(e=>{
+                }).catch(e => {
 
                 })
             },
@@ -969,12 +1006,16 @@
             remove(v) {
                 if (v.needNum > 0) {
                     v.needNum--
+                    v.price2 = parseFloat(v.price2)-parseFloat(v.one)
                     for (let i in this.need) {
                         if (v.id == this.need[i].id && this.need[i].needNum > 0) {
                             z = false
                             break
                         }
                         if (this.need[i].needNum == 0) {
+                            this.need[i].needNum = 0
+                            this.need[i].price2 = this.need[i].price
+                            this.need[i].yh = 0
                             this.need.splice(i, 1)
                         }
                     }
@@ -983,12 +1024,16 @@
             remove2(v) {
                 if (v.needNum > 0) {
                     v.needNum--
+                    v.price2 = parseFloat(v.price2)-parseFloat(v.one)
                     for (let i in this.need2) {
                         if (v.id == this.need2[i].id && this.need2[i].needNum > 0) {
                             z = false
                             break
                         }
                         if (this.need2[i].needNum == 0) {
+                            this.need[i].needNum = 0
+                            this.need[i].price2 = this.need[i].price
+                            this.need[i].yh = 0
                             this.need2.splice(i, 1)
                         }
                     }
@@ -997,12 +1042,16 @@
             remove3(v) {
                 if (v.needNum > 0) {
                     v.needNum--
+                    v.price2 = parseFloat(v.price2)-parseFloat(v.one)
                     for (let i in this.need3) {
                         if (v.id == this.need3[i].id && this.need3[i].needNum > 0) {
                             z = false
                             break
                         }
                         if (this.need3[i].needNum == 0) {
+                            this.need[i].needNum = 0
+                            this.need[i].price2 = this.need[i].price
+                            this.need[i].yh = 0
                             this.need3.splice(i, 1)
                         }
                     }
@@ -1013,7 +1062,7 @@
                 let z = true;
                 for (let x of this.need) {
                     if (v.id == x.id) {
-                        x.price2 = parseFloat(x.one)+parseFloat(x.price2)
+                        x.price2 = parseFloat(x.price2)+parseFloat(x.one)
                         z = false
                         break
                     }
@@ -1027,7 +1076,7 @@
                 let z = true;
                 for (let x of this.need2) {
                     if (v.id == x.id) {
-                        x.price2 = parseFloat(x.one)+parseFloat(x.price2)
+                        x.price2 = parseFloat(x.price2)+parseFloat(x.one)
                         z = false
                         break
                     }
@@ -1038,10 +1087,11 @@
             },
             add3(v) {
                 v.needNum++
+                console.log(v)
                 let z = true;
                 for (let x of this.need3) {
                     if (v.id == x.id) {
-                        x.price2 = parseFloat(x.one)+parseFloat(x.price2)
+                        x.price2 = parseFloat(x.price2)+parseFloat(x.one)
                         z = false
                         break
                     }
@@ -1076,7 +1126,7 @@
                             v['needNum'] = 0
                             v['discount'] = 10
                             v['yh'] = 0
-                            v['price2'] = ''
+                            v['price2'] = v.price
                             v.one = v.price
                         }
                         this.list = rs
@@ -1112,17 +1162,17 @@
                 }
             },
             getCard() {
-                $.post(url(methods.getCardList), v=>{
-                    if(v.code==1){
-                        for(let x of v.card.list) {
-                            x.dis = 10
+                $.post(url(methods.getCardList), v => {
+                    if (v.code == 1) {
+                        for (let x of v.card.list) {
+                            x.discount = 10
                             x.yh = 0
                             x.needNum = 0
-                            x.price2 = ''
+                            x.price2 = x.price
                             x.one = x.price
                         }
                         this.card = v.card.list
-                    }else{
+                    } else {
                         error(v.error)
                     }
                 })
@@ -1134,8 +1184,8 @@
                         x['needNum'] = 0
                         x['discount'] = 10
                         x['yh'] = 0
-                        x['price2'] = ''
-                        x['one'] = v.price
+                        x['price2'] = x.price
+                        x['one'] = x.price
                     }
                     this.yf = v.res
                 })
@@ -1235,7 +1285,7 @@
                 that = this;
                 this.user_id = localStorage.getItem('user_id')
                 this.user = JSON.parse(localStorage.getItem('user'))
-                if(this.user.mode==1){
+                if (this.user.mode == 1) {
                     this.getYf()
                 }
                 this.getGoods()
