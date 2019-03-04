@@ -1,6 +1,6 @@
-var ym = 'https://www.myhkj.cn/apis/backend/';
+// var ym = 'https://www.myhkj.cn/apis/backend/';
 // var ym = 'http://admin.test.com/apis/backend/';
-// var ym = 'http://127.0.0.1:8000/apis/backend/';
+var ym = 'http://127.0.0.1:8000/apis/backend/';
 
 var methods = {
     'login': 'login/login',

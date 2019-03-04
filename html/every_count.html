@@ -72,7 +72,194 @@
                     </el-table>
                 </div>
             </el-tab-pane>
-        </el-tabs>
+            <el-tab-pane>
+                <span slot="label">消费业绩：{{total_money}}</span>
+                <div class="basic_inf">
+                    <el-table :max-height="max_ht"
+                              :data="list"
+                              style="width: 100%" v-if="scope.row.status==1">
+                        <el-table-column
+                                label="品项">
+                            <template slot-scope="scope">
+                                <i v-if="scope.row.type==1">产品</i>
+                                <i v-if="scope.row.type==2">套盒</i>
+                                <i v-if="scope.row.type==3">项目</i>
+                                <i v-if="scope.row.type==4">方案</i>
+                                <i v-if="scope.row.type==5">卡项</i>
+                                <i v-if="scope.row.type==6">账户</i>
+                                <i v-if="scope.row.type==7">内衣</i>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                label="姓名">
+                            <template slot-scope="scope">
+                                <i class="cursor" @click="">{{scope.row.m_name}}</i>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                prop="name"
+                                label="名称">
+                        </el-table-column>
+                        <el-table-column
+                                label="类型">
+                            <template slot-scope="scope">
+                                <i v-if="scope.row.status==1&&scope.row.money!=0">消费</i>
+                                <i v-if="scope.row.status==2&&scope.row.money!=0">消耗</i>
+                                <i v-if="scope.row.money==0">欠款</i>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                label="金额">
+                            <template slot-scope="scope">
+                                <i v-if="scope.row.money!=0&& scope.row.status == 1">{{scope.row.money}}</i>
+                                <i v-if="scope.row.money!=0&& scope.row.status == 2">{{scope.row.money*scope.row.num}}</i>
+                                <i v-if="scope.row.money==0">{{scope.row.total_price}}</i>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+            </el-tab-pane>
+            <el-tab-pane>
+                <span slot="label">消耗业绩：{{consume_total}}</span>
+                <div class="basic_inf">
+                    <el-table :max-height="max_ht"
+                              :data="list"
+                              style="width: 100%" v-if="scope.row.status==2">
+                        <el-table-column
+                                label="品项">
+                            <template slot-scope="scope">
+                                <i v-if="scope.row.type==1">产品</i>
+                                <i v-if="scope.row.type==2">套盒</i>
+                                <i v-if="scope.row.type==3">项目</i>
+                                <i v-if="scope.row.type==4">方案</i>
+                                <i v-if="scope.row.type==5">卡项</i>
+                                <i v-if="scope.row.type==6">账户</i>
+                                <i v-if="scope.row.type==7">内衣</i>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                label="姓名">
+                            <template slot-scope="scope">
+                                <i class="cursor" @click="">{{scope.row.m_name}}</i>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                prop="name"
+                                label="名称">
+                        </el-table-column>
+                        <el-table-column
+                                label="类型">
+                            <template slot-scope="scope">
+                                <i v-if="scope.row.status==1&&scope.row.money!=0">消费</i>
+                                <i v-if="scope.row.status==2&&scope.row.money!=0">消耗</i>
+                                <i v-if="scope.row.money==0">欠款</i>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                label="金额">
+                            <template slot-scope="scope">
+                                <i v-if="scope.row.money!=0&& scope.row.status == 1">{{scope.row.money}}</i>
+                                <i v-if="scope.row.money!=0&& scope.row.status == 2">{{scope.row.money*scope.row.num}}</i>
+                                <i v-if="scope.row.money==0">{{scope.row.total_price}}</i>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+            </el-tab-pane>
+            <el-tab-pane>
+                <span slot="label">实操项目数：{{count}}</span>
+                <div class="basic_inf">
+                    <el-table :max-height="max_ht"
+                              :data="list"
+                              style="width: 100%" v-if="scope.row.status==2">
+                        <el-table-column
+                                label="品项">
+                            <template slot-scope="scope">
+                                <i v-if="scope.row.type==1">产品</i>
+                                <i v-if="scope.row.type==2">套盒</i>
+                                <i v-if="scope.row.type==3">项目</i>
+                                <i v-if="scope.row.type==4">方案</i>
+                                <i v-if="scope.row.type==5">卡项</i>
+                                <i v-if="scope.row.type==6">账户</i>
+                                <i v-if="scope.row.type==7">内衣</i>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                label="姓名">
+                            <template slot-scope="scope">
+                                <i class="cursor" @click="">{{scope.row.m_name}}</i>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                prop="name"
+                                label="名称">
+                        </el-table-column>
+                        <el-table-column
+                                label="类型">
+                            <template slot-scope="scope">
+                                <i v-if="scope.row.status==1&&scope.row.money!=0">消费</i>
+                                <i v-if="scope.row.status==2&&scope.row.money!=0">消耗</i>
+                                <i v-if="scope.row.money==0">欠款</i>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                label="金额">
+                            <template slot-scope="scope">
+                                <i v-if="scope.row.money!=0&& scope.row.status == 1">{{scope.row.money}}</i>
+                                <i v-if="scope.row.money!=0&& scope.row.status == 2">{{scope.row.money*scope.row.num}}</i>
+                                <i v-if="scope.row.money==0">{{scope.row.total_price}}</i>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+            </el-tab-pane>
+            <el-tab-pane>
+                <span slot="label">卡扣业绩：{{card_pay_total}}</span>
+                <div class="basic_inf">
+                    <el-table :max-height="max_ht"
+                              :data="list"
+                              style="width: 100%" v-if="scope.row.type==6">
+                        <el-table-column
+                                label="品项">
+                            <template slot-scope="scope">
+                                <i v-if="scope.row.type==1">产品</i>
+                                <i v-if="scope.row.type==2">套盒</i>
+                                <i v-if="scope.row.type==3">项目</i>
+                                <i v-if="scope.row.type==4">方案</i>
+                                <i v-if="scope.row.type==5">卡项</i>
+                                <i v-if="scope.row.type==6">账户</i>
+                                <i v-if="scope.row.type==7">内衣</i>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                label="姓名">
+                            <template slot-scope="scope">
+                                <i class="cursor" @click="">{{scope.row.m_name}}</i>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                prop="name"
+                                label="名称">
+                        </el-table-column>
+                        <el-table-column
+                                label="类型">
+                            <template slot-scope="scope">
+                                <i v-if="scope.row.status==1&&scope.row.money!=0">消费</i>
+                                <i v-if="scope.row.status==2&&scope.row.money!=0">消耗</i>
+                                <i v-if="scope.row.money==0">欠款</i>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                label="金额">
+                            <template slot-scope="scope">
+                                <i v-if="scope.row.money!=0&& scope.row.status == 1">{{scope.row.money}}</i>
+                                <i v-if="scope.row.money!=0&& scope.row.status == 2">{{scope.row.money*scope.row.num}}</i>
+                                <i v-if="scope.row.money==0">{{scope.row.total_price}}</i>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+            </el-tab-pane></el-tabs>
     </template>
 
 </div>
@@ -89,7 +276,11 @@
         data: {
             max_ht:0,
             time:'',
-            list:[]
+            list:[],
+            total_money:'',
+            consume_total:'',
+            count:'',
+            card_pay_total:'',
         },
         methods: {
             height(){
@@ -99,7 +290,11 @@
             get_list(){
                 $.post(url(methods.DailyIncomeDetail),{day:this.time},v=>{
                     this.list=v.res.res;
-                    console.log(this.list)
+                    this.total_money=v.res.total_money
+                    this.consume_total=v.res.consume_total
+                    this.count=v.res.count
+                    this.card_pay_total=v.res.card_pay_total
+                    console.log(v.res)
                 })
             },
             handleClick(){
