@@ -717,6 +717,7 @@
                 let card = []
                 for(let v of this.need2) {
                     all += parseFloat(v.one) * parseInt(v.needNum)
+                    console.log(all)
                     if(v.yh==0 || v.yh==3){
                         card.push({'all_price':v.all,'price': v.price2, 'id': v.id, 'sum': v.needNum})
                     }else{
@@ -746,6 +747,7 @@
                 let all = 0
                 for(let v of this.need) {
                     all += parseFloat(v.one) * parseInt(v.needNum)
+                    console.log(all)
                     if(v.type == '项目') {
                         if(v.yh!=0 && v.yh!=3){
                             items.push({'all_price':v.all,'price': v.one, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
@@ -780,6 +782,7 @@
                 let all = 0
                 for(let v of this.need){
                     all += parseFloat(v.one) * parseInt(v.needNum)
+                    console.log(all)
                     if(v.type == '套盒') {
                         if(v.yh!=0 && v.yh!=3){
                             th.push({'all_price':v.all,'price': v.one, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
@@ -814,6 +817,7 @@
                 let all = 0
                 for(let v of this.need) {
                     all += parseFloat(v.one) * parseInt(v.needNum)
+                    console.log(all)
                     if(v.type == '产品') {
                         if(v.yh != 0 && v.yh!=3){
                             goods.push({'all_price':v.all,'price': v.yh==1?v.price * v.discount/10:0, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
