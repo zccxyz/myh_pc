@@ -716,10 +716,11 @@
                 }
                 let card = []
                 for(let v of this.need2) {
+                    all += parseFloat(v.one) * parseInt(v.needNum)
                     if(v.yh==0 || v.yh==3){
-                        card.push({'price': v.price2, 'id': v.id, 'sum': v.needNum})
+                        card.push({'all_price':v.all,'price': v.price2, 'id': v.id, 'sum': v.needNum})
                     }else{
-                        card.push({'price': v.yh==1?v.price * v.dis/10:0, [`p_dis_t${v.id}`]: v.yh,
+                        card.push({'all_price':v.all,'price': v.yh==1?v.price * v.dis/10:0, [`p_dis_t${v.id}`]: v.yh,
                             'id': v.id, 'sum': v.needNum})
                     }
                 }
@@ -747,10 +748,10 @@
                     all += parseFloat(v.one) * parseInt(v.needNum)
                     if(v.type == '项目') {
                         if(v.yh!=0 && v.yh!=3){
-                            items.push({'price': v.one, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
+                            items.push({'all_price':v.all,'price': v.one, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
                                 'name': v.name, 'sum': v.needNum, 'times': v.fre, 'is_rate': v.yh})
                         }else{
-                            items.push({'price': v.one, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
+                            items.push({'all_price':v.all,'price': v.one, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
                                 'name': v.name, 'sum': v.needNum, 'times': v.fre})
                         }
                     }
@@ -781,10 +782,10 @@
                     all += parseFloat(v.one) * parseInt(v.needNum)
                     if(v.type == '套盒') {
                         if(v.yh!=0 && v.yh!=3){
-                            th.push({'price': v.one, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
+                            th.push({'all_price':v.all,'price': v.one, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
                                 'name': v.name, 'sum': v.needNum, 'times': v.fre, 'is_rate': v.yh})
                         }else{
-                            th.push({'price': v.one, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
+                            th.push({'all_price':v.all,'price': v.one, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
                                 'name': v.name, 'sum': v.needNum, 'times': v.fre})
                         }
                     }
@@ -815,10 +816,10 @@
                     all += parseFloat(v.one) * parseInt(v.needNum)
                     if(v.type == '产品') {
                         if(v.yh != 0 && v.yh!=3){
-                            goods.push({'price': v.yh==1?v.price * v.discount/10:0, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
+                            goods.push({'all_price':v.all,'price': v.yh==1?v.price * v.discount/10:0, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
                                 'name': v.name, 'sum': v.needNum, 'spec': v.spec, 'is_rate': v.yh})
                         }else{
-                            goods.push({'price': v.price2, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
+                            goods.push({'all_price':v.all,'price': v.price2, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
                                 'name': v.name, 'sum': v.needNum, 'spec': v.spec})
                         }
                     }
@@ -845,11 +846,12 @@
             subPlan() {
                 let goods = []
                 for(let v of this.need) {
+                    all += parseFloat(v.one) * parseInt(v.needNum)
                     if(v.type == '方案') {
                         if(v.yh != 0 && v.yh!=3){
-                            goods.push({'price': v.yh==1?v.price * v.discount/10:0, 'id': v.id, 'sum': v.needNum})
+                            goods.push({'all_price':v.all,'price': v.yh==1?v.price * v.discount/10:0, 'id': v.id, 'sum': v.needNum})
                         }else{
-                            goods.push({'price': v.price2, 'id': v.id, 'sum': v.needNum})
+                            goods.push({'all_price':v.all,'price': v.price2, 'id': v.id, 'sum': v.needNum})
                         }
                     }
                 }
