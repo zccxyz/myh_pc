@@ -15,7 +15,8 @@
                 <img src="../images/home_logo.png" class="home_logo">美约会店务管理系统
                 <p class="fr">
                     {{user.name}}<i class="el-icon-caret-bottom"></i>&#12288;
-                    <i class="el-icon-setting"></i>设置<i class="el-icon-caret-bottom"></i>&#12288;
+                    <span @click="change_dio=true" style="cursor: pointer"><i class="el-icon-setting"></i>修改密码</span>
+                    &#12288;
                     <a href="bespeak.html" target="iframe" style="position: relative">
                         <span class="news"></span>
                         <img src="../images/news.png" class="home_birth">
@@ -50,6 +51,14 @@
                                 <span slot="title">散客管理</span>
                             </a>
                         </el-menu-item>
+                        <el-menu-item index="4">
+                            <a href="shop_store.html" target="iframe">
+                                <span class="span_img">
+                                    <img src="../images/store.png" class="home_icon" style="width: 24px">
+                                </span>
+                                <span slot="title">到店管理</span>
+                            </a>
+                        </el-menu-item>
                         <el-menu-item index="3">
                             <a href="goods.html" target="iframe">
                                 <span class="span_img">
@@ -66,14 +75,7 @@
                                 <span slot="title">内衣管理</span>
                             </a>
                         </el-menu-item>
-                        <el-menu-item index="4">
-                            <a href="shop_store.html" target="iframe">
-                                <span class="span_img">
-                                    <img src="../images/store.png" class="home_icon" style="width: 24px">
-                                </span>
-                                <span slot="title">到店管理</span>
-                            </a>
-                        </el-menu-item>
+
                         <el-menu-item index="5">
                             <a href="card.html" target="iframe">
                                 <span class="span_img">
@@ -107,7 +109,7 @@
                                 <span slot="title">院装消耗</span>
                             </a>
                         </el-menu-item>
-                        <el-menu-item index="9">
+                        <!--<el-menu-item index="9">
                             <a href="order.html" target="iframe">
                                 <span class="span_img">
                                     <img src="../images/order.png" class="home_icon" style="height: 18px;width: 22px;">
@@ -130,7 +132,7 @@
                                 </span>
                                 <span slot="title">员工工资</span>
                             </a>
-                        </el-menu-item>
+                        </el-menu-item>-->
                         <el-submenu index="12">
                             <template slot="title">
                                 <span class="span_img">
@@ -155,10 +157,39 @@
                     </el-menu>
                 </el-aside>
                 <el-main>
-                    <iframe src="home.html" name="iframe"></iframe>
+                    <iframe src="every_count.html" name="iframe"></iframe>
                 </el-main>
             </el-container>
         </el-container>
+        <el-dialog title="修改密码"
+                   :visible.sync="change_dio"
+                   width="460px"
+                   center>
+            <ul class="goods_edit">
+                <li>
+                    <span class="list_left">原密码</span>
+                    <span class="list_right">
+                    <el-input v-model="yuan" placeholder="请输入原密码" @blur="get_pass()"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">新密码</span>
+                    <span class="list_right">
+                    <el-input v-model="xin" placeholder="请输入新密码"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">确认新密码</span>
+                    <span class="list_right">
+                    <el-input v-model="con_xin" placeholder="请确认新密码"></el-input>
+                </span>
+                </li>
+            </ul>
+            <span slot="footer" class="dialog-footer">
+            <el-button @click="change_dio = false">取 消</el-button>
+            <el-button type="primary" @click="modify_pass()">确 定</el-button>
+          </span>
+        </el-dialog>
     </template>
 </div>
 </body>
@@ -172,6 +203,12 @@
         el: '#app',
         data: {
             user: '',
+            change_dio:false,
+            yuan: '',
+            xin: '',
+            con_xin: '',
+            pass_sta:false,
+            password:''
         },
         methods: {
             logout() {
@@ -187,6 +224,44 @@
                 }).catch(e => {
 
                 })
+            },
+            get_pass(){
+                if(this.yuan==''){
+                    error('请输入原始密码')
+                }else if(this.yuan!=''&&this.password==this.yuan){}else{
+                    $.post(url(methods.check),{orig: this.yuan},v=>{
+                        if(v.code==-1){
+                            error('原始密码错误')
+                        }else if(v.code==1){
+                            this.password=this.yuan;
+                        }
+                    })
+                }
+            },
+            modify_pass(){
+                if(this.yuan==''){
+                    error('请输入原始密码')
+                }else if(this.yuan!=this.password){
+                    error('原始密码错误')
+                }else if(this.xin==''){
+                    error('请输入新密码')
+                }else if(this.con_xin==''){
+                    error('请再次输入新密码')
+                }else if(this.xin!=this.con_xin){
+                    error('两次密码输入不一致，请重新输入')
+                }else{
+                    $.post(url(methods.ModifyPassword), {orig: this.yuan,
+                        password: this.xin,
+                        confirm: this.xin
+                    },v=>{
+                        if(v.code==1){
+                            success("密码修改成功")
+                            this.change_dio=false;
+                        }else{
+                            error(v.Msg)
+                        }
+                    })
+                }
             }
         },
         mounted() {

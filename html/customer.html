@@ -76,11 +76,11 @@
             <el-input v-model="memberBalance2" type="number" placeholder="元" class="choice_in in_right"></el-input>
             <!--<el-button type="primary" style="height: 30px;padding: 0 15px">查询</el-button>-->
         </div>
-        <el-table border
+        <el-table border :max-height="max_ht"
                   ref="multipleTable"
                   :data="list.filter(
                   data => (!input || data.name.toLowerCase().includes(input.toLowerCase()) ||
-                  data.tel.toLowerCase().includes(input.toLowerCase())) &&
+                  data.tel.toLowerCase().includes(input.toLowerCase())||(data.shop_num==null?false:data.shop_num.toLowerCase().includes(input.toLowerCase()))) &&
 
                   ((!memberBalance || parseFloat(data.balance)>=parseFloat(memberBalance)) &&
                   (!memberBalance2 || parseFloat(data.balance)<=parseFloat(memberBalance2))) &&
@@ -96,31 +96,31 @@
                   @selection-change="handleSelectionChange">
             <el-table-column
                     type="selection"
-                    width="55">
+                    min-width="55">
             </el-table-column>
             <el-table-column
                     label="会员名"
-                    prop="name">
+                    prop="name" min-width="80">
             </el-table-column>
             <el-table-column
                     prop="shop_num"
-                    label="会员编号">
+                    label="会员编号" min-width="120">
             </el-table-column>
             <el-table-column
                     label="余额"
-                    prop="balance">
+                    prop="balance" min-width="120">
             </el-table-column>
-            <el-table-column width="120"
+            <el-table-column min-width="120"
                              prop="tel"
                              label="会员电话">
             </el-table-column>
-            <el-table-column width="120"
+            <el-table-column min-width="120"
                              prop="birthday"
                              label="会员生日">
             </el-table-column>
             <el-table-column
                     prop="arrival_num"
-                    label="每月到店">
+                    label="每月到店" min-width="100">
             </el-table-column>
             <!--<el-table-column
                     prop="num"
@@ -128,12 +128,12 @@
             </el-table-column>-->
             <el-table-column
                              prop="bir_type"
-                             label="类型"
+                             label="类型" min-width="60"
                              :formatter="formatter">
             </el-table-column>
             <el-table-column
                     label="操作"
-                    width="680"
+                    min-width="580"
                     fixed="right"
                     show-overflow-tooltip>
                 <template slot-scope="scope">
@@ -178,16 +178,22 @@
         <el-dialog
                 title="新增会员"
                 :visible.sync="addDialogVisible"
-                width="400px"
+                min-width="400px"
                 center
                 :before-close="close">
             <ul class="goods_edit">
+                <li>
+                    <span class="list_left">会员编号</span>
+                    <span class="list_right">
+                    <el-input v-model="user.num" placeholder="请输入会员编号"></el-input>
+                </span>
+                </li>
                 <li>
                     <span class="list_left">会员名</span>
                     <span class="list_right">
                     <el-input v-model="user.name" placeholder="请输入会员名"></el-input>
                 </span>
-                </li>
+
                 <li>
                     <span class="list_left">年龄</span>
                     <span class="list_right">
@@ -198,6 +204,18 @@
                     <span class="list_left">手机号</span>
                     <span class="list_right">
                     <el-input v-model="user.tel" placeholder="请输入手机号"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">密码</span>
+                    <span class="list_right">
+                    <el-input v-model="user.password" placeholder="默认密码为123456"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">微信</span>
+                    <span class="list_right">
+                    <el-input v-model="user.weixin" placeholder="请输入微信"></el-input>
                 </span>
                 </li>
                 <!--<li>
@@ -212,6 +230,13 @@
                     <span class="list_right">
                         <el-radio v-model="user.sex" label="1">女</el-radio>
                         <el-radio v-model="user.sex" label="2">男</el-radio>
+                    </span>
+                </li>
+                <li>
+                    <span class="list_left">婚姻状况</span>
+                    <span class="list_right">
+                        <el-radio v-model="user.marital" label="1">已婚</el-radio>
+                        <el-radio v-model="user.marital" label="2">未婚</el-radio>
                     </span>
                 </li>
                 <li>
@@ -232,19 +257,18 @@
                     </el-date-picker>
                 </span>
                 </li>
-                <!--<li>
+
+                <li>
                     <span class="list_left">顾问</span>
                     <span class="list_right">
-                    <el-select v-model="value" placeholder="请选择">
+                    <el-select v-model="user.adviser" placeholder="请选择">
                         <el-option
-                                v-for="item in options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
+                                v-for="item in adviser_list"
+                                :value="item.name">
                         </el-option>
                     </el-select>
                 </span>
-                </li>-->
+                </li>
             </ul>
             <span slot="footer" class="dialog-footer">
             <el-button @click="cancel">取 消</el-button>
@@ -256,7 +280,7 @@
         <el-dialog
                 title="删除会员"
                 :visible.sync="deleteDialogVisible"
-                width="400px"
+                min-width="400px"
                 center>
             <span>确认删除所选的客户</span>
             <span slot="footer" class="dialog-footer">
@@ -268,7 +292,7 @@
         <el-dialog
                 title="房间号"
                 :visible.sync="storeDialogVisible"
-                width="400px"
+                min-width="400px"
                 center>
             <div>
                 <p class="p_text">请输入房间号</p>
@@ -283,7 +307,7 @@
         <el-dialog
                 title="离店号"
                 :visible.sync="leaveDialogVisible"
-                width="400px"
+                min-width="400px"
                 center>
             <div>
                 <p class="p_text">确认现在离店</p>
@@ -298,7 +322,7 @@
         <el-dialog
                 title="编辑会员"
                 :visible.sync="zt"
-                width="400px"
+                min-width="400px"
                 center
                 :before-close="close">
             <ul class="goods_edit">
@@ -366,6 +390,7 @@
     new Vue({
         el: '#app',
         data: {
+            max_ht:0,
             input: '',
             radio: '',
             addDialogVisible: false,
@@ -374,6 +399,7 @@
             leaveDialogVisible: false,
             birthday: '',
             name: '',
+            adviser_list:[],
             options: [{
                 value: '选项1',
                 label: '张三'
@@ -392,7 +418,6 @@
                 tel: '15212645632'
             }],
             multipleSelection: [],
-
             total: 0,
             list: [],
             fileList: [],
@@ -400,15 +425,19 @@
             user: {
                 'name': '',
                 'age': '',
-                'tel': '',
-                'sex': '1',
-                'bir_type': '1',
+                'num': '',
+                'password':'',
+                'weixin':'',
+                'sex':'',
+                'tel':'',
+                'marital': '',
+                'bir_type': '',
                 'birthday': '',
+                'adviser': '',
             },
             room: '',
             now: '',
             zt: false,
-
             ddNum: '',
             ddNum2: '',
             syNum: '',
@@ -417,6 +446,15 @@
             memberBalance2: '',
         },
         methods: {
+            get_advister(){
+                $.get(url(methods.get_advister),v=>{
+                    this.adviser_list=v.res;
+                })
+            },
+            height(){
+                    var height=window.innerHeight;
+                    this.max_ht=window.innerHeight-142;
+            },
             exportData() {
                 /*$.get(url(methods.exportMember), v=>{
 
@@ -460,10 +498,15 @@
                         this.user = {
                             'name': '',
                             'age': '',
-                            'tel': '',
+                            'num':'',
+                            'password':'',
+                            'weixin':'',
                             'sex': '1',
-                            'bir_type': '1',
+                            'tel': '',
+                            'marital': '',
+                            'bir_type': '',
                             'birthday': '',
+                            'adviser':''
                         }
                         success('修改成功')
                         this.getMember()
@@ -471,9 +514,14 @@
                 })
             },
             setVal() {
+                this.user.num = this.now.num
                 this.user.name = this.now.name
                 this.user.age = this.now.age
                 this.user.tel = this.now.tel
+                this.user.password = this.now.password
+                this.user.weixin = this.now.weixin
+                this.user.adviser = this.now.adviser
+                this.user.marital = this.now.marital
                 this.user.sex = this.now.sex == null ? '1' : '2'
                 this.user.bir_type = this.now.bir_type + ''
                 this.user.birthday = this.now.birthday
@@ -589,10 +637,15 @@
                         this.user = {
                             'name': '',
                             'age': '',
-                            'tel': '',
-                            'sex': '1',
+                            'num': '',
+                            'password':'',
+                            'weixin':'',
+                            'sex':'1',
+                            'tel':'',
+                            'marital': '',
                             'bir_type': '1',
                             'birthday': '',
+                            'adviser': '',
                         }
                         this.addDialogVisible = false
                         this.getMember()
@@ -606,10 +659,15 @@
                 this.user = {
                     'name': '',
                     'age': '',
-                    'tel': '',
-                    'sex': '1',
+                    'num': '',
+                    'password':'',
+                    'weixin':'',
+                    'sex':'1',
+                    'tel':'',
+                    'marital': '',
                     'bir_type': '1',
                     'birthday': '',
+                    'adviser': '',
                 }
                 this.addDialogVisible = false
                 this.zt = false
@@ -620,10 +678,15 @@
                 this.user = {
                     'name': '',
                     'age': '',
-                    'tel': '',
-                    'sex': '1',
-                    'bir_type': 1,
+                    'num': '',
+                    'password':'',
+                    'weixin':'',
+                    'sex':'1',
+                    'tel':'',
+                    'marital': '',
+                    'bir_type': '1',
                     'birthday': '',
+                    'adviser': '',
                 };
             },
             toggleSelection(rows) {
@@ -703,6 +766,8 @@
                 //初始化
                 that = this
                 this.getMember()
+                this.get_advister()
+                this.height()
                 this.r = url(methods.upload)
                 loginState();
             })

@@ -20,7 +20,7 @@
     </p>
     <template>
 
-        <el-tabs @tab-click="handleClick"><!---->
+        <el-tabs type="card" @tab-click="handleClick" class="vip_infor" ><!---->
             <el-tab-pane label="产品">
                 <div>
                     <el-input style="margin:5px 0;" class="cus_seatch"
@@ -29,7 +29,7 @@
                               v-model="input">
                     </el-input>
                 </div>
-                <el-table border
+                <el-table border :max-height="max_ht"
                           ref="multipleTable"
                           :data="list.filter(data => (!input || data.name.toLowerCase().includes(input.toLowerCase())) && data.type=='产品')"
                           tooltip-effect="dark"
@@ -46,7 +46,8 @@
                     </el-table-column>
                     <el-table-column
                             prop="name"
-                            label="商品名称">
+                            label="商品名称"
+                           min-width="210">
                     </el-table-column>
 
                     <!--<el-table-column
@@ -102,7 +103,7 @@
                               v-model="input">
                     </el-input>
                 </div>
-                <el-table border
+                <el-table border :max-height="max_ht"
                           ref="multipleTable"
                           :data="list.filter(data => (!input || data.name.toLowerCase().includes(input.toLowerCase())) && data.type=='项目')"
                           tooltip-effect="dark"
@@ -119,7 +120,7 @@
                     </el-table-column>
                     <el-table-column
                             prop="name"
-                            label="商品名称">
+                            label="商品名称" min-width="210">
                     </el-table-column>
                     <el-table-column
                             prop="price"
@@ -161,7 +162,7 @@
                               v-model="input">
                     </el-input>
                 </div>
-                <el-table border
+                <el-table border :max-height="max_ht"
                           ref="multipleTable"
                           :data="list.filter(data => (!input || data.name.toLowerCase().includes(input.toLowerCase())) && data.type=='套盒')"
                           tooltip-effect="dark"
@@ -178,7 +179,7 @@
                     </el-table-column>
                     <el-table-column
                             prop="name"
-                            label="商品名称">
+                            label="商品名称" min-width="210">
                     </el-table-column>
                     <el-table-column
                             prop="price"
@@ -220,14 +221,14 @@
                               v-model="input">
                     </el-input>
                 </div>
-                <el-table border
+                <el-table border :max-height="max_ht"
                           ref="multipleTable"
                           :data="list.filter(data => (!input || data.name.toLowerCase().includes(input.toLowerCase())) && data.type=='方案')"
                           tooltip-effect="dark"
                           style="width: 100%">
                     <el-table-column
                             prop="name"
-                            label="商品名称">
+                            label="商品名称" min-width="210">
                     </el-table-column>
                     <el-table-column
                             prop="sale"
@@ -257,7 +258,7 @@
                               v-model="input">
                     </el-input>
                 </div>
-                <el-table border
+                <el-table border :max-height="max_ht"
                           ref="multipleTable"
                           :data="card.filter(data => (!input || data.card_name.toLowerCase().includes(input.toLowerCase())))"
                           tooltip-effect="dark"
@@ -270,7 +271,7 @@
                     <el-table-column
                             prop="card_name"
                             label="名称"
-                            width="120">
+                            width="160">
                     </el-table-column>
                     <el-table-column
                             prop="amount"
@@ -324,7 +325,7 @@
                           style="width: 100%">
                     <el-table-column
                             label="编号"
-                            prop="sn">
+                            prop="sn" min-width="140">
                     </el-table-column>
                     <el-table-column
                             label="类型"
@@ -333,7 +334,7 @@
                     <el-table-column
                             prop="name"
                             label="名称"
-                            width="120">
+                            min-width="210">
                     </el-table-column>
                     <el-table-column
                             prop="price"
@@ -387,9 +388,9 @@
                         <span class="g_name">
                              {{v.name}}
                         </span><!--{{v.yh==1?v.price * v.discount/10*v.needNum:v.yh==2?0:v.price2}}-->
-                        <span class="p_wid">￥{{js(v)}}</span>
+                        <span class="p_wid">￥{{v.one*v.needNum}}</span>
                         <span>
-                            优惠方式
+                            优惠方式{{v.one}}
                             <el-radio v-model="v.yh" label="1">打折</el-radio>
                             <el-input v-if="v.yh==1" v-model="v.discount" placeholder="请输入1到10的数字"
                                       class="in_wid und_line"></el-input>
@@ -434,7 +435,7 @@
                         <span class="g_name">
                              {{v.card_name}}
                         </span>
-                        <span class="p_wid">￥{{v.yh==1?v.price * v.dis/10:v.yh==2?0:v.price2}}</span>
+                        <span class="p_wid">￥{{v.one*v.needNum}}</span>
                         <span class="span_bold">
                             优惠方式
                             <el-radio v-model="v.yh" label="1">打折</el-radio>
@@ -464,7 +465,7 @@
         <div v-if="need3.length>0" class="cart_div" style="z-index: 10">
             <p class="cart_title">
                 已选择（{{need3.length}}）
-                <span class="fr mar_hun" @click="allRemove">
+                <span class="fr mar_hun cursor" @click="allRemove">
                 <img src="../images/delete.png">&nbsp;全部清空
                </span>
             </p>
@@ -474,7 +475,7 @@
                         <span class="g_name">
                              {{v.name}}
                         </span>
-                        <span class="p_wid">￥{{v.yh==1?v.price * v.discount/10:v.yh==2?0:v.price2}}</span>
+                        <span class="p_wid">￥{{v.one*v.needNum}}</span>
                         <span class="span_bold">
                             优惠方式
                             <el-radio v-model="v.yh" label="1">打折</el-radio>
@@ -514,6 +515,8 @@
     new Vue({
         el: '#app',
         data: {
+            index: 0,
+            max_ht:0,
             input: '',
             radio: '',
             checked: '',
@@ -552,24 +555,144 @@
             yf: [],
             need3: [],
         },
+        watch: {
+            need: {
+                handler(x) {
+                    for(let v of this.need){
+                        let all = 0
+                        //let one = parseFloat(v.price)
+
+                        if (v.yh == 0) {
+                            //all = parseFloat(v.price) * parseInt(v.needNum)
+                            v.one = parseFloat(v.price)
+                        }else
+                        if (v.yh == 1) {
+                            //打折
+                            all = parseFloat(v.price) * v.discount / 10 * parseInt(v.needNum)
+                            v.one = (all/parseInt(v.needNum))
+                            v.price2 = ""
+                        }else
+                        if (v.yh == 2) {
+                            //赠送
+                            //return 0
+                            v.one = 0
+                        }else
+                        if (v.yh == 3) {
+                            //改价
+                            if(v.price2==''){
+                                //all = parseFloat(v.price) * parseInt(v.needNum)
+                                v.one = parseFloat(v.price)
+                            }else{
+                                all = parseFloat(v.price2)
+                                v.one = (all/parseInt(v.needNum))
+                            }
+                        }
+                    }
+                },
+                deep: true
+            },
+            need2: {
+                handler(x) {
+                    for(let v of this.need2){
+                        let all = 0
+                        //let one = parseFloat(v.price)
+
+                        if (v.yh == 0) {
+                            //all = parseFloat(v.price) * parseInt(v.needNum)
+                            v.one = parseFloat(v.price)
+                        }else
+                        if (v.yh == 1) {
+                            //打折
+                            all = parseFloat(v.price) * parseFloat(v.dis) / 10 * parseInt(v.needNum)
+                            v.one = (all/parseInt(v.needNum))
+                            v.price2 = ""
+                        }else
+                        if (v.yh == 2) {
+                            //赠送
+                            //return 0
+                            v.one = 0
+                        }else
+                        if (v.yh == 3) {
+                            //改价
+                            if(v.price2==''){
+                                //all = parseFloat(v.price) * parseInt(v.needNum)
+                                v.one = parseFloat(v.price)
+                            }else{
+                                all = parseFloat(v.price2)
+                                v.one = (all/parseInt(v.needNum))
+                            }
+                        }
+                    }
+                },
+                deep: true
+            },
+            need3: {
+                handler(x) {
+                    for(let v of this.need3){
+                        let all = 0
+                        //let one = parseFloat(v.price)
+
+                        if (v.yh == 0) {
+                            //all = parseFloat(v.price) * parseInt(v.needNum)
+                            v.one = parseFloat(v.price)
+                        }else
+                        if (v.yh == 1) {
+                            //打折
+                            all = parseFloat(v.price) * v.discount / 10 * parseInt(v.needNum)
+                            v.one = (all/parseInt(v.needNum))
+                            v.price2 = ""
+                        }else
+                        if (v.yh == 2) {
+                            //赠送
+                            //return 0
+                            v.one = 0
+                        }else
+                        if (v.yh == 3) {
+                            //改价
+                            if(v.price2==''){
+                                //all = parseFloat(v.price) * parseInt(v.needNum)
+                                v.one = parseFloat(v.price)
+                            }else{
+                                all = parseFloat(v.price2)
+                                v.one = (all/parseInt(v.needNum))
+                            }
+                        }
+                    }
+                },
+                deep: true
+            },
+        },
         methods: {
-            js(v){
-                if(v.yh==0){
-                    return parseFloat(v.price) * parseInt(v.needNum)
+            js(v) {
+                let all = 0
+                let one = parseFloat(v.price)
+                if (v.yh == 0) {
+                    all = parseFloat(v.price) * parseInt(v.needNum)
                 }
-                if(v.yh==1){
+                if (v.yh == 1) {
                     //打折
-                    return parseFloat(v.price) * v.discount/10 * parseInt(v.needNum)
+                    all = parseFloat(v.price) * v.discount / 10 * parseInt(v.needNum)
+                    one = (all/parseInt(v.needNum))
                 }
-                if(v.yh==2){
+                if (v.yh == 2) {
                     //赠送
                     return 0
                 }
-                if(v.yh==3){
+                if (v.yh == 3) {
                     //改价
-                    return parseFloat(v.price2)
+                    if(v.price2==''){
+                        all = parseFloat(v.price) * parseInt(v.needNum)
+                    }else{
+                        all = parseFloat(v.price2)
+                        one = (all/parseInt(v.needNum))
+                    }
                 }
-                return parseFloat(v.price) * parseInt(v.needNum)
+                v.one = one.toFixed(2)
+                return all
+            },
+            height(){
+                var height=window.innerHeight;
+                this.max_ht=window.innerHeight-161;
             },
             buyClothes() {
                 if(this.need3.length==0){
@@ -600,6 +723,7 @@
                             'id': v.id, 'sum': v.needNum})
                     }
                 }
+                //type>0传1 =0传2
                 $.post(url(methods.buyCard)+`&id=${this.user_id}`, {data: JSON.stringify(card)}, v=>{
                     if(v.code==1){
                         this.need = []
@@ -618,19 +742,22 @@
             },
             subItems() {
                 let items = []
+                let all = 0
                 for(let v of this.need) {
+                    all += parseFloat(v.one) * parseInt(v.needNum)
                     if(v.type == '项目') {
                         if(v.yh!=0 && v.yh!=3){
-                            items.push({'price': v.yh==1?v.price * v.discount/10:0, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
+                            items.push({'price': v.one, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
                                 'name': v.name, 'sum': v.needNum, 'times': v.fre, 'is_rate': v.yh})
                         }else{
-                            items.push({'price': v.price2, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
+                            items.push({'price': v.one, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
                                 'name': v.name, 'sum': v.needNum, 'times': v.fre})
                         }
                     }
                 }
                 $.post(url(methods.buyItems)+`&id=${this.user_id}`, {
-                    data: JSON.stringify(items)
+                    data: JSON.stringify(items),
+                    type: all > 0?1:2
                 }, v=>{
                     if(v.code==1){
                         this.need = []
@@ -649,19 +776,22 @@
             },
             subBox() {
                 let th = []
+                let all = 0
                 for(let v of this.need){
+                    all += parseFloat(v.one) * parseInt(v.needNum)
                     if(v.type == '套盒') {
                         if(v.yh!=0 && v.yh!=3){
-                            th.push({'price': v.yh==1?v.price * v.discount/10:0, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
+                            th.push({'price': v.one, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
                                 'name': v.name, 'sum': v.needNum, 'times': v.fre, 'is_rate': v.yh})
                         }else{
-                            th.push({'price': v.price2, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
+                            th.push({'price': v.one, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
                                 'name': v.name, 'sum': v.needNum, 'times': v.fre})
                         }
                     }
                 }
                 $.post(url(methods.buyTh)+`&id=${this.user_id}`, {
-                    data: JSON.stringify(th)
+                    data: JSON.stringify(th),
+                    type: all > 0?1:2
                 }, v=>{
                     if(v.code==1){
                         this.need = []
@@ -680,7 +810,9 @@
             },
             subCp() {
                 let goods = []
+                let all = 0
                 for(let v of this.need) {
+                    all += parseFloat(v.one) * parseInt(v.needNum)
                     if(v.type == '产品') {
                         if(v.yh != 0 && v.yh!=3){
                             goods.push({'price': v.yh==1?v.price * v.discount/10:0, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
@@ -692,7 +824,8 @@
                     }
                 }
                 $.post(url(methods.buyGoods)+`&id=${this.user_id}`, {
-                    data: JSON.stringify(goods)
+                    data: JSON.stringify(goods),
+                    type: all > 0?1:2,
                 }, v=>{
                     if(v.code==1){
                         this.need = []
@@ -811,6 +944,10 @@
                     for (let v of this.card) {
                         v.needNum = 0;
                     }
+                    this.need3 = []
+                    for (let v of this.yf) {
+                        v.needNum = 0;
+                    }
                 }).catch(e=>{
 
                 })
@@ -876,6 +1013,7 @@
                 let z = true;
                 for (let x of this.need) {
                     if (v.id == x.id) {
+                        x.price2 = parseFloat(x.one)+parseFloat(x.price2)
                         z = false
                         break
                     }
@@ -889,6 +1027,7 @@
                 let z = true;
                 for (let x of this.need2) {
                     if (v.id == x.id) {
+                        x.price2 = parseFloat(x.one)+parseFloat(x.price2)
                         z = false
                         break
                     }
@@ -902,6 +1041,7 @@
                 let z = true;
                 for (let x of this.need3) {
                     if (v.id == x.id) {
+                        x.price2 = parseFloat(x.one)+parseFloat(x.price2)
                         z = false
                         break
                     }
@@ -936,7 +1076,8 @@
                             v['needNum'] = 0
                             v['discount'] = 10
                             v['yh'] = 0
-                            v['price2'] = v['price']
+                            v['price2'] = ''
+                            v.one = v.price
                         }
                         this.list = rs
                     }
@@ -977,7 +1118,8 @@
                             x.dis = 10
                             x.yh = 0
                             x.needNum = 0
-                            x.price2 = x.price
+                            x.price2 = ''
+                            x.one = x.price
                         }
                         this.card = v.card.list
                     }else{
@@ -992,10 +1134,10 @@
                         x['needNum'] = 0
                         x['discount'] = 10
                         x['yh'] = 0
-                        x['price2'] = x['price']
+                        x['price2'] = ''
+                        x['one'] = v.price
                     }
                     this.yf = v.res
-                    console.log(this.yf)
                 })
             },
         },
@@ -1003,19 +1145,64 @@
             total() {
                 let all = 0
                 for (let v of this.need) {
-                    if(v.yh==2) {
+                    /*if(v.yh==2) {
                         continue
                     }else if(v.yh==1){
                         all += v.discount / 10 * parseFloat(v.price) * parseInt(v.needNum)
                     }else if(v.yh==3){
-                        all += parseFloat(v.price2)
+                        if(v.price2==''){
+                            all += parseFloat(v.price) * parseInt(v.needNum)
+                        }else{
+                            all += parseFloat(v.price2)
+                        }
                     }else{
                         all += parseFloat(v.price) * parseInt(v.needNum)
-                    }
+                    }*/
+                    all += parseFloat(v.one) * parseInt(v.needNum)
                 }
                 return all
             },
             total2() {
+                let all = 0
+                for (let v of this.need2) {
+                    /*if(v.yh==2) {
+                        continue
+                    }else if(v.yh==1){
+                        all += v.discount / 10 * parseFloat(v.price) * parseInt(v.needNum)
+                    }else if(v.yh==3){
+                        if(v.price2==''){
+                            all += parseFloat(v.price) * parseInt(v.needNum)
+                        }else{
+                            all += parseFloat(v.price2)
+                        }
+                    }else{
+                        all += parseFloat(v.price) * parseInt(v.needNum)
+                    }*/
+                    all += parseFloat(v.one) * parseInt(v.needNum)
+                }
+                return all
+            },
+            total3() {
+                let all = 0
+                for (let v of this.need3) {
+                    /*if(v.yh==2) {
+                        continue
+                    }else if(v.yh==1){
+                        all += v.discount / 10 * parseFloat(v.price) * parseInt(v.needNum)
+                    }else if(v.yh==3){
+                        if(v.price2==''){
+                            all += parseFloat(v.price) * parseInt(v.needNum)
+                        }else{
+                            all += parseFloat(v.price2)
+                        }
+                    }else{
+                        all += parseFloat(v.price) * parseInt(v.needNum)
+                    }*/
+                    all += parseFloat(v.one) * parseInt(v.needNum)
+                }
+                return all
+            },
+            /*total2() {
                 let all = 0
                 for (let v of this.need2) {
                     if(v.yh==2) {
@@ -1040,7 +1227,7 @@
                     }
                 }
                 return all
-            },
+            },*/
         },
         mounted() {
             this.$nextTick(e => {
@@ -1052,9 +1239,10 @@
                     this.getYf()
                 }
                 this.getGoods()
+                this.getCard()
                 loginState()
                 this.r = url(methods.upload + '?type=2')
-                this.getCard()
+                this.height()
             })
         }
     })

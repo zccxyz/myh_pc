@@ -42,11 +42,40 @@ a{
     text-align: center;
 }
 .customer .el-table td .do_but{
-    width: 90px;
+    /*width: 90px;*/
     border-radius: 10px;
     outline: 0;
     border:none;
     color:#fff;
+}
+.vip_infor{
+    margin-top: 10px;
+}
+.customer .el-tabs--card>.el-tabs__header{
+    border-bottom:none;
+    border-radius: 8px;
+    background: #dedde1;
+}
+.vip_infor .el-tabs__nav{
+    width: 100%;
+    display: flex;
+    border:none;
+}
+.vip_infor .el-tabs__nav .el-tabs__item{
+    flex: 1;
+    text-align: center;
+    border-left:none;
+    border-bottom:none;
+}
+.vip_infor .el-tabs__nav .el-tabs__item:hover{
+    color:#fff;
+}
+.vip_infor .el-tabs__item.is-active {
+    color: #fff;
+    border-radius: 8px;
+    background-image: -moz-linear-gradient( 90deg, rgb(67,191,243) 0%, rgb(59,236,194) 100%);
+    background-image: -webkit-linear-gradient( 90deg, rgb(67,191,243) 0%, rgb(59,236,194) 100%);
+    background-image: -ms-linear-gradient( 90deg, rgb(67,191,243) 0%, rgb(59,236,194) 100%);
 }
 .over_hidden{
     overflow: hidden;
@@ -151,7 +180,7 @@ img{
     margin-right: 100px;
 }
 .customer{
-    padding: 15px
+    padding: 10px 15px 0;
 }
 .posi_rela{
     position: relative;
