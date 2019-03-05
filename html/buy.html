@@ -437,7 +437,7 @@
                         </span>
                         <span class="p_wid">￥{{v.yh==2?0:v.one*v.needNum}}</span>
                         <span class="span_bold">
-                            优惠方式{{v.one}}-{{v.price2}}
+                            优惠方式
                             <el-radio v-model="v.yh" label="1">打折</el-radio>
                             <el-input v-if="v.yh==1" v-model="v.discount" v-on:input="getDis(v)" placeholder="请输入1到10的数字"
                                       class="in_wid und_line"></el-input>
@@ -550,6 +550,7 @@
             user_id: 0,
             tabIndex: 0,
             card: [],
+            wear: [],
             need2: [],
             user: '',
             yf: [],
@@ -582,16 +583,32 @@
                 if (this.need3.length == 0) {
                     return error('请选择内衣')
                 }
-                $.post(url(methods.buyClothes), {data: this.need3, uid: this.user_id}, v => {
-                    this.need3 = []
-                    for (let v of this.yf) {
-                        v.needNum = 0;
+                let wear = []
+                let all = 0
+                for (let v of this.need3) {
+                    all += parseFloat(v.one) * parseInt(v.needNum)
+                    wear.push({
+                            'price': v.price2 , [`p_dis_t${v.id}`]: v.yh,
+                            'id': v.id,'name':v.name,'type':v.type,'spec':v.sum, 'sum': v.needNum
+                        })
+                }
+                console.log(wear);
+
+                $.post(url(methods.buyWear),{data: JSON.stringify(wear),type: all > 0 ? 1 : 2,id: this.user_id}, v => {
+                    console.log(v);
+                    if (v.code == 1) {
+                        this.need3 = []
+                        for (let v of this.yf) {
+                            v.needNum = 0;
+                        }
+                        success('购买成功')
+                        localStorage.setItem('orderId', v.res.orderId)
+                        localStorage.setItem('type', 1)
+                        localStorage.setItem('arrearsRes', v.res.arrearsRes)
+                        setTimeout(() => location.href = './pay_page.html', 1000)
+                    }else{
+                        error(v.error)
                     }
-                    success('购买成功')
-                    localStorage.setItem('orderId', v.data.id)
-                    localStorage.setItem('arrearsRes', v.data.arrearsRes)
-                    localStorage.setItem('type', 1)
-                    setTimeout(() => location.href = './pay_page.html', 1000)
                 })
             },
             subCard() {
@@ -609,6 +626,7 @@
                         })
                     }
                 }
+                console.log(card)
                 //type>0传1 =0传2
                 $.post(url(methods.buyCard) + `&id=${this.user_id}`, {data: JSON.stringify(card)}, v => {
                     if (v.code == 1) {
@@ -632,14 +650,14 @@
                 for (let v of this.need) {
                     all += parseFloat(v.one) * parseInt(v.needNum)
                     if (v.type == '项目') {
-                        if (v.yh != 0 && v.yh != 3) {
+                        if (v.yh==2) {
                             items.push({
-                                'price': v.one, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
+                                'price': 0, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
                                 'name': v.name, 'sum': v.needNum, 'times': v.fre, 'is_rate': v.yh
                             })
                         } else {
                             items.push({
-                                'price': v.one, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
+                                'price': v.price2, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
                                 'name': v.name, 'sum': v.needNum, 'times': v.fre
                             })
                         }
@@ -670,14 +688,14 @@
                 for (let v of this.need) {
                     all += parseFloat(v.one) * parseInt(v.needNum)
                     if (v.type == '套盒') {
-                        if (v.yh != 0 && v.yh != 3) {
+                        if (v.yh ==2) {
                             th.push({
-                                'price': v.one, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
+                                'price': 0, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
                                 'name': v.name, 'sum': v.needNum, 'times': v.fre, 'is_rate': v.yh
                             })
                         } else {
                             th.push({
-                                'price': v.one, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
+                                'price': v.price2, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
                                 'name': v.name, 'sum': v.needNum, 'times': v.fre
                             })
                         }
@@ -708,17 +726,13 @@
                 for (let v of this.need) {
                     all += parseFloat(v.one) * parseInt(v.needNum)
                     if (v.type == '产品') {
-                        if (v.yh != 0 && v.yh != 3) {
+                        if(v.yh==2){
+                            v.price2=0;
                             goods.push({
-                                'price': v.yh == 1 ? v.price * v.discount / 10 : 0,
-                                [`p_dis_t${v.id}`]: v.discount,
-                                'id': v.id,
-                                'name': v.name,
-                                'sum': v.needNum,
-                                'spec': v.spec,
-                                'is_rate': v.yh
+                                'price': 0, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
+                                'name': v.name, 'sum': v.needNum, 'spec': v.spec
                             })
-                        } else {
+                        }else{
                             goods.push({
                                 'price': v.price2, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
                                 'name': v.name, 'sum': v.needNum, 'spec': v.spec
@@ -749,14 +763,13 @@
                 let goods = []
                 for (let v of this.need) {
                     if (v.type == '方案') {
-                        if (v.yh != 0 && v.yh != 3) {
+                        if(v.yh==2){
+                            v.price2=0;
                             goods.push({
-                                'price': v.yh == 1 ? v.price * v.discount / 10 : 0,
-                                'id': v.id,
-                                'sum': v.needNum
+                                'price': 0, [`p_dis_t${v.id}`]: v.discount, 'id': v.id, 'sum': v.needNum
                             })
-                        } else {
-                            goods.push({'price': v.price2, 'id': v.id, 'sum': v.needNum})
+                        }else{
+                            goods.push({'price': v.price2, [`p_dis_t${v.id}`]: v.discount,'id': v.id, 'sum': v.needNum})
                         }
                     }
                 }
@@ -941,7 +954,7 @@
                 let z = true;
                 for (let x of this.need) {
                     if (v.id == x.id) {
-                        x.price2 = parseFloat(x.price2)+parseFloat(x.one)
+                        x.price2 = (parseFloat(x.price2)+parseFloat(x.one)).toFixed(2)
                         z = false
                         break
                     }

@@ -1,5 +1,5 @@
-// var ym = 'https://www.myhkj.cn/apis/backend/';
-var ym = 'http://admin.test.com/apis/backend/';
+var ym = 'https://www.myhkj.cn/apis/backend/';
+// var ym = 'http://admin.test.com/apis/backend/';
 // var ym = 'http://127.0.0.1:8000/apis/backend/';
 
 var methods = {
@@ -55,6 +55,7 @@ var methods = {
     'buyPlan': 'buy/buyPlan',
     'buyCard': 'buy/buyCard',
     'buyClothes': 'buy/buyClothes',
+    'buyWear': 'buy/buyWear',
     'print': 'buy/consume_print',
     'saveCommission': 'buy/save_commission',
     'getDetails': 'Consume/getDetails',
