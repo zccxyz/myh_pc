@@ -388,9 +388,9 @@
                         <span class="g_name">
                              {{v.name}}
                         </span><!--{{v.yh==1?v.price * v.discount/10*v.needNum:v.yh==2?0:v.price2}}-->
-                        <span class="p_wid">￥{{v.one*v.needNum}}</span>
+                        <span class="p_wid">￥{{v.yh==2?0:v.one*v.needNum}}</span>
                         <span>
-                            优惠方式{{v.one}}-{{v.price2}}
+                            优惠方式
                             <el-radio v-model="v.yh" label="1">打折</el-radio>
                             <el-input v-if="v.yh==1" v-model="v.discount" placeholder="请输入1到10的数字"
                                       class="in_wid und_line" type="number" v-on:input="getDis(v)"></el-input>
@@ -435,7 +435,7 @@
                         <span class="g_name">
                              {{v.card_name}}
                         </span>
-                        <span class="p_wid">￥{{v.one*v.needNum}}</span>
+                        <span class="p_wid">￥{{v.yh==2?0:v.one*v.needNum}}</span>
                         <span class="span_bold">
                             优惠方式{{v.one}}-{{v.price2}}
                             <el-radio v-model="v.yh" label="1">打折</el-radio>
@@ -475,7 +475,7 @@
                         <span class="g_name">
                              {{v.name}}
                         </span>
-                        <span class="p_wid">￥{{v.one*v.needNum}}</span>
+                        <span class="p_wid">￥{{v.yh==2?0:v.one*v.needNum}}</span>
                         <span class="span_bold">
                             优惠方式
                             <el-radio v-model="v.yh" label="1">打折</el-radio>
@@ -1077,72 +1077,17 @@
             total() {
                 let all = 0
                 for (let v of this.need) {
-                    /*if(v.yh==2) {
-                        continue
-                    }else if(v.yh==1){
-                        all += v.discount / 10 * parseFloat(v.price) * parseInt(v.needNum)
-                    }else if(v.yh==3){
-                        if(v.price2==''){
-                            all += parseFloat(v.price) * parseInt(v.needNum)
-                        }else{
-                            all += parseFloat(v.price2)
-                        }
-                    }else{
-                        all += parseFloat(v.price) * parseInt(v.needNum)
-                    }*/
-                    all += parseFloat(v.one) * parseInt(v.needNum)
+                    if(v.yh!=2){
+                        all += parseFloat(v.one) * parseInt(v.needNum)
+                    }
                 }
                 return all
             },
             total2() {
                 let all = 0
                 for (let v of this.need2) {
-                    /*if(v.yh==2) {
-                        continue
-                    }else if(v.yh==1){
-                        all += v.discount / 10 * parseFloat(v.price) * parseInt(v.needNum)
-                    }else if(v.yh==3){
-                        if(v.price2==''){
-                            all += parseFloat(v.price) * parseInt(v.needNum)
-                        }else{
-                            all += parseFloat(v.price2)
-                        }
-                    }else{
-                        all += parseFloat(v.price) * parseInt(v.needNum)
-                    }*/
-                    all += parseFloat(v.one) * parseInt(v.needNum)
-                }
-                return all
-            },
-            total3() {
-                let all = 0
-                for (let v of this.need3) {
-                    /*if(v.yh==2) {
-                        continue
-                    }else if(v.yh==1){
-                        all += v.discount / 10 * parseFloat(v.price) * parseInt(v.needNum)
-                    }else if(v.yh==3){
-                        if(v.price2==''){
-                            all += parseFloat(v.price) * parseInt(v.needNum)
-                        }else{
-                            all += parseFloat(v.price2)
-                        }
-                    }else{
-                        all += parseFloat(v.price) * parseInt(v.needNum)
-                    }*/
-                    all += parseFloat(v.one) * parseInt(v.needNum)
-                }
-                return all
-            },
-            /*total2() {
-                let all = 0
-                for (let v of this.need2) {
-                    if(v.yh==2) {
-                        continue
-                    }else if(v.yh==1){
-                        all += v.dis / 10 * v.price * v.needNum
-                    }else{
-                        all += v.price2 * v.needNum
+                    if(v.yh!=2){
+                        all += parseFloat(v.one) * parseInt(v.needNum)
                     }
                 }
                 return all
@@ -1150,16 +1095,12 @@
             total3() {
                 let all = 0
                 for (let v of this.need3) {
-                    if(v.yh==2) {
-                        continue
-                    }else if(v.yh==1){
-                        all += v.discount / 10 * v.price * v.needNum
-                    }else{
-                        all += v.price2 * v.needNum
+                    if(v.yh!=2){
+                        all += parseFloat(v.one) * parseInt(v.needNum)
                     }
                 }
                 return all
-            },*/
+            },
         },
         mounted() {
             this.$nextTick(e => {
