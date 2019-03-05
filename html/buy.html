@@ -560,12 +560,19 @@
         methods: {
             getPrice(v){
                 v.one = parseFloat(v.price2)/parseFloat(v.needNum)
+                v.bf = v.price2
             },
             getDis(v){
-                v.price2 = parseFloat(v.price2)*parseFloat(v.discount)/10
-                v.one = parseFloat(v.price2)/parseInt(v.needNum)
                 console.log(v)
-
+                if(v.bf==null){
+                    v.price2 = parseFloat(v.price)*parseFloat(v.needNum)*parseFloat(v.discount)/10
+                    v.one = parseFloat(v.price2)/parseInt(v.needNum)
+                }else{
+                    v.price2 = parseFloat(v.bf)*parseFloat(v.discount)/10
+                    v.one = parseFloat(v.price2)/parseInt(v.needNum)
+                }
+                /*v.price2 = parseFloat(v.price2)*parseFloat(v.discount)/10
+                v.one = parseFloat(v.price2)/parseInt(v.needNum)*/
             },
             height() {
                 var height = window.innerHeight;
@@ -885,6 +892,7 @@
                             this.need[i].needNum = 0
                             this.need[i].price2 = this.need[i].price
                             this.need[i].yh = 0
+                            this.need[i].bf = null
                             this.need.splice(i, 1)
                         }
                     }
@@ -903,6 +911,7 @@
                             this.need[i].needNum = 0
                             this.need[i].price2 = this.need[i].price
                             this.need[i].yh = 0
+                            this.need[i].bf = null
                             this.need2.splice(i, 1)
                         }
                     }
@@ -921,6 +930,7 @@
                             this.need[i].needNum = 0
                             this.need[i].price2 = this.need[i].price
                             this.need[i].yh = 0
+                            this.need[i].bf = null
                             this.need3.splice(i, 1)
                         }
                     }
@@ -997,6 +1007,7 @@
                             v['yh'] = 0
                             v['price2'] = v.price
                             v.one = v.price
+                            v.bf = null
                         }
                         this.list = rs
                     }
@@ -1039,6 +1050,7 @@
                             x.needNum = 0
                             x.price2 = x.price
                             x.one = x.price
+                            v.bf = null
                         }
                         this.card = v.card.list
                     } else {
@@ -1055,6 +1067,7 @@
                         x['yh'] = 0
                         x['price2'] = x.price
                         x['one'] = x.price
+                        v.bf = null
                     }
                     this.yf = v.res
                 })
