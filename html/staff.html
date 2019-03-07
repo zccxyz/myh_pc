@@ -8,16 +8,25 @@
 </head>
 <body>
 
-<div id="app" style="margin: 10px">
+<div id="app" class="customer">
     <template>
+        <p class="cus_title">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+                <el-breadcrumb-item :to="{ path: '' }">工作台首页</el-breadcrumb-item>
+                <el-breadcrumb-item>员工工资</el-breadcrumb-item>
+            </el-breadcrumb>
+        </p>
+        <div class="cus_center">
         <el-date-picker style="float: left"
                         v-model="time"
                         type="month"
                         value-format="yyyy-MM"
                         placeholder="选择月">
         </el-date-picker>
-        <el-button plain style="margin-left: 10px">实发总工资：{{total}}</el-button>
-        <el-button type="primary" style="float: right;margin-bottom: 10px" @click="dc">导出表格</el-button>
+            <el-button plain style="margin-left: 10px">实发总工资：{{total}}</el-button>
+            <el-button type="primary" style="float: right;margin-bottom: 10px" @click="dc">导出表格</el-button>
+        </div>
+
         <el-table
                 :data="list"
                 style="width: 100%">
@@ -96,10 +105,10 @@
             getTimeData() {
                 this.total = 0
                 $.get(url(methods.checkMonth) + '&month=' + this.time, v => {
-                    for(let x of v.res.detail) {
+                    for(let x of v.res.data) {
                         this.total += parseFloat(x.total_wages)
                     }
-                    this.list = v.res.detail
+                    this.list = v.res.data
                 })
             },
             dc() {
@@ -111,10 +120,10 @@
             getData() {
                 this.total = 0
                 $.post(url(methods.getMemberWages), v => {
-                    for(let x of v.res) {
+                    for(let x of v.res.data) {
                         this.total += parseFloat(x.total_wages)
                     }
-                    this.list = v.res
+                    this.list = v.res.data
                 })
             }
         },

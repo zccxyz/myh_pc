@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>店员管理</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+    <style>
+        .avatar-uploader .el-upload {
+            border: 1px dashed #d9d9d9;
+            border-radius: 6px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .avatar-uploader .el-upload:hover {
+            border-color: #409EFF;
+        }
+        .avatar-uploader-icon {
+            font-size: 28px;
+            color: #8c939d;
+            width: 78px;
+            height: 78px;
+            line-height: 78px;
+            text-align: center;
+        }
+        .avatar {
+            width: 78px;
+            height: 78px;
+            display: block;
+        }
+        el-dialog {
+           overflow: scroll;
+        }
+        .de_dio_div{
+            line-height: 36px;
+        }
+        .per_p{
+            display: flex;
+        }
+        .per_span{
+            display: inline-block;
+            flex: 1;
+            width: 33%;
+            text-align: center;
+        }
+        .per_span>i{
+            display: block;
+            width: 100%;
+        }
+        .wage_span{
+            padding-left: 20px;
+            width: 49%;
+            display: inline-block;
+        }
+        .wage_span>i{
+            margin-left: 20px;
+        }
+        .all input{
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app" class="customer">
+    <template>
+        <p class="cus_title">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+                <el-breadcrumb-item :to="{ path: '' }">工作台首页</el-breadcrumb-item>
+                <el-breadcrumb-item>店员管理</el-breadcrumb-item>
+            </el-breadcrumb>
+        </p>
+        <div class="cus_center">
+            <el-input class="cus_seatch" style="float: left"
+                      placeholder="请输入内容"
+                      prefix-icon="el-icon-search"
+                      v-model="input">
+            </el-input>
+            <el-button type="success" class="fr" @click="addDialogVisible = true;get_role()">新增店员</el-button>
+        </div>
+        <el-table border :max-height="max_ht"
+                  ref="multipleTable"
+                  :data="staff_list.filter(
+                        data => (!input || data.name.toLowerCase().includes(input.toLowerCase())|| data.role_name.toLowerCase().includes(input.toLowerCase()) ||data.mobile.toLowerCase().includes(input.toLowerCase())))"
+                  tooltip-effect="dark"
+                  style="width: 100%">
+
+            <el-table-column
+                    label="店员姓名"
+                    prop="name" min-width="80">
+            </el-table-column>
+            <el-table-column
+                    label="职位" min-width="120">
+                <template slot-scope="scope">
+                    <el-button type="warning" plain size="mini" v-if="scope.row.role_id==1">
+                        {{scope.row.role_name}}
+                    </el-button>
+                    <el-button type="success" plain size="mini" v-if="scope.row.role_id==2">
+                        {{scope.row.role_name}}
+                    </el-button>
+                    <el-button type="warning" plain size="mini" v-if="scope.row.role_id==3">
+                        {{scope.row.role_name}}
+                    </el-button>
+                    <el-button type="primary" plain size="mini" v-if="scope.row.role_id==4">
+                        {{scope.row.role_name}}
+                    </el-button>
+                    <el-button type="primary" size="mini" v-if="scope.row.role_id==8">
+                        {{scope.row.role_name}}
+                    </el-button>
+                    <el-button type="warning" size="mini" v-if="scope.row.role_id==9">
+                        {{scope.row.role_name}}
+                    </el-button>
+                    <el-button type="danger" size="mini" v-if="scope.row.role_id==10">
+                        {{scope.row.role_name}}
+                    </el-button>
+                    <el-button type="success" size="mini" v-if="scope.row.role_id==11">
+                        {{scope.row.role_name}}
+                    </el-button>
+                </template>
+            </el-table-column>
+            <el-table-column
+                    prop="number"
+                    label="编号" min-width="120">
+            </el-table-column>
+            <el-table-column min-width="120"
+                             prop="mobile"
+                             label="电话">
+            </el-table-column>
+            <el-table-column
+                    label="操作"
+                    min-width="480"
+                    fixed="right"
+                    show-overflow-tooltip>
+                <template slot-scope="scope">
+                    <!--<el-button-->
+                            <!--size="mini"-->
+                            <!--@click="seeDetail(scope.row.id,scope.row.name);set_percentage(scope.row.id)"  class="blue do_but">提成设置-->
+                    <!--</el-button>-->
+                    <el-button
+                            size="mini" @click="wage_adjust(scope.row.id,scope.row.name)" class="green do_but">工资调整
+                    </el-button>
+                    <el-button
+                            size="mini" type="primary" plain
+                            @click="seeDetail(scope.row.id,scope.row.name)">查看
+                    </el-button>
+                    <el-button
+                            size="mini"
+                            @click="now=scope.row;edit(scope.row)">员工资料编辑
+                    </el-button>
+                    <el-button
+                            size="mini"
+                            type="danger"
+                            @click="quit(scope.row.id)">离职
+                    </el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+        <!--新增店员-->
+        <el-dialog
+            title="新增店员"
+            :visible.sync="addDialogVisible"
+            min-width="400px"
+            center
+            :before-close="cancel">
+        <ul class="goods_edit">
+            <!--<li>
+                <span class="list_left">店员照片</span>
+                <span class="list_right">
+                    <el-upload
+                            class="avatar-uploader"
+                            action="https://jsonplaceholder.typicode.com/posts/"
+                            :show-file-list="false"
+                            :on-success="handleAvatarSuccess"
+                            :before-upload="beforeAvatarUpload">
+  <img v-if="imageUrl" :src="imageUrl" class="avatar">
+  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+</el-upload>
+                </span>
+            </li>-->
+            <li>
+                <span class="list_left">职位</span>
+                <span class="list_right">
+                    <el-select v-model="value" placeholder="请选择">
+                        <el-option
+                                v-for="item in role"
+                                :label="item.role_name"
+                                :value="item.id">
+                        </el-option>
+                    </el-select>
+                </span>
+            </li>
+            <li>
+                <span class="list_left">店员编号</span>
+                <span class="list_right">
+                    <el-input v-model="staff.number" placeholder="请输入会员编号(数字)" type="number" @blur="check_num(staff.number)"></el-input>
+                </span>
+            </li>
+            <li>
+                <span class="list_left">店员姓名</span>
+                <span class="list_right">
+                    <el-input v-model="staff.name" placeholder="请输入会员名"></el-input>
+                </span>
+            <li>
+                <span class="list_left">手机号</span>
+                <span class="list_right">
+                    <el-input v-model="staff.tel" placeholder="请输入手机号" @blur="checkPhone()"></el-input>
+                </span>
+            </li>
+            <li>
+                <span class="list_left">密码</span>
+                <span class="list_right">
+                    <el-input v-model="staff.psw" placehwolder="默认密码为123456"></el-input>
+                </span>
+            </li>
+
+            <li>
+                <span class="list_left">性别</span>
+                <span class="list_right">
+                        <el-radio v-model="staff.sex" label="1">女</el-radio>
+                        <el-radio v-model="staff.sex" label="2">男</el-radio>
+                    </span>
+            </li>
+            <li>
+                <span class="list_left">婚姻状况</span>
+                <span class="list_right">
+                        <el-radio v-model="staff.mar" label="1">已婚</el-radio>
+                        <el-radio v-model="staff.mar" label="2">未婚</el-radio>
+                    </span>
+            </li>
+            <li>
+                <span class="list_left">生日</span>
+                <span class="list_right">
+                    <el-date-picker
+                            v-model="staff.bir"
+                            type="date"
+                            value-format="yyyy-MM-dd"
+                            placeholder="选择生日">
+                    </el-date-picker>
+                </span>
+            </li>
+        </ul>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="cancel">取 消</el-button>
+            <el-button type="primary" @click="add()">确 定</el-button>
+          </span>
+    </el-dialog>
+        <!--编辑员工资料-->
+        <el-dialog
+                title="编辑员工资料"
+                :visible.sync="editDialogVisible"
+                min-width="400px"
+                center
+                :before-close="cancel">
+            <ul class="goods_edit">
+                <!--<li>
+                    <span class="list_left">店员照片</span>
+                    <span class="list_right">
+                        <el-upload
+                                class="avatar-uploader"
+                                action="https://jsonplaceholder.typicode.com/posts/"
+                                :show-file-list="false"
+                                :on-success="handleAvatarSuccess"
+                                :before-upload="beforeAvatarUpload">
+      <img v-if="imageUrl" :src="imageUrl" class="avatar">
+      <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+    </el-upload>
+                    </span>
+                </li>-->
+                <li>
+                    <span class="list_left">职位</span>
+                    <span class="list_right">
+                    <el-select v-model="value" placeholder="请选择">
+                        <el-option
+                                v-for="item in role"
+                                :label="item.role_name"
+                                :value="item.id">
+                        </el-option>
+                    </el-select>
+                </span>
+                </li>
+
+                <li>
+                    <span class="list_left">店员姓名</span>
+                    <span class="list_right">
+                    <el-input v-model="staff.name" placeholder="请输入会员名"></el-input>
+                </span>
+                <li>
+                    <span class="list_left">手机号</span>
+                    <span class="list_right">
+                    <el-input v-model="staff.tel" placeholder="请输入手机号" @blur="checkPhone()"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">密码</span>
+                    <span class="list_right">
+                    <el-input v-model="staff.psw" placehwolder="默认密码为123456"></el-input>
+                </span>
+                </li>
+            </ul>
+            <span slot="footer" class="dialog-footer">
+            <el-button @click="cancel">取 消</el-button>
+            <el-button type="primary" @click="edit_add()">确 定</el-button>
+          </span>
+        </el-dialog>
+        <!--员工资料详情-->
+        <el-dialog :title=name
+                :visible.sync="staff_detail_dio"
+                width="480px"
+                center :before-close="cancel">
+            <div class="de_dio_div">
+                <!--<p>上月总业绩：{{staff_detail.AchieveTotal}}</p>-->
+                <p class="per_p">
+                     <span class="per_span" style="border-right: 1px solid #dddddd;">
+                        上月消费业绩
+                        <i>{{staff_detail.AchieveTotal}}</i>
+                    </span>
+                    <span class="per_span" style="border-right: 1px solid #dddddd;">
+                        上月消费业绩
+                        <i>{{staff_detail.XfTotalMoney}}</i>
+                    </span>
+                    <span class="per_span">
+                        上月消耗业绩
+                        <i>{{staff_detail.XhTotalMoney}}</i>
+                    </span>
+                </p>
+                <p style="text-align: center;margin: 20px 0 10px;font-size: 18px">上月工资统计：<i class="cr">￥{{staff_detail.total_wages}}</i></p>
+                <ul>
+                    <li>
+                        <span class="wage_span">底薪<i class="money">￥{{staff_detail.salary}}</i></span>
+                        <span class="wage_span">奖金<i class="money">￥{{staff_detail.bonus}}</i></span>
+                    </li>
+                    <li>
+                        <span class="wage_span">提成<i class="money">￥{{staff_detail.commission}}</i></span>
+                        <span class="wage_span">手工<i class="money">￥{{staff_detail.manual}}</i></span>
+                    </li>
+                    <li>
+                        <span class="wage_span">加班<i class="money">￥{{staff_detail.work_money}}</i></span>
+                        <span class="wage_span">扣罚<i class="money">￥{{staff_detail.amerce}}</i></span>
+                    </li>
+                </ul>
+            </div>
+        </el-dialog>
+        <!--员工工资设置-->
+        <el-dialog
+                :title=name+"—工资设置"
+                :visible.sync="wage_editDialog"
+                min-width="400px"
+                center
+                :before-close="cancel">
+            <ul class="goods_edit">
+                <li>
+                    <span class="list_left">工资计算</span>
+                    <span class="list_right">
+                    <i class="cr">￥{{TotalWages}}</i>
+                </span>
+                <li>
+                    <span class="list_left">底薪</span>
+                    <span class="list_right">
+                        <el-input v-model="wages.salary" placeholder="" @change="edit_wage"></el-input>
+                    </span>
+                </li>
+                <li>
+                    <span class="list_left">奖金</span>
+                    <span class="list_right">
+                        <el-input v-model="wages.bonus" placeholder="" @change="edit_wage"></el-input>
+                    </span>
+                </li>
+                <li>
+                    <span class="list_left">提成</span>
+                    <span class="list_right">
+                        <el-input v-model="wages.commission" placeholder="" @change="edit_wage"></el-input>
+                    </span>
+                </li>
+                <li>
+                    <span class="list_left">手工</span>
+                    <span class="list_right">
+                        <el-input v-model="wages.manual" placeholder="" @change="edit_wage"></el-input>
+                    </span>
+                </li>
+                <li>
+                    <span class="list_left">加班</span>
+                    <span class="list_right">
+                        <el-input v-model="wages.work_money" placeholder="" @change="edit_wage"></el-input>
+                    </span>
+                </li>
+                <li>
+                    <span class="list_left">扣罚</span>
+                    <span class="list_right">
+                        <el-input v-model="wages.amerce" placeholder="" @change="edit_wage"></el-input>
+                    </span>
+                </li>
+            </ul>
+            <span slot="footer" class="dialog-footer">
+            <el-button @click="cancel">取 消</el-button>
+            <el-button type="primary" @click="wage_confirm()">确 定</el-button>
+          </span>
+        </el-dialog>
+
+    </template>
+</div>
+
+</body>
+</html>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../js/func.js"></script>
+<script src="../js/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            type:'',
+            name:'',
+            now: '',
+            value: '',
+            max_ht:0,
+            input: '',
+            addDialogVisible: false,
+            editDialogVisible: false,
+            staff_detail_dio:false,
+            wage_editDialog:false,
+            staff_list:[],
+            role:[],
+            imageUrl: '',
+            pass:false,
+            is_num_not:false,
+            staff:{
+                name: '',
+                number: '',
+                tel: '',
+                sex: '',
+                mar: '',
+                check_role:1,
+                bir: '',
+                psw: ''
+            },
+            staff_detail:{},
+            wages:{},
+            TotalWages:0,
+        },
+        methods: {
+            get_staff() {
+                $.get(url(methods.get_staff), v => {
+                    this.staff_list = v.list;
+                    console.log(v)
+                })
+            },
+            get_role() {
+                $.get(url(methods.addInit), v => {
+                    this.role = v.res.role;
+                    if (this.role == '') {
+                        this.staff.check_role = 0;
+                    }
+                })
+            },
+            height() {
+                var height = window.innerHeight;
+                this.max_ht = window.innerHeight - 102;
+            },
+            /*handleAvatarSuccess(res, file) {
+                this.imageUrl = URL.createObjectURL(file.raw);
+            },
+            beforeAvatarUpload(file) {
+                const isJPG = file.type === 'image/jpeg';
+                const isLt2M = file.size / 1024 / 1024 < 2;
+
+                if (!isJPG) {
+                    this.$message.error('上传头像图片只能是 JPG 格式!');
+                }
+                if (!isLt2M) {
+                    this.$message.error('上传头像图片大小不能超过 2MB!');
+                }
+                return isJPG && isLt2M;
+            },*/
+            checkPhone() {
+                if (!(/^1[356789]\d{9}$/.test(this.staff.tel))) {
+                    error('请输入正确的手机号码')
+                    this.pass = false;
+                } else {
+                    this.pass = true;
+                }
+            },
+            check_num(m) {
+                if (m == null) {
+                    error('请输入员工编号')
+                }
+                $.get(url(methods.checkNum), {num: m}, v => {
+                    if (v.code == -1) {
+                        error(v.error)
+                        this.is_num_not = false
+                    } else {
+                        this.is_num_not = true
+                    }
+                })
+            },
+            set_percentage(id) {
+                if(this.type==2){
+                    //没有设置提成
+                    location.href='./raise.html';
+                    localStorage.setItem('raise_type', this.type)
+                }else{
+                    location.href='./raise.html';
+                }
+                localStorage.setItem('staff', id)
+            },
+            wage_adjust(id,name) {
+                $.get(url(methods.getWagesInfo),{id:id}, v => {
+                    this.wages=v.res;
+                    this.edit_wage()
+                    this.name=name;
+                    this.wage_editDialog=true;
+                })
+            },
+            edit_wage(){
+                this.TotalWages=parseFloat(this.wages.salary)+parseFloat(this.wages.bonus)+parseFloat(this.wages.commission)+parseFloat(this.wages.manual)+parseFloat(this.wages.work_money)-parseFloat(this.wages.amerce);
+            },
+            wage_confirm(){
+                $.post(url(methods.wages),{data:this.wages}, v => {
+                        if (v.code == 1) {
+                            success('编辑成功')
+                            this.cancel()
+                        }
+                })
+            },
+            edit() {
+                this.staff.name = this.now.name
+                this.staff.tel = this.now.mobile
+                this.staff.psw = '123456'
+                this.value = this.now.role_id
+                if (this.role == '') {
+                    this.get_role()
+                } else {
+                }
+                this.editDialogVisible = true
+            },
+            seeDetail(id,name) {
+                $.get(url(methods.staffDetail),{staff:id}, v => {
+                    this.type=v.type;
+                    this.staff_detail=v.res;
+                    this.name=name;
+                    this.staff_detail_dio=true;
+                })
+            },
+            quit(id) {
+                this.$confirm('确定此员工离职?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    $.post(url(methods.dimission),{staff:id}, v => {
+                        if(v.code==1){
+                            success('离职成功')
+                            this.get_staff()
+                        }else{
+                            error(v.Msg)
+                        }
+                    })
+                })
+            },
+            add() {
+                if (this.staff.number == null) {
+                    error('请输入员工编号')
+                } else if (this.is_num_not == false) {
+                    error("该员工编号已存在")
+                } else if (this.staff.tel == null) {
+                    error("请输入电话号码")
+                } else if (this.pass == false) {
+                    error('请输入正确的手机号码')
+                } else {
+                    this.staff.check_role = this.value;
+                    console.log(this.staff);
+                    // $.post(url(methods.headUp),{img:this.imageUrl,type:'add'},v=>{
+                    //     console.log(v);
+                    // })
+                    $.post(url(methods.addStaff), {info: this.staff}, v => {
+                        console.log(v);
+                        if (v.code == 1) {
+                            // success(v)
+                            this.$confirm('是否继续添加员工?', '提示', {
+                                confirmButtonText: '继续',
+                                cancelButtonText: '返回',
+                                type: 'warning'
+                            }).then(() => {
+                                this.value = '';
+                                this.staff = {
+                                    name: '',
+                                    number: '',
+                                    tel: '',
+                                    sex: '',
+                                    mar: '',
+                                    check_role: 1,
+                                    bir: '',
+                                    psw: ''
+                                }
+                            }).catch(e => {
+                                this.cancel()
+                                this.get_staff()
+                            })
+                        }
+                    })
+                }
+            },
+            edit_add() {
+                console.log(this.now)
+                let obj = {
+                    'head_img': '',
+                    'id': this.now.id,
+                    'mobile': this.staff.tel,
+                    'name': this.staff.name,
+                    'role_id': this.value,
+                    'role_name': this.now.role_name,
+                    'sid': this.now.sid,
+                };
+                this.checkPhone();
+                if (this.staff.tel == null) {
+                    error("请输入电话号码")
+                }else if (this.pass == false) {
+                    error('请输入正确的手机号码')
+                }else{
+                    $.post(url(methods.updatePageDetail), {data: obj}, v => {
+                        if (v.code == 1) {
+                            success('编辑成功')
+                            this.cancel()
+                        }
+                    })
+                }
+            },
+            cancel() {
+                this.addDialogVisible = false;
+                this.editDialogVisible = false;
+                this.staff_detail_dio=false;
+                this.wage_editDialog=false;
+                this.value = '';
+                this.staff = {
+                    name: '',
+                    number: '',
+                    tel: '',
+                    sex: '',
+                    mar: '',
+                    check_role: 1,
+                    bir: '',
+                    psw: ''
+                };
+            },
+        },
+        mounted() {
+            this.$nextTick(e=>{
+                //初始化
+                this.get_staff()
+                this.height()
+                that = this;
+                loginState()
+            })
+        },
+    })
+</script>

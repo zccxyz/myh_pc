@@ -9,14 +9,14 @@
 <body>
 
 <div id="app" class="customer">
-    <template>
-        <p class="cus_title">
-            <el-breadcrumb separator-class="el-icon-arrow-right">
-                <el-breadcrumb-item :to="{ path: '' }">工作台首页</el-breadcrumb-item>
-                <el-breadcrumb-item>每日流水</el-breadcrumb-item>
-            </el-breadcrumb>
-        </p>
-        <div class="cus_center">
+            <template>
+                <p class="cus_title">
+                    <el-breadcrumb separator-class="el-icon-arrow-right">
+                        <el-breadcrumb-item :to="{ path: '' }">工作台首页</el-breadcrumb-item>
+                        <el-breadcrumb-item>每日流水</el-breadcrumb-item>
+                    </el-breadcrumb>
+                </p>
+                <div class="cus_center">
             <el-date-picker class="cus_seatch"
                             v-model="time"
                             value-format="yyyy-MM-dd"
@@ -39,14 +39,14 @@
                                 <i v-if="scope.row.type==3">项目</i>
                                 <i v-if="scope.row.type==4">方案</i>
                                 <i v-if="scope.row.type==5">卡项</i>
-                                <i v-if="scope.row.type==6">账户</i>
+                                <i v-if="scope.row.type==6">账户/卡</i>
                                 <i v-if="scope.row.type==7">内衣</i>
                             </template>
                         </el-table-column>
                         <el-table-column
                                 label="姓名">
                             <template slot-scope="scope">
-                                <i class="cursor" @click="">{{scope.row.m_name}}</i>
+                                <i class="cursor" @click="go_vip_detail(scope.row.member_id)">{{scope.row.m_name}}</i>
                             </template>
                         </el-table-column>
                         <el-table-column
@@ -58,6 +58,7 @@
                             <template slot-scope="scope">
                                 <i v-if="scope.row.status==1&&scope.row.money!=0">消费</i>
                                 <i v-if="scope.row.status==2&&scope.row.money!=0">消耗</i>
+                                <i v-if="scope.row.status==3&&scope.row.money!=0">充值</i>
                                 <i v-if="scope.row.money==0">欠款</i>
                             </template>
                         </el-table-column>
@@ -65,6 +66,7 @@
                                 label="金额">
                             <template slot-scope="scope">
                                 <i v-if="scope.row.money!=0&& scope.row.status == 1">{{scope.row.money}}</i>
+                                <i v-if="scope.row.money!=0&& scope.row.status == 3">{{scope.row.money}}</i>
                                 <i v-if="scope.row.money!=0&& scope.row.status == 2">{{scope.row.money*scope.row.num}}</i>
                                 <i v-if="scope.row.money==0">{{scope.row.total_price}}</i>
                             </template>
@@ -73,10 +75,10 @@
                 </div>
             </el-tab-pane>
             <el-tab-pane>
-                <span slot="label">消费业绩：{{total_money}}</span>
+                <span slot="label">消费业绩：{{total_money}}&#12288;卡扣业绩：{{card_pay_total}}</span>
                 <div class="basic_inf">
                     <el-table :max-height="max_ht"
-                              :data="list"
+                              :data="list.filter(m=>(m.status==1))"
                               style="width: 100%">
                         <el-table-column
                                 label="品项">
@@ -120,10 +122,10 @@
                 </div>
             </el-tab-pane>
             <el-tab-pane>
-                <span slot="label">消耗业绩：{{consume_total}}</span>
+                <span slot="label">消耗业绩：{{consume_total}}&#12288;实操项目数：{{count}}</span>
                 <div class="basic_inf">
                     <el-table :max-height="max_ht"
-                              :data="list"
+                              :data="list.filter(m=>(m.status==2))"
                               style="width: 100%">
                         <el-table-column
                                 label="品项">
@@ -166,11 +168,11 @@
                     </el-table>
                 </div>
             </el-tab-pane>
-            <el-tab-pane>
+           <!-- <el-tab-pane>
                 <span slot="label">实操项目数：{{count}}</span>
                 <div class="basic_inf">
                     <el-table :max-height="max_ht"
-                              :data="list"
+                              :data="list.filter(m=>(m.status==2))"
                               style="width: 100%">
                         <el-table-column
                                 label="品项">
@@ -259,7 +261,7 @@
                         </el-table-column>
                     </el-table>
                 </div>
-            </el-tab-pane>
+            </el-tab-pane>-->
         </el-tabs>
     </template>
 
@@ -295,8 +297,11 @@
                     this.consume_total=v.res.consume_total
                     this.count=v.res.count
                     this.card_pay_total=v.res.card_pay_total
-                    console.log(v.res)
                 })
+            },
+            go_vip_detail(v) {
+                localStorage.setItem('user_id', v)
+                location.href = 'vip_information.html'
             },
             handleClick(){
 

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>提成设置</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+</head>
+<body>
+
+<div id="app" class="customer">
+    <template>
+        <p class="cus_title">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+                <el-breadcrumb-item :to="{ path: '/' }">店员管理</el-breadcrumb-item>
+                <el-breadcrumb-item>提成设置</el-breadcrumb-item>
+            </el-breadcrumb>
+        </p>
+
+    </template>
+</div>
+
+</body>
+</html>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../js/func.js"></script>
+<script src="../js/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {},
+        methods: {},
+        mounted() {
+            this.$nextTick(e=>{
+                //初始化
+                that = this;
+                this.id = localStorage.getItem('staff')
+                this.arrears = localStorage.getItem('raise_type')
+                loginState()
+            })
+        }
+    })
+</script>
