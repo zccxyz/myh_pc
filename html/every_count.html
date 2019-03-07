@@ -293,10 +293,10 @@
             get_list(){
                 $.post(url(methods.DailyIncomeDetail),{day:this.time},v=>{
                     this.list=v.res.res;
-                    this.total_money=v.res.total_money
-                    this.consume_total=v.res.consume_total
+                    this.total_money=v.res.total_money.toFixed(2);
+                    this.consume_total=v.res.consume_total.toFixed(2);
                     this.count=v.res.count
-                    this.card_pay_total=v.res.card_pay_total
+                    this.card_pay_total=v.res.card_pay_total.toFixed(2);
                 })
             },
             go_vip_detail(v) {
