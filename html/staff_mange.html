@@ -444,7 +444,6 @@
             get_staff() {
                 $.get(url(methods.get_staff), v => {
                     this.staff_list = v.list;
-                    console.log(v)
                 })
             },
             get_role() {
@@ -557,6 +556,8 @@
                             error(v.Msg)
                         }
                     })
+                }).catch(e => {
+
                 })
             },
             add() {
