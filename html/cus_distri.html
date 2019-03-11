@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>客户分配</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+</head>
+<body>
+
+<div id="app" class="customer">
+    <template>
+        <p class="cus_title">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+                <el-breadcrumb-item :to="{ path: '/' }">工作台首页</el-breadcrumb-item>
+                <el-breadcrumb-item>客户分配</el-breadcrumb-item>
+            </el-breadcrumb>
+        </p>
+        <div class="cus_center">
+            <p class="over_hidden">
+                <el-input class="cus_seatch" style="float: left;margin-bottom: 10px"
+                          placeholder="请输入员工姓名"
+                          prefix-icon="el-icon-search"
+                          v-model="input">
+                </el-input>
+            </p>
+
+            <ul class="ul_list">
+                <li v-for="v in staff_list.filter(
+                        data => (!input || data.name.toLowerCase().includes(input.toLowerCase())))" @click="go_set(v.id);cus_dis_dio=true" class="cursor">
+                    {{v.name}}
+                    <img src="../images/moredetail.png" class="fr item_Detail" height="100%">
+                </li>
+            </ul>
+        </div>
+        <el-dialog
+                title="客户分配详情"
+                :visible.sync="cus_dis_dio"
+                center
+                :before-close="close">
+
+           <p class="over_hidden">
+               <i style="font-size: 2rem;font-weight: bold">
+                   总店&nbsp;|&nbsp;{{name}}&nbsp;|&nbsp;{{role}}
+               </i>
+               <el-button type="success" class="fr" @click="see_do(2)">分配</el-button>
+               <el-button type="primary" class="fr" @click="see_do(1)" style="margin-right: 15px">现有客户</el-button>
+           </p>
+            <div class="basic_inf">
+                <el-table :data="cus_dsi" v-if="already==true">
+                    <el-table-column
+                            prop="name"
+                            label="会员名称">
+                    </el-table-column>
+                    <el-table-column
+                            prop="tel"
+                            label="电话">
+                    </el-table-column>
+                    <el-table-column
+                            label="操作">
+                        <template slot-scope="scope">
+                            <el-button type="danger"
+                                       size="mini"
+                                       @click="move(scope.row.id)">移除
+                            </el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <el-table :data="cus_not_dsi" v-if="distribution==true">
+                    <el-table-column
+                            prop="name"
+                            label="会员名称">
+                    </el-table-column>
+                    <el-table-column
+                            prop="tel"
+                            label="电话">
+                    </el-table-column>
+                    <el-table-column
+                            label="操作">
+                        <template slot-scope="scope">
+                            <el-button
+                                    size="mini" class="green do_but"
+                                    @click="distri(scope.row.id)">
+                                分配
+                            </el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
+        </el-dialog>
+    </template>
+</div>
+</body>
+</html>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../js/func.js"></script>
+<script src="../js/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            staff:'',
+            staff_list:[],
+            cus_dsi:'',
+            cus_not_dsi:'',
+            name:'',
+            role:'',
+            input:'',
+            vip_in:'',
+            cus_dis_dio:false,
+            already:true,
+            distribution:false
+        },
+        methods: {
+            get_staff() {
+                $.get(url(methods.get_staff), v => {
+                    this.staff_list = v.list;
+                })
+            },
+            go_set(id){
+                this.staff=id;
+                $.get(url(methods.get_distribution_member),{staff:id}, v => {
+                    if(v.code==1){
+                        this.cus_dsi = v.res.staff_member;
+                        this.cus_not_dsi = v.res.not_member;
+                        this.name = v.res.staff_info.name;
+                        this.role = v.res.staff_info.role;
+                    }
+                })
+            },
+            see_do(m){
+                if(m==2){
+                    this.distribution=true;
+                    this.already=false;
+                }else{
+                    this.distribution=false;
+                    this.already=true;
+                }
+            },
+            move(id){
+                $.post(url(methods.get_distribution_member),{staff:this.staff,id:id,type: 'cancel'}, v => {
+                    if(v.code==1){
+                        success(v.Msg)
+                        this.go_set(this.staff);
+                    }else{
+                        error(v.error)
+                    }
+                })
+            },
+            distri(id){
+                $.post(url(methods.get_distribution_member),{staff:this.staff,id:id,type: 'add'}, v => {
+                    if(v.code==1){
+                        this.go_set(this.staff);
+                        success(v.Msg)
+                    }else{
+                        error(v.error)
+                    }
+                })
+            },
+            close(){
+                this.cus_dis_dio=false;
+            }
+        },
+        mounted() {
+            this.$nextTick(e=>{
+                //初始化
+                that = this;
+                this.get_staff()
+                loginState()
+            })
+        }
+    })
+</script>

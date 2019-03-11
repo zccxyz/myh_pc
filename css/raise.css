@@ -1,0 +1,97 @@
+.raise_div{
+    width: 45%;
+    display: inline-block;
+    background: #ffffff;
+    padding: 10px;
+}
+.f_div{
+    width: 45%;
+    display: inline-block;
+    margin: 10px 0;
+}
+.f_pad{
+    padding: 10px;
+    width: 100%;
+    background: #ffffff;
+}
+.all_ra_p{
+    font-size: 20px;
+    text-align: center;
+}
+.ra_p{
+    font-size: 20px;
+    text-align: center;
+    margin-top:15px;
+}
+.bu_mar{
+    margin-bottom: 10px;
+}
+.add{
+    margin-left: 15px;
+    padding: 3px 8px !important;
+}
+.per_add{
+    float: right;
+    line-height: 36px;
+}
+.el-checkbox {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+.el-checkbox__inner {
+    width: 18px;
+    height: 18px;
+}
+.el-checkbox__inner::after {
+    width: 5px;
+    height: 10px;
+    left: 5px;
+    top: 1px;
+}
+.el-radio__label {
+    font-size: 1.5rem;
+}
+.el-radio__inner {
+    width: 16px;
+    height: 16px;
+}
+.el-checkbox__label {
+    font-size: 1.5rem;
+}
+.el-radio{
+    margin:0 0 10px 30px;
+}
+.un_line_h{
+    width: 60px;
+}
+.un_line_h input{
+    border-radius: 0;
+    border:none;
+    border-bottom: 1px solid #333;
+    height: 20px;
+    padding: 0 10px;
+}
+.ra_ul{
+    margin-left:65px;
+}
+.ra_ul li{
+    margin-bottom: 10px;
+}
+.un_line_cc{
+    width: 100px;
+    margin:0 5px 0 5px;
+}
+.un_line_cc input{
+    height: 26px;
+    padding: 0 10px;
+}
+.bottom_submit {
+    margin: 20px 0;
+    width: 100%;
+}
+.bottom_submit button {
+    width: 40%;
+    display: block;
+    margin: 0 auto;
+}
+

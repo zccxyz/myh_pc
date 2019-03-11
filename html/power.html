@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>权限管理</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+</head>
+<body>
+
+<div id="app" class="customer">
+    <template>
+        <p class="cus_title">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+                <el-breadcrumb-item :to="{ path: '/' }">工作台首页</el-breadcrumb-item>
+                <el-breadcrumb-item>权限管理</el-breadcrumb-item>
+            </el-breadcrumb>
+        </p>
+        <div class="cus_center">
+            <ul class="ul_list">
+                <li v-for="v in power_list" @click="go_set(v.id)" class="cursor">
+                    {{v.role_name}}
+                    <img src="../images/moredetail.png" class="fr item_Detail" height="100%">
+                </li>
+            </ul>
+        </div>
+    </template>
+
+</div>
+
+</body>
+</html>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../js/func.js"></script>
+<script src="../js/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            power_list:''
+        },
+        methods: {
+            get_warning() {
+                $.get(url(methods.get_role), (r) => {
+                    this.power_list = r.list;
+                });
+            },
+            go_set(id){
+                location.href = './power_set.html';
+                localStorage.setItem('role',id)
+            }
+        },
+        mounted() {
+            this.$nextTick(e=>{
+                //初始化
+                that = this;
+                this.get_warning();
+                loginState()
+            })
+        }
+    })
+</script>

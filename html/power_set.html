@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>设置权限</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+    <style>
+        .acc_div{
+            background: #ffffff;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .acc_div label{
+            line-height: 30px;
+        }
+        .acc_div .el-checkbox{
+            margin:0 30px 0 0;
+        }
+        .aut_title{
+            margin-top: 10px;
+            font-size:2.2rem;
+            text-align: center;
+            width: 100%;
+            color: rgb(250, 52, 39);
+            font-weight: 600;
+            line-height: 40px;
+            background-color: #f1eeee;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app" class="customer">
+    <template>
+        <p class="cus_title">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+                <el-breadcrumb-item :to="{ path: '/' }">工作台首页</el-breadcrumb-item>
+                <el-breadcrumb-item>权限管理</el-breadcrumb-item>
+                <el-breadcrumb-item>设置权限</el-breadcrumb-item>
+            </el-breadcrumb>
+        </p>
+        <div class="aut_title">
+            {{role_name}}
+        </div>
+        <div v-for="c in acc_category">
+            <p class="linr_four other_back align_left">
+                {{c.category_name}}
+            </p>
+            <div class="acc_div">
+                <el-checkbox-group v-model="selected">
+                    <el-checkbox :label=val.title  v-for="(val,k) in access_list" :value="val.is_check_status" @change="change(k,val.is_check_status)" v-if="val.category_id == c.id" :checked="val.is_check_status"></el-checkbox>
+                </el-checkbox-group>
+            </div>
+        </div>
+        <div class="button_submit">
+            <el-button type="success" @click="have_select()">保存</el-button>
+        </div>
+    </template>
+
+</div>
+
+</body>
+</html>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../js/func.js"></script>
+<script src="../js/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            role:'',
+            access_list:'',
+            role_name:'',
+            selected:'',
+            acc_category:'',
+            have_access_detail:'',
+            value:'',
+            select_arr:[]
+        },
+        methods: {
+            get_aec() {
+                $.get(url(methods.get_access)+`&role=${this.role}`,(r) => {
+                    this.access_list = r.res.acc_list;
+                    this.acc_category = r.res.acc_category;
+                    this.selected =  r.res.return_acc;
+                    this.role_name = r.res.role_name;
+                    for(let v of this.access_list){
+                        v.is_check_status = false;
+                        for(let s of this.selected){
+                            if(v.id==s){
+                                v.is_check_status=true;
+                            }
+                        }
+                    }
+                });
+            },
+            have_select(){
+                for(let v of this.access_list){
+                    if(v.is_check_status==true){
+                        this.select_arr.push(v.id)
+                    }
+                }
+                $.post(url(methods.set_power),{id:this.role,accId:this.select_arr},v=>{
+                    if(v.code==1){
+                        success(v.Msg)
+                    }else{
+                        error(v.error)
+                    }
+                })
+            },
+            change(index,status){
+                this.access_list[index].is_check_status=!status;
+            },
+        },
+        mounted() {
+            this.$nextTick(e=>{
+                //初始化
+                that = this;
+                this.role = localStorage.getItem('role')
+                this.get_aec()
+                loginState()
+            })
+        }
+    })
+</script>

@@ -81,9 +81,23 @@
             </a>
         </li>
         <li>
-            <a href="order.html" target="iframe">
-                <img src="../images/order_pg.png" class="index_img"/>
-                <p>订单中心</p>
+            <a href="populaity.html" target="iframe">
+                <img src="../images/populaity_rate.png" class="index_img"/>
+                <p>普及率</p>
+            </a>
+        </li>
+        <li>
+            <a href="ware_warning.html" target="iframe" style="position: relative;display: inline-block;width: fit-content">
+                <i class="warn_circle" v-if="warning_total != ''">{{warning_total}}</i>
+                <img src="../images/early_warning.png" class="index_img"/>
+                <p>仓库预警</p>
+            </a>
+        </li>
+
+        <li>
+            <a href="power.html" target="iframe">
+                <img src="../images/ccquanxian.png" class="index_img"/>
+                <p>权限管理</p>
             </a>
         </li>
         <li>
@@ -98,6 +112,50 @@
                 <p>员工工资</p>
             </a>
         </li>
+        <li>
+            <a href="cus_distri.html" target="iframe">
+                <img src="../images/customerDistribution.png" class="index_img"/>
+                <p>客户分配</p>
+            </a>
+        </li>
+
+        <li>
+            <a href="order.html" target="iframe">
+                <img src="../images/order_pg.png" class="index_img"/>
+                <p>订单中心</p>
+            </a>
+        </li>
+        <li>
+            <a href="order.html" target="iframe">
+                <img src="../images/ranking_list.png" class="index_img"/>
+                <p>排行榜</p>
+            </a>
+        </li>
+        <li>
+            <a href="be_recommend.html" target="iframe">
+                <img src="../images/resom.png" class="index_img"/>
+                <p>预约推荐</p>
+            </a>
+        </li>
+        <!--<li>
+            <a href="recycle.html" target="iframe">
+                <img src="../images/recycle.png" class="index_img"/>
+                <p>回收站</p>
+            </a>
+        </li>
+
+        <li>
+            <a href="integration.html" target="iframe">
+                <img src="../images/integration_manage.png" class="index_img"/>
+                <p>积分管理</p>
+            </a>
+        </li>
+        <li>
+            <a href="print.html" target="iframe">
+                <img src="../images/print.png" class="index_img"/>
+                <p>打印设置</p>
+            </a>
+        </li>-->
         <li>
             <a href="arrear.html" target="iframe">
                 <img src="../images/home_arrear.png" class="index_img"/>
@@ -136,6 +194,7 @@
         el: '#app',
         data: {
             sj: '',
+            warning_total: '',
         },
         filters: {
             two(v) {
@@ -153,7 +212,12 @@
                         this.sj = rs
                     }
                 })
-            }
+            },
+            get_warning() {
+                $.get(url(methods.get_warn), (r) => {
+                    this.warning_total = r.res.warning_count;
+                });
+            },
         },
         mounted() {
             this.$nextTick(e => {
@@ -161,6 +225,7 @@
                 //parent.location.href='../login.html'
                 that = this;
                 this.getData()
+                this.get_warning();
             })
         }
     })

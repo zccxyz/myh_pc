@@ -5,6 +5,7 @@
     <title>提成设置</title>
     <link rel="stylesheet" href="../css/index.css">
     <link rel="stylesheet" type="text/css" href="../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../css/raise.css">
 </head>
 <body>
 
@@ -16,7 +17,201 @@
                 <el-breadcrumb-item>提成设置</el-breadcrumb-item>
             </el-breadcrumb>
         </p>
+        <div class="over_hidden">
+            <div class="f_div fl">
+                <p class="other_back linr_four all_ra_p">套盒</p>
+                <div class="f_pad">
+                    <p>
+                        <el-button type="success" size="mini" round class="bu_mar">消费提成</el-button>
+                        <el-checkbox v-model="per_check" class="per_add">业绩叠加</el-checkbox>
+                    </p>
+                    <p>
+                        <el-radio v-model="th_xf_ra" label="1">按提成数</el-radio>
+                        <el-input v-model="input" placeholder="0-100" class="un_line_h"></el-input>%
+                    </p>
 
+                    <p>
+                        <el-radio v-model="th_xf_ra" label="2">业绩提成</el-radio><el-button type="primary" round plain size="mini" class="add">添加一条</el-button>
+                    </p>
+
+                    <ul class="ra_ul">
+                        <li>
+                            达标<el-input v-model="input" class="un_line_cc"></el-input>元
+                            提成
+                            <el-input v-model="input" placeholder="0-100" class="un_line_h"></el-input>%
+                            <el-button type="info" round plain size="mini" class="add">删除</el-button>
+                        </li>
+                    </ul>
+                </div>
+                <p class="other_back linr_four ra_p">项目</p>
+                <div class="f_pad">
+                    <p>
+                        <el-button type="success" size="mini" round class="bu_mar">消费提成</el-button>
+                        <el-checkbox v-model="per_check" class="per_add">业绩叠加</el-checkbox>
+                    </p>
+
+                    <p>
+                        <el-radio v-model="xm_xf_ra" label="1">按提成数</el-radio>
+                        <el-input v-model="input" placeholder="0-100" class="un_line_h"></el-input>%
+                    </p>
+
+                    <p>
+                        <el-radio v-model="xm_xf_ra" label="2">业绩提成</el-radio><el-button type="primary" round plain size="mini" class="add">添加一条</el-button>
+                    </p>
+
+                    <ul class="ra_ul">
+                        <li>
+                            达标<el-input v-model="input" class="un_line_cc"></el-input>元
+                            提成
+                            <el-input v-model="input" placeholder="0-100" class="un_line_h"></el-input>%
+                            <el-button type="info" round plain size="mini" class="add">删除</el-button>
+                        </li>
+                    </ul>
+                </div>
+                <p class="other_back linr_four ra_p">产品</p>
+                <div class="f_pad">
+                    <p>
+                        <el-button type="success" size="mini" round class="bu_mar">消费提成</el-button>
+                        <el-checkbox v-model="per_check" class="per_add">业绩叠加</el-checkbox>
+                    </p>
+
+                    <p>
+                        <el-radio v-model="cp_xf_ra" label="1">按提成数</el-radio>
+                        <el-input v-model="input" placeholder="0-100" class="un_line_h"></el-input>%
+                    </p>
+
+                    <p>
+                        <el-radio v-model="cp_xf_ra" label="2">业绩提成</el-radio><el-button type="primary" round plain size="mini" class="add">添加一条</el-button>
+                    </p>
+
+                    <ul class="ra_ul">
+                        <li>
+                            达标<el-input v-model="input" class="un_line_cc"></el-input>元
+                            提成
+                            <el-input v-model="input" placeholder="0-100" class="un_line_h"></el-input>%
+                            <el-button type="info" round plain size="mini" class="add">删除</el-button>
+                        </li>
+                    </ul>
+                </div>
+                <p class="other_back linr_four ra_p">售卡</p>
+                <div class="f_pad">
+                    <p>
+                        <el-button type="success" size="mini" round class="bu_mar">消费提成</el-button>
+                        <el-checkbox v-model="per_check" class="per_add">业绩叠加</el-checkbox>
+                    </p>
+
+                    <p>
+                        <el-radio v-model="ka_sale_ra" label="1">按提成数</el-radio>
+                        <el-input v-model="input" placeholder="0-100" class="un_line_h"></el-input>%
+                    </p>
+
+                    <p>
+                        <el-radio v-model="ka_sale_ra" label="2">业绩提成</el-radio><el-button type="primary" round plain size="mini" class="add">添加一条</el-button>
+                    </p>
+
+                    <ul class="ra_ul">
+                        <li>
+                            达标<el-input v-model="input" class="un_line_cc"></el-input>元
+                            提成
+                            <el-input v-model="input" placeholder="0-100" class="un_line_h"></el-input>%
+                            <el-button type="info" round plain size="mini" class="add">删除</el-button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="f_div fr">
+                <p class="other_back linr_four all_ra_p">套盒</p>
+                <div class="f_pad">
+                    <p>
+                        <el-button type="warning" size="mini" round class="bu_mar">消耗提成</el-button>
+                        <el-checkbox v-model="per_check" class="per_add">业绩叠加</el-checkbox>
+                    </p>
+                    <p>
+                        <el-radio v-model="th_xh_ra" label="1">按提成数</el-radio>
+                        <el-input v-model="input" placeholder="0-100" class="un_line_h"></el-input>%
+                    </p>
+                    <el-radio v-model="th_xh_ra" label="2">业绩提成</el-radio><el-button type="primary" round plain size="mini" class="add">添加一条</el-button>
+                    <ul class="ra_ul">
+                        <li>
+                            达标<el-input v-model="input" class="un_line_cc"></el-input>元
+                            提成
+                            <el-input v-model="input" placeholder="0-100" class="un_line_h"></el-input>%
+                            <el-button type="info" round plain size="mini" class="add">删除</el-button>
+                        </li>
+                    </ul>
+                </div>
+                <p class="other_back linr_four ra_p">项目</p>
+                <div class="f_pad">
+                    <p>
+                        <el-button type="warning" size="mini" round class="bu_mar">消耗提成</el-button>
+                        <el-checkbox v-model="per_check" class="per_add">业绩叠加</el-checkbox>
+                    </p>
+                    <p>
+                        <el-radio v-model="xm_xh_ra" label="1">按提成数</el-radio>
+                        <el-input v-model="input" placeholder="0-100" class="un_line_h"></el-input>%
+                    </p>
+                    <el-radio v-model="xm_xh_ra" label="2">业绩提成</el-radio><el-button type="primary" round plain size="mini" class="add">添加一条</el-button>
+                    <ul class="ra_ul">
+                        <li>
+                            达标<el-input v-model="input" class="un_line_cc"></el-input>元
+                            提成
+                            <el-input v-model="input" placeholder="0-100" class="un_line_h"></el-input>%
+                            <el-button type="info" round plain size="mini" class="add">删除</el-button>
+                        </li>
+                    </ul>
+                </div>
+                <p class="other_back linr_four ra_p">方案</p>
+                <div class="f_pad">
+                    <p>
+                        <el-button type="success" size="mini" round class="bu_mar">消费提成</el-button>
+                        <el-checkbox v-model="per_check" class="per_add">业绩叠加</el-checkbox>
+                    </p>
+
+                    <p>
+                        <el-radio v-model="fa_xf_ra" label="1">按提成数</el-radio>
+                        <el-input v-model="input" placeholder="0-100" class="un_line_h"></el-input>%
+                    </p>
+
+                    <p>
+                        <el-radio v-model="fa_xf_ra" label="2">业绩提成</el-radio><el-button type="primary" round plain size="mini" class="add">添加一条</el-button>
+                    </p>
+
+                    <ul class="ra_ul">
+                        <li>
+                            达标<el-input v-model="input" class="un_line_cc"></el-input>元
+                            提成
+                            <el-input v-model="input" placeholder="0-100" class="un_line_h"></el-input>%
+                            <el-button type="info" round plain size="mini" class="add">删除</el-button>
+                        </li>
+                    </ul>
+                </div>
+                <p class="other_back linr_four ra_p">卡扣</p>
+                <div class="f_pad">
+                    <p class="over_hidden">
+                        <el-checkbox v-model="per_check" class="fl per_add">消费业绩叠加</el-checkbox>
+
+                        <el-checkbox v-model="per_check" class="fr per_add">消耗业绩叠加</el-checkbox>
+                    </p>
+                    <p>
+                        <el-radio v-model="ka_kou_ra" label="1">按提成数</el-radio>
+                        <el-input v-model="input" placeholder="0-100" class="un_line_h"></el-input>%
+                    </p>
+                    <el-radio v-model="ka_kou_ra" label="2">业绩提成</el-radio><el-button type="primary" round plain size="mini" class="add">添加一条</el-button>
+                    <ul class="ra_ul">
+                        <li>
+                            达标<el-input v-model="input" class="un_line_cc"></el-input>元
+                            提成
+                            <el-input v-model="input" placeholder="0-100" class="un_line_h"></el-input>%
+                            <el-button type="info" round plain size="mini" class="add">删除</el-button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="bottom_submit">
+            <!--<el-button type="danger" @click="sub" v-if="type==1">提交</el-button>-->
+            <el-button type="danger" @click="">保存</el-button>
+        </div>
     </template>
 </div>
 
@@ -29,7 +224,54 @@
 <script>
     new Vue({
         el: '#app',
-        data: {},
+        data: {
+            per_check:'',
+            input:'',
+            up_data :{
+                box_xf_type: 1,     //套盒消费方式 1比例 2业绩
+                box_xf_raise: '',   //套盒消费提成比例
+                box_xf_enough: '',  //套盒消费提成业绩
+
+                project_xf_raise: '',   //项目消费提成比例
+                project_xf_enough: '',  //项目消费提成业绩
+                project_xh_type: 1,     //项目消耗方式 1比例 2业绩
+
+                product_type: 1,    //产品提成方式 1比例 2业绩
+                product_raise: '',  //产品提成比例
+                product_enough: '', //产品提成业绩
+
+                card_type: 1,           //售卡提成方式 1比例 2业绩
+                card_raise: '',         //售卡提成比例
+                card_enough: '',        //售卡提成业绩
+
+                box_xh_type: 1,     //套盒消耗方式 1比例 2业绩
+                box_xh_raise: '',   //套盒消耗提成比例
+                box_xh_enough: '',  //套盒消耗提成业绩
+
+                project_xf_type: 1,     //项目消费方式 1比例 2业绩
+                project_xh_raise: '',   //项目消耗提成比例
+                project_xh_enough: '',  //项目消耗提成业绩
+
+                plan_xf_type: 1,       //方案消费提成方式 1比例 2业绩
+                plan_xf_raise: '',     //方案消费提成比例
+                plan_xf_enough: '',    //方案消费提成业绩
+
+                card_use_xh_type: 1,    //耗卡提成方式 1比例 2业绩
+                card_use_xh_raise: '',  //耗卡消耗提成比例
+                card_use_xh_enough: '', //耗卡消耗提成业绩
+            },
+            state: {
+                box_xf_state: this.box_xf_state?1:0,
+                box_xh_state: this.box_xh_state?1:0,
+                items_xf_state: this.items_xf_state?1:0,
+                items_xh_state: this.items_xh_state?1:0,
+                plan_xf_state: this.plan_xf_state?1:0,
+                card_xf_state: this.card_xf_state?1:0,
+                kk_xf_state: this.kk_xf_state?1:0,
+                kk_xh_state: this.kk_xh_state?1:0,
+                cp_xf_state: this.cp_xf_state?1:0,
+            }
+        },
         methods: {},
         mounted() {
             this.$nextTick(e=>{

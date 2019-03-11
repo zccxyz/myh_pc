@@ -55,7 +55,7 @@
             </el-button>-->
         </div>
         <ul class="ul_list ware_list">
-            <li v-for="v in list">
+            <li v-for="v in list" class="cursor">
                 <a @click="jump(v.id)" class="c_black click_a">
                     <img src="../images/storemanage.png" alt="" class="store_img">
                     {{v.name}}（{{v.ware_status==1?'总仓':'分仓'}}）

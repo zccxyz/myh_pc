@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>排行榜</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+    <style>
+        .top_three{
+            position: relative;
+            background: #fff;
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: space-around;
+            text-align: center;
+            font-size: 1.4rem;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .number_2{
+            padding-top: 10px;
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="app" class="customer">
+    <template>
+        <p class="cus_title">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+                <el-breadcrumb-item :to="{ path: '/' }">工作台首页</el-breadcrumb-item>
+                <el-breadcrumb-item>排行榜</el-breadcrumb-item>
+            </el-breadcrumb>
+        </p>
+        <div class="cus_center">
+            <el-button type="success" class="fr" @click="month()" style="margin-left: 20px">月榜</el-button>
+            <el-button type="primary" class="fr" @click="week()">周榜</el-button>
+        </div>
+        <el-tabs type="card"
+                 class="vip_infor">
+            <el-tab-pane>
+                <span slot="label" @click="get_rank('all',time)" class="tit_label">全部</span>
+            </el-tab-pane>
+            <el-tab-pane>
+                <span slot="label" @click="get_rank('product',time)" class="tit_label">产品</span>
+            </el-tab-pane>
+            <el-tab-pane>
+                <span slot="label" @click="get_rank('box',time)" class="tit_label">套盒</span>
+            </el-tab-pane>
+            <el-tab-pane>
+                <span slot="label" @click="get_rank('items',time)" class="tit_label">项目</span>
+            </el-tab-pane>
+            <el-tab-pane>
+                <span slot="label" @click="get_rank('plan',time)" class="tit_label">方案</span>
+            </el-tab-pane>
+            <div>
+                <div class="top_three over_hidden">
+                    <div class="number_2">
+                        <img src="../images/ranking2.png" class="crown">
+                        <p>
+                            <i v-if="all_rank.two != ''">{{all_rank.two.name}}</i>
+                            <i v-if="all_rank.two == ''">--</i>
+                        </p>
+                        <p>
+                            <i v-if="all_rank.two != ''">销量：{{all_rank.two.sum}}</i>
+                            <i v-if="all_rank.two == ''">销量：--</i>
+                        </p>
+                    </div>
+
+                    <div class="number_1">
+                        <img src="../images/ranking1.png" class="crown">
+                        <p>
+                            <i v-if="all_rank.one != ''">{{all_rank.one.name}}</i>
+                            <i v-if="all_rank.one == ''">--</i>
+                        </p>
+                        <p>
+                            <i v-if="all_rank.one != ''">销量：{{all_rank.one.sum}}</i>
+                            <i v-if="all_rank.one == ''">销量：--</i>
+                        </p>
+                    </div>
+
+                    <div class="number_2">
+                        <img src="../images/ranking3.png" class="crown">
+                        <p>
+                            <i v-if="all_rank.three != ''">{{all_rank.three.name}}</i>
+                            <i v-if="all_rank.three == ''">--</i>
+                        </p>
+                        <p>
+                            <i v-if="all_rank.three != ''">销量：{{all_rank.three.sum}}</i>
+                            <i v-if="all_rank.three == ''">销量：--</i>
+                        </p>
+                    </div>
+                </div>
+                <el-table :data="all_rank.all">
+                    <el-table-column label="排名">
+                        <template slot-scope="scope">
+                            {{scope.$index+4}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                            prop="name"
+                            label="商品名称">
+                    </el-table-column>
+                    <el-table-column
+                            label="销量">
+                        <template slot-scope="scope">
+                            {{scope.row.sum}}
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
+        </el-tabs>
+    </template>
+
+</div>
+
+</body>
+</html>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../js/func.js"></script>
+<script src="../js/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            time:'month',
+            check_type:'all',
+            all_rank:{
+                one: '',
+                two: '',
+                three: '',
+                all: ''
+            }
+        },
+        methods: {
+            get_rank(m,time){
+                this.check_type=m;
+                $.get(url(methods.get_ranking),{time:time,type:m},v=>{
+                    this.all_rank.one = v.res.one;
+                    this.all_rank.two = v.res.two;
+                    this.all_rank.three = v.res.three;
+                    this.all_rank.all = v.res.all_list;
+                })
+            },
+            month(){
+                this.time='month';
+                this.get_rank(this.check_type,this.time);
+            },
+            week(){
+                this.time='week';
+                this.get_rank(this.check_type,this.time);
+            }
+        },
+        mounted() {
+            this.$nextTick(e=>{
+                //初始化
+                that = this;
+                this.get_rank(this.check_type,this.time)
+                loginState()
+            })
+        }
+    })
+</script>

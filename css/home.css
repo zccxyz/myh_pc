@@ -81,4 +81,17 @@ display: inline-block;
 	height:80px;
 	margin:0 auto 15px;
 }
-
+.warn_circle {
+	border-radius: 50%;
+	background-color: #f13333;
+	color: #fff;
+	width: 22px;
+	height: 22px;
+	text-align: center;
+	line-height: 22px;
+	position: absolute;
+	left: 72%;
+	top: -6px;
+	display: inline-block;
+	font-size: 12px;
+}

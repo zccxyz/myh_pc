@@ -285,6 +285,13 @@
             count:'',
             card_pay_total:'',
         },
+        watch: {
+            time(v){
+                console.log(v);
+                this.time=v;
+                this.get_list();
+            }
+        },
         methods: {
             height(){
                 var height=window.innerHeight;

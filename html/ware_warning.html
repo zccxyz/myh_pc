@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>仓库预警</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+</head>
+<body>
+
+<div id="app" class="customer">
+    <template>
+        <p class="cus_title">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+                <el-breadcrumb-item :to="{ path: '/' }">工作台首页</el-breadcrumb-item>
+                <el-breadcrumb-item>仓库预警</el-breadcrumb-item>
+            </el-breadcrumb>
+        </p>
+        <div class="cus_center">
+            <el-button type="success" class="fr" @click="location.href='./ware_mange.html'">前往仓库</el-button>
+
+        </div>
+        <div class="basic_inf">
+            <el-table :max-height="max_ht"
+                      :data="warn_list"
+                      style="width: 100%">
+                <el-table-column
+                        prop="ware_name"
+                        label="所属仓库">
+                </el-table-column>
+                <el-table-column
+                        prop="name"
+                        label="商品名称">
+                </el-table-column>
+                <el-table-column
+                        prop="stock"
+                        label="库存余量">
+                </el-table-column>
+            </el-table>
+
+        </div>
+    </template>
+
+</div>
+
+</body>
+</html>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../js/func.js"></script>
+<script src="../js/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            warn_list:'',
+            max_ht:0
+        },
+        methods: {
+            height(){
+                var height=window.innerHeight;
+                this.max_ht=window.innerHeight-120;
+            },
+            get_warning() {
+                $.get(url(methods.get_warn), (r) => {
+                    this.warn_list = r.res.ware_details;
+                });
+            },
+        },
+        mounted() {
+            this.$nextTick(e=>{
+                //初始化
+                that = this;
+                this.get_warning();
+                this.height();
+                loginState()
+            })
+        }
+    })
+</script>
