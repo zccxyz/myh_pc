@@ -20,23 +20,62 @@
                  class="vip_infor">
             <el-tab-pane>
                 <span slot="label" @click="getData(1)" class="tit_label">项目</span>
-                <div class="over_hidden">
+                <div class="over_hidden header_mar">
                     <el-input class="cus_seatch over_hidden" style="float: left"
-                              placeholder="请输入商品名称"
+                              placeholder="请输入项目名称"
                               prefix-icon="el-icon-search"
                               v-model="xm_input">
                     </el-input>
-                    <el-button type="success" class="fr" @click="del">批量删除</el-button>
+                    <el-button type="success" class="fr" @click="delAll()">批量删除</el-button>
                 </div>
-                <el-table :data="list.filter(
-                        data => (!xm_input || data.name.toLowerCase().includes(down_input.toLowerCase())))">
+                <el-table  ref="multipleTable" :max-height="max_ht" :data="list.filter(
+                        data => (!xm_input || data.pro_name.toLowerCase().includes(xm_input.toLowerCase())))"@selection-change="handleSelectionChange">
+                        <el-table-column
+                                type="selection"
+                                min-width="55">
+                        </el-table-column>
+                        <el-table-column
+                                prop="pro_name"
+                                label="项目名称">
+                        </el-table-column>
+                        <el-table-column
+                                prop="price"
+                                label="金额">
+                        </el-table-column>
+                        <el-table-column
+                                label="操作">
+                            <template slot-scope="scope">
+                                <el-button
+                                        size="mini" type="danger"
+                                        @click="del(scope.row, 1)">删除
+                                </el-button>
+                                <el-button
+                                        size="mini" type="primary"
+                                        @click="back(scope.row, 1)">还原
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+            </el-tab-pane>
+            <el-tab-pane>
+                <span slot="label" @click="getData(2)" class="tit_label">套盒</span>
+                <div class="over_hidden header_mar">
+                    <el-input class="cus_seatch over_hidden" style="float: left"
+                              placeholder="请输入套盒名称"
+                              prefix-icon="el-icon-search"
+                              v-model="th_input">
+                    </el-input>
+                    <el-button type="success" class="fr" @click="delAll()">批量删除</el-button>
+                </div>
+                <el-table  ref="multipleTable" :max-height="max_ht" :data="list2.filter(
+                        data => (!th_input || data.box_name.toLowerCase().includes(th_input.toLowerCase())))"@selection-change="handleSelectionChange">
                     <el-table-column
                             type="selection"
                             min-width="55">
                     </el-table-column>
                     <el-table-column
-                            prop="pro_name"
-                            label="项目名称">
+                            prop="box_name"
+                            label="套盒目名称">
                     </el-table-column>
                     <el-table-column
                             prop="price"
@@ -47,31 +86,135 @@
                         <template slot-scope="scope">
                             <el-button
                                     size="mini" type="danger"
-                                    @click="del(scope.row, 1)">删除
+                                    @click="del(scope.row, 2)">删除
                             </el-button>
                             <el-button
                                     size="mini" type="primary"
-                                    @click="back(scope.row, 1)">还原
+                                    @click="back(scope.row, 2)">还原
                             </el-button>
                         </template>
                     </el-table-column>
                 </el-table>
             </el-tab-pane>
             <el-tab-pane>
-                <span slot="label" @click="getData(2)" class="tit_label">套盒</span>
-            </el-tab-pane>
-            <el-tab-pane>
                 <span slot="label" @click="getData(3)" class="tit_label">方案</span>
+                <div class="over_hidden header_mar">
+                    <el-input class="cus_seatch over_hidden" style="float: left"
+                              placeholder="请输入方案名称"
+                              prefix-icon="el-icon-search"
+                              v-model="fa_input">
+                    </el-input>
+                    <el-button type="success" class="fr" @click="delAll()">批量删除</el-button>
+                </div>
+                <el-table  ref="multipleTable" :max-height="max_ht" :data="list3.filter(
+                        data => (!fa_input || data.name.toLowerCase().includes(fa_input.toLowerCase())))"@selection-change="handleSelectionChange">
+                    <el-table-column
+                            type="selection"
+                            min-width="55">
+                    </el-table-column>
+                    <el-table-column
+                            prop="name"
+                            label="方案名称">
+                    </el-table-column>
+                    <el-table-column
+                            prop="sale"
+                            label="金额">
+                    </el-table-column>
+                    <el-table-column
+                            label="操作">
+                        <template slot-scope="scope">
+                            <el-button
+                                    size="mini" type="danger"
+                                    @click="del(scope.row, 3)">删除
+                            </el-button>
+                            <el-button
+                                    size="mini" type="primary"
+                                    @click="back(scope.row, 3)">还原
+                            </el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
             </el-tab-pane>
             <el-tab-pane>
                 <span slot="label" @click="getData(4)" class="tit_label">产品</span>
+                <div class="over_hidden header_mar">
+                    <el-input class="cus_seatch over_hidden" style="float: left"
+                              placeholder="请输入产品名称"
+                              prefix-icon="el-icon-search"
+                              v-model="cp_input">
+                    </el-input>
+                    <el-button type="success" class="fr" @click="delAll()">批量删除</el-button>
+                </div>
+                <el-table  ref="multipleTable" :max-height="max_ht" :data="list4.filter(
+                        data => (!cp_input || data.goods_name.toLowerCase().includes(cp_input.toLowerCase())))"@selection-change="handleSelectionChange">
+                    <el-table-column
+                            type="selection"
+                            min-width="55">
+                    </el-table-column>
+                    <el-table-column
+                            prop="goods_name"
+                            label="产品名称">
+                    </el-table-column>
+                    <el-table-column
+                            prop="price"
+                            label="金额">
+                    </el-table-column>
+                    <el-table-column
+                            label="操作">
+                        <template slot-scope="scope">
+                            <el-button
+                                    size="mini" type="danger"
+                                    @click="del(scope.row, 4)">删除
+                            </el-button>
+                            <el-button
+                                    size="mini" type="primary"
+                                    @click="back(scope.row, 4)">还原
+                            </el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
             </el-tab-pane>
             <el-tab-pane>
                 <span slot="label" @click="getData(5)" class="tit_label">卡项</span>
+                <div class="over_hidden header_mar">
+                    <el-input class="cus_seatch over_hidden" style="float: left"
+                              placeholder="请输入卡项名称"
+                              prefix-icon="el-icon-search"
+                              v-model="kx_input">
+                    </el-input>
+                    <el-button type="success" class="fr" @click="delAll()">批量删除</el-button>
+                </div>
+                <el-table  ref="multipleTable" :max-height="max_ht" :data="list5.filter(
+                        data => (!kx_input || data.card_name.toLowerCase().includes(kx_input.toLowerCase())))"@selection-change="handleSelectionChange">
+                    <el-table-column
+                            type="selection"
+                            min-width="55">
+                    </el-table-column>
+                    <el-table-column
+                            prop="card_name"
+                            label="卡项名称">
+                    </el-table-column>
+                    <el-table-column
+                            prop="price"
+                            label="金额">
+                    </el-table-column>
+                    <el-table-column
+                            label="操作">
+                        <template slot-scope="scope">
+                            <el-button
+                                    size="mini" type="danger"
+                                    @click="del(scope.row, 5)">删除
+                            </el-button>
+                            <el-button
+                                    size="mini" type="primary"
+                                    @click="back(scope.row, 5)">还原
+                            </el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
             </el-tab-pane>
         </el-tabs>
     </template>
-
 </div>
 
 </body>
@@ -84,6 +227,8 @@
     new Vue({
         el: '#app',
         data: {
+            multipleSelection: [],
+            max_ht:0,
             xm_input: '',
             th_input: '',
             fa_input: '',
@@ -95,19 +240,16 @@
             list4: [],
             list5: [],
             data: [],
-            all: false,
-            all2: false,
-            all3: false,
-            all4: false,
-            all5: false,
-            str: '',
-            str2: '',
-            str3: '',
-            str4: '',
-            str5: '',
             now: '',
         },
         methods: {
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+            },
+            height(){
+                var height=window.innerHeight;
+                this.max_ht=window.innerHeight-170;
+            },
             getData(type = 1) {
                 this.now = type;
                 $.post(url(methods.trashData), {'type': type}, (v) => {
@@ -134,8 +276,9 @@
                 })
             },
             del(v, type) {
-                $.post(url(methods.delData), {'type': type, 'id': JSON.stringify([v['id']])}, (v)=>{
-                    if(v.data){
+                $.post(url(methods.delData), {'type': type, 'id': JSON.stringify([v['id']])}, (r)=>{
+                    if(r.data){
+                        success('删除成功')
                         this.getData(type);
                     }else{
                         error("删除失败")
@@ -143,125 +286,51 @@
                 })
             },
             delAll() {
-                let arr = [];
-                switch (this.now) {
-                    case 1:
-                        for(let v of this.list){
-                            if(v.zt){
-                                arr.push(v.id);
-                            }
-                        }
-                        break;
-                    case 2:
-                        for(let v of this.list2){
-                            if(v.zt){
-                                arr.push(v.id);
-                            }
-                        }
-                        break;
-                    case 3:
-                        for(let v of this.list3){
-                            if(v.zt){
-                                arr.push(v.id);
-                            }
-                        }
-                        break;
-                    case 4:
-                        for(let v of this.list4){
-                            if(v.zt){
-                                arr.push(v.id);
-                            }
-                        }
-                        break;
-                    case 5:
-                        for(let v of this.list5){
-                            if(v.zt){
-                                arr.push(v.id);
-                            }
-                        }
-                        break;
-                }
-                if(arr.length == 0){
+                if (this.multipleSelection.length == 0) {
                     error('至少选择一项');
-                    return;
+                    return
                 }
-                $.post(url(methods.delData), {'type': this.now, 'id': JSON.stringify(arr)}, (v)=>{
-                    if(v.data){
-                        this.getData(this.now)
-                    }else{
-                        error("删除失败")
+                if (this.multipleSelection.length > 0) {
+                    let arr=[];
+                    for (let v of this.multipleSelection){
+                        arr.push(v.id)
                     }
-                })
+                    this.$confirm('是否删除选中商品?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        $.post(url(methods.delData), {'type': this.now, 'id': JSON.stringify(arr)}, (v)=>{
+                            if(v.data){
+                                success('删除成功')
+                                this.getData(this.now)
+                            }else{
+                                error("删除失败")
+                            }
+                        })
+                    }).catch(e => {
+
+                    })
+                }
             },
             back(v, type){
                 $.post(url(methods.backData), {'type': type, 'id': v['id']}, (v)=>{
                     if(v.data){
                         this.getData(type)
                     }else{
-                        error("删除失败")
+                        error(v.msg)
                     }
                 })
             }
         },
-        watch: {
-            all(v) {
-                if (v) {
-                    for (let v of this.list) {
-                        v.zt = true;
-                    }
-                } else {
-                    for (let v of this.list) {
-                        v.zt = false;
-                    }
-                }
-            },
-            all2(v) {
-                if (v) {
-                    for (let v of this.list2) {
-                        v.zt = true;
-                    }
-                } else {
-                    for (let v of this.list2) {
-                        v.zt = false;
-                    }
-                }
-            },
-            all3(v) {
-                if(v){
-                    for(let v of this.list3){
-                        v.zt = true;
-                    }
-                }else{
-                    for(let v of this.list3){
-                        v.zt = false;
-                    }
-                }
-            },
-            all4(v) {
-                if(v){
-                    for(let v of this.list4){
-                        v.zt = true;
-                    }
-                }else{
-                    for(let v of this.list4){
-                        v.zt = false;
-                    }
-                }
-            },
-            all5(v) {
-                if(v){
-                    for(let v of this.list5){
-                        v.zt = true;
-                    }
-                }else{
-                    for(let v of this.list5){
-                        v.zt = false;
-                    }
-                }
-            },
-        },
         mounted() {
-            this.getData()
+            this.$nextTick(e => {
+                //初始化
+                that = this
+                this.getData()
+                this.height()
+                loginState();
+            })
         }
     });
 </script>

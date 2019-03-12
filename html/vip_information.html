@@ -94,24 +94,33 @@
                                             :value="item.value">
                                     </el-option>
                                 </el-select>
-                                <!--<el-date-picker
-                                        v-model="birth"
-                                        type="date"
-                                        placeholder="选择日期" class="time_wid">
-                                </el-date-picker>-->
                             </p>
                             <p>
                                 账户余额：
                                 <el-input v-model="userInfo.balance" placeholder="请输入会员余额" type="number"
                                           class="infor_wid un_line_h"></el-input>
                             </p>
+                        </li>
+                        <li>
+
                             <p>
                                 赠送余额：
                                 <el-input v-model="userInfo.send_balance" placeholder="请输入会员余额" type="number"
                                           class="infor_wid un_line_h"></el-input>
                             </p>
-                            <p>&nbsp;
+                        </li>
+                       <!-- <li>
+                            <p>
+                                客户需求：
+                                <el-button type="primary" @click="add_demand(userId)" size="mini" plain class="fr">添加客户需求</el-button>
+                                <ul>
+                                    <li v-for="v in demand_list">
+                                        {{v['createtime']}}：<span v-for="x in v.need">{{x}}</span>
+                                        <el-button type="danger" @click="del_demand(v.id)" size="mini" plain class="fr">删除</el-button>
+                                    </li>
+                                </ul>
                             </p>
+                        </li>-->
                     </ul>
                     <div class="bottom_but">
                         <el-button type="success" @click="modifyUser">修改</el-button>
@@ -626,6 +635,7 @@
     new Vue({
         el: '#app',
         data: {
+            demand_list:[],
             checkList: '',
             dialogVisible: false,
             dialogVisible2: false,
@@ -710,6 +720,24 @@
             detail2: '',
         },
         methods: {
+            getData() {
+                $.post(url(methods.getNeed), {'id': this.id}, (v)=>{
+                    console.log(v)
+                    this.demand_list = v
+                })
+            },
+            del_demand(id){
+                if(window.confirm('是否删除？')) {
+                    $.post(url(methods.delNeed), {'id': id}, (v)=>{
+                        console.log(v)
+                        if(v.data) {
+                            this.getData()
+                        }else{
+                            alert('删除失败')
+                        }
+                    })
+                }
+            },
             modify() {
                 $.post(url(methods.healthModify), {data: this.detail2.res}, v => {
                     if (v.code == 1) {
@@ -1001,6 +1029,7 @@
                 this.userId = localStorage.getItem('user_id')
                 this.getDetail()
                 this.getDa()
+                this.getData()
             })
         }
     })
