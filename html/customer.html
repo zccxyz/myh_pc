@@ -106,7 +106,7 @@
                     prop="name" min-width="70">
             </el-table-column>
             <el-table-column
-                    prop="shop_num"
+                    prop="num"
                     label="会员编号" min-width="70">
             </el-table-column>
             <el-table-column
@@ -123,7 +123,7 @@
             </el-table-column>
             <el-table-column
                     prop="arrival_num"
-                    label="每月到店" min-width="70">
+                    label="到店率" min-width="70">
             </el-table-column>
             <!--<el-table-column
                     prop="num"
@@ -333,6 +333,12 @@
                     <span class="list_left">会员名</span>
                     <span class="list_right">
                     <el-input v-model="user.name" placeholder="请输入会员名"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">会员编号</span>
+                    <span class="list_right">
+                    <el-input v-model="user.num" placeholder="请输入会员编号"></el-input>
                 </span>
                 </li>
                 <li>

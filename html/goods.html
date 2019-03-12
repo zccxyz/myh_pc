@@ -134,6 +134,12 @@
                 </span>
                 </li>
                 <li>
+                    <span class="list_left">商品编号</span>
+                    <span class="list_right">
+                    <el-input placeholder="请输入商品编号" v-model="now.sn"></el-input>
+                </span>
+                </li>
+                <li>
                     <span class="list_left">售价</span>
                     <span class="list_right">
                     <el-input v-model="now.price" placeholder="请输入售价"></el-input>
@@ -188,6 +194,12 @@
                     <span class="list_left">商品名称</span>
                     <span class="list_right">
                     <el-input v-model="sj.name" placeholder="请输入商品名称"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">商品编号</span>
+                    <span class="list_right">
+                    <el-input v-model="sj.sn" placeholder="请输入商品编号"></el-input>
                 </span>
                 </li>
                 <li v-if="sj.type==3">
@@ -438,6 +450,7 @@
                 cid: '',
                 is_bind: '2',
                 spec_id: '',
+                sn: '',
             },
         },
         methods: {
@@ -522,6 +535,7 @@
                             cid: '',
                             is_bind: '2',
                             spec_id: '',
+                            sn: '',
                         }
                         this.zt = false
                         this.getGoods()
