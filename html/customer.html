@@ -338,7 +338,7 @@
                 <li>
                     <span class="list_left">会员编号</span>
                     <span class="list_right">
-                    <el-input v-model="user.num" placeholder="请输入会员编号"></el-input>
+                    <el-input v-model="user.shop_num" placeholder="请输入会员编号"></el-input>
                 </span>
                 </li>
                 <li>
@@ -434,7 +434,7 @@
             user: {
                 'name': '',
                 'age': '',
-                'num': '',
+                'shop_num': '',
                 'password':'',
                 'weixin':'',
                 'sex':'',
@@ -507,7 +507,7 @@
                         this.user = {
                             'name': '',
                             'age': '',
-                            'num':'',
+                            'shop_num':'',
                             'password':'',
                             'weixin':'',
                             'sex': '1',
@@ -523,7 +523,7 @@
                 })
             },
             setVal() {
-                this.user.num = this.now.num
+                this.user.shop_num = this.now.shop_num
                 this.user.name = this.now.name
                 this.user.age = this.now.age
                 this.user.tel = this.now.tel
@@ -646,7 +646,7 @@
                         this.user = {
                             'name': '',
                             'age': '',
-                            'num': '',
+                            'shop_num': '',
                             'password':'',
                             'weixin':'',
                             'sex':'1',
@@ -668,7 +668,7 @@
                 this.user = {
                     'name': '',
                     'age': '',
-                    'num': '',
+                    'shop_num': '',
                     'password':'',
                     'weixin':'',
                     'sex':'1',
@@ -687,7 +687,7 @@
                 this.user = {
                     'name': '',
                     'age': '',
-                    'num': '',
+                    'shop_num': '',
                     'password':'',
                     'weixin':'',
                     'sex':'1',
