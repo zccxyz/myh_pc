@@ -721,10 +721,10 @@
         },
         methods: {
             getData() {
-                $.post(url(methods.getNeed), {'id': this.id}, (v)=>{
+               /* $.post(url(methods.getNeed), {'id': this.id}, (v)=>{
                     console.log(v)
                     this.demand_list = v
-                })
+                })*/
             },
             del_demand(id){
                 if(window.confirm('是否删除？')) {
