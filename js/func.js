@@ -110,6 +110,7 @@ var methods = {
     'getBranch': 'Center/get_branch',
     'firstCheck': 'Center/first_check',
     'switchStore': 'Center/switch_store',
+    'printset': 'center/print_set',
     'planList': 'Plan/plan_list',
     'delPlan': 'Plan/del_plan',
     'addPlan': 'Plan/add',
@@ -130,6 +131,7 @@ var methods = {
     'getPerDetail': 'Achievement/get_per_detail',
     'performanceFeiDetails': 'Achievement/performance_fei_details',
     'raiseDetailOperation': 'Achievement/raise_detail_operation',
+    'get_underwear_detail':'Achievement/get_underwear_detail',
     'getCp': 'goods/getCp',
     'getTh': 'goods/getTh',
     'getHc': 'goods/getHc',
@@ -142,10 +144,17 @@ var methods = {
     'excel': 'staff/excel',
     'getDayAchievement': 'achievement/get_day_achievement',
     'get_liabilities_detail':'analysis/get_liabilities_detail',
+    'get_debt_detail': 'analysis/get_debt_detail',
+    'get_one_debt': 'analysis/get_one_debt',
     'loadRate': 'analysis/loadRate',
     'indexDetail': 'analysis/index_detail',
     'staffAnalysis': 'analysis/staff_analysis',
     'staffAnalysisDetails': 'analysis/staff_analysis_details',
+    'check_popularity_rate_category': 'achievement/check_popularity_rate_category',
+    'get_popularity_detail': 'achievement/get_popularity_detail',
+    'getList':'coupon/getList',
+    'details':'coupon/details',
+    'CouponOperation':'coupon/CouponOperation',
 };
 var that;
 

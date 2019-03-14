@@ -5,6 +5,11 @@
     <title>普及率</title>
     <link rel="stylesheet" href="../css/index.css">
     <link rel="stylesheet" type="text/css" href="../css/common.css">
+    <style>
+        li .cate_w{
+            width: 50px;
+        }
+    </style>
 </head>
 <body>
 
@@ -18,10 +23,81 @@
         </p>
         <el-tabs type="card" class="vip_infor">
             <el-tab-pane label="项目">
+                <ul class="ul_list">
+                    <li @click="p_detail(v.name,v.id,3)" class="cursor" v-for="v in items_arr">
+                        <img class="cate_w" src="../images/head.png" v-if="v.name =='头部'"/>
+                        <img class="cate_w" src="../images/face.png" v-if="v.name =='面部'"/>
+                        <img class="cate_w" src="../images/eye.png" v-if="v.name =='眼部'"/>
+                        <img class="cate_w" src="../images/slimming.png" v-if="v.name =='减肥'"/>
+                        <img class="cate_w" src="../images/body.png" v-if="v.name =='身体'"/>
+                        <img class="cate_w" src="../images/private.png" v-if="v.name =='私密'"/>
+                        <img class="cate_w" src="../images/instrument.png" v-if="v.name =='仪器类'"/>
+                        <img class="cate_w" src="../images/project.png" v-if="v.name =='大项目'"/>
+                        <img class="cate_w" src="../images/cosmetic.png" v-if="v.name =='修饰美容'"/>
+                        <img class="cate_w" src="../images/other.png" v-if="v.name =='其它'"/>
+                        {{v.name}}
+                        <img src="../images/moredetail.png" class="fr item_Detail" height="100%">
+                    </li>
+                </ul>
             </el-tab-pane>
             <el-tab-pane label="套盒">
+                <ul class="ul_list">
+                    <li @click="p_detail(v.name,v.id,2)" class="cursor" v-for="v in box_arr">
+                        <img class="cate_w" src="../images/head.png" v-if="v.name =='头部'"/>
+                        <img class="cate_w" src="../images/face.png" v-if="v.name =='面部'"/>
+                        <img class="cate_w" src="../images/eye.png" v-if="v.name =='眼部'"/>
+                        <img class="cate_w" src="../images/slimming.png" v-if="v.name =='减肥'"/>
+                        <img class="cate_w" src="../images/body.png" v-if="v.name =='身体'"/>
+                        <img class="cate_w" src="../images/private.png" v-if="v.name =='私密'"/>
+                        <img class="cate_w" src="../images/instrument.png" v-if="v.name =='仪器类'"/>
+                        <img class="cate_w" src="../images/project.png" v-if="v.name =='大项目'"/>
+                        <img class="cate_w" src="../images/healthcare.png" v-if="v.name =='保养品'"/>
+                        <img class="cate_w" src="../images/cosmetic.png" v-if="v.name =='修饰美容'"/>
+                        <img class="cate_w" src="../images/other.png" v-if="v.name =='其它'"/>
+                        {{v.name}}
+                        <img src="../images/moredetail.png" class="fr item_Detail" height="100%">
+                    </li>
+                </ul>
             </el-tab-pane>
             <el-tab-pane label="产品">
+                <ul class="ul_list">
+                    <li @click="p_detail(v.name,v.id,1)" class="cursor" v-for="v in pro_arr">
+                        <img class="cate_w" src="../images/head.png" v-if="v.name =='头部'"/>
+                        <img class="cate_w" src="../images/face.png" v-if="v.name =='面部'"/>
+                        <img class="cate_w" src="../images/eye.png" v-if="v.name =='眼部'"/>
+                        <img class="cate_w" src="../images/slimming.png" v-if="v.name =='减肥'"/>
+                        <img class="cate_w" src="../images/body.png" v-if="v.name =='身体'"/>
+
+                        <img class="cate_w" src="../images/healthcare.png" v-if="v.name =='保健品'"/>
+                        <img class="cate_w" src="../images/private.png" v-if="v.name =='私密'"/>
+
+                        <img class="cate_w" src="../images/cosmetic.png" v-if="v.name =='修饰美容'"/>
+                        <img class="cate_w" src="../images/body.png" v-if="v.name =='内衣'"/>
+                        <img class="cate_w" src="../images/other.png" v-if="v.name =='其它'"/>
+                        {{v.name}}
+                        <img src="../images/moredetail.png" class="fr item_Detail" height="100%">
+                    </li>
+                </ul>
+            </el-tab-pane>
+            <el-tab-pane label="内衣">
+                <ul class="ul_list">
+                    <li @click="p_detail(v.name,v.id,'detail')" class="cursor" v-for="v in underwear_arr">
+                        <img class="cate_w" src="../images/head.png" v-if="v.name =='头部'"/>
+                        <img class="cate_w" src="../images/face.png" v-if="v.name =='面部'"/>
+                        <img class="cate_w" src="../images/eye.png" v-if="v.name =='眼部'"/>
+                        <img class="cate_w" src="../images/slimming.png" v-if="v.name =='减肥'"/>
+                        <img class="cate_w" src="../images/body.png" v-if="v.name =='身体'"/>
+
+                        <img class="cate_w" src="../images/healthcare.png" v-if="v.name =='保健品'"/>
+                        <img class="cate_w" src="../images/private.png" v-if="v.name =='私密'"/>
+
+                        <img class="cate_w" src="../images/cosmetic.png" v-if="v.name =='修饰美容'"/>
+                        <img class="cate_w" src="../images/body.png" v-if="v.name =='胸衣'"/>
+                        <img class="cate_w" src="../images/other.png" v-if="v.name =='其它'"/>
+                        {{v.name}}
+                        <img src="../images/moredetail.png" class="fr item_Detail" height="100%">
+                    </li>
+                </ul>
             </el-tab-pane>
         </el-tabs>
     </template>
@@ -37,12 +113,38 @@
 <script>
     new Vue({
         el: '#app',
-        data: {},
-        methods: {},
+        data: {
+            pro_arr:[],
+            box_arr:[],
+            items_arr:[],
+            underwear_arr:[],
+        },
+        methods: {
+            get_cate(){
+                $.get(url(methods.check_popularity_rate_category),v=> {
+                   this.pro_arr =v.res.pro_cate;
+                    this.box_arr = v.res.box_cate;
+                    this.items_arr = v.res.items_cate;
+                    this.underwear_arr = v.res.underwear_cat;
+                });
+            },
+            p_detail(name,cate,type){
+                location.href = './populaity_detail.html';
+                localStorage.setItem('name',name)
+                localStorage.setItem('cate_id',cate)
+                localStorage.setItem('px',type)
+                if(type=='detail'){
+                    localStorage.setItem('sign',type)
+                }else{
+                    localStorage.setItem('sign','')
+                }
+            },
+        },
         mounted() {
             this.$nextTick(e=>{
                 //初始化
                 that = this;
+                this.get_cate()
                 loginState()
             })
         }

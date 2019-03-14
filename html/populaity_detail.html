@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>tmp</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+</head>
+<body>
+
+<div id="app" class="customer">
+    <template>
+        <p class="cus_title">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+                <el-breadcrumb-item :to="{ path: '/' }">工作台首页</el-breadcrumb-item>
+                <el-breadcrumb-item>普及率</el-breadcrumb-item>
+                <el-breadcrumb-item>普及率详情</el-breadcrumb-item>
+            </el-breadcrumb>
+        </p>
+        <div class="cus_center">
+            <el-input class="cus_seatch" style="float: left"
+                      placeholder="请输入商品名称"
+                      prefix-icon="el-icon-search"
+                      v-model="input">
+            </el-input>
+        </div>
+        <el-table border :max-height="max_ht" :data="list.filter(data => !input || px==1&&data.goods_name.toLowerCase().includes(input.toLowerCase())||px==2&&data.box_name.toLowerCase().includes(input.toLowerCase())||sign=='detail'&&data.name.toLowerCase().includes(input.toLowerCase())||px==3&&data.pro_name.toLowerCase().includes(input.toLowerCase()))" style="width: 100%">
+            <el-table-column
+                    label="商品名称">
+                <template slot-scope="scope">
+                    <i v-if="px==1">{{scope.row.goods_name}}</i>
+                    <i v-if="px==2">{{scope.row.box_name}}</i>
+                    <i v-if="px==3">{{scope.row.pro_name}}</i>
+                    <i v-if="sign=='detail'">{{scope.row.name}}</i>
+                </template>
+            </el-table-column>
+            <el-table-column
+                    label="已购商品人数">
+                <template slot-scope="scope">
+                    <el-button
+                            size="mini"
+                            @click="p_d_member(scope.row.id);buy_dio=true" type="primary" plain>{{scope.row.buy_count}}
+                    </el-button>
+                </template>
+            </el-table-column>
+            <el-table-column
+                    label="未购商品人数">
+                <template slot-scope="scope">
+                    <el-button
+                            size="mini"
+                            @click="p_d_member(scope.row.id);not_dio=true" type="danger" plain>{{scope.row.not_count}}
+                    </el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+        <el-dialog
+                title="已购买"
+                :visible.sync="buy_dio"
+                center
+                :before-close="close">
+            <el-input style="margin: 10px 0;width: 50%"
+                      placeholder="请输入会员姓名"
+                      prefix-icon="el-icon-search"
+                      v-model="b_input">
+            </el-input>
+            <el-table border
+                      :data="buy_m.filter(data => !b_input || data.name.toLowerCase().includes(b_input.toLowerCase()))"
+                      tooltip-effect="dark">
+                <el-table-column
+                        prop="name"
+                        label="会员姓名">
+                </el-table-column>
+                <el-table-column
+                        prop="tel"
+                        label="电话">
+                </el-table-column>
+            </el-table>
+        </el-dialog>
+        <el-dialog
+                title="未购买"
+                :visible.sync="not_dio"
+                center
+                :before-close="close">
+            <el-input style="margin: 10px 0;width: 50%"
+                      placeholder="请输入会员姓名"
+                      prefix-icon="el-icon-search"
+                      v-model="n_input">
+            </el-input>
+            <el-table border
+                      :data="not.filter(data => !n_input || data.name.toLowerCase().includes(n_input.toLowerCase()))"
+                      tooltip-effect="dark">
+                <el-table-column
+                        prop="name"
+                        label="会员姓名">
+                </el-table-column>
+                <el-table-column
+                        prop="tel"
+                        label="电话">
+                </el-table-column>
+            </el-table>
+        </el-dialog>
+    </template>
+</div>
+
+</body>
+</html>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../js/func.js"></script>
+<script src="../js/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            max_ht:0,
+            input:'',
+            b_input:'',
+            n_input:'',
+            px:'',
+            sign:'',
+            cate_id:'',
+            name:'',
+            list:[],
+            buy_m:[],
+            not:[],
+            buy_dio:false,
+            not_dio:false,
+        },
+        methods: {
+            height(){
+                var height=window.innerHeight;
+                this.max_ht=window.innerHeight-110;
+            },
+            get_detail(){
+                if(this.sign=='detail'){
+                    $.get(url(methods.get_underwear_detail),
+                        {sign:this.sign,
+                            type: this.cate_id,
+                            name: this.name,
+                        },v=>{
+                            this.list=v.list
+                        })
+                }else{
+                    $.get(url(methods.get_popularity_detail),
+                        {
+                            cate_id: this.cate_id,
+                            px: this.px,
+                            name: this.name,
+                            type: 'detail'},v=>{
+                            this.list=v.list
+                        })
+                }
+            },
+            close(){
+                this.buy_dio=false;
+                this.not_dio=false;
+            },
+            p_d_member(id){
+                if(this.sign=='detail'){
+                    $.get(url(methods.get_underwear_detail),
+                        {
+                            id: id,
+                            sign: 'member'},v=>{
+                            this.buy_m=v.res.buy_arr
+                            this.not=v.res.not_arr
+                        })
+                }else{
+                $.get(url(methods.get_popularity_detail),
+                    {
+                        px: this.px,
+                        id: id,
+                        type: 'member'},v=>{
+                        this.buy_m=v.res.buy_arr
+                        this.not=v.res.not_arr
+                    })
+                }
+            }
+        },
+        mounted() {
+            this.$nextTick(e=>{
+                //初始化
+                that = this;
+                this.px = localStorage.getItem('px')
+                this.cate_id = localStorage.getItem('cate_id')
+                this.name = localStorage.getItem('name')
+                this.sign = localStorage.getItem('sign')
+                this.get_detail()
+                this.height()
+                loginState()
+            })
+        }
+    })
+</script>

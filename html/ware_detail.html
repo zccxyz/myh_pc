@@ -778,6 +778,9 @@
                 if (r.type == 3) {
                     return '耗材'
                 }
+                if (r.type == 4) {
+                    return '内衣'
+                }
             },
             getData() {
                 $.post(url(methods.wareIntoOutDetail), {ware: this.id}, v => {
