@@ -18,10 +18,6 @@
             </el-breadcrumb>
         </p>
         <div class="cus_center">
-            <p class="total" style="padding: 0 30px">
-                总剩余次数：{{allNum}}
-                <span class="cr" style="margin-left:100px">总负债：{{money}}</span>
-            </p>
             <!--<el-input class="cus_seatch" style="float: left"
                       placeholder="请输入品项名称"
                       prefix-icon="el-icon-search"
@@ -38,8 +34,111 @@
         </div>
         <el-tabs type="card"
                  class="vip_infor">
-            <el-tab-pane>
-                <span slot="label" @click="getDetail(4)">项目负债：{{itemsMoney}}&#12288;项目剩余次数：{{items}}</span>
+            <el-tab-pane label="全部">
+                <p class="total" style="padding: 0 30px">
+                    总剩余次数：{{allNum}}
+                    <span class="cr" style="margin-left:100px">总负债：{{money}}</span>
+                </p>
+                <div class="basic_inf arrear">
+
+                    <el-table
+                            :data="itemsAll"
+                            fit=true show-overflow-tooltip>
+                        <el-table-column
+                                label="项目名称"
+                                prop="name"
+                                :formatter="formatter">
+                        </el-table-column>
+                        <el-table-column
+                                label="剩余次数"
+                                prop="number"
+                                :formatter="formatter2">
+                        </el-table-column>
+                        <el-table-column
+                                label="负债金额">
+                            <template slot-scope="scope">
+                                <el-button type="primary" plain size="mini" @click="nowData=scope.row;arrear_dio=true">
+                                    {{fz(scope.row)}}
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+
+                <div class="basic_inf arrear">
+                    <el-table :data="boxAll">
+                        <el-table-column
+                                label="套盒名称"
+                                prop="name"
+                                :formatter="formatter">
+                        </el-table-column>
+                        <el-table-column
+                                label="剩余次数"
+                                prop="number"
+                                :formatter="formatter2">
+                        </el-table-column>
+                        <el-table-column
+                                label="负债金额">
+                            <template slot-scope="scope">
+                                <el-button type="success" plain size="mini" @click="nowData=scope.row;arrear_dio=true">
+                                    {{fz(scope.row)}}
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+
+                <div class="basic_inf arrear">
+                    <el-table :data="planAll">
+                        <el-table-column
+                                label="方案名称"
+                                prop="name"
+                                :formatter="formatter">
+                        </el-table-column>
+                        <el-table-column
+                                label="剩余次数"
+                                prop="number"
+                                :formatter="formatter2">
+                        </el-table-column>
+                        <el-table-column
+                                label="负债金额">
+                            <template slot-scope="scope">
+                                <el-button type="warning" plain size="mini" @click="nowData=scope.row;arrear_dio=true">
+                                    {{fz(scope.row)}}
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+
+                <div class="basic_inf arrear">
+                    <el-table :data="cardAll">
+                        <el-table-column
+                                label="卡项名称"
+                                prop="name"
+                                :formatter="formatter">
+                        </el-table-column>
+                        <el-table-column
+                                label="价格"
+                                prop="price"
+                                :formatter="formatter3">
+                        </el-table-column>
+                        <el-table-column
+                                label="负债金额">
+                            <template slot-scope="scope">
+                                <el-button type="info" plain size="mini" @click="nowData2=scope.row;ka_arrear_dio=true">
+                                    {{cardFz(scope.row)}}
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+            </el-tab-pane>
+            <el-tab-pane label="项目">
+                <p class="total" style="padding: 0 30px">
+                    项目剩余次数：{{xmCs()}}
+                    <span class="cr" style="margin-left:100px">项目负债：{{xmFzl()}}</span>
+                </p>
                 <div class="basic_inf arrear">
 
                     <el-table :data="itemsAll" fit=true show-overflow-tooltip>
@@ -64,8 +163,11 @@
                     </el-table>
                 </div>
             </el-tab-pane>
-            <el-tab-pane>
-                <span slot="label" @click="getDetail(3)">套盒负债：{{boxMoney}}&#12288;套盒剩余次数：{{box}}</span>
+            <el-tab-pane label="套盒">
+                <p class="total" style="padding: 0 30px">
+                    套盒剩余次数：{{xmCs(2)}}
+                    <span class="cr" style="margin-left:100px">套盒负债：{{xmFzl(2)}}</span>
+                </p>
                 <div class="basic_inf arrear">
                     <el-table :data="boxAll">
                         <el-table-column
@@ -89,8 +191,11 @@
                     </el-table>
                 </div>
             </el-tab-pane>
-            <el-tab-pane>
-                <span slot="label" @click="getDetail(5)">方案负债：{{planMoney}}&#12288;方案剩余次数：{{plan}}</span>
+            <el-tab-pane label="方案">
+                <p class="total" style="padding: 0 30px">
+                    方案剩余次数：{{xmCs(3)}}
+                    <span class="cr" style="margin-left:100px">方案负债：{{xmFzl(3)}}</span>
+                </p>
                 <div class="basic_inf arrear">
                     <el-table :data="planAll">
                         <el-table-column
@@ -114,33 +219,12 @@
                     </el-table>
                 </div>
             </el-tab-pane>
-            <el-tab-pane>
-                <span slot="label" @click="getDetail(2)">卡项负债：{{cardMoney}}</span>
-                <div class="basic_inf arrear">
-                    <el-table :data="cardAll">
-                        <el-table-column
-                                label="卡项名称"
-                                prop="name"
-                                :formatter="formatter">
-                        </el-table-column>
-                        <el-table-column
-                                label="价格"
-                                prop="price"
-                                :formatter="formatter3">
-                        </el-table-column>
-                        <el-table-column
-                                label="负债金额">
-                            <template slot-scope="scope">
-                                <el-button type="info" plain size="mini" @click="nowData2=scope.row;ka_arrear_dio=true">
-                                    {{cardFz(scope.row)}}
-                                </el-button>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                </div>
-            </el-tab-pane>
-            <el-tab-pane>
-                <span slot="label" @click="getDetail(1)">余额负债：{{balance}}</span>
+            <el-tab-pane label="卡项">
+                <p class="total" style="padding: 0 30px">
+                    <!--卡项剩余次数：525-->
+                    卡项负债：{{xmFzl(4)}}
+                    <!--<span class="cr" style="margin-left:100px">卡项负债：{{xmFzl(4)}}</span>-->
+                </p>
                 <div class="basic_inf arrear">
                     <el-table :data="cardAll">
                         <el-table-column
@@ -225,11 +309,6 @@
     new Vue({
         el: '#app',
         data: {
-            balance:0,
-            boxMoney:0,
-            itemsMoney:0,
-            cardMoney:0,
-            planMoney:0,
             activeNames: ['1'],
             input: '',
             time: '',
@@ -263,10 +342,10 @@
             allNum: 0,
             nowData: [],
             nowData2: [],
-            items: 0,
-            box: 0,
-            plan: 0,
-            card: 0,
+            items: [],
+            box: [],
+            plan: [],
+            card: [],
         },
         computed: {
             fz() {
@@ -356,39 +435,17 @@
                 return v[0]['price']
             },
             getData() {
-                $.post(url(methods.get_debt_detail), v => {
-                    this.money = v.res['total_amount']
-                    this.allNum = v.res['total_time']
-                    this.boxMoney = v.res['box_money']
-                    this.itemsMoney = v.res['items_money']
-                    this.planMoney = v.res['plan_money']
-                    this.cardMoney = v.res['card_amount']
-                   /* this.boxAll = v.res['box_money']
-                    this.itemsAll = v.res['items_money']
-                    this.planAll = v.res['plan_money']
-                    this.cardAll = v.res['card_amount']*/
-                    this.items = v.res['items_time']
-                    this.box = v.res['box_time']
-                    this.plan = v.res['plan_time']
-                    this.balance = v.res.balance;
-                })
-            },
-            getDetail(type) {
-                $.post(url(methods.get_one_debt),{type:type}, v => {
-                    this.money = v.res['total_amount']
-                    this.allNum = v.res['total_time']
-                    this.boxMoney = v.res['box_money']
-                    this.itemsMoney = v.res['items_money']
-                    this.planMoney = v.res['plan_money']
-                    this.cardMoney = v.res['card_amount']
-                    /* this.boxAll = v.res['box_money']
-                     this.itemsAll = v.res['items_money']
-                     this.planAll = v.res['plan_money']
-                     this.cardAll = v.res['card_amount']*/
-                    this.items = v.res['items_time']
-                    this.box = v.res['box_time']
-                    this.plan = v.res['plan_time']
-                    this.balance = v.res.balance;
+                $.post(url(methods.loadRate), v => {
+                    this.boxAll = v.data['boxAll']
+                    this.itemsAll = v.data['itemsAll']
+                    this.planAll = v.data['planAll']
+                    this.cardAll = v.data['cardAll']
+                    this.money = v.data['money']
+                    this.allNum = v.data['allNum']
+                    this.items = v.data['items']
+                    this.box = v.data['box']
+                    this.plan = v.data['plan']
+                    this.card = v.data['card']
                 })
             }
         },
