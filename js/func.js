@@ -44,6 +44,8 @@ var methods = {
     'wages':'Staff/wages',
     'dimission':'Staff/leave',
     'get_distribution_member':'Staff/get_distribution_member',
+    'raise_edit_details':'Staff/raise_edit_details',
+    'raise':'Staff/raise',
     'DailyIncomeDetail':'Store/DailyIncomeDetail',
     'get_warn':'Ware/warning_detail',
     'get_role':'Authority/get_role',
