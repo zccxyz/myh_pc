@@ -109,18 +109,20 @@
                                           class="infor_wid un_line_h"></el-input>
                             </p>
                         </li>
-                       <!-- <li>
+                        <li>
                             <p>
                                 客户需求：
-                                <el-button type="primary" @click="add_demand(userId)" size="mini" plain class="fr">添加客户需求</el-button>
-                                <ul>
-                                    <li v-for="v in demand_list">
-                                        {{v['createtime']}}：<span v-for="x in v.need">{{x}}</span>
-                                        <el-button type="danger" @click="del_demand(v.id)" size="mini" plain class="fr">删除</el-button>
-                                    </li>
-                                </ul>
+                                <el-button type="primary" @click="add_demand_dio=true" size="mini" plain class="fr mar_bottom">添加客户需求</el-button>
                             </p>
-                        </li>-->
+                        </li>
+                        <li v-if="demand_list!=''">
+                            <ul>
+                                <li v-for="v in demand_list">
+                                    {{v['createtime']}}：<span v-for="x in v.need" class="need_span">{{x}}</span>
+                                    <el-button type="danger" @click="del_demand(v.id)" size="mini" plain class="fr mar_bottom">删除</el-button>
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
                     <div class="bottom_but">
                         <el-button type="success" @click="modifyUser">修改</el-button>
@@ -256,10 +258,6 @@
 
                                 label="总次数">
                         </el-table-column>
-                        <!--<el-table-column
-                                prop="dis_price"
-                                label="折后金额">
-                        </el-table-column>-->
                         <el-table-column label="操作">
                             <template slot-scope="scope">
                                 <el-button type="danger" size="mini" @click="del(2, scope.row, 2)">删除</el-button>
@@ -323,6 +321,7 @@
                     </div>
                 </div>
             </el-tab-pane>
+
             <el-tab-pane label="优惠券查看">
                 <div class="basic_inf">
                     <el-table
@@ -477,6 +476,166 @@
                     </li>
                 </ul>
             </el-tab-pane>
+            <el-tab-pane label="消费明细">
+                <div class="cus_center">
+                    <el-radio-group v-model="nowPos" class="store_tabs">
+                        <el-radio-button label="项目"></el-radio-button>
+                        <el-radio-button label="产品"></el-radio-button>
+                        <el-radio-button label="套盒"></el-radio-button>
+                        <el-radio-button label="充值"></el-radio-button>
+                        <el-radio-button label="方案"></el-radio-button>
+                        <el-radio-button label="内衣"></el-radio-button>
+                    </el-radio-group>
+                </div>
+                <div class="basic_inf">
+                    <el-table v-show="nowPos=='项目'"
+                              :data="xf_xm"
+                              style="width: 100%">
+                        <el-table-column
+                                prop="name"
+                                label="项目名称">
+                        </el-table-column>
+                        <el-table-column
+                                label="方式">
+                            <template slot-scope="scope">
+                                <i v-if="scope.row.status == 1">消费-(买入)</i>
+                                <i v-if="scope.row.status == 2">消耗-(使用)</i>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                prop="time"
+                                label="时间">
+                        </el-table-column>
+                        <el-table-column
+                                label="支付明细">
+                            <template slot-scope="scope">
+                                <el-button type="primary" @click="pay_data=scope.row;pay_dio=true" plain size="mini">查看</el-button>
+                            </template>
+                        </el-table-column>
+
+                    </el-table>
+                    <el-table v-show="nowPos=='产品'"
+                              :data="xf_cp"
+                              style="width: 100%">
+                        <el-table-column
+                                prop="name"
+                                label="产品名称">
+                        </el-table-column>
+                        <el-table-column
+                                prop="money"
+                                label="消费金额">
+                        </el-table-column>
+                        <el-table-column
+                                prop="time"
+                                label="时间">
+                        </el-table-column>
+                        <el-table-column
+                                label="支付明细">
+                            <template slot-scope="scope">
+                                <el-button type="primary" @click="pay_data=scope.row;pay_dio=true" plain size="mini">查看</el-button>
+                            </template>
+                        </el-table-column>
+
+                    </el-table>
+                    <el-table v-show="nowPos=='套盒'"
+                              :data="xf_th"
+                              style="width: 100%">
+                        <el-table-column
+                                prop="name"
+                                label="套盒名称">
+                        </el-table-column>
+                        <el-table-column
+                                label="方式">
+                            <template slot-scope="scope">
+                                <i v-if="scope.row.status == 1">消费-(买入)</i>
+                                <i v-if="scope.row.status == 2">消耗-(使用)</i>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                prop="time"
+                                label="时间">
+                        </el-table-column>
+                        <el-table-column
+                                label="支付明细">
+                            <template slot-scope="scope">
+                                <el-button type="primary" @click="pay_data=scope.row;pay_dio=true" plain size="mini">查看</el-button>
+                            </template>
+                        </el-table-column>
+
+                    </el-table>
+                    <el-table v-show="nowPos=='充值'"
+                              :data="xf_cz"
+                              style="width: 100%">
+                        <el-table-column
+                                prop="name"
+                                label="卡项名称">
+                        </el-table-column>
+                        <el-table-column
+                                label="方式">
+                            <template slot-scope="scope">
+                                <i v-if="scope.row.status == 1">消费-(买入)</i>
+                                <i v-if="scope.row.status == 2">消耗-(使用)</i>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                prop="money"
+                                label="消费/消耗金额">
+                        </el-table-column>
+                        <el-table-column
+                                prop="time"
+                                label="时间">
+                        </el-table-column>
+                    </el-table>
+                    <el-table v-show="nowPos=='方案'"
+                              :data="xf_fa"
+                              style="width: 100%">
+                        <el-table-column
+                                prop="name"
+                                label="项目名称">
+                        </el-table-column>
+                        <el-table-column
+                                label="方式">
+                            <template slot-scope="scope">
+                                <i v-if="scope.row.status == 1">消费-(买入)</i>
+                                <i v-if="scope.row.status == 2">消耗-(使用)</i>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                prop="time"
+                                label="时间">
+                        </el-table-column>
+                        <el-table-column
+                                label="支付明细">
+                            <template slot-scope="scope">
+                                <el-button type="primary" @click="pay_data=scope.row;pay_dio=true" plain size="mini">查看</el-button>
+                            </template>
+                        </el-table-column>
+
+                    </el-table>
+                    <el-table v-show="nowPos=='内衣'"
+                              :data="xf_ny"
+                              style="width: 100%">
+                        <el-table-column
+                                prop="name"
+                                label="内衣名称">
+                        </el-table-column>
+                        <el-table-column
+                                prop="money"
+                                label="消费金额">
+                        </el-table-column>
+                        <el-table-column
+                                prop="time"
+                                label="时间">
+                        </el-table-column>
+                        <el-table-column
+                                label="支付明细">
+                            <template slot-scope="scope">
+                                <el-button type="primary" @click="pay_data=scope.row;pay_dio=true" plain size="mini">查看</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+            </el-tab-pane>
         </el-tabs>
         <el-dialog v-if="detail!=''"
                    title="查看档案"
@@ -622,6 +781,78 @@
                 <el-button type="primary" @click="modify()">确 定</el-button>
               </span>
         </el-dialog>
+        <!-- 需求添加 -->
+        <el-dialog
+                title="客户需求添加"
+                :visible.sync="add_demand_dio"
+                center>
+            <ul class="goods_edit">
+                <li>
+                    <span class="list_left">需求添加</span>
+                    <span class="list_right">
+                    <el-input v-model="text" style="width: 60%" placeholder="请输入客户需求"></el-input>
+                        <el-button type="warning" @click="add_demand">添加</el-button>
+                </span>
+                </li>
+            </ul>
+            <div class="add_list " v-if="add_list.length>0">
+					<span class="need_span" v-for="(v, i) in add_list">{{v}}
+						<i class="el-icon-error need_dele_icon" @click="remove(i)"></i>
+					</span>
+            </div>
+            <span slot="footer" class="dialog-footer">
+            <el-button @click="need_close">取 消</el-button>
+            <el-button type="primary" @click="sub">确 定</el-button>
+          </span>
+        </el-dialog>
+        <!--支付明细-->
+        <el-dialog
+                title="支付明细"
+                :visible.sync="pay_dio"
+                min-width="400px"
+                center>
+            <ul class="pay_ul">
+                <li>
+                    卡扣支付：{{pay_data.card_pay}}
+                </li>
+                <li>
+                    余额支付：{{pay_data.account_pay}}
+                </li>
+                <li>
+                    现金支付：{{pay_data.cash_pay}}
+                </li>
+                <li>
+                    微信支付：{{pay_data.wx_pay}}
+                </li>
+                <li>
+                    支付宝支付：{{pay_data.zfb_pay}}
+                </li>
+                <li>
+                    银行卡支付：{{pay_data.bank}}
+                </li>
+                <li>
+                    美团支付：{{pay_data.mt}}
+                </li>
+                <li>
+                    大众点评支付：{{pay_data.dzdp}}
+                </li>
+                <li>
+                    收钱吧支付：{{pay_data.sqb}}
+                </li>
+                <li>
+                    优惠券支付：{{pay_data.counpon}}
+                </li>
+                <li>
+                    合计消费：{{pay_data.money}}
+                </li>
+            </ul>
+            <div class="add_list " v-if="add_list.length>0">
+					<span class="need_span" v-for="(v, i) in add_list">{{v}}
+						<i class="el-icon-error need_dele_icon" @click="remove(i)"></i>
+					</span>
+            </div>
+
+        </el-dialog>
     </template>
 </div>
 
@@ -635,10 +866,22 @@
     new Vue({
         el: '#app',
         data: {
-            demand_list:[],
+            demand_list:'',
             checkList: '',
             dialogVisible: false,
             dialogVisible2: false,
+            add_demand_dio:false,
+            pay_dio:false,
+            add_list:[],
+            text:'',
+            pay_data:'',
+            nowPos: '项目',
+            xf_xm:'',
+            xf_cp:'',
+            xf_th:'',
+            xf_cz:'',
+            xf_fa:'',
+            xf_ny:'',
             input: '',
             options: [{
                 value: '2',
@@ -721,10 +964,42 @@
         },
         methods: {
             getData() {
-               /* $.post(url(methods.getNeed), {'id': this.id}, (v)=>{
+                $.post(url(methods.getNeed), {'id': this.userId}, (v)=>{
                     console.log(v)
                     this.demand_list = v
-                })*/
+                })
+            },
+            add_demand(){
+                if(this.text != '') {
+                    this.add_list.unshift(this.text);
+                    this.text = '';
+                }
+            },
+            remove(i) {
+                this.add_list.splice(i, 1);
+            },
+            sub() {
+                if(this.add_list.length == 0){
+                    error('最少添加一个需求');
+                    return
+                }
+                $.post(url(methods.addNeed), {'data':JSON.stringify(this.add_list) , id: this.userId}, (v)=>{
+                    if(v.data) {
+                        success('添加成功')
+                        this.$confirm('添加成功,是否继续添加?', '提示', {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                            type: 'warning'
+                        }).then(() => {
+                            this.add_list = [];
+                            this.text = '';
+                        }).catch(e => {
+                            this.add_demand_dio=false;
+                        })
+                    }else{
+                        error('添加失败')
+                    }
+                })
             },
             del_demand(id){
                 if(window.confirm('是否删除？')) {
@@ -737,6 +1012,11 @@
                         }
                     })
                 }
+            },
+            need_close(){
+                this.add_list = [];
+                this.text = '';
+                this.add_demand_dio=false;
             },
             modify() {
                 $.post(url(methods.healthModify), {data: this.detail2.res}, v => {
@@ -903,6 +1183,8 @@
                     this.getCp()
                 } else if (tab.index == 2) {
                     this.getBoxItems('items')
+                } else if(tab.index == 3) {
+                    this.getBoxItems('plan')
                 } else if (tab.index == 4) {
                     this.getBoxItems('box')
                 } else if (tab.index == 5) {
@@ -915,10 +1197,25 @@
                     this.getArrears()
                 } else if (tab.index == 9) {
                     this.getDa()
+                }else if (tab.index == 10) {
+                    this.get_consumption()
                 }
-                else if(tab.index == 3) {
-                    this.getBoxItems('plan')
-                }
+            },
+            get_consumption(){
+                $.get(url(methods.get_consumption),{mid:this.userId},v=>{
+                    //项目
+                    this.xf_xm = v.res.project;
+                    //产品
+                    this.xf_cp = v.res.product;
+                    //套盒
+                    this.xf_th = v.res.box;
+                    //充值
+                    this.xf_cz = v.res.card;
+                    //方案
+                    this.xf_fa = v.res.programme;
+                    //内衣
+                    this.xf_ny=v.res.underwear;
+                })
             },
             getDa() {
                 $.get(url(methods.healthList) + `&mid=${this.userId}`, v => {

@@ -79,10 +79,10 @@
                     fixed="right"
                     show-overflow-tooltip>
                 <template slot-scope="scope">
-                    <!--<el-button-->
-                            <!--size="mini"-->
-                            <!--@click="seeDetail(scope.row.id,scope.row.name);set_percentage(scope.row.id)"  class="blue do_but">提成设置-->
-                    <!--</el-button>-->
+                    <el-button
+                            size="mini"
+                            @click="set_percentage(scope.row.id)"  class="blue do_but">提成设置
+                    </el-button>
                     <el-button
                             size="mini" @click="wage_adjust(scope.row.id,scope.row.name)" class="green do_but">工资调整
                     </el-button>
@@ -441,12 +441,12 @@
             },
             set_percentage(id) {
                 if(this.type==2){
-                    //没有设置提成
-                    location.href='./raise.html';
+                    //没有设置提成  添加
                     localStorage.setItem('raise_type', this.type)
                 }else{
-                    location.href='./raise.html';
+                    localStorage.setItem('raise_type', '')
                 }
+                location.href='./raise.html';
                 localStorage.setItem('staff', id)
             },
             wage_adjust(id,name) {

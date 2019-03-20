@@ -25,14 +25,14 @@
         }
 
         .store_tabs {
-            width: 50%;
+            width: 70%;
             margin: 5px auto;
             display: block;
         }
 
         .store_tabs label {
             display: inline-block;
-            width: 33.3%;
+            width:25%;
         }
 
         .store_tabs label span {
@@ -248,6 +248,7 @@
                         <el-radio-button label="产品"></el-radio-button>
                         <el-radio-button label="套盒"></el-radio-button>
                         <el-radio-button label="耗材"></el-radio-button>
+                        <el-radio-button label="内衣"></el-radio-button>
                     </el-radio-group>
                     <el-input class="cus_seatch"
                               placeholder="请输入商品名称"
@@ -348,6 +349,43 @@
                         </el-table-column>
                         <el-table-column
                                 prop="stock"
+                                label="库存数量">
+                        </el-table-column>
+                        <el-table-column
+                                label="盘点数">
+                            <template slot-scope="scope">
+                                <el-input
+                                        placeholder="请输入现有数量"
+                                        v-model="scope.row.nowNum"
+                                        clearable>
+                                </el-input>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                label="盈亏数">
+                            <template slot-scope="scope">
+                                <el-input
+                                        placeholder="请输入盈亏数"
+                                        v-model="scope.row.pdNum"
+                                        clearable>
+                                </el-input>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                    <el-table v-show="nowPos=='内衣'"
+                              :data="un.filter(data => !input3 || data.name.toLowerCase().includes(input3.toLowerCase()) )"
+                              style="width: 100%">
+
+                        <el-table-column
+                                prop="name"
+                                label="名称">
+                        </el-table-column>
+                        <el-table-column
+                                prop="time"
+                                label="日期">
+                        </el-table-column>
+                        <el-table-column
+                                prop="sum"
                                 label="库存数量">
                         </el-table-column>
                         <el-table-column
@@ -664,6 +702,7 @@
             logs: [],
             list2: [],
             nowData: '',
+            un: [],
         },
         watch: {
             value(v) {
@@ -778,6 +817,9 @@
                 if (r.type == 3) {
                     return '耗材'
                 }
+                if (r.type == 4) {
+                    return '内衣'
+                }
             },
             getData() {
                 $.post(url(methods.wareIntoOutDetail), {ware: this.id}, v => {
@@ -799,10 +841,12 @@
                     this.getCp()
                     this.getHc()
                     this.getTh()
+                    this.getUn()
                 } else if (v.index == 4) {
                     this.getCp()
                     this.getHc()
                     this.getTh()
+                    this.getUn()
                 }
                 this.input2 = ''
                 this.value = ''
@@ -824,6 +868,11 @@
                         arr.push({type: v.type, name: v.name, actual_num: v.nowNum, num: v.pdNum, goods_id: v.id})
                     }
                 }
+                for (let v of this.un) {
+                    if (v.pdNum != '' && v.nowNum != '') {
+                        arr.push({type: v.type, name: v.name, actual_num: v.nowNum, num: v.pdNum, goods_id: v.id})
+                    }
+                }
                 if (arr.length == 0) {
                     return error('没有填写数据')
                 }
@@ -837,6 +886,8 @@
                             this.getTh()
                         } else if (this.nowPos == '耗材') {
                             this.getHc()
+                        }else if (this.nowPos == '内衣') {
+                            this.getUn()
                         }
                     } else {
                         error(v['msg'])
@@ -871,6 +922,16 @@
                         x.type = 3
                     }
                     this.hc = v.data
+                })
+            },
+            getUn() {
+                $.post(url(methods.getUn), v => {
+                    for (let x of v.data) {
+                        x.pdNum = '';
+                        x.nowNum = '';
+                        x.type = 4;
+                    }
+                    this.un = v.data;
                 })
             },
             getDetail() {

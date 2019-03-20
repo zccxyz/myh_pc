@@ -165,3 +165,45 @@ position: fixed;
 .pro_div .el-button--mini,.pro_div .el-button--mini.is-round {
     margin-bottom: 10px;
 }
+.add_list{
+    background: #f6f6f6;
+    padding: 10px;
+}
+.need_span{
+     border-radius: 10px;
+     background-color: rgb(241, 158, 194);
+     margin: 5px 0 5px 12px;
+     line-height: 1.8;
+     padding: 0 13px;
+     display: inline-block;
+     color: white;
+ }
+.mar_bottom{
+    margin: 11.5px;
+}
+.need_dele_icon{
+    position: relative;
+    right: -16px;
+    background-color: #463434;
+    border-radius: 50%;
+    top: -9px;
+    border: 1px solid #ddd;
+}
+.store_tabs {
+    width: 80%;
+    margin: 5px auto;
+    display: block;
+}
+
+.store_tabs label {
+    display: inline-block;
+    width:16.6%;
+}
+
+.store_tabs label span {
+    display: inline-block;
+    width: 100%;
+}
+.pay_ul li{
+    line-height: 30px;
+}
