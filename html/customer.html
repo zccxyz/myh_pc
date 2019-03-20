@@ -494,10 +494,10 @@
                 }
             },
             edit() {
-                if (this.user.name == '' || this.user.tel == '') {
+                /*if (this.user.name == '' || this.user.tel == '') {
                     error('请填完以上内容')
                     return
-                }
+                }*/
                 let obj = this.user
                 obj.id = this.now.id
                 $.post(url(methods.editMember), {'data': JSON.stringify(obj)}, v => {
@@ -635,10 +635,10 @@
                 })
             },
             add() {
-                if (this.user.name == '' || this.user.age === '' || this.user.tel == '' || this.user.birthday == '') {
+                /*if (this.user.name == '' || this.user.age === '' || this.user.tel == '' || this.user.birthday == '') {
                     error('请填完以上内容')
                     return
-                }
+                }*/
                 $.post(url(methods.addVip), {'data': this.user}, v => {
                     let rs = verify(v)
                     if (rs != false) {
