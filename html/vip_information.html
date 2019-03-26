@@ -503,6 +503,10 @@
                             </template>
                         </el-table-column>
                         <el-table-column
+                                prop="money"
+                                label="金额">
+                        </el-table-column>
+                        <el-table-column
                                 prop="time"
                                 label="时间">
                         </el-table-column>
@@ -552,6 +556,10 @@
                             </template>
                         </el-table-column>
                         <el-table-column
+                                prop="money"
+                                label="金额">
+                        </el-table-column>
+                        <el-table-column
                                 prop="time"
                                 label="时间">
                         </el-table-column>
@@ -599,6 +607,10 @@
                                 <i v-if="scope.row.status == 1">消费-(买入)</i>
                                 <i v-if="scope.row.status == 2">消耗-(使用)</i>
                             </template>
+                        </el-table-column>
+                        <el-table-column
+                                prop="money"
+                                label="金额">
                         </el-table-column>
                         <el-table-column
                                 prop="time"
@@ -809,7 +821,6 @@
         <el-dialog
                 title="支付明细"
                 :visible.sync="pay_dio"
-                min-width="400px"
                 center>
             <ul class="pay_ul">
                 <li>
@@ -846,12 +857,6 @@
                     合计消费：{{pay_data.money}}
                 </li>
             </ul>
-            <div class="add_list " v-if="add_list.length>0">
-					<span class="need_span" v-for="(v, i) in add_list">{{v}}
-						<i class="el-icon-error need_dele_icon" @click="remove(i)"></i>
-					</span>
-            </div>
-
         </el-dialog>
     </template>
 </div>

@@ -42,8 +42,8 @@
         </li>
         <li>
             <a href="./today_store.html">
-                <p>今日到店</p>
-                <p>新客户：{{sj.arrival_total}}</p>
+                <p>今日到店：{{sj.arrival_total}}</p>
+                <p>新客户：{{sj.new_customer}}</p>
                 <p class="index_detail">详情</p>
             </a>
         </li>
@@ -256,6 +256,7 @@
                     let rs = verify(v)
                     if (rs != false) {
                         this.sj = rs
+                        console.log(this.sj)
                     }
                 })
             },

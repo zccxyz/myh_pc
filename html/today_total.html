@@ -54,12 +54,18 @@
                     label="品项">
             </el-table-column>
             <el-table-column
-                    prop="name"
-                    label="客户">
+                    prop="time"
+                    label="时间">
             </el-table-column>
             <el-table-column
-                    prop="money"
-                    label="价格">
+                    label="客户">
+                <template slot-scope="scope">
+                    <i class="cursor" @click="jump(scope.row)">{{scope.row.name}}</i>
+                </template>
+            </el-table-column>
+            <el-table-column
+                    prop="goods_name"
+                    label="商品名称" min-width="170">
             </el-table-column>
             <el-table-column
                     prop="status"
@@ -68,20 +74,21 @@
             </el-table-column>
             <el-table-column
                     prop="is_back"
-                    label="类型"
+                    label="状态"
                     :formatter="formatter3">
             </el-table-column>
             <el-table-column
+                    prop="money"
+                    label="已支付">
+            </el-table-column>
+            <!--<el-table-column
                     prop="beautician"
                     label="美容师">
-            </el-table-column>
-            <el-table-column
-                    prop="time"
-                    label="时间">
-            </el-table-column>
-            <el-table-column label="操作">
+            </el-table-column>-->
+
+            <el-table-column label="支付明细">
                 <template slot-scope="scope">
-                    <a href="#" @click="jump(scope.row)">查看</a>
+                    <el-button type="primary" @click="pay_data=scope.row;pay_dio=true" plain size="mini">查看</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -97,6 +104,48 @@
                            :total="400">
             </el-pagination>
         </p>-->
+
+        <!--支付明细-->
+        <el-dialog
+                title="支付明细"
+                :visible.sync="pay_dio"
+                center>
+            <ul class="pay_ul">
+                <li>
+                    卡扣支付：{{pay_data.card_pay}}
+                </li>
+                <li>
+                    余额支付：{{pay_data.account_pay}}
+                </li>
+                <li>
+                    现金支付：{{pay_data.cash_pay}}
+                </li>
+                <li>
+                    微信支付：{{pay_data.wx_pay}}
+                </li>
+                <li>
+                    支付宝支付：{{pay_data.zfb_pay}}
+                </li>
+                <li>
+                    银行卡支付：{{pay_data.bank}}
+                </li>
+                <li>
+                    美团支付：{{pay_data.mt}}
+                </li>
+                <li>
+                    大众点评支付：{{pay_data.dzdp}}
+                </li>
+                <li>
+                    收钱吧支付：{{pay_data.sqb}}
+                </li>
+                <li>
+                    优惠券支付：{{pay_data.counpon}}
+                </li>
+                <li>
+                    合计消费：{{pay_data.money}}
+                </li>
+            </ul>
+        </el-dialog>
     </template>
 </div>
 
@@ -110,6 +159,8 @@
     new Vue({
         el: '#app',
         data: {
+            pay_data:'',
+            pay_dio:false,
             input:'',
             pickerOptions2: {
                 shortcuts: [{
