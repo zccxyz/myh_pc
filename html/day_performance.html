@@ -28,28 +28,32 @@
         </div>
         <el-tabs type="card" @tab-click=""
                  class="vip_infor">
-            <el-tab-pane label="总消费">
+            <el-tab-pane label="消费提成">
                 <div class="basic_inf">
                     <el-table border
                               :data="list"
                               style="width: 100%">
+                        <el-table-column
+                                prop="staff_name"
+                                label="员工">
+                        </el-table-column>
                         <el-table-column
                                 prop="raise_type"
                                 :formatter="formatter2"
                                 label="提成类型">
                         </el-table-column>
                         <el-table-column
-                                prop="c_name"
+                                prop="buy_name"
                                 label="名称"
                                 width="180">
                         </el-table-column>
                         <el-table-column
-                                prop="v_name"
+                                prop="m_name"
                                 label="客户">
                         </el-table-column>
                         <el-table-column
-                                prop="actual"
-                                label="消费金额">
+                                prop="total_money"
+                                label="总消费金额">
                         </el-table-column>
                         <el-table-column
                                 prop="money"
@@ -69,27 +73,31 @@
                     </el-table>
                 </div>
             </el-tab-pane>
-            <el-tab-pane label="总消耗">
+            <el-tab-pane label="消耗提成">
                 <div class="basic_inf">
                     <el-table border
                               :data="list2"
                               style="width: 100%">
+                        <el-table-column
+                                prop="staff_name"
+                                label="员工">
+                        </el-table-column>
                         <el-table-column
                                 prop="raise_type"
                                 :formatter="formatter2"
                                 label="提成类型">
                         </el-table-column>
                         <el-table-column
-                                prop="v_name"
+                                prop="consume_name"
                                 label="名称"
                                 width="180">
                         </el-table-column>
-                        <!-- <el-table-column
-                                 prop="vip"
+                         <el-table-column
+                                 prop="m_name"
                                  label="客户">
-                         </el-table-column>-->
+                         </el-table-column>
                         <el-table-column
-                                prop="total_price"
+                                prop="total_money"
                                 label="总消耗">
                         </el-table-column>
                         <el-table-column
@@ -110,7 +118,7 @@
                     </el-table>
                 </div>
             </el-tab-pane>
-            <el-tab-pane label="总手工">
+            <el-tab-pane label="手工提成">
                 <div class="basic_inf">
                     <el-table border
                               :data="list3"
@@ -120,6 +128,10 @@
                                  label="名称"
                                  width="180">
                          </el-table-column>-->
+                        <el-table-column
+                                prop="staff_name"
+                                label="员工">
+                        </el-table-column>
                         <el-table-column
                                 prop="v_name"
                                 label="客户">
@@ -136,6 +148,46 @@
                                 prop="tc_yj"
                                 label="提成业绩">
                         </el-table-column>-->
+                        <el-table-column
+                                prop="time"
+                                label="时间">
+                        </el-table-column>
+                        <el-table-column
+                                label="操作"
+                                show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <el-button type="danger" plain size="mini" @click="now=scope.row;type=3;zt=true">修改</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+            </el-tab-pane>
+            <el-tab-pane label="卡扣提成">
+                <div class="basic_inf">
+                    <el-table border
+                              :data="list4"
+                              style="width: 100%">
+                        <!-- <el-table-column
+                                 prop="name"
+                                 label="名称"
+                                 width="180">
+                         </el-table-column>-->
+                        <el-table-column
+                                prop="staff_name"
+                                label="员工">
+                        </el-table-column>
+                        <el-table-column
+                                prop="m_name"
+                                label="客户">
+                        </el-table-column>
+                        <el-table-column
+                                prop="total_money"
+                                label="卡扣金额">
+                        </el-table-column>
+                        <el-table-column
+                                prop="money"
+                                label="提成业绩">
+                        </el-table-column>
                         <el-table-column
                                 prop="time"
                                 label="时间">
@@ -228,6 +280,7 @@
             list: [],
             list2: [],
             list3: [],
+            list4: [],
         },
         methods: {
             edit() {
@@ -309,9 +362,10 @@
             },
             getData(type = 1) {
                 $.post(url(methods.getDayAchievement), {time: this.t}, v=>{
-                    this.list = v.res.consumption
-                    this.list2 = v.res.consume
-                    this.list3 = v.res.labour
+                    this.list = v.res.consumption;
+                    this.list2 = v.res.consume;
+                    this.list3 = v.res.labour;
+                    this.list4 = v.res.card;
                 })
             },
             back() {

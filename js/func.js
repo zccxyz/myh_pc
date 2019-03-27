@@ -136,6 +136,7 @@ var methods = {
     'performanceFeiDetails': 'Achievement/performance_fei_details',
     'raiseDetailOperation': 'Achievement/raise_detail_operation',
     'get_underwear_detail':'Achievement/get_underwear_detail',
+    'not_raise_operation':'Achievement/not_raise_operation',
     'getCp': 'goods/getCp',
     'getTh': 'goods/getTh',
     'getHc': 'goods/getHc',
@@ -180,6 +181,10 @@ function classify(type) {
         return '方案'
     }else if(type==5){
         return '卡项'
+    }else if(type==6){
+        return '账户'
+    }else if(type==7){
+        return '内衣'
     }
 }
 function jump(v) {

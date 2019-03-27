@@ -22,8 +22,9 @@
                             type="month"
                             placeholder="选择月份查询">
             </el-date-picker>
-            <el-button type="success" class="fr" @click="time=null">本月总业绩</el-button>
+            <el-button type="danger" class="fr" @click=""> <a class="white" href="not_raise.html" target="iframe">未提成业绩</a></el-button>
             <el-button type="primary" class="fr" @click="" style="margin-right: 20px"> <a class="white" href="day_performance.html" target="iframe">每日业绩核对</a></el-button>
+            <el-button type="success" class="fr" @click="time=null" style="margin-right: 20px">本月总业绩</el-button>
         </div>
         <div>
             <el-button type="primary">消费总业绩：{{xf_zyj}}</el-button>
@@ -64,6 +65,18 @@
                         label="消耗提成">
                 </el-table-column>
                 <el-table-column
+                        label="卡扣">
+                    <template slot-scope="scope">
+                        <el-button type="danger" size="mini" @click="getDetail(scope.row.id, 2)">
+                            {{scope.row.card_total}}
+                        </el-button>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        prop="card_total_raise"
+                        label="卡扣提成">
+                </el-table-column>
+                <el-table-column
                         label="总手工">
                     <template slot-scope="scope">
                         <el-button type="warning" size="mini" @click="getDetail(scope.row.id, 3)">
@@ -73,7 +86,6 @@
                 </el-table-column>
                 <el-table-column
                         :formatter="formatter"
-                        prop="xf_total_raise"
                         label="总提成">
                 </el-table-column>
 
@@ -367,7 +379,7 @@
                 })
             },
             formatter(r, c) {
-                return (r.xf_total_raise + r.xh_total_raise).toFixed(2)
+                return (r.fee_total +r.card_total_raise +r.xf_total_raise + r.xh_total_raise).toFixed(2)
             },
             formatter2(r, c) {
                 if (r.raise_type == 1) {
