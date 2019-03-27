@@ -17,6 +17,12 @@
             display: block;
             margin: 0 auto;
         }
+        .fix_ul>li{
+            margin-bottom: 15px;
+        }
+        .raise_list{
+            width: 100%;
+        }
     </style>
 </head>
 <body>
@@ -31,36 +37,17 @@
                 <el-breadcrumb-item>提成人员录入</el-breadcrumb-item>
             </el-breadcrumb>
         </p>
-        <div class="">
+        <div class="cus_center">
+            <el-button style="float: right;margin: 4.5px;" type="warning" @click="location.href = './customer.html'">取消提成
+            </el-button>
+        </div>
+        <el-tabs type="card" @tab-click="handleClick"
+                 class="vip_infor">
+            <el-tab-pane label="普通提成">
             <div class="" style="margin:10px 0 15px;">
                 <div style="height: 50px;width: 100%;line-height:50px;padding-left:15px;font-size:1.8rem;background: white;">
                     消费可提成金额 ：<span class="cr" style="font-size: 1.8rem;">&yen;{{total}}</span>
-                    <el-button style="float: right" type="warning" @click="location.href = './customer.html'">取消提成
-                    </el-button>
                 </div>
-                <!--<p class="p_div_b">
-                    消耗手工录入
-                </p>
-                <ul class="consume_list commission_list">
-                    <li>
-                        操作人
-                        <el-select v-model="one.id" placeholder="请选择" class="in_wid">
-                            <el-optionitemsArr
-                                    v-for="item in staff"
-                                    :label="item.name"
-                                    :value="item.id">
-                            </el-optionitemsArr>
-                        </el-select>
-                        <el-input v-model="one.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
-                        <p class="do_blue" @click="add(1)">添加</p>
-                    </li>
-                    <li v-for="(v, i) in oneArr">
-                        &nbsp;&nbsp;&nbsp;
-                        <div>{{v.name}}</div>
-                        <el-input :value="v.rate" placeholder="请输入" class="in_wid" disabled></el-input>&nbsp;%
-                        <i class="el-icon-circle-close-outline close" @click="del(1, i)"></i>
-                    </li>
-                </ul>-->
             </div>
             <div class="">
                 <p class="p_div_b">
@@ -77,32 +64,32 @@
                             </el-option>
                         </el-select>
                         <el-input type="number" v-model="two.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
-                        <p class="do_blue" @click="add(2)">添加</p>
+                        <p class="do_blue cursor" @click="add(2)">添加</p>
                     </li>
                     <li v-for="(v, i) in twoArr" style="background: #d5baf9;">
                         &nbsp;&nbsp;&nbsp;
                         <div>{{v.name}}</div>
                         <el-input type="number" :value="v.rate" placeholder="请输入" class="in_wid t_input" disabled></el-input>&nbsp;%
-                        <i class="el-icon-circle-close-outline close" @click="del(2, i)"></i>
+                        <i class="el-icon-circle-close-outline close cursor" @click="del(2, i)"></i>
                     </li>
                     <li>
                         顾问
                         <el-select v-model="three.id" placeholder="请选择" class="in_wid">
                             <el-option
-                                    v-for="item in g"
+                                    v-for="item in gw"
                                     :key="item.value"
                                     :label="item.name"
                                     :value="item.id">
                             </el-option>
                         </el-select>
                         <el-input type="number" v-model="three.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
-                        <p class="do_blue" @click="add(3)">添加</p>
+                        <p class="do_blue cursor" @click="add(3)">添加</p>
                     </li>
                     <li v-for="(v, i) in threeArr" style="background: #d5baf9;">
                         &nbsp;&nbsp;&nbsp;
                         <div>{{v.name}}</div>
                         <el-input type="number" :value="v.rate" placeholder="请输入" class="in_wid t_input" disabled></el-input>&nbsp;%
-                        <i class="el-icon-circle-close-outline close" @click="del(3, i)"></i>
+                        <i class="el-icon-circle-close-outline close cursor" @click="del(3, i)"></i>
                     </li>
 
                     <li>
@@ -116,116 +103,182 @@
                             </el-option>
                         </el-select>
                         <el-input type="number" v-model="four.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
-                        <p class="do_blue" @click="add(4)">添加</p>
+                        <p class="do_blue cursor" @click="add(4)">添加</p>
                     </li>
                     <li v-for="(v, i) in fourArr" style="background: #d5baf9;">
                         &nbsp;&nbsp;&nbsp;
                         <div>{{v.name}}</div>
                         <el-input type="number" :value="v.rate" placeholder="请输入" class="in_wid t_input" disabled></el-input>&nbsp;%
-                        <i class="el-icon-circle-close-outline close" @click="del(4, i)"></i>
+                        <i class="el-icon-circle-close-outline close cursor" @click="del(4, i)"></i>
                     </li>
                 </ul>
             </div>
-        </div>
 
-        <div class="" v-if="ac_card_total>0">
-            <div class="" style="margin:10px 0 15px;">
-                <div style="height: 50px;width: 100%;line-height:50px;padding-left:15px;font-size:1.8rem;background: white;">
-                    卡扣可提成金额 ：<span class="cr" style="font-size: 1.8rem;">&yen;{{ac_card_total}}</span>
+            <div class="" v-if="ac_card_total>0">
+                <div class="" style="margin:10px 0 15px;">
+                    <div style="height: 50px;width: 100%;line-height:50px;padding-left:15px;font-size:1.8rem;background: white;">
+                        卡扣可提成金额 ：<span class="cr" style="font-size: 1.8rem;">&yen;{{ac_card_total}}</span>
+                    </div>
                 </div>
-                <!--<p class="p_div_b">
-                    消耗手工录入
-                </p>
-                <ul class="consume_list commission_list">
-                    <li>
-                        操作人
-                        <el-select v-model="one.id" placeholder="请选择" class="in_wid">
-                            <el-optionitemsArr
-                                    v-for="item in staff"
-                                    :label="item.name"
-                                    :value="item.id">
-                            </el-optionitemsArr>
-                        </el-select>
-                        <el-input v-model="one.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
-                        <p class="do_blue" @click="add(1)">添加</p>
-                    </li>
-                    <li v-for="(v, i) in oneArr">
-                        &nbsp;&nbsp;&nbsp;
-                        <div>{{v.name}}</div>
-                        <el-input :value="v.rate" placeholder="请输入" class="in_wid" disabled></el-input>&nbsp;%
-                        <i class="el-icon-circle-close-outline close" @click="del(1, i)"></i>
-                    </li>
-                </ul>-->
-            </div>
-            <div class="">
-                <p class="p_div_b">
-                    卡扣提成录入
-                </p>
-                <ul class="consume_list commission_list">
-                    <li>
-                        美容师
-                        <el-select type="number" v-model="two2.id" placeholder="请选择" class="in_wid">
-                            <el-option
-                                    v-for="item in m"
-                                    :label="item.name"
-                                    :value="item.id">
-                            </el-option>
-                        </el-select>
-                        <el-input type="number" v-model="two2.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
-                        <p class="do_blue" @click="add2(2)">添加</p>
-                    </li>
-                    <li v-for="(v, i) in twoArr2" style="background: #d5baf9;">
-                        &nbsp;&nbsp;&nbsp;
-                        <div>{{v.name}}</div>
-                        <el-input type="number" :value="v.rate" placeholder="请输入" class="in_wid t_input" disabled></el-input>&nbsp;%
-                        <i class="el-icon-circle-close-outline close" @click="del2(2, i)"></i>
-                    </li>
-                    <li>
-                        顾问
-                        <el-select v-model="three2.id" placeholder="请选择" class="in_wid">
-                            <el-option
-                                    v-for="item in g"
-                                    :key="item.value"
-                                    :label="item.name"
-                                    :value="item.id">
-                            </el-option>
-                        </el-select>
-                        <el-input type="number" v-model="three2.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
-                        <p class="do_blue" @click="add2(3)">添加</p>
-                    </li>
-                    <li v-for="(v, i) in threeArr2" style="background: #d5baf9;">
-                        &nbsp;&nbsp;&nbsp;
-                        <div>{{v.name}}</div>
-                        <el-input type="number" :value="v.rate" placeholder="请输入" class="in_wid t_input" disabled></el-input>&nbsp;%
-                        <i class="el-icon-circle-close-outline close" @click="del2(3, i)"></i>
-                    </li>
+                <div class="">
+                    <p class="p_div_b">
+                        卡扣提成录入
+                    </p>
+                    <ul class="consume_list commission_list">
+                        <li>
+                            美容师
+                            <el-select type="number" v-model="two2.id" placeholder="请选择" class="in_wid">
+                                <el-option
+                                        v-for="item in m"
+                                        :label="item.name"
+                                        :value="item.id">
+                                </el-option>
+                            </el-select>
+                            <el-input type="number" v-model="two2.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
+                            <p class="do_blue cursor" @click="add2(2)">添加</p>
+                        </li>
+                        <li v-for="(v, i) in twoArr2" style="background: #d5baf9;">
+                            &nbsp;&nbsp;&nbsp;
+                            <div>{{v.name}}</div>
+                            <el-input type="number" :value="v.rate" placeholder="请输入" class="in_wid t_input" disabled></el-input>&nbsp;%
+                            <i class="el-icon-circle-close-outline close cursor" @click="del2(2, i)"></i>
+                        </li>
+                        <li>
+                            顾问
+                            <el-select v-model="three2.id" placeholder="请选择" class="in_wid">
+                                <el-option
+                                        v-for="item in gw"
+                                        :key="item.value"
+                                        :label="item.name"
+                                        :value="item.id">
+                                </el-option>
+                            </el-select>
+                            <el-input type="number" v-model="three2.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
+                            <p class="do_blue cursor" @click="add2(3)">添加</p>
+                        </li>
+                        <li v-for="(v, i) in threeArr2" style="background: #d5baf9;">
+                            &nbsp;&nbsp;&nbsp;
+                            <div>{{v.name}}</div>
+                            <el-input type="number" :value="v.rate" placeholder="请输入" class="in_wid t_input" disabled></el-input>&nbsp;%
+                            <i class="el-icon-circle-close-outline close cursor" @click="del2(3, i)"></i>
+                        </li>
 
-                    <li>
-                        店长
-                        <el-select v-model="four2.id" placeholder="请选择" class="in_wid">
-                            <el-option
-                                    v-for="item in d"
-                                    :key="item.value"
-                                    :label="item.name"
-                                    :value="item.id">
-                            </el-option>
-                        </el-select>
-                        <el-input type="number" v-model="four2.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
-                        <p class="do_blue" @click="add2(4)">添加</p>
-                    </li>
-                    <li v-for="(v, i) in fourArr2" style="background: #d5baf9;">
-                        &nbsp;&nbsp;&nbsp;
-                        <div>{{v.name}}</div>
-                        <el-input type="number" :value="v.rate" placeholder="请输入" class="in_wid t_input" disabled></el-input>&nbsp;%
-                        <i class="el-icon-circle-close-outline close" @click="del2(4, i)"></i>
+                        <li>
+                            店长
+                            <el-select v-model="four2.id" placeholder="请选择" class="in_wid">
+                                <el-option
+                                        v-for="item in d"
+                                        :key="item.value"
+                                        :label="item.name"
+                                        :value="item.id">
+                                </el-option>
+                            </el-select>
+                            <el-input type="number" v-model="four2.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
+                            <p class="do_blue cursor" @click="add2(4)">添加</p>
+                        </li>
+                        <li v-for="(v, i) in fourArr2" style="background: #d5baf9;">
+                            &nbsp;&nbsp;&nbsp;
+                            <div>{{v.name}}</div>
+                            <el-input type="number" :value="v.rate" placeholder="请输入" class="in_wid t_input" disabled></el-input>&nbsp;%
+                            <i class="el-icon-circle-close-outline close cursor" @click="del2(4, i)"></i>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="bottom_submit">
+                <el-button type="success" @click="sub" v-if="type==1">提交</el-button>
+                <el-button type="success" @click="sub2" v-else>提交</el-button>
+            </div>
+            </el-tab-pane>
+            <el-tab-pane label="固定提成">
+                <ul class="fix_ul">
+                    <li v-for="(g,index) in fixdata">
+                        <div class="">
+                            <div style="height: 50px;width: 100%;line-height:50px;padding-left:15px;background: white;">
+                                商品名称：{{g.name}}&#12288;数量：{{g.sum}}
+                                &#12288;金额 ：<span class="cr" style="font-size: 1.8rem;">&yen;{{g.discount_price}}</span>
+                            </div>
+                        </div>
+                        <div class="">
+                            <p class="p_div_b">
+                                消费提成录入
+                            </p>
+                            <ul class="consume_list commission_list">
+                                <li>
+                                    美容师
+                                    <el-select type="number" v-model="g.name_in" placeholder="请选择" class="in_wid">
+                                        <el-option
+                                                v-for="item in m"
+                                                :label="item.name"
+                                                :value="item.id">
+                                        </el-option>
+                                    </el-select>
+                                    <el-input type="number" v-model="g.per_in"  v-change="check_per(g.per_in,'mrs',index)"placeholder="请输入" class="in_wid"></el-input>&nbsp;%
+                                    <p class="do_blue cursor" @click="add_per('mrs',index,g.name_in,g.per_in)">添加</p>
+                                </li>
+                                <li>
+                                    <ul class="raise_list">
+                                        <li v-for="(v, key) in g.ra_mrs" style="background: #d5baf9;">
+                                            &nbsp;&nbsp;&nbsp;
+                                            <div>{{v.name}}</div>
+                                            <el-input type="number" :value="v.money" placeholder="请输入" class="in_wid t_input" disabled></el-input>&nbsp;%
+                                            <i class="el-icon-circle-close-outline close cursor" @click="del_per('mrs',index,key)"></i>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    顾问
+                                    <el-select v-model="g.gw_name_in" placeholder="请选择" class="in_wid">
+                                        <el-option
+                                                v-for="item in gw"
+                                                :label="item.name"
+                                                :value="item.id">
+                                        </el-option>
+                                    </el-select>
+                                    <el-input type="number" v-model="g.gw_per_in" v-change="check_per(g.gw_per_in,'gw',index)" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
+                                    <p class="do_blue cursor" @click="add_per('gw',index,g.gw_name_in,g.gw_per_in)">添加</p>
+                                </li>
+                                <li>
+                                    <ul class="raise_list">
+                                        <li v-for="(v, key) in g.ra_gw" style="background: #d5baf9;">
+                                            &nbsp;&nbsp;&nbsp;
+                                            <div>{{v.name}}</div>
+                                            <el-input type="number" :value="v.money" placeholder="请输入" class="in_wid t_input" disabled></el-input>&nbsp;%
+                                            <i class="el-icon-circle-close-outline close cursor" @click="del_per('gw',index,key)"></i>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    店长
+                                    <el-select v-model="g.dz_name_in" placeholder="请选择" class="in_wid">
+                                        <el-option
+                                                v-for="item in d"
+                                                :label="item.name"
+                                                :value="item.id">
+                                        </el-option>
+                                    </el-select>
+                                    <el-input type="number" v-model="g.dz_per_in" v-change="check_per(g.dz_per_in,'dz',index)" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
+                                    <p class="do_blue cursor" @click="add_per('dz',index,g.dz_name_in,g.dz_per_in)">添加</p>
+                                </li>
+                                <li>
+                                    <ul class="raise_list">
+                                        <li v-for="(v, key) in g.ra_dz" style="background: #d5baf9;">
+                                            &nbsp;&nbsp;&nbsp;
+                                            <div>{{v.name}}</div>
+                                            <el-input type="number" :value="v.money" placeholder="请输入" class="in_wid t_input" disabled></el-input>&nbsp;%
+                                            <i class="el-icon-circle-close-outline close cursor" @click="del_per('dz',index,key)"></i>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
                 </ul>
-            </div>
-        </div>
-        <div class="bottom_submit">
-            <el-button type="success" @click="sub" v-if="type==1">提交</el-button>
-            <el-button type="success" @click="sub2" v-else>提交</el-button>
-        </div>
+                <div class="bottom_submit">
+                    <el-button type="success" @click="fix_sure">提交</el-button>
+                </div>
+            </el-tab-pane>
+        </el-tabs>
     </template>
 </div>
 
@@ -254,7 +307,7 @@
             orderId: 0,
             cost: 0,
             total: 0,
-            g: [],
+            gw: [],
             m: [],
             type: 0,
             d: [],
@@ -268,8 +321,195 @@
             twoArr2: [],
             threeArr2: [],
             fourArr2: [],
+            buy_list:'',
+            fixdata:[],
+            up_data:[],
         },
         methods: {
+            handleClick(tab, event) {
+                if (tab.index == 0) {
+
+                } else if (tab.index == 1) {
+                    if(this.buy_list==''){
+                        $.post(url(methods.change_percentage), {oid: this.orderId}, v => {
+                            if (v.code == 1) {
+                                this.buy_list = v.res;
+                                for (let i of this.buy_list) {
+                                    let mk = {
+                                        'id': i.id,
+                                        'name': i.name,
+                                        'sum': i.sum,
+                                        'discount_price': i.discount_price,
+                                        'name_in': '',
+                                        "per_in": '',
+                                        'gw_name_in': '',
+                                        "gw_per_in": '',
+                                        'dz_name_in': '',
+                                        "dz_per_in": '',
+                                        'ra_mrs': [],
+                                        'ra_gw': [],
+                                        'ra_dz': [],
+                                    };
+                                    this.fixdata.push(mk);
+                                }
+                            }
+                        })
+                    }
+                }
+            },
+            check_per(money, type, index) {
+                if (type == 'mrs' && money > 100) {
+                    this.fixdata[index].per_in = "";
+                    error("最大比例为100%");
+                    return false;
+                } else if (type == 'gw' && money > 100) {
+                    this.fixdata[index].gw_per_in = "";
+                    error("最大比例为100%");
+                    return false;
+                } else if (type == 'dz' && money > 100) {
+                    this.fixdata[index].dz_per_in = "";
+                    error("最大比例为100%");
+                    return false;
+                }
+            },
+            add_per(type, index, name, per) {
+                if (type == 'mrs') {
+                    if (name == '') {
+                        error('请选择美容师！');
+                    } else if (name != '') {
+                        var n = 0;
+                        for(let i of this.fixdata[index].ra_mrs){
+                            if (i.id == name) {
+                                n = 1;
+                            }
+                        };
+                        if (n == 0) {
+                            if (per != '' && per != null) {
+                                for (let v of this.m) {
+                                    if (v.id == name) {
+                                        var empty = {
+                                            id: name,
+                                            money: this.fixdata[index].per_in,
+                                            name: v.name,
+                                            g_id:this.fixdata[index].id
+                                        };
+                                        this.fixdata[index].ra_mrs.push(empty);
+                                    }
+                                }
+                            } else {
+                                error('请先填写可用提成的金额比例！');
+                            }
+                        } else {
+                            error('当前美容师已存在列表！');
+                        }
+                    }
+                } else if (type == 'gw') {
+                    if (name == '') {
+                        error('请选择顾问！');
+                    } else if (name != '') {
+                        var n = 0;
+                        for(let i of this.fixdata[index].ra_gw){
+                            if (i.id == name) {
+                                n = 1;
+                            }
+                        };
+                        if (n == 0) {
+                            if (per != '' && per != null) {
+                                for (let v of this.gw) {
+                                    if (v.id == name) {
+                                        var empty = {
+                                            id: name,
+                                            money: this.fixdata[index].gw_per_in,
+                                            name: v.name,
+                                            g_id:this.fixdata[index].id
+                                        };
+                                        this.fixdata[index].ra_gw.push(empty);
+                                    }
+                                }
+                            } else {
+                                error('请先填写可用提成的金额比例！');
+                            }
+                        } else {
+                            error('当前顾问已存在列表！');
+                        }
+                    }
+                } else if (type == 'dz') {
+                    if (name == '') {
+                        error('请选择店长！');
+                    } else if (name != '') {
+                        var n = 0;
+                        for(let i of this.fixdata[index].ra_dz){
+                            if (i.id == name) {
+                                n = 1;
+                            }
+                        };
+                        if (n == 0) {
+                            if (per != '' && per != null) {
+                                for (let v of this.d) {
+                                    if (v.id == name) {
+                                        var empty = {
+                                            id: name,
+                                            money: this.fixdata[index].dz_per_in,
+                                            name: v.name,
+                                            g_id:this.fixdata[index].id
+                                        };
+                                        this.fixdata[index].ra_dz.push(empty);
+                                    }
+                                }
+                            } else {
+                                error('请先填写可用提成的金额比例！');
+                            }
+                        } else {
+                            error('当前店长已存在列表！');
+                        }
+                    }
+                }
+            },
+            del_per(type, index, key) {
+                if (type == 'mrs') {
+                    this.fixdata[index].ra_mrs.splice(key, 1);
+                } else if (type == 'gw') {
+                    this.fixdata[index].ra_gw.splice(key, 1);
+                } else if (type == 'dz') {
+                    this.fixdata[index].ra_dz.splice(key, 1);
+                }
+            },
+            fix_sure() {
+                // 固定提成的提交
+                this.up_data = [];
+                var k = 0;
+                for(let i of this.fixdata){
+                    let mda = {
+                        'ra_mrs': [],
+                        'ra_gw': [],
+                        'ra_dz': [],
+                    };
+                    if (i.ra_mrs.length != 0 || i.ra_gw.length != 0 || i.ra_dz.length != 0) {
+                        k = 1;
+                        this.up_data.push(mda);
+                        var md = this.up_data.length - 1;
+                        this.up_data[md].ra_mrs = i.ra_mrs;
+                        this.up_data[md].ra_gw = i.ra_gw;
+                        this.up_data[md].ra_dz = i.ra_dz;
+                    }
+                };
+
+                if (k == 0) {
+                    error('请先添加需要提成的员工');
+                } else if (k == 1) {
+                    $.post(url(methods.change_save_commission), {
+                        oid: this.orderId,
+                        data: this.up_data
+                    },v=>{
+                        if (v.code == 1) {
+                            success('成功！')
+                            location.href = './customer.html'
+                        } else {
+                            error(v.error);
+                        }
+                    });
+                }
+            },
             sub2() {
                 if (this.twoArr.length == 0 && this.threeArr.length == 0 && this.fourArr.length == 0) {
                     error('请选择提成员工')
@@ -465,7 +705,7 @@
                             this.isPrint()
                         }
                         this.total = v.res.total
-                        this.g = v.res.g
+                        this.gw = v.res.g
                         this.m = v.res.m
                         this.d = v.res.d
                         this.ac_card_total = v.res.ac_card_total
@@ -494,7 +734,7 @@
                             this.isPrint()
                         }
                         this.total = v.res.total
-                        this.g = v.res.g
+                        this.gw= v.res.g
                         this.m = v.res.m
                         this.d = v.res.d
                     } else {

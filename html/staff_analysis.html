@@ -39,7 +39,7 @@
             </el-date-picker>
         </div>
         <div class="basic_inf">
-            <el-table :data="list">
+            <el-table :data="list" :max-height="max_ht">
                 <el-table-column
                         label="员工姓名"
                         prop="name">
@@ -318,6 +318,7 @@
     new Vue({
         el: '#app',
         data: {
+            max_ht:0,
             time: '',
             han_dio: false,
             do_amout_dio: false,
@@ -385,6 +386,10 @@
             }
         },
         methods: {
+            height(){
+                var height=window.innerHeight;
+                this.max_ht=window.innerHeight-142;
+            },
             getData() {
                 $.post(url(methods.staffAnalysis), {start: this.start, end: this.end}, v => {
                     this.list = v.res
@@ -403,6 +408,7 @@
                 that = this;
                 loginState()
                 this.getData()
+                this.height()
             })
         }
     })

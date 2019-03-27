@@ -83,6 +83,8 @@ var methods = {
     'buyWear': 'buy/buyWear',
     'print': 'buy/consume_print',
     'saveCommission': 'buy/save_commission',
+    'change_percentage': 'buy/change_percentage',
+    'change_save_commission': 'buy/change_save_commission',
     'getDetails': 'Consume/getDetails',
     'entry': 'Consume/entry',
     'isLeave': 'Consume/isLeave',

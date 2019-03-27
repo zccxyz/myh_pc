@@ -38,7 +38,7 @@
 
                     <ul class="ra_ul">
                         <li v-for="(v,index) in box_xf_arr">
-                            达标<el-input v-model="v.money" class="un_line_cc"></el-input>元
+                            达标<el-input v-model="v.money" type="number" placeholder="请输入(限数字)" class="un_line_cc"></el-input>元
                             提成
                             <el-input v-model="v.raise" placeholder="0-100" class="un_line_h"></el-input>%
                             <el-button type="info" round plain size="mini" class="add" @click="delarr(1,index)">删除</el-button>
@@ -63,7 +63,7 @@
 
                     <ul class="ra_ul">
                         <li v-for="(v,index) in project_xf_arr">
-                            达标<el-input v-model="v.money" class="un_line_cc"></el-input>元
+                            达标<el-input v-model="v.money" type="number" placeholder="请输入(限数字)" class="un_line_cc"></el-input>元
                             提成
                             <el-input v-model="v.raise" placeholder="0-100" class="un_line_h"></el-input>%
                             <el-button type="info" round plain size="mini" class="add" @click="delarr(2,index)">删除</el-button>
@@ -88,7 +88,7 @@
 
                     <ul class="ra_ul">
                         <li v-for="(v,index) in product_arr">
-                            达标<el-input v-model="v.money" class="un_line_cc"></el-input>元
+                            达标<el-input v-model="v.money" type="number" placeholder="请输入(限数字)" class="un_line_cc"></el-input>元
                             提成
                             <el-input v-model="v.raise" placeholder="0-100" class="un_line_h"></el-input>%
                             <el-button type="info" round plain size="mini" class="add" @click="delarr(3,index)">删除</el-button>
@@ -113,7 +113,7 @@
 
                     <ul class="ra_ul">
                         <li v-for="(v,index) in card_arr">
-                            达标<el-input v-model="v.money" class="un_line_cc"></el-input>元
+                            达标<el-input v-model="v.money" type="number" placeholder="请输入(限数字)" class="un_line_cc"></el-input>元
                             提成
                             <el-input v-model="v.raise" placeholder="0-100" class="un_line_h"></el-input>%
                             <el-button type="info" round plain size="mini" class="add" @click="delarr(4,index)">删除</el-button>
@@ -135,7 +135,7 @@
                     <el-radio v-model="data.box_xh_type" label="2">业绩提成</el-radio><el-button type="primary" round plain size="mini" class="add" @click="add(5)">添加一条</el-button>
                     <ul class="ra_ul">
                         <li v-for="(v,index) in box_xh_arr">
-                            达标<el-input v-model="v.money" class="un_line_cc"></el-input>元
+                            达标<el-input v-model="v.money" type="number" placeholder="请输入(限数字)" class="un_line_cc"></el-input>元
                             提成
                             <el-input v-model="v.raise" placeholder="0-100" class="un_line_h"></el-input>%
                             <el-button type="info" round plain size="mini" class="add" @click="delarr(5,index)">删除</el-button>
@@ -155,7 +155,7 @@
                     <el-radio v-model="data.project_xh_type" label="2">业绩提成</el-radio><el-button type="primary" round plain size="mini" class="add" @click="add(6)">添加一条</el-button>
                     <ul class="ra_ul">
                         <li v-for="(v,index) in project_xh_arr">
-                            达标<el-input v-model="v.money" class="un_line_cc"></el-input>元
+                            达标<el-input v-model="v.money" type="number" placeholder="请输入(限数字)" class="un_line_cc"></el-input>元
                             提成
                             <el-input v-model="v.raise" placeholder="0-100" class="un_line_h"></el-input>%
                             <el-button type="info" round plain size="mini" class="add" @click="delarr(6,index)">删除</el-button>
@@ -180,7 +180,7 @@
 
                     <ul class="ra_ul">
                         <li v-for="(v,index) in plan_xf_arr">
-                            达标<el-input v-model="v.money" class="un_line_cc"></el-input>元
+                            达标<el-input v-model="v.money" type="number" placeholder="请输入(限数字)" class="un_line_cc"></el-input>元
                             提成
                             <el-input v-model="v.raise" placeholder="0-100" class="un_line_h"></el-input>%
                             <el-button type="info" round plain size="mini" class="add" @click="delarr(7,index)">删除</el-button>
@@ -201,7 +201,7 @@
                     <el-radio v-model="data.card_use_xh_type" label="2">业绩提成</el-radio><el-button type="primary" round plain size="mini" class="add" @click="add(8)">添加一条</el-button>
                     <ul class="ra_ul">
                         <li v-for="(v,index) in card_use_xh_arr">
-                            达标<el-input v-model="v.money" class="un_line_cc"></el-input>元
+                            达标<el-input v-model="v.money" type="number" placeholder="请输入(限数字)" class="un_line_cc"></el-input>元
                             提成
                             <el-input v-model="v.raise" placeholder="0-100" class="un_line_h"></el-input>%
                             <el-button type="info" round plain size="mini" class="add" @click="delarr(8,index)">删除</el-button>

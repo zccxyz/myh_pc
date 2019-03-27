@@ -18,12 +18,6 @@ margin-bottom: 10px;
 .el-collapse-item{
 	margin-bottom: 10px;
 }
- .consume_list li{
-	 background: #fff;
-	 padding: 0.5rem 1.5rem;
-    line-height: 40px;
-    border-bottom: 1px  solid rgb(238, 238, 238);
-}
 .mar_hun{
  	margin-right: 100px;
 }
@@ -54,7 +48,7 @@ margin-bottom: 10px;
 .commission>div{
 	width: 40%;
 }
-.commission_list>li{
+.commission_list li{
 	display: flex;
 	justify-content: space-between;
 }
