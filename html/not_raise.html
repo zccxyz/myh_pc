@@ -164,7 +164,11 @@
             },
             back() {
                 history.back()
-            }
+            },
+            close() {
+                this.order_detail = false
+                this.now = []
+            },
         },
         watch: {
             t(v){
