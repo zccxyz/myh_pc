@@ -27,8 +27,11 @@
             </el-date-picker>
             <el-button type="success" class="fr" @click="back">本月总业绩</el-button>
         </div>
-        <div class="basic_inf">
-            <el-table
+        <el-tabs type="card" @tab-click="handleClick"
+                 class="vip_infor">
+            <el-tab-pane label="消费未提成业绩">
+                <div class="basic_inf">
+                    <el-table
                     :data="list"
                     style="width: 100%" fit="true">
                 <el-table-column
@@ -78,7 +81,63 @@
                     </template>
                 </el-table-column>
             </el-table>
-        </div>
+                </div>
+            </el-tab-pane>
+            <el-tab-pane label="消耗未提成业绩">
+                <div class="basic_inf">
+                    <el-table
+                            :data="list"
+                            style="width: 100%" fit="true">
+                        <el-table-column
+                                prop="sn"
+                                label="订单编号" width="175">
+                        </el-table-column>
+                        <el-table-column
+                                prop="create_time"
+                                label="订单时间" width="190">
+                        </el-table-column>
+                        <el-table-column
+                                prop="store_name"
+                                label="店铺名称">
+                        </el-table-column>
+                        <el-table-column
+                                prop="name"
+                                label="会员">
+                        </el-table-column>
+                        <el-table-column
+                                prop="type"
+                                label="品项"
+                                :formatter="formatter">
+                        </el-table-column>
+                        <el-table-column
+                                prop="price"
+                                label="金额">
+                        </el-table-column>
+                        <el-table-column
+                                prop="status"
+                                label="状态"
+                                :formatter="formatter2">
+                        </el-table-column>
+                        <el-table-column
+                                label="操作"
+                                width="350"
+                                fixed="right" align="left"
+                                show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <el-button
+                                        size="mini"
+                                        @click="look(scope.row)" type="success">订单详情
+                                </el-button>
+                                <el-button
+                                        size="mini"
+                                        @click="go_raise(scope.row.id)" type="primary">补提
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+            </el-tab-pane>
+        </el-tabs>
         <!-- 订单详情 -->
         <el-dialog
                 title="订单详情"
@@ -119,14 +178,23 @@
             t: '',
             type: 1,
             list:[],
+            hf_type:1,
             now:''
         },
         methods: {
-            getData(type = 1) {
-                console.log(this.t)
-                $.get(url(methods.not_raise_operation), {time: this.t}, v=>{
+            getData() {
+                $.get(url(methods.not_raise_operation), {time: this.t,type:this.hf_type}, v=>{
                     this.list = v.res.list;
                 })
+            },
+            handleClick(tab, event) {
+                if (tab.index == 0) {
+                    this.hf_type=1;
+                    this.getData()
+                } else if (tab.index == 1) {
+                    this.hf_type=2;
+                    this.getData()
+                }
             },
             formatter(r) {
                 return classify(r.type)
@@ -174,7 +242,6 @@
         watch: {
             t(v){
                 this.t = v
-                console.log(this.t)
                 this.getData()
             }
         },
@@ -183,7 +250,7 @@
                 //初始化
                 that = this;
                 loginState()
-                this.getData()
+                this.getData(1)
             })
         }
     })
