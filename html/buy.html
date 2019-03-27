@@ -318,7 +318,7 @@
                               v-model="input">
                     </el-input>
                 </div>
-                <el-table border
+                <el-table border :max-height="max_ht"
                           ref="multipleTable"
                           :data="yf.filter(data => (!input || data.name.toLowerCase().includes(input.toLowerCase())))"
                           tooltip-effect="dark"
@@ -374,7 +374,7 @@
         </el-tabs>
 
 
-        <div v-if="need.length>0" style="height: 250px;"></div>
+        <!--<div v-if="need.length>0" style="height: 250px;"></div>-->
         <div v-if="need.length>0" class="cart_div" style="z-index: 10">
             <p class="cart_title">
                 已选择（{{need.length}}）
@@ -418,7 +418,7 @@
                  <span class="fl cr total_money">
                      合计：{{total}}
                  </span>
-                <span class="green pay" @click="sub">提交订单</span>
+                <span class="green pay cursor" @click="sub">提交订单</span>
             </div>
         </div>
 
@@ -577,7 +577,11 @@
             },
             height() {
                 var height = window.innerHeight;
-                this.max_ht = window.innerHeight - 161;
+                if(this.need.length>0||this.need2.length>0||this.need3.length>0){
+                    this.max_ht = window.innerHeight - 415;
+                }else{
+                    this.max_ht = window.innerHeight - 165;
+                }
             },
             buyClothes() {
                 if (this.need3.length == 0) {
@@ -877,6 +881,7 @@
                 }).catch(e => {
 
                 })
+                this.height();
             },
             form(r, c) {
                 if (r.free == 1) {
@@ -910,6 +915,7 @@
                         }
                     }
                 }
+                this.height();
             },
             remove2(v) {
                 if (v.needNum > 0) {
@@ -929,6 +935,7 @@
                         }
                     }
                 }
+                this.height();
             },
             remove3(v) {
                 if (v.needNum > 0) {
@@ -948,6 +955,7 @@
                         }
                     }
                 }
+                this.height();
             },
             add(v) {
                 v.needNum++
@@ -962,6 +970,7 @@
                 if (z) {
                     this.need.unshift(v)
                 }
+                this.height();
             },
             add2(v) {
                 v.needNum++
@@ -976,6 +985,7 @@
                 if (z) {
                     this.need2.unshift(v)
                 }
+                this.height();
             },
             add3(v) {
                 v.needNum++
@@ -991,6 +1001,7 @@
                 if (z) {
                     this.need3.unshift(v)
                 }
+                this.height();
             },
             toggleSelection(rows) {
                 if (rows) {
