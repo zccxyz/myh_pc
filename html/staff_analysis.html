@@ -111,7 +111,7 @@
                 <el-table-column
                         label="方案业绩">
                     <template slot-scope="scope">
-                        <el-button type="primary" plain size="mini" @click="pro_dio=true">
+                        <el-button type="primary" plain size="mini" @click="getDetail(scope.row.id, 9);pro_dio=true">
                             0.00
                         </el-button>
                     </template>
@@ -119,7 +119,7 @@
                 <el-table-column
                         label="卡项业绩">
                     <template slot-scope="scope">
-                        <el-button type="success" plain size="mini" @click="pro_dio=true">
+                        <el-button type="success" plain size="mini" @click="getDetail(scope.row.id, 10);pro_dio=true">
                             0.00
                         </el-button>
                     </template>
@@ -127,7 +127,7 @@
                 <el-table-column
                         label="卡扣业绩">
                     <template slot-scope="scope">
-                        <el-button type="warning" plain size="mini" @click="pro_dio=true">
+                        <el-button type="warning" plain size="mini" @click="getDetail(scope.row.id, 11);pro_dio=true">
                             0.00
                         </el-button>
                     </template>
@@ -135,26 +135,27 @@
                 <el-table-column
                         label="充值业绩">
                     <template slot-scope="scope">
-                        <el-button type="info" plain size="mini" @click="pro_dio=true">
+                        <el-button type="info" plain size="mini" @click="getDetail(scope.row.id, 12);pro_dio=true">
                             0.00
                         </el-button>
                     </template>
                 </el-table-column>
-                <el-table-column
+                <!--<el-table-column
                         label="大项目业绩">
                     <template slot-scope="scope">
                         <el-button type="danger" plain size="mini" @click="pro_dio=true">
                             0.00
                         </el-button>
                     </template>
-                </el-table-column>
+                </el-table-column>-->
             </el-table>
         </div>
         <!--手工业绩详情-->
         <el-dialog
                 title="手工业绩详情"
                 :visible.sync="han_dio"
-                center>
+                center
+                :before-close="close">
             <el-table border
                       :data="data"
                       style="width: 100%">
@@ -185,7 +186,8 @@
         <el-dialog
                 title="操作数量及消耗金额详情"
                 :visible.sync="do_amout_dio"
-                center>
+                center
+                :before-close="close">
             <el-table border
                       :data="data"
                       style="width: 100%">
@@ -217,7 +219,8 @@
         <el-dialog
                 title="新客详情"
                 :visible.sync="new_dio"
-                center>
+                center
+                :before-close="close">
             <el-table border
                       :data="data"
                       style="width: 100%">
@@ -247,9 +250,10 @@
         <el-dialog
                 title="客户数"
                 :visible.sync="amout_dio"
-                center>
+                center
+                :before-close="close">
             <el-table border
-                      :data="detail_data"
+                      :data="data"
                       style="width: 100%">
                 <el-table-column
                         prop="name"
@@ -281,7 +285,8 @@
         <el-dialog
                 title="产品业绩详情"
                 :visible.sync="pro_dio"
-                center>
+                center
+                :before-close="close">
             <el-table border
                       :data="data"
                       style="width: 100%">
@@ -397,9 +402,20 @@
             },
             getDetail(id, type) {
                 $.post(url(methods.staffAnalysisDetails), {
-                    id: id, start: this.start, end: this.end, type: type}, v => {
-                    this.data = v.res
+                    start: this.start,end: this.end,id: id,type: type}, v => {
+                    console.log(v)
+                    if(v.code==1){
+                        this.data = v.res.res;
+                        console.log(this.data )
+                    }
                 })
+            },
+            close(){
+                this.han_dio = false;
+                this.do_amout_dio = false;
+                this.new_dio = false;
+                this.amout_dio = false;
+                this.pro_dio = false;
             }
         },
         mounted() {
