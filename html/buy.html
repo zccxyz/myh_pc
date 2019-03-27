@@ -75,10 +75,10 @@
                             prop="beforehand_num"
                             label="预售">
                     </el-table-column>
-                    <el-table-column
+                   <!-- <el-table-column
                             prop="fre"
                             label="次数">
-                    </el-table-column>
+                    </el-table-column>-->
                     <el-table-column
                             prop="free"
                             label="赠送"
@@ -1064,6 +1064,7 @@
                 for (let v of this.yf) {
                     v.needNum = 0;
                 }
+                this.height()
             },
             getCard() {
                 $.post(url(methods.getCardList), v => {
