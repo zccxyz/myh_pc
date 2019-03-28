@@ -35,7 +35,7 @@
                 总金额:<i class="cr">{{detail.price}}</i>&#12288;已支付：{{detail.pay_money}}&#12288;未结清：{{detail.money}}
             </p>
             <p class="other_back order_detail">支付方式</p>
-            <div class="pay_div">
+            <ul class="pay_div">
                 <p style="margin: 12px 0;">
                     <img src="../images/pay(1).png" height="100%"> 现金支付：
                     <el-input type="number" v-model="cash_pay" placeholder="0.00" class="pay_input"></el-input>
@@ -118,26 +118,34 @@
                             赠送积分：<el-input v-model="send_integral" placeholder="0" class="pay_input"></el-input>
                          </span>
                             <span>
-                             赠送金额：<el-input v-model="send_money" placeholder="0.00" class="pay_input"></el-input>
+                             赠送余额：<el-input v-model="send_money" placeholder="0.00" class="pay_input"></el-input>
                              &#12288;经手人：<el-input v-model="person" placeholder="请填写经手人" class="pay_input"></el-input>
                          </span>
                         </div>
-                        <template v-if="couponList.length>0">
+                        <template>
                             <p><img src="../images/pay(6).png" height="100%">使用优惠券（共{{couponList.length}}张优惠券）</p>
-                            <div class="pay_coupon">
-                                <el-tabs type="border-card">
-                                    <el-tab-pane label="可用优惠券">
-                                        以下是该订单可用优惠券，你可以查看优惠券规则说明
-                                    </el-tab-pane>
-                                    <el-tab-pane label="不可用优惠券">
-                                        以下是该订单不可用优惠券，你可以查看优惠券规则说明
-                                    </el-tab-pane>
-                                </el-tabs>
-                            </div>
+                                <div class="pay_other" style="padding-top:10px ">
+                                <ul class="coupon">
+                                    <li v-bind:class="[v.is_check==1 ? 'coupon_li cou_active' : 'coupon_li']" v-for="v in couponList" @click="check(v.id,v.is_check)">
+                                         <img src="../images/choiced3.png" class="choice">
+                                    <p style="margin-bottom: 10px">
+                                        优惠券
+                                    </p>
+                                    <p v-if="v.coupon_type=='满减'">
+                                        满减
+                                        <span class="fr">满<i>{{v.enough}}</i>减<i>{{v.dedut}}</i></span>
+                                    </p>
+                                    <p v-if="v.coupon_type=='抵扣'">
+                                        抵扣
+                                        <span class="fr">满{{v.dedut}}可用</span>
+                                    </p>
+                                    </li>
+                                </ul>
+                                </div>
                         </template>
                     </span>
                 </template>
-            </div>
+            </ul>
         </div>
         <div class="pay_infor" v-if="type==1">
             <p>
@@ -149,9 +157,9 @@
             <p>
                 积分抵扣金额<span class="fr"><i class="cr">-￥</i>{{integral_pay==''?0:integral_pay}}</span>
             </p>
-            <p>
+           <!-- <p>
                 赠送金额<span class="fr"><i class="cr">-￥</i>{{send_money==''?0:send_money}}</span>
-            </p>
+            </p>-->
         </div>
         <div style="height:70px"></div>
         <div class="pay_total">
@@ -214,12 +222,43 @@
             cardDetail: '',
         },
         methods: {
+            check (id, check) {
+                if (check == 1) {
+                    //新添加的
+                    $.post(url(methods.cancelCoupon), {
+                        mid: this.order.vid,
+                        id: id,
+                        check: check,
+                    },v=> {
+                        if (v.code == 1) {
+                            this.coupon = 0;
+                            this.getDetail();
+                        } else {
+                            error(v.errorMsg);
+                        }
+                    });
+                } else {
+                    $.post(url(methods.ChoiceCouponList), {
+                        mid: this.order.vid,
+                        id: id,
+                        check: check,
+                        order: this.id
+                    },v=> {
+                        if (v.code == 1) {
+                            this.getDetail();
+                            success(v.Msg);
+                        } else {
+                            error(v.errorMsg);
+                        }
+                    });
+                }
+            },
             sub2() {
                 let total = parseFloat(this.zfb_pay == '' ? 0 : this.zfb_pay) + parseFloat(this.wx_pay == '' ? 0 : this.wx_pay)
                     + parseFloat(this.bank_pay == '' ? 0 : this.bank_pay) + parseFloat(this.dzdp_pay == '' ? 0 : this.dzdp_pay)
                     + parseFloat(this.sqb_pay == '' ? 0 : this.sqb_pay) + parseFloat(this.mt_pay == '' ? 0 : this.mt_pay)
                     + parseFloat(this.send_balance_pay == '' ? 0 : this.send_balance_pay) + parseFloat(this.balance_pay == '' ? 0 : this.balance_pay)
-                    + parseFloat(this.integral_pay == '' ? 0 : this.integral_pay) + parseFloat(this.send_money == '' ? 0 : this.send_money)
+                    + parseFloat(this.integral_pay == '' ? 0 : this.integral_pay) + parseFloat(this.coupon == '' ? 0 : this.coupon)
                     + parseFloat(this.cash_pay == '' ? 0 : this.cash_pay)
                     + parseFloat(this.card_pay == '' ? 0 : this.card_pay)
                 if (total != this.detail.money) {
@@ -294,6 +333,11 @@
                         this.member = v.res.member_one
                         this.couponList = v.res.couponList
                         this.cardList = v.res.cardList
+                        for(let i of  this.couponList){
+                            if(i.is_check==1){
+                                this.coupon=i.dedut
+                            }
+                        }
                     }
                 })
             },
@@ -357,7 +401,7 @@
                     - parseFloat(this.bank_pay == '' ? 0 : this.bank_pay) - parseFloat(this.dzdp_pay == '' ? 0 : this.dzdp_pay)
                     - parseFloat(this.sqb_pay == '' ? 0 : this.sqb_pay) - parseFloat(this.mt_pay == '' ? 0 : this.mt_pay)
                     - parseFloat(this.send_balance_pay == '' ? 0 : this.send_balance_pay) - parseFloat(this.balance_pay == '' ? 0 : this.balance_pay)
-                    - parseFloat(this.integral_pay == '' ? 0 : this.integral_pay) - parseFloat(this.send_money == '' ? 0 : this.send_money)
+                    - parseFloat(this.integral_pay == '' ? 0 : this.integral_pay) - parseFloat(this.coupon == '' ? 0 : this.coupon)
                     - parseFloat(this.cash_pay == '' ? 0 : this.cash_pay)
                     - parseFloat(this.card_pay == '' ? 0 : this.card_pay)
             },
@@ -366,7 +410,7 @@
                     + parseFloat(this.bank_pay == '' ? 0 : this.bank_pay) + parseFloat(this.dzdp_pay == '' ? 0 : this.dzdp_pay)
                     + parseFloat(this.sqb_pay == '' ? 0 : this.sqb_pay) + parseFloat(this.mt_pay == '' ? 0 : this.mt_pay)
                     + parseFloat(this.send_balance_pay == '' ? 0 : this.send_balance_pay) + parseFloat(this.balance_pay == '' ? 0 : this.balance_pay)
-                    + parseFloat(this.integral_pay == '' ? 0 : this.integral_pay) + parseFloat(this.send_money == '' ? 0 : this.send_money)
+                    + parseFloat(this.integral_pay == '' ? 0 : this.integral_pay) + parseFloat(this.coupon == '' ? 0 : this.coupon)
                     + parseFloat(this.cash_pay == '' ? 0 : this.cash_pay)
                     + parseFloat(this.card_pay == '' ? 0 : this.card_pay)
             },
@@ -378,7 +422,6 @@
                 this.id = localStorage.getItem('orderId')
                 this.arrears = localStorage.getItem('arrearsRes')
                 this.type = localStorage.getItem('type')
-                console.log(this.type)
                 if (this.type == 1) {
                     this.getDetail()
                 } else {

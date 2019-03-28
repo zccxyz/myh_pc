@@ -85,6 +85,8 @@ var methods = {
     'saveCommission': 'buy/save_commission',
     'change_percentage': 'buy/change_percentage',
     'change_save_commission': 'buy/change_save_commission',
+    'cancelCoupon': 'buy/cancelCoupon',
+    'ChoiceCouponList': 'buy/ChoiceCouponList',
     'getDetails': 'Consume/getDetails',
     'entry': 'Consume/entry',
     'isLeave': 'Consume/isLeave',
