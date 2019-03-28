@@ -133,17 +133,17 @@
                                 label="状态"
                                 :formatter="formatter2">
                         </el-table-column>-->
-                        <!--<el-table-column
+                        <el-table-column
                                 label="操作"
                                 fixed="right" align="left"
                                 show-overflow-tooltip>
                             <template slot-scope="scope">
                                 <el-button
                                         size="mini"
-                                        @click="go_raise(scope.row.id)" type="primary">补提
+                                        @click="go_repair(scope.row.id)" type="primary">补提
                                 </el-button>
                             </template>
-                        </el-table-column>-->
+                        </el-table-column>
                     </el-table>
                 </div>
             </el-tab-pane>
@@ -228,6 +228,10 @@
                     localStorage.setItem('orderId', id)
                     location.href='./commission.html'
 
+            },
+            go_repair(id){
+                localStorage.setItem('id', id)
+                location.href='./consume_repair.html'
             },
             look(v) {
                 $.post(url(methods.getOrderDetail), {oid: v.id}, v=>{

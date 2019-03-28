@@ -88,6 +88,7 @@ var methods = {
     'getDetails': 'Consume/getDetails',
     'entry': 'Consume/entry',
     'isLeave': 'Consume/isLeave',
+    'consume_repair_': 'Consume/consume_repair_',
     'userInfo': 'Vipdetails/basicinformation',
     'editUser': 'Vipdetails/edit',
     'operationDetail': 'Store/operationDetail',

@@ -403,10 +403,8 @@
             getDetail(id, type) {
                 $.post(url(methods.staffAnalysisDetails), {
                     start: this.start,end: this.end,id: id,type: type}, v => {
-                    console.log(v)
                     if(v.code==1){
                         this.data = v.res.res;
-                        console.log(this.data )
                     }
                 })
             },
