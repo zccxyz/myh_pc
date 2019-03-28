@@ -323,25 +323,38 @@
             </el-tab-pane>
 
             <el-tab-pane label="优惠券查看">
+                <div class="cus_center">
+                    <el-button type="success" class="fr" @click="get_coupon_Dio = true;get_all_cou()">赠送优惠券</el-button>
+                </div>
                 <div class="basic_inf">
                     <el-table
                             :data="coupon"
                             style="width: 100%">
                         <el-table-column
                                 prop="coupon_name"
+                                label="优惠券名称">
+                        </el-table-column>
+                        <el-table-column
                                 label="优惠券类型">
+                            <template slot-scope="scope">
+                                <i v-if="scope.row.coupon_type=='满减'">满减</i>
+                                <i v-if="scope.row.coupon_type=='抵扣'">抵扣</i>
+                                <i v-if="scope.row.coupon_type==1">满减</i>
+                                <i v-if="scope.row.coupon_type==2">满折</i>
+                                <i v-if="scope.row.coupon_type==3">满赠</i>
+                                <i v-if="scope.row.coupon_type==4">抵扣</i>
+                            </template>
                         </el-table-column>
                         <el-table-column
-                                prop="coupon_num"
-                                label="数量">
-                        </el-table-column>
-                        <el-table-column
-                                prop="start_time"
-                                label="开始时间">
-                        </el-table-column>
-                        <el-table-column
-                                prop="end_time"
-                                label="结束时间">
+                                label="优惠券属性">
+                            <template slot-scope="scope">
+                                <i v-if="scope.row.coupon_type=='满减'"> 满{{scope.row.enough}}减{{scope.row.dedut}}</i>
+                                <i v-if="scope.row.coupon_type=='抵扣'"> 满{{scope.row.dedut}}可用</i>
+                                <i v-if="scope.row.coupon_type==1"> 满{{scope.row.enough}}减{{scope.row.dedut}}</i>
+                                <i v-if="scope.row.coupon_type==2"> 满{{scope.row.enough}}减{{scope.row.send}}</i>
+                                <i v-if="scope.row.coupon_type==3"> 满{{scope.row.enough}}减{{scope.row.discount}}</i>
+                                <i v-if="scope.row.coupon_type==4"> 满{{scope.row.dedut}}可用</i>
+                            </template>
                         </el-table-column>
                     </el-table>
                 </div>
@@ -858,6 +871,26 @@
                 </li>
             </ul>
         </el-dialog>
+        <!-- 赠送优惠券 -->
+        <el-dialog
+                title="赠送优惠券"
+                :visible.sync="get_coupon_Dio"
+                width="300"
+                center>
+            <div style="text-align: center">
+                <el-select v-model="send_id" placeholder="请选择">
+                    <el-option
+                            v-for="item in con_list"
+                            :label="item.coupon_name"
+                            :value="item.id">
+                    </el-option>
+                </el-select>
+            </div>
+            <span slot="footer" class="dialog-footer">
+            <el-button @click="get_coupon_Dio = false">取 消</el-button>
+            <el-button type="primary" @click="send_cou">确 定</el-button>
+          </span>
+        </el-dialog>
     </template>
 </div>
 
@@ -871,8 +904,11 @@
     new Vue({
         el: '#app',
         data: {
+            send_id:'',
+            con_list:'',
             demand_list:'',
             checkList: '',
+            get_coupon_Dio: false,
             dialogVisible: false,
             dialogVisible2: false,
             add_demand_dio:false,
@@ -968,9 +1004,22 @@
             detail2: '',
         },
         methods: {
+            send_cou(){
+                $.post(url(methods.send_coupon),{id:this.send_id,mid:this.userId},v=>{
+                    if(v.code==1){
+                        success('赠送成功');
+                        this.get_coupon_Dio=false
+                        this.getCoupon()
+                    }
+                })
+            },
+            get_all_cou(){
+                $.get(url(methods.getList),v=>{
+                    this.con_list=v.list;
+                })
+            },
             getData() {
                 $.post(url(methods.getNeed), {'id': this.userId}, (v)=>{
-                    console.log(v)
                     this.demand_list = v
                 })
             },
@@ -1177,8 +1226,9 @@
                 })
             },
             getCoupon() {
-                $.post(url(methods.haveCoupon), {mid: this.userId}, v => {
-                    this.coupon = v.data
+                $.get(url(methods.ajax_have_coupon), {mid: this.userId}, v => {
+                    console.log(v)
+                    this.coupon = v.res
                 })
             },
             handleClick(tab, event) {
