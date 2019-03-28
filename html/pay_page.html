@@ -220,6 +220,7 @@
             bkId: 0,
             detail: '',
             cardDetail: '',
+            couponID:''
         },
         methods: {
             check (id, check) {
@@ -232,6 +233,7 @@
                     },v=> {
                         if (v.code == 1) {
                             this.coupon = 0;
+                            this.couponID = '';
                             this.getDetail();
                         } else {
                             error(v.errorMsg);
@@ -245,6 +247,7 @@
                         order: this.id
                     },v=> {
                         if (v.code == 1) {
+                            this.couponID = id;
                             this.getDetail();
                             success(v.Msg);
                         } else {
@@ -314,7 +317,7 @@
                         'card_pay': this.card_pay,
                         'send_money': this.send_money,
                         'person': this.person,
-                        'coupon': this.coupon
+                        'coupon': this.couponID
                     })
                 }, v => {
                     if (v.code == 1) {
