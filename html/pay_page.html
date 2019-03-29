@@ -264,8 +264,8 @@
                     + parseFloat(this.integral_pay == '' ? 0 : this.integral_pay) + parseFloat(this.coupon == '' ? 0 : this.coupon)
                     + parseFloat(this.cash_pay == '' ? 0 : this.cash_pay)
                     + parseFloat(this.card_pay == '' ? 0 : this.card_pay)
-                if (total != this.detail.money) {
-                    error(`补款金额必须是${this.detail.money}元`)
+                if (total > this.detail.money) {
+                    error(`补款金额大于欠款金额`)
                     return
                 }
                 $.post(url(methods.suppDetail), {
@@ -288,6 +288,7 @@
                             localStorage.setItem('cost', v.cost)
                         } else {
                             localStorage.setItem('cost', v.supp)
+                            localStorage.setItem('arrears_id', v.re)
                         }
                         success(v.Msg)
                         setTimeout(() => location.href = './commission.html', 1000)
@@ -346,6 +347,7 @@
             },
             getDetail2() {
                 $.get(url(methods.suppDetail) + `&id=${this.bkId}`, v => {
+                    console.log(v)
                     if (v.code == 1) {
                         this.detail = v.detail
                     } else {

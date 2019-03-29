@@ -40,7 +40,7 @@
                 <i style="line-height: 33px">备注：</i>
                 <el-input style="flex:1"
                     type="textarea"
-                    autosize
+                    autosize clearable
                     placeholder="请输入内容"
                     v-model="textarea">
             </el-input>
@@ -50,39 +50,81 @@
                 <el-input class="cus_seatch" style="float: left"
                           placeholder="开始扫码"
                           prefix-icon="el-icon-search"
-                          v-model="scan_in">
+                          v-model="scan_in" v-change="get_data()">
                 </el-input>
                 <el-button type="success" class="fr" @click="">一键入库</el-button>
             </div>
         <div class="basic_inf">
             <el-table :data="scan_list" :max-height="max_ht" show-summary>
                 <el-table-column
-                        label="商品编号"
-                        prop="sn">
+                        label="商品编号">
+                    <template slot-scope="scope">
+                        <el-input size="mini"
+                                placeholder="请输入内容"
+                                v-model="scope.row.sn"
+                                clearable>
+                        </el-input>
+                    </template>
                 </el-table-column>
                 <el-table-column
-                        label="商品名称"
-                        prop="name">
+                        label="商品名称">
+                    <template slot-scope="scope">
+                        <el-input size="mini"
+                                  placeholder="请输入内容"
+                                  v-model="scope.row.name"
+                                  clearable>
+                        </el-input>
+                    </template>
                 </el-table-column>
                 <el-table-column
-                        label="单价"
-                        prop="price">
+                        label="单价">
+                    <template slot-scope="scope">
+                        <el-input size="mini"
+                                  placeholder="请输入内容"
+                                  v-model="scope.row.price"
+                                  clearable>
+                        </el-input>
+                    </template>
                 </el-table-column>
                 <el-table-column
-                        label="数量"
-                        prop="num">
+                        label="数量">
+                    <template slot-scope="scope">
+                        <el-input size="mini"
+                                  placeholder="请输入内容"
+                                  v-model="scope.row.num"
+                                  clearable>
+                        </el-input>
+                    </template>
                 </el-table-column>
                 <el-table-column v-if="px==4"
-                        label="颜色"
-                        prop="color">
+                        label="颜色">
+                    <template slot-scope="scope">
+                        <el-input size="mini"
+                                  placeholder="请输入内容"
+                                  v-model="scope.row.color"
+                                  clearable>
+                        </el-input>
+                    </template>
                 </el-table-column>
                 <el-table-column v-if="px==4"
-                        label="尺码"
-                        prop="size">
+                        label="尺码">
+                    <template slot-scope="scope">
+                        <el-input size="mini"
+                                  placeholder="请输入内容"
+                                  v-model="scope.row.size"
+                                  clearable>
+                        </el-input>
+                    </template>
                 </el-table-column>
                 <el-table-column
-                        label="总额"
-                        prop="total">
+                        label="总额">
+                    <template slot-scope="scope">
+                        <el-input size="mini"
+                                  placeholder="请输入内容"
+                                  v-model="scope.row.total"
+                                  clearable>
+                        </el-input>
+                    </template>
                 </el-table-column>
             </el-table>
         </div>
@@ -135,6 +177,24 @@
                 var height=window.innerHeight;
                 this.max_ht=window.innerHeight-112;
             },
+            get_data(){
+                console.log(this.scan_in);
+                /*$.get(url(methods.sc_good),v=>{
+
+                })*/
+                let empty={
+                    sn: this.scan_in,
+                    name: '',
+                    price: '',
+                    num: '',
+                    total: '',
+                    color: '',
+                    size: '',
+                }
+                this.scan_list.push(empty);
+                console.log(this.scan_list)
+                // this.scan_list[this.scan_list.length].
+            }
         },
         mounted() {
             this.$nextTick(e=>{

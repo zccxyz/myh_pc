@@ -293,6 +293,7 @@
     new Vue({
         el: '#app',
         data: {
+            arrears_id:'',
             gw: [],
             mrs: [],
             staff: [],
@@ -562,6 +563,7 @@
                         ka_raise_m: arr5,
                         ka_raise_g: arr6,
                         ka_raise_d: arr7,
+                        arrears_id: this.arrears_id
                     })
                 }, v => {
                     if (v.code == 1) {
@@ -625,7 +627,7 @@
                         ka_raise_d: arr7,
                         order: this.orderId,
                         type: '',
-                        cost: this.cost
+                        cost: this.cost,
                     })
                 }, v => {
                     if (v.code == 1) {
@@ -728,7 +730,7 @@
                 })
             },
             getData2() {
-                $.get(url(methods.saveCommission) + `&supp=${this.cost}&type=supp`, v => {
+                $.get(url(methods.saveCommission) + `&supp=${this.cost}&type=supp&arrears_id=${this.arrears_id}`, v => {
                     if (v.code == 1) {
                         if (v.res.print_type == 1) {
                             this.isPrint()
@@ -812,6 +814,7 @@
                 loginState()
                 this.cost = localStorage.getItem('cost')
                 this.type = localStorage.getItem('type')
+                this.arrears_id = localStorage.getItem('arrears_id')
                 if (this.type == 1) {
                     this.orderId = localStorage.getItem('orderId')
                     this.getData()

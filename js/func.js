@@ -70,6 +70,7 @@ var methods = {
     'conOperation': 'Goods/con_operation',
     'consumablesList': 'Goods/ConsumablesList',
     'getUn': 'Goods/getUn',
+    'sc_good': 'Goods/search',
     'addVip': 'Member/addvip',
     'addArrive': 'Arrive/AddArrive',
     'leave': 'Arrive/leave',
