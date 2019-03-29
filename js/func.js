@@ -134,6 +134,7 @@ var methods = {
     'goodsManager': 'Ware/goods_manager',
     'wareSet': 'Ware/WareSet',
     'warePull': 'Ware/pull',
+    'bills_info': 'Ware/bills_info',
     'checkArrears': 'member/check_arrears',
     'cancelOrder': 'member/CancelOrder',
     'refundOrder': 'member/refund_order',

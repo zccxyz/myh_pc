@@ -90,6 +90,7 @@
                     库存小于(x)预警：
                     <el-input v-model="warning.start_num" type="number" placeholder="" class="li_input"></el-input>
                     <i class="blue_c" @click="yjSet">修改</i>
+                    <!--<el-button type="warning" class="fr" @click="scan_Dio=true">批量扫码入库</el-button>-->
                 </div>
                 <div>
                     库存大于(x)预警：
@@ -609,6 +610,26 @@
             <el-button type="primary" @click="into('out')">确 定</el-button>
           </span>
         </el-dialog>
+        <!--扫码录入-->
+        <el-dialog title="扫码录入"
+                   :visible.sync="scan_Dio"
+                   width="260px"
+                   center>
+            <ul class="linr_four">
+                <li class="cursor" @click="go_scan(1)">
+                    <el-radio v-model="scan_type" label="1">产品</el-radio>
+                </li>
+                <li class="cursor" @click="go_scan(2)">
+                    <el-radio v-model="scan_type" label="2">套盒</el-radio>
+                </li>
+                <li class="cursor" @click="go_scan(3)">
+                    <el-radio v-model="scan_type" label="3">项目耗材</el-radio>
+                </li>
+                <li class="cursor" @click="go_scan(4)">
+                    <el-radio v-model="scan_type" label="4">内衣</el-radio>
+                </li>
+            </ul>
+        </el-dialog>
     </template>
 </div>
 
@@ -622,6 +643,8 @@
     new Vue({
         el: '#app',
         data: {
+            scan_type:'1',
+            scan_Dio: false,
             checkList: '',
             y_k_dio: false,
             d_cang_dio: false,
@@ -724,6 +747,11 @@
             }
         },
         methods: {
+            go_scan(t){
+                console.log(t)
+                localStorage.setItem('px', t);
+                location.href = './scan_code.html';
+            },
             yjSet() {
                 if (this.warning.start_num == '' || this.warning.end_num == '') {
                     return error('请填写整数数量')

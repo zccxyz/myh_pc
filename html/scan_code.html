@@ -50,7 +50,7 @@
                 <el-input class="cus_seatch" style="float: left"
                           placeholder="开始扫码"
                           prefix-icon="el-icon-search"
-                          v-model="scan_in" v-change="get_data()">
+                          v-model="scan_in" @change="get_data()">
                 </el-input>
                 <el-button type="success" class="fr" @click="">一键入库</el-button>
             </div>
@@ -61,7 +61,7 @@
                     <template slot-scope="scope">
                         <el-input size="mini"
                                 placeholder="请输入内容"
-                                v-model="scope.row.sn"
+                                v-model="scope.row.sn" :disabled="scope.row.disabled"
                                 clearable>
                         </el-input>
                     </template>
@@ -140,6 +140,7 @@
     new Vue({
         el: '#app',
         data: {
+            title:'',
             scan_in:'',
             textarea:'',
             max_ht:0,
@@ -171,6 +172,7 @@
                 size: '75B',
                 },
             ],
+            list:''
         },
         methods: {
             height(){
@@ -178,21 +180,38 @@
                 this.max_ht=window.innerHeight-112;
             },
             get_data(){
-                console.log(this.scan_in);
-                /*$.get(url(methods.sc_good),v=>{
-
-                })*/
-                let empty={
-                    sn: this.scan_in,
-                    name: '',
-                    price: '',
-                    num: '',
-                    total: '',
-                    color: '',
-                    size: '',
+                $.get(url(methods.bills_info),{type:this.px},v=>{
+                    console.log(v)
+                })
+                let y=0;
+                for(let i of this.list){
+                    if(i.sn==this.scan_in){
+                        y=1;
+                        let empty={
+                            sn: this.scan_in,
+                            name: i.name,
+                            price: i.price,
+                            num: i.num,
+                            total: i.total,
+                            color: i.color,
+                            size: i.size,
+                            disabled:true
+                        }
+                    }
                 }
-                this.scan_list.push(empty);
-                console.log(this.scan_list)
+                if(y==0){
+                    let empty={
+                        sn: this.scan_in,
+                        name: '',
+                        price: '',
+                        num: '',
+                        total: '',
+                        color: '',
+                        size: '',
+                        disabled:false
+                    }
+                    this.scan_list.push(empty);
+                }
                 // this.scan_list[this.scan_list.length].
             }
         },
@@ -202,7 +221,23 @@
                 that = this;
                 loginState()
                 this.height()
-                this.px = localStorage.getItem('px')
+                this.px = localStorage.getItem('px');
+                switch (this.px){
+                    case 1:
+                        this.title='产品';
+                        break;
+                    case 2:
+                        this.title='套盒';
+                        break;
+                    case 3:
+                        this.title='项目耗材';
+                        break;
+                    case 4:
+                        this.title='内衣';
+                        break;
+                    default:
+                        break;
+                }
             })
         }
     })
