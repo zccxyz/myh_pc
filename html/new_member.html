@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>美约会-会员管理</title>
+    <title>美约会-新客管理</title>
     <link rel="stylesheet" href="../css/index.css">
     <link rel="stylesheet" type="text/css" href="../css/common.css">
     <link rel="stylesheet" type="text/css" href="../css/customer.css">
@@ -14,7 +14,7 @@
         <p class="cus_title">
             <el-breadcrumb separator-class="el-icon-arrow-right">
                 <el-breadcrumb-item><a href="home.html" target="iframe">工作台首页</a></el-breadcrumb-item>
-                <el-breadcrumb-item>散客管理</el-breadcrumb-item>
+                <el-breadcrumb-item>新客管理</el-breadcrumb-item>
             </el-breadcrumb>
         </p>
         <div class="cus_center">
@@ -23,7 +23,7 @@
                       prefix-icon="el-icon-search"
                       v-model="input">
             </el-input>
-            <el-button type="success" class="fr" @click="zt2 = true">新增散客</el-button>
+            <el-button type="success" class="fr" @click="zt2 = true;get_ember();get_advister()">新增散客</el-button>
         </div>
         <el-table border
                   ref="multipleTable"
@@ -46,6 +46,13 @@
             <el-table-column :formatter="formatter2"
                              prop="sex"
                              label="性别">
+            </el-table-column>
+            <el-table-column
+                             label="类型">
+                <template slot-scope="scope">
+                    <i v-if="scope.row.vip_status==2">新客</i>
+                    <i v-if="scope.row.vip_status==3">嘉宾</i>
+                </template>
             </el-table-column>
             <el-table-column
                     label="操作"
@@ -73,12 +80,24 @@
 
         <!--新增-->
         <el-dialog
-                title="新增散客"
+                title="添加新客"
                 :visible.sync="zt2"
                 width="400px"
                 center
                 :before-close="close">
             <ul class="goods_edit">
+                <li>
+                    <span class="list_left">推荐人</span>
+                    <span class="list_right">
+                    <el-select v-model="user.member" placeholder="请选择" filterable>
+                        <el-option
+                                v-for="item in mem_list"
+                                :label="item.name"
+                                :value="item.id">
+                        </el-option>
+                    </el-select>
+                </span>
+                </li>
                 <li>
                     <span class="list_left">姓名*</span>
                     <span class="list_right">
@@ -97,13 +116,13 @@
                         <el-input v-model="user.tel" placeholder="请输入手机号"></el-input>
                     </span>
                 </li>
-                <!--<li>
-                    <span class="list_left">类别</span>
+                <li>
+                    <span class="list_left">类型：</span>
                     <span class="list_right">
-                        <el-radio v-model="user.vip_status" label="1">会员</el-radio>
-                        <el-radio v-model="user.vip_status" label="2">散客</el-radio>
+                        <el-radio v-model="user.type" label="1">新客</el-radio>
+                        <el-radio v-model="user.type" label="2">嘉宾</el-radio>
                     </span>
-                </li>-->
+                </li>
                 <li>
                     <span class="list_left">性别</span>
                     <span class="list_right">
@@ -114,22 +133,15 @@
                 <li>
                     <span class="list_left">顾问</span>
                     <span class="list_right">
-                        <el-input v-model="user.adviser" placeholder="请输入手顾问姓名"></el-input>
-                    </span>
-                </li>
-                <!--<li>
-                    <span class="list_left">顾问</span>
-                    <span class="list_right">
-                    <el-select v-model="value" placeholder="请选择">
-                        <el-option
-                                v-for="item in options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
+                    <el-select v-model="user.staff" placeholder="请选择">
+                         <el-option
+                                 v-for="item in adviser_list"
+                                 :label="item.name"
+                                 :value="item.id">
                         </el-option>
                     </el-select>
                 </span>
-                </li>-->
+                </li>
             </ul>
             <span slot="footer" class="dialog-footer">
             <el-button @click="close">取 消</el-button>
@@ -311,9 +323,10 @@
                 'name': '',
                 'age': '',
                 'tel': '',
+                'member': '',
+                'type': '1',
                 'sex': '1',
-                'weixin': '',
-                'adviser': '',
+                'staff': '',
             },
             room: '',
             now: '',
@@ -323,13 +336,29 @@
             arr: [],
             user2: {},
             pw: '',
+            mem_list:'',
+            adviser_list:''
         },
         methods: {
+            get_advister(){
+                $.get(url(methods.get_advister),v=>{
+                    this.adviser_list=v.res;
+                })
+            },
+            get_ember() {
+                console.log(1)
+                $.get(url(methods.get_member_list), v => {
+                    console.log(v)
+                    if(v.code==1){
+                        this.mem_list = v.res.all_member
+                    }
+                })
+            },
             add2() {
                 if (this.user.name == '' || this.user.tel.length != 11) {
                     return error('请输入姓名和11为手机号码')
                 }
-                $.post(url(methods.addNew), this.user, v => {
+                $.post(url(methods.addNew), {data:this.user}, v => {
                     if (v.code == 1) {
                         success(v.Msg)
                         this.close()
@@ -383,9 +412,10 @@
                             'name': '',
                             'age': '',
                             'tel': '',
+                            'member': '',
+                            'type': '1',
                             'sex': '1',
-                            'bir_type': '1',
-                            'birthday': '',
+                            'staff': '',
                         }
                         success('修改成功')
                         this.getMember()
@@ -514,9 +544,10 @@
                             'name': '',
                             'age': '',
                             'tel': '',
+                            'member': '',
+                            'type': '1',
                             'sex': '1',
-                            'bir_type': '1',
-                            'birthday': '',
+                            'staff': '',
                         }
                         this.addDialogVisible = false
                         this.getMember()
@@ -531,9 +562,10 @@
                     'name': '',
                     'age': '',
                     'tel': '',
+                    'member': '',
+                    'type': '1',
                     'sex': '1',
-                    'weixin': '',
-                    'adviser': '',
+                    'staff': '',
                 }
                 this.addDialogVisible = false
                 this.zt = false
@@ -546,9 +578,10 @@
                     'name': '',
                     'age': '',
                     'tel': '',
+                    'member': '',
+                    'type': '1',
                     'sex': '1',
-                    'bir_type': 1,
-                    'birthday': '',
+                    'staff': '',
                 };
             },
             toggleSelection(rows) {

@@ -270,7 +270,8 @@
                     <el-select v-model="user.adviser" placeholder="请选择">
                         <el-option
                                 v-for="item in adviser_list"
-                                :value="item.name">
+                                :label="item.name"
+                                :value="item.id">
                         </el-option>
                     </el-select>
                 </span>
