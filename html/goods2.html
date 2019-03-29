@@ -47,7 +47,7 @@
             <!--<el-button type="success" class="fr" @click="del">批量删除</el-button>-->
             <el-button type="success" class="fr" @click="zt = true">新增商品</el-button>
             <!--addPlan = true-->
-            <!--<el-button type="success" class="fr">批量新增</el-button>-->
+            <!--<el-button type="warning" class="fr" @click="scan_Dio=true">扫码录入</el-button>-->
         </div>
         <el-table border
                   ref="multipleTable"
@@ -465,7 +465,26 @@
             <el-button type="primary" @click="modify('modify')">确 定</el-button>
           </span>
         </el-dialog>
-
+        <!--扫码录入-->
+        <el-dialog title="扫码录入"
+                   :visible.sync="scan_Dio"
+                   width="260px"
+                   center>
+            <ul class="linr_four">
+                <li class="cursor" @click="go_scan(1)">
+                    <el-radio v-model="scan_type" label="1">产品</el-radio>
+                </li>
+                <li class="cursor" @click="go_scan(2)">
+                    <el-radio v-model="scan_type" label="2">套盒</el-radio>
+                </li>
+                <li class="cursor" @click="go_scan(3)">
+                    <el-radio v-model="scan_type" label="3">项目</el-radio>
+                </li>
+                <li class="cursor" @click="go_scan(4)">
+                    <el-radio v-model="scan_type" label="4">内衣</el-radio>
+                </li>
+            </ul>
+        </el-dialog>
     </template>
 
 </div>
@@ -480,6 +499,8 @@
     new Vue({
         el: '#app',
         data: {
+            scan_type:'1',
+            scan_Dio:false,
             unit_options: [{
                 value: 1,
                 label: '件'
@@ -557,6 +578,11 @@
             zt2: false,
         },
         methods: {
+            go_scan(t){
+                console.log(t)
+                localStorage.setItem('px', t);
+                location.href = './scan_code.html';
+            },
             modify(t, data='') {
                 let d = data
                 if(t=='add') {

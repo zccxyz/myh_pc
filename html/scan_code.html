@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>扫码录入</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+    <style>
+        .ti_dan{
+            line-height: 40px;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app" class="customer">
+    <template>
+        <p class="cus_title">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+                <el-breadcrumb-item><a href="home.html" target="iframe">工作台首页</a></el-breadcrumb-item>
+                <el-breadcrumb-item>扫码录入</el-breadcrumb-item>
+            </el-breadcrumb>
+        </p>
+        <div class="cus_center linr_four" style="background: white;margin: 10px 0;padding: 10px 15px">
+            <h2 class="align_center ti_dan">什么入库单</h2>
+            <ul style="display: flex;justify-content: space-between;">
+                <li>
+                    入库日期：2002
+                </li>
+                <li>
+                    入库单编号：356216156415
+                </li>
+                <li>
+                    操作人：大胃王
+                </li>
+            </ul>
+            <p style="display: flex;flex-wrap: nowrap;margin-top: 10px">
+                <i style="line-height: 33px">备注：</i>
+                <el-input style="flex:1"
+                    type="textarea"
+                    autosize
+                    placeholder="请输入内容"
+                    v-model="textarea">
+            </el-input>
+            </p>
+            </div>
+            <div class="cus_center">
+                <el-input class="cus_seatch" style="float: left"
+                          placeholder="开始扫码"
+                          prefix-icon="el-icon-search"
+                          v-model="scan_in">
+                </el-input>
+                <el-button type="success" class="fr" @click="">一键入库</el-button>
+            </div>
+        <div class="basic_inf">
+            <el-table :data="scan_list" :max-height="max_ht" show-summary>
+                <el-table-column
+                        label="商品编号"
+                        prop="sn">
+                </el-table-column>
+                <el-table-column
+                        label="商品名称"
+                        prop="name">
+                </el-table-column>
+                <el-table-column
+                        label="单价"
+                        prop="price">
+                </el-table-column>
+                <el-table-column
+                        label="数量"
+                        prop="num">
+                </el-table-column>
+                <el-table-column v-if="px==4"
+                        label="颜色"
+                        prop="color">
+                </el-table-column>
+                <el-table-column v-if="px==4"
+                        label="尺码"
+                        prop="size">
+                </el-table-column>
+                <el-table-column
+                        label="总额"
+                        prop="total">
+                </el-table-column>
+            </el-table>
+        </div>
+    </template>
+</div>
+</body>
+</html>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../js/func.js"></script>
+<script src="../js/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            scan_in:'',
+            textarea:'',
+            max_ht:0,
+            px:'',
+            dd:{
+                sn: '',
+                name: '',
+                price: '',
+                num: '',
+                total: '',
+                color: '',
+                size: '',
+            },
+            scan_list:[{
+                sn: '432432453242',
+                name: 'dfsf',
+                price: '32',
+                num: '43',
+                total: '5345435',
+                color: '红色',
+                size: '75B',
+                },{
+                sn: '432432453242',
+                name: 'dfsf',
+                price: '32',
+                num: '43',
+                total: '5345435',
+                color: '红色',
+                size: '75B',
+                },
+            ],
+        },
+        methods: {
+            height(){
+                var height=window.innerHeight;
+                this.max_ht=window.innerHeight-112;
+            },
+        },
+        mounted() {
+            this.$nextTick(e=>{
+                //初始化
+                that = this;
+                loginState()
+                this.height()
+                this.px = localStorage.getItem('px')
+            })
+        }
+    })
+</script>
