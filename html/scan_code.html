@@ -20,17 +20,19 @@
         <p class="cus_title">
             <el-breadcrumb separator-class="el-icon-arrow-right">
                 <el-breadcrumb-item><a href="home.html" target="iframe">工作台首页</a></el-breadcrumb-item>
+                <el-breadcrumb-item><a href="ware_mange.html" target="iframe">仓库管理</a></el-breadcrumb-item>
+                <el-breadcrumb-item><a href="ware_detail.html" target="iframe">仓库出入库</a></el-breadcrumb-item>
                 <el-breadcrumb-item>扫码录入</el-breadcrumb-item>
             </el-breadcrumb>
         </p>
         <div class="cus_center linr_four" style="background: white;margin: 10px 0;padding: 10px 15px">
-            <h2 class="align_center ti_dan">什么入库单</h2>
+            <h2 class="align_center ti_dan">{{title}}入库单</h2>
             <ul style="display: flex;justify-content: space-between;">
                 <li>
-                    入库日期：2002
+                    入库单编号：356216156415
                 </li>
                 <li>
-                    入库单编号：356216156415
+                    入库日期：2002
                 </li>
                 <li>
                     操作人：大胃王
@@ -56,75 +58,100 @@
             </div>
         <div class="basic_inf">
             <el-table :data="scan_list" :max-height="max_ht" show-summary>
-                <el-table-column
+                <el-table-column min-width="200"
                         label="商品编号">
                     <template slot-scope="scope">
                         <el-input size="mini"
-                                placeholder="请输入内容"
+                                placeholder="请输入商品编号"
                                 v-model="scope.row.sn" :disabled="scope.row.disabled"
                                 clearable>
                         </el-input>
                     </template>
                 </el-table-column>
-                <el-table-column
+                <el-table-column min-width="200"
                         label="商品名称">
                     <template slot-scope="scope">
                         <el-input size="mini"
-                                  placeholder="请输入内容"
-                                  v-model="scope.row.name"
+                                  placeholder="请输入商品名称"
+                                  v-model="scope.row.name" :disabled="scope.row.disabled"
                                   clearable>
                         </el-input>
                     </template>
                 </el-table-column>
-                <el-table-column
+                <el-table-column min-width="100" v-if="px==4"
+                                 label="类型">
+                    <template slot-scope="scope">
+                            <el-input size="mini" v-if="scope.row.type==1"
+                                      placeholder="请输入数字(1:内衣,2:其它)" value="内衣"
+                                       :disabled="scope.row.disabled"
+                            >
+                            </el-input>
+                        <el-input size="mini" v-if="scope.row.type==2" value="其它"
+                                  placeholder="请输入数字(1:内衣,2:其它)" :disabled="scope.row.disabled"
+                        >
+                        </el-input>
+                        <!--<i v-if="scope.row.type==2">其它</i>-->
+                        <el-input size="mini" v-if="scope.row.type==''"
+                                  placeholder="请输入数字(1:内衣,2:其它)"
+                                  v-model="scope.row.type" :disabled="scope.row.disabled"
+                                  >
+                        </el-input>
+                    </template>
+                </el-table-column>
+                <el-table-column min-width="100"
                         label="单价">
                     <template slot-scope="scope">
                         <el-input size="mini"
-                                  placeholder="请输入内容"
-                                  v-model="scope.row.price"
-                                  clearable>
+                                  placeholder="请输入单价"
+                                  v-model="scope.row.price" :disabled="scope.row.disabled"
+                                  >
                         </el-input>
                     </template>
                 </el-table-column>
-                <el-table-column
+                <el-table-column min-width="50"
                         label="数量">
                     <template slot-scope="scope">
-                        <el-input size="mini"
-                                  placeholder="请输入内容"
+                        <el-input size="mini" type="number"
+                                  placeholder="请输入商品数量"
                                   v-model="scope.row.num"
-                                  clearable>
+                                  >
                         </el-input>
                     </template>
                 </el-table-column>
-                <el-table-column v-if="px==4"
+                <el-table-column v-if="px==4"  min-width="60"
                         label="颜色">
                     <template slot-scope="scope">
                         <el-input size="mini"
-                                  placeholder="请输入内容"
-                                  v-model="scope.row.color"
-                                  clearable>
+                                  placeholder="请输入商品颜色"
+                                  v-model="scope.row.color" :disabled="scope.row.disabled"
+                                  >
                         </el-input>
                     </template>
                 </el-table-column>
-                <el-table-column v-if="px==4"
+                <el-table-column v-if="px==4"  min-width="60"
                         label="尺码">
                     <template slot-scope="scope">
-                        <el-input size="mini"
-                                  placeholder="请输入内容"
-                                  v-model="scope.row.size"
-                                  clearable>
+                        <el-input size="mini" v-if="scope.row.type==1"
+                                  placeholder="例:内衣(75B)"
+                                  v-model="scope.row.cup" :disabled="scope.row.disabled"
+                                  >
+                        </el-input>
+                        <el-input size="mini" v-if="scope.row.type==2"
+                                  placeholder="例:其它(76L)"
+                                  v-model="scope.row.size" :disabled="scope.row.disabled"
+                                  >
                         </el-input>
                     </template>
                 </el-table-column>
-                <el-table-column
-                        label="总额">
-                    <template slot-scope="scope">
+                <el-table-column  min-width="100" prop="total"
+                        label="总额" :formatter="formatter">
+                    <!--<template slot-scope="scope">
                         <el-input size="mini"
-                                  placeholder="请输入内容"
-                                  v-model="scope.row.total"
+                                  placeholder=""
+                                  v-model="scope.row.total" :disabled="scope.row.disabled"
                                   clearable>
                         </el-input>
-                    </template>
+                    </template>-->
                 </el-table-column>
             </el-table>
         </div>
@@ -152,37 +179,35 @@
                 num: '',
                 total: '',
                 color: '',
+                type: '',
+                cup: '',
                 size: '',
             },
-            scan_list:[{
-                sn: '432432453242',
-                name: 'dfsf',
-                price: '32',
-                num: '43',
-                total: '5345435',
-                color: '红色',
-                size: '75B',
-                },{
-                sn: '432432453242',
-                name: 'dfsf',
-                price: '32',
-                num: '43',
-                total: '5345435',
-                color: '红色',
-                size: '75B',
-                },
-            ],
-            list:''
+            scan_list:[],
+            list:'',
+            now:'',
         },
         methods: {
+            formatter(r){
+                if(r.num==''){
+                    return '0'
+                }else{
+                    return  (parseFloat(r.price)*parseInt(r.num)).toFixed(2)
+                }
+            },
             height(){
                 var height=window.innerHeight;
                 this.max_ht=window.innerHeight-112;
             },
-            get_data(){
+            get_list(){
                 $.get(url(methods.bills_info),{type:this.px},v=>{
-                    console.log(v)
+                    this.list=v.res.list;
+                    this.now=v.res.time;
                 })
+            },
+            get_data(){
+                console.log(this.scan_in)
+                console.log(this.list)
                 let y=0;
                 for(let i of this.list){
                     if(i.sn==this.scan_in){
@@ -191,14 +216,18 @@
                             sn: this.scan_in,
                             name: i.name,
                             price: i.price,
-                            num: i.num,
+                            num: '',
                             total: i.total,
                             color: i.color,
+                            type: i.type,
+                            cup:  i.cup,
                             size: i.size,
-                            disabled:true
+                            disabled:true,
                         }
+                        this.scan_list.push(empty);
                     }
                 }
+                console.log(y)
                 if(y==0){
                     let empty={
                         sn: this.scan_in,
@@ -207,12 +236,13 @@
                         num: '',
                         total: '',
                         color: '',
+                        type: '',
+                        cup: '',
                         size: '',
                         disabled:false
                     }
                     this.scan_list.push(empty);
                 }
-                // this.scan_list[this.scan_list.length].
             }
         },
         mounted() {
@@ -222,7 +252,7 @@
                 loginState()
                 this.height()
                 this.px = localStorage.getItem('px');
-                switch (this.px){
+                switch (parseInt(this.px)){
                     case 1:
                         this.title='产品';
                         break;
@@ -238,6 +268,7 @@
                     default:
                         break;
                 }
+                this.get_list()
             })
         }
     })
