@@ -200,6 +200,12 @@
                 :before-close="close">
             <ul class="goods_edit">
                 <li>
+                    <span class="list_left">编号*</span>
+                    <span class="list_right">
+                    <el-input v-model="user2.num" placeholder="请输入会员名"></el-input>
+                </span>
+                </li>
+                <li>
                     <span class="list_left">会员名*</span>
                     <span class="list_right">
                     <el-input v-model="user2.name" placeholder="请输入会员名"></el-input>
@@ -659,12 +665,13 @@
                 }
             },
             sub() {
-                if (this.user2['name'] == '' || this.user2['age'] == ''
+                if (this.user2['num'] == '' ||this.user2['name'] == '' || this.user2['age'] == ''
                     || this.user2['tel'] == '' || this.user2['birthday'] == '' ||
                     this.user2['birthday'] == null) {
                     return error('请填完星号内容');
                 }
                 $.post(url(methods.vipLevel), {
+                    num:this.user2['num'],
                     name: this.user2['name'],
                     age: this.user2['age'],
                     password: this.pw,
@@ -672,6 +679,7 @@
                     sex: this.user2['sex'],
                     tel: this.user2['tel'],
                     marital: this.user2['marital'],
+                    bir_type: this.user2['bir_type'],
                     birthday: this.user2['birthday'],
                     adviser: this.user2['adviser'],
                     id: this.user2['id']

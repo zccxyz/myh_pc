@@ -56,7 +56,7 @@
     <template>
         <p class="cus_title">
             <el-breadcrumb separator-class="el-icon-arrow-right">
-                <<el-breadcrumb-item><a href="home.html" target="iframe">工作台首页</a></el-breadcrumb-item>
+                <el-breadcrumb-item><a href="home.html" target="iframe">工作台首页</a></el-breadcrumb-item>
                 <el-breadcrumb-item>数据分析</el-breadcrumb-item>
             </el-breadcrumb>
         </p>
@@ -74,64 +74,99 @@
             <i class="total_income">收入合计：{{pay_total}}</i>
         </p>
         <div class="data_div">
-            <el-table :data="data">
+            <el-table :data="table_indata">
                 <el-table-column
                         label="项目数量"
-                        prop="number">
+                        prop="item">
                 </el-table-column>
                 <el-table-column fit="true"
                                  label="项目业绩">
                     <template slot-scope="scope">
                         <el-button type="primary" plain size="mini" @click="detail_dio=true">
-                            4536
+                            {{scope.row.m_item}}
                         </el-button>
                     </template>
                 </el-table-column>
                 <el-table-column
                         label="套盒数量"
-                        prop="number">
+                        prop="box">
                 </el-table-column>
                 <el-table-column
                         label="套盒业绩">
                     <template slot-scope="scope">
                         <el-button type="success" plain size="mini" @click="detail_dio=true">
-                            5635
+                            {{scope.row.m_box}}
                         </el-button>
                     </template>
                 </el-table-column>
                 <el-table-column
                         label="产品数量"
-                        prop="number">
+                        prop="pro">
                 </el-table-column>
+
                 <el-table-column
                         label="产品业绩">
                     <template slot-scope="scope">
                         <el-button type="warning" plain size="mini" @click="detail_dio=true">
-                            52364
+                            {{scope.row.m_pro}}
+                        </el-button>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        label="卡项"
+                        prop="card">
+                </el-table-column>
+                <el-table-column
+                        label="卡项业绩">
+                    <template slot-scope="scope">
+                        <el-button type="warning" plain size="mini" @click="detail_dio=true">
+                            {{scope.row.m_card}}
+                        </el-button>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        label="内衣"
+                        prop="underwear">
+                </el-table-column>
+                <el-table-column
+                        label="内衣业绩">
+                    <template slot-scope="scope">
+                        <el-button type="warning" plain size="mini" @click="detail_dio=true">
+                            {{scope.row.m_underwear}}
                         </el-button>
                     </template>
                 </el-table-column>
                 <el-table-column
                         label="方案数量"
-                        prop="number">
+                        prop="plan">
                 </el-table-column>
                 <el-table-column
                         label="方案业绩">
                     <template slot-scope="scope">
                         <el-button type="info" plain size="mini" @click="detail_dio=true">
-                            6396
+                            {{scope.row.m_plan}}
                         </el-button>
                     </template>
-                </el-table-column>
-                <el-table-column
-                        label="充值次数"
-                        prop="number">
                 </el-table-column>
                 <el-table-column
                         label="充值金额">
                     <template slot-scope="scope">
                         <el-button type="danger" plain size="mini" @click="card_detail_dio=true">
-                            12356
+                            {{scope.row.m_recharge}}
+                        </el-button>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        label="体验项目数量">
+                    <template slot-scope="scope">
+                        0
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        label="体验项目业绩">
+                    <template slot-scope="scope">
+                        <el-button type="info" plain size="mini" @click="detail_dio=true">
+                            0.00
                         </el-button>
                     </template>
                 </el-table-column>
@@ -164,41 +199,48 @@
             <i class="total_income">消耗合计：{{consume_total}}</i>
         </p>
         <div class="data_div">
-            <el-table :data="data">
-
+            <el-table :data="consume_indata">
                 <el-table-column
                         label="项目消耗次数"
-                        prop="number">
+                        prop="c_item_num">
                 </el-table-column>
                 <el-table-column
                         label="项目消耗金额">
                     <template slot-scope="scope">
                         <el-button type="primary" plain size="mini" @click="xh_detail_dio=true">
-                            12356
+                            {{scope.row.c_item}}
                         </el-button>
                     </template>
                 </el-table-column>
                 <el-table-column
                         label="套盒消耗次数"
-                        prop="number">
+                        prop="c_box_num">
                 </el-table-column>
                 <el-table-column
                         label="套盒消耗金额">
                     <template slot-scope="scope">
                         <el-button type="success" plain size="mini" @click="xh_detail_dio=true">
-                            12356
+                            {{scope.row.c_box}}
+                        </el-button>
+                    </template>
+                </el-table-column>
+               <!-- <el-table-column
+                        label="卡扣次数"
+                        prop="number">
+                </el-table-column>-->
+                <el-table-column
+                        label="卡项消耗">
+                    <template slot-scope="scope">
+                        <el-button type="warning" plain size="mini" @click="kk_detail_dio=true">
+                            {{scope.row.c_card}}
                         </el-button>
                     </template>
                 </el-table-column>
                 <el-table-column
-                        label="卡扣次数"
-                        prop="number">
-                </el-table-column>
-                <el-table-column
-                        label="卡扣金额">
+                        label="体验项目消耗金额">
                     <template slot-scope="scope">
-                        <el-button type="warning" plain size="mini" @click="kk_detail_dio=true">
-                            12356
+                        <el-button type="primary" plain size="mini" @click="xh_detail_dio=true">
+                            {{scope.row.c_experience_item}}
                         </el-button>
                     </template>
                 </el-table-column>
@@ -206,83 +248,110 @@
                         label="余额消耗">
                     <template slot-scope="scope">
                         <el-button type="danger" plain size="mini" @click="yue_detail_dio=true">
-                            12356
+                            {{scope.row.c_balance}}
                         </el-button>
                     </template>
                 </el-table-column>
             </el-table>
         </div>
         <p class="other_back">
-            <i class="total_income">赠送合计</i>
+            <i class="total_income">赠送合计：0.00</i>
         </p>
         <div class="data_div">
-            <el-table :data="data">
+            <el-table :data="send_indata">
 
                 <el-table-column
-                        prop="number"
+                        prop="s_item_num"
                         label="项目数量">
                 </el-table-column>
                 <el-table-column fit="true"
                                  label="项目总金额">
                     <template slot-scope="scope">
                         <el-button type="primary" plain size="mini" @click="give_detail_dio=true">
-                            12
+                            {{scope.row.s_item}}
                         </el-button>
                     </template>
                 </el-table-column>
                 <el-table-column
-                        prop="number"
+                        prop="s_box_num"
                         label="套盒数量">
                 </el-table-column>
                 <el-table-column
                         label="套盒总金额">
                     <template slot-scope="scope">
                         <el-button type="success" plain size="mini" @click="give_detail_dio=true">
-                            15
+                            {{scope.row.s_box}}
                         </el-button>
                     </template>
                 </el-table-column>
                 <el-table-column
-                        prop="number"
+                        prop="s_pro_num"
                         label="产品数量">
                 </el-table-column>
                 <el-table-column
                         label="产品总金额">
                     <template slot-scope="scope">
                         <el-button type="warning" plain size="mini" @click="give_detail_dio=true">
-                            20
+                            {{scope.row.s_pro}}
                         </el-button>
                     </template>
                 </el-table-column>
                 <el-table-column
-                        prop="number"
+                        prop="s_plan_num"
                         label="方案数量">
                 </el-table-column>
                 <el-table-column
                         label="方案总金额">
                     <template slot-scope="scope">
                         <el-button type="info" plain size="mini" @click="give_detail_dio=true">
-                            6
+                            {{scope.row.s_plan}}
                         </el-button>
                     </template>
                 </el-table-column>
+
                 <el-table-column
-                        prop="number"
+                        prop="s_card_num"
                         label="卡项数量">
                 </el-table-column>
                 <el-table-column
                         label="卡项总金额">
                     <template slot-scope="scope">
                         <el-button type="danger" plain size="mini" @click="give_detail_dio=true">
-                            55
+                            {{scope.row.s_card}}
+                        </el-button>
+                    </template>
+                </el-table-column>
+                <!--<el-table-column
+                        label="余额">
+                    <template slot-scope="scope">
+                        <el-button plain size="mini" @click="give_yue_dio=true">
+                            {{scope.row.}}
+                        </el-button>
+                    </template>
+                </el-table-column>-->
+                <el-table-column
+                        prop="s_under_num"
+                        label="内衣数量">
+                </el-table-column>
+                <el-table-column
+                        label="内衣总金额">
+                    <template slot-scope="scope">
+                        <el-button type="info" plain size="mini" @click="give_detail_dio=true">
+                            {{scope.row.s_under}}
                         </el-button>
                     </template>
                 </el-table-column>
                 <el-table-column
-                        label="余额">
+                        label="体验项目数量">
                     <template slot-scope="scope">
-                        <el-button plain size="mini" @click="give_yue_dio=true">
-                            5525
+                        0
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        label="体验项目总金额">
+                    <template slot-scope="scope">
+                        <el-button type="info" plain size="mini" @click="give_detail_dio=true">
+                            0.00
                         </el-button>
                     </template>
                 </el-table-column>
@@ -633,21 +702,60 @@
             end: '',
             start: '',
             cate_data: '',
+            cate_sum_data:'',
             consume_data: '',
             consume_total: '',
             pay_total: '',
             pay_type_data: '',
             send_data: '',
+            data_all:[0],
+            all_data:[],
+            send_total:0,
+            in_data:{
+                box: 0,
+                card: 0,
+                item: 0,
+                plan: 0,
+                pro: 0,
+                recharge: 0,
+                underwear: 0,
+                m_box: 0,
+                m_card: 0,
+                m_item: 0,
+                m_plan: 0,
+                m_pro: 0,
+                m_recharge: 0,
+                m_underwear: 0,
+            },
+            table_indata:[],
+            consume_indata:[],
+            send_indata:[],
         },
         methods: {
             getData() {
                 $.post(url(methods.indexDetail) + '&start=' + this.start + '&end=' + this.end, v => {
-                    this.cate_data = v.res['cate_data']
-                    this.consume_data = v.res['consume_data']
-                    this.consume_total = v.res['consume_total']
-                    this.pay_total = v.res['pay_total']
-                    this.pay_type_data = v.res['pay_type_data']
-                    this.send_data = v.res['send_data']
+                    this.pay_total = v.res['pay_total'];
+                    this.consume_total = v.res['consume_total'];
+                    this.consume_data = v.res['consume_data'];
+                    this.send_data = v.res['send_data'];
+                    this.consume_indata.push(this.consume_data);
+                    this.send_indata.push(this.send_data);
+                    console.log( this.consume_indata)
+                    console.log( this.send_indata)
+                    this.pay_type_data = v.res['pay_type_data'];
+                    for(i in this.send_data){
+                        this.send_total+=this.send_data[i];
+                    };
+                    this.cate_data = v.res['cate_data'];
+                    this.cate_sum_data = v.res['cate_sum_data'];
+                    for(n in this.cate_sum_data){
+                        this.in_data[n]=this.cate_sum_data[n];
+                    };
+                    for(m in this.cate_data){
+                        var key="m_"+m;
+                        this.in_data[key]=this.cate_data[m];
+                    };
+                    this.table_indata.push(this.in_data)
                 })
             }
         },

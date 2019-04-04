@@ -476,7 +476,7 @@
             </el-tab-pane>
             <el-tab-pane label="健康档案">
                 <div class="cus_center over_hidden">
-                    <el-button type="success" class="fr" @click="location.href='health_pro.html'"
+                    <el-button type="success" class="fr" @click="add_hel"
                                style="margin-bottom: 5px">新增档案
                     </el-button>
                 </div>
@@ -1004,6 +1004,10 @@
             detail2: '',
         },
         methods: {
+            add_hel(){
+                localStorage.setItem('search_sh', '')
+                location.href='./health_pro.html';
+            },
             send_cou(){
                 $.post(url(methods.send_coupon),{id:this.send_id,mid:this.userId},v=>{
                     if(v.code==1){

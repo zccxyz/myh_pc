@@ -163,6 +163,7 @@
             list: [],
             need: [],
             type: 1,
+            hel_search:''
         },
         methods: {
             delWt(j, i) {
@@ -287,16 +288,27 @@
                     }
                     arr[v.head.id] = a
                 }
-                $.post(url(methods.healthAdd), {data: arr, mid: this.userId}, v=>{
-                    if(v.code==1){
-                        success(v.Msg)
-                        localStorage.setItem('arc', v.arc)
-                        setTimeout(()=>location.href='./add_archives.html', 1000)
-                    }else{
-                        error(v.error)
-                    }
-                })
-                //console.log(arr)
+                console.log(this.hel_search)
+                if(this.hel_search==''){
+                    $.post(url(methods.healthAdd), {data: arr, mid: this.userId}, v=>{
+                        if(v.code==1){
+                            success(v.Msg)
+                            localStorage.setItem('arc', v.arc)
+                            setTimeout(()=>location.href='./add_archives.html', 1000)
+                        }else{
+                            error(v.error)
+                        }
+                    })
+                }else if(this.hel_search=='list'){
+                    console.log(this.hel_search)
+                    let new_arr=arr;
+                    $.post(url(methods.health_search), {new_arr}, v=>{
+                        if(v.code==1){
+                            // localStorage.removeItem('type');
+                            location.href='./customer.html?mid='+v.res;
+                        }
+                    })
+                }
             },
 
         },
@@ -306,6 +318,7 @@
                 that = this;
                 loginState()
                 this.userId = localStorage.getItem('user_id')
+                this.hel_search = localStorage.getItem('search_sh')
                 this.getDa()
             })
         }

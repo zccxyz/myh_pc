@@ -119,6 +119,7 @@ var methods = {
     'healthDetail': 'Healthy/prescription_detail',
     'healthDel': 'Healthy/del',
     'health': 'Healthy/prescrip_detail',
+    'health_search': 'Healthy/HealthSearch',
     'getBranch': 'Center/get_branch',
     'firstCheck': 'Center/first_check',
     'switchStore': 'Center/switch_store',

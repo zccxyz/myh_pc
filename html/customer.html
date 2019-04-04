@@ -65,7 +65,11 @@
                 <el-button type="success">会员表模板下载</el-button>
             </a>
             <el-button type="success" class="fr" @click="del">批量删除</el-button>
-            <el-button type="success" class="fr" @click="addDialogVisible = true">新增会员</el-button>
+            <el-button type="success" class="fr" @click="addDialogVisible = true">新增会员
+            </el-button>
+            <el-button type="primary" class="fr" @click="hel_filter"
+                       style="margin-bottom: 5px">健康筛选
+            </el-button>
         </div>
         <div class="cus_center">
             每月到店：
@@ -403,6 +407,9 @@
     new Vue({
         el: '#app',
         data: {
+            m_arr:'',
+            mem_arr:[],
+            member_arr:[],
             max_ht:0,
             input: '',
             radio: '',
@@ -457,8 +464,27 @@
             syNum2: '',
             memberBalance: '',
             memberBalance2: '',
+            member_all:''
         },
         methods: {
+            getQueryString(name) {
+                var url=window.location.href;
+                if(url.indexOf("mid")!=-1){
+                    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+                    var r = window.location.search.substr(1).match(reg);
+                    if (r != null){
+                        return unescape(r[2]);
+                    }else{
+                        return null;
+                    }
+                }else{
+                    return 'wu'
+                }
+            },
+            hel_filter(){
+                localStorage.setItem('search_sh', 'list')
+                location.href='health_pro.html';
+            },
             get_advister(){
                 $.get(url(methods.get_advister),v=>{
                     this.adviser_list=v.res;
@@ -740,13 +766,36 @@
                 this.fileList = []
             },
             getMember() {
-                $.get(url(methods.get_member_list), v => {
-                    let rs = verify(v)
-                    if (rs != false) {
-                        this.total = rs.page_count
-                        this.list = rs.all_member
+                if(this.m_arr=='wu'){
+                    $.get(url(methods.get_member_list), v => {
+                        let rs = verify(v)
+                        if (rs != false) {
+                            this.total = rs.page_count
+                            this.list = rs.all_member
+                        }
+                    })
+                }else{
+                    if(this.m_arr!=null){
+                        this.mem_arr=this.m_arr.split(',');
+                        $.get(url(methods.get_member_list), v => {
+                            let rs = verify(v)
+                            if (rs != false) {
+                                this.member_all = rs.all_member;
+                                this.list =[];
+                                for(let v of this.mem_arr){
+                                    for(let m of this.member_all){
+                                        if(v==m.id){
+                                            this.list.push(m)
+                                        }
+                                    }
+                                }
+                            }
+                        })
+
+                    }else if(this.m_arr==null){
+                        this.list=[]
                     }
-                })
+                }
             },
             import2() {
                 let data = document.getElementById("file").files[0];
@@ -778,6 +827,7 @@
             this.$nextTick(e => {
                 //初始化
                 that = this
+                this.m_arr=this.getQueryString('mid');
                 this.getMember()
                 this.get_advister()
                 this.height()
