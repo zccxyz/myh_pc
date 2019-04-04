@@ -166,6 +166,8 @@ var methods = {
     'staffAnalysis': 'analysis/staff_analysis',
     'staffAnalysisDetails': 'analysis/staff_analysis_details',
     'get_category': 'analysis/get_category',
+    'buy_detail_list': 'analysis/buy_detail_list',
+    'consumed_detail_list': 'analysis/consumed_detail_list',
     'check_popularity_rate_category': 'achievement/check_popularity_rate_category',
     'get_popularity_detail': 'achievement/get_popularity_detail',
     'getList':'coupon/getList',

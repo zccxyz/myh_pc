@@ -82,7 +82,7 @@
                 <el-table-column fit="true"
                                  label="项目业绩">
                     <template slot-scope="scope">
-                        <el-button type="primary" plain size="mini" @click="detail_dio=true">
+                        <el-button type="primary" plain size="mini" @click="detail_dio=true;getdetail('items')">
                             {{scope.row.m_item}}
                         </el-button>
                     </template>
@@ -94,7 +94,7 @@
                 <el-table-column
                         label="套盒业绩">
                     <template slot-scope="scope">
-                        <el-button type="success" plain size="mini" @click="detail_dio=true">
+                        <el-button type="success" plain size="mini" @click="detail_dio=true;getdetail('box')">
                             {{scope.row.m_box}}
                         </el-button>
                     </template>
@@ -107,7 +107,7 @@
                 <el-table-column
                         label="产品业绩">
                     <template slot-scope="scope">
-                        <el-button type="warning" plain size="mini" @click="detail_dio=true">
+                        <el-button type="warning" plain size="mini" @click="detail_dio=true;getdetail('pro')">
                             {{scope.row.m_pro}}
                         </el-button>
                     </template>
@@ -119,7 +119,7 @@
                 <el-table-column
                         label="卡项业绩">
                     <template slot-scope="scope">
-                        <el-button type="warning" plain size="mini" @click="detail_dio=true">
+                        <el-button type="warning" plain size="mini" @click="detail_dio=true;getdetail('card')">
                             {{scope.row.m_card}}
                         </el-button>
                     </template>
@@ -131,7 +131,7 @@
                 <el-table-column
                         label="内衣业绩">
                     <template slot-scope="scope">
-                        <el-button type="warning" plain size="mini" @click="detail_dio=true">
+                        <el-button type="warning" plain size="mini" @click="detail_dio=true;getdetail('under')">
                             {{scope.row.m_underwear}}
                         </el-button>
                     </template>
@@ -143,7 +143,7 @@
                 <el-table-column
                         label="方案业绩">
                     <template slot-scope="scope">
-                        <el-button type="info" plain size="mini" @click="detail_dio=true">
+                        <el-button type="info" plain size="mini" @click="detail_dio=true;getdetail('plan')">
                             {{scope.row.m_plan}}
                         </el-button>
                     </template>
@@ -151,7 +151,8 @@
                 <el-table-column
                         label="充值金额">
                     <template slot-scope="scope">
-                        <el-button type="danger" plain size="mini" @click="card_detail_dio=true">
+                        <el-button type="danger" plain size="mini" @click="">
+                            <!--detail_dio=true;getdetail('recharge')-->
                             {{scope.row.m_recharge}}
                         </el-button>
                     </template>
@@ -159,13 +160,13 @@
                 <el-table-column
                         label="体验项目数量">
                     <template slot-scope="scope">
-                        0
+                       0
                     </template>
                 </el-table-column>
                 <el-table-column
                         label="体验项目业绩">
                     <template slot-scope="scope">
-                        <el-button type="info" plain size="mini" @click="detail_dio=true">
+                        <el-button type="info" plain size="mini" @click="detail_dio=true;getdetail('experience')">
                             0.00
                         </el-button>
                     </template>
@@ -207,7 +208,7 @@
                 <el-table-column
                         label="项目消耗金额">
                     <template slot-scope="scope">
-                        <el-button type="primary" plain size="mini" @click="xh_detail_dio=true">
+                        <el-button type="primary" plain size="mini" @click="xh_detail_dio=true;get_consume('items')">
                             {{scope.row.c_item}}
                         </el-button>
                     </template>
@@ -219,7 +220,7 @@
                 <el-table-column
                         label="套盒消耗金额">
                     <template slot-scope="scope">
-                        <el-button type="success" plain size="mini" @click="xh_detail_dio=true">
+                        <el-button type="success" plain size="mini" @click="xh_detail_dio=true;get_consume('box')">
                             {{scope.row.c_box}}
                         </el-button>
                     </template>
@@ -231,23 +232,25 @@
                 <el-table-column
                         label="卡项消耗">
                     <template slot-scope="scope">
-                        <el-button type="warning" plain size="mini" @click="kk_detail_dio=true">
+                        <el-button type="warning" plain size="mini" @click="">
+                            <!--kk_detail_dio=true-->
                             {{scope.row.c_card}}
                         </el-button>
                     </template>
                 </el-table-column>
-                <el-table-column
+                <!--<el-table-column
                         label="体验项目消耗金额">
                     <template slot-scope="scope">
-                        <el-button type="primary" plain size="mini" @click="xh_detail_dio=true">
+                        <el-button type="primary" plain size="mini" @click="xh_detail_dio=true;get_consume('box')">
                             {{scope.row.c_experience_item}}
                         </el-button>
                     </template>
-                </el-table-column>
+                </el-table-column>-->
                 <el-table-column
                         label="余额消耗">
                     <template slot-scope="scope">
-                        <el-button type="danger" plain size="mini" @click="yue_detail_dio=true">
+                        <el-button type="danger" plain size="mini" @click="">
+                            <!--yue_detail_dio=true-->
                             {{scope.row.c_balance}}
                         </el-button>
                     </template>
@@ -366,21 +369,98 @@
                     :data="detail_data"
                     style="width: 100%">
                 <el-table-column
+                        prop="v_name"
+                        label="会员">
+                </el-table-column>
+                <el-table-column
                         prop="name"
-                        label="品项名称"
+                        label="商品名称"
+                        min-width="200">
+                </el-table-column>
+                <el-table-column
+                        prop="total_price"
+                        label="总金额">
+                </el-table-column>
+                <el-table-column
+                        label="实际支付金额">
+                    <template slot-scope="scope">
+                        <el-button type="primary" plain size="mini" @click="pay_dio=true;pay_data=scope.row">
+                            {{scope.row.money}}
+                        </el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </el-dialog>
+        <!--支付明细-->
+        <el-dialog
+                title="支付明细"
+                :visible.sync="pay_dio"
+                center>
+            <ul class="pay_ul">
+                <li>
+                    卡扣支付：{{pay_data.card_pay}}
+                </li>
+                <li>
+                    余额支付：{{pay_data.account_pay}}
+                </li>
+                <li>
+                    现金支付：{{pay_data.cash_pay}}
+                </li>
+                <li>
+                    微信支付：{{pay_data.wx_pay}}
+                </li>
+                <li>
+                    支付宝支付：{{pay_data.zfb_pay}}
+                </li>
+                <li>
+                    银行卡支付：{{pay_data.bank_pay}}
+                </li>
+                <li>
+                    美团支付：{{pay_data.mt_pay}}
+                </li>
+                <li>
+                    大众点评支付：{{pay_data.dzdp_pay}}
+                </li>
+                <li>
+                    收钱吧支付：{{pay_data.sqb_pay}}
+                </li>
+                <li>
+                    优惠券支付：{{pay_data.counpon_pay}}
+                </li>
+                <li>
+                    合计消费：{{pay_data.money}}
+                </li>
+            </ul>
+        </el-dialog>
+        <!-- 套盒 项目  消耗详情-->
+        <el-dialog
+                title="业绩详情"
+                :visible.sync="xh_detail_dio"
+                center>
+            <el-table
+                    :data="con_detail_data"
+                    style="width: 100%">
+                <el-table-column
+                        prop="name"
+                        label="会员名称">
+                </el-table-column>
+                <el-table-column
+                        prop="designation_name"
+                        label="消耗名称"
+                        min-width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="time"
+                        label="时间"
                         width="180">
                 </el-table-column>
                 <el-table-column
-                        prop="number"
-                        label="数量">
+                        prop="consume_num"
+                        label="消耗次数">
                 </el-table-column>
                 <el-table-column
-                        label="金额">
-                    <template slot-scope="scope">
-                        <el-button type="primary" plain size="mini" @click="more_detail_dio=true">
-                            6253
-                        </el-button>
-                    </template>
+                        prop="consume_money"
+                        label="消耗金额">
                 </el-table-column>
             </el-table>
         </el-dialog>
@@ -457,33 +537,7 @@
             </el-table>
         </el-dialog>
 
-        <!-- 套盒 项目  消耗详情-->
-        <el-dialog
-                title="业绩详情"
-                :visible.sync="xh_detail_dio"
-                center>
-            <el-table
-                    :data="detail_data"
-                    style="width: 100%">
-                <el-table-column
-                        prop="name"
-                        label="品项名称"
-                        width="180">
-                </el-table-column>
-                <el-table-column
-                        prop="number"
-                        label="消耗次数">
-                </el-table-column>
-                <el-table-column
-                        label="消耗金额">
-                    <template slot-scope="scope">
-                        <el-button type="primary" plain size="mini" @click="xh_more_detail_dio=true">
-                            6253
-                        </el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
-        </el-dialog>
+
         <!--对应品项名称消耗详情-->
         <el-dialog append-to-body
                    title="品项名称详情"
@@ -664,6 +718,7 @@
             time: '',
             activeNames: ['1'],
             detail_dio: false,
+            pay_dio: false,
             more_detail_dio: false,
             card_detail_dio: false,
             card_more_detail_dio: false,
@@ -675,16 +730,7 @@
             give_detail_dio: false,
             give_more_detail_dio: false,
             give_yue_dio: false,
-            detail_data: [{
-                name: '李丽',
-                v_name: '李飒',
-                number: '12',
-                fee: '13',
-                total_fee: '139',
-                money: '125',
-                total_money: '45632',
-                time: '2015-02-12',
-            }],
+            detail_data:'',
             data: [{
                 name: '李飒',
                 number: '6',
@@ -698,7 +744,6 @@
                 item_per: '125',
                 big_per: '12563',
             }],
-
             end: '',
             start: '',
             cate_data: '',
@@ -730,6 +775,8 @@
             table_indata:[],
             consume_indata:[],
             send_indata:[],
+            pay_data:'',
+            con_detail_data:''
         },
         methods: {
             getData() {
@@ -757,6 +804,20 @@
                     };
                     this.table_indata.push(this.in_data)
                 })
+            },
+            getdetail(type){
+                $.get(url(methods.buy_detail_list),{start: this.start, end: this.end, type: type},v=>{
+                    console.log(v)
+                    this.detail_data=v.res
+                })
+            },
+            get_consume(type){
+                $.get(url(methods.consumed_detail_list),{start: this.start, end: this.end, type: type},v=>{
+                    this.con_detail_data=v.list
+                })
+            },
+            pay_detail(id){
+
             }
         },
         mounted() {
