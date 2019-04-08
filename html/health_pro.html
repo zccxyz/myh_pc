@@ -288,7 +288,6 @@
                     }
                     arr[v.head.id] = a
                 }
-                console.log(this.hel_search)
                 if(this.hel_search==''){
                     $.post(url(methods.healthAdd), {data: arr, mid: this.userId}, v=>{
                         if(v.code==1){
@@ -300,7 +299,6 @@
                         }
                     })
                 }else if(this.hel_search=='list'){
-                    console.log(this.hel_search)
                     let new_arr=arr;
                     $.post(url(methods.health_search), {new_arr}, v=>{
                         if(v.code==1){

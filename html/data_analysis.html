@@ -151,8 +151,7 @@
                 <el-table-column
                         label="充值金额">
                     <template slot-scope="scope">
-                        <el-button type="danger" plain size="mini" @click="">
-                            <!--detail_dio=true;getdetail('recharge')-->
+                        <el-button type="danger" plain size="mini" @click="detail_dio=true;getdetail('recharge')">
                             {{scope.row.m_recharge}}
                         </el-button>
                     </template>
@@ -787,8 +786,6 @@
                     this.send_data = v.res['send_data'];
                     this.consume_indata.push(this.consume_data);
                     this.send_indata.push(this.send_data);
-                    console.log( this.consume_indata)
-                    console.log( this.send_indata)
                     this.pay_type_data = v.res['pay_type_data'];
                     for(i in this.send_data){
                         this.send_total+=this.send_data[i];
@@ -807,7 +804,6 @@
             },
             getdetail(type){
                 $.get(url(methods.buy_detail_list),{start: this.start, end: this.end, type: type},v=>{
-                    console.log(v)
                     this.detail_data=v.res
                 })
             },
@@ -816,9 +812,6 @@
                     this.con_detail_data=v.list
                 })
             },
-            pay_detail(id){
-
-            }
         },
         mounted() {
             this.$nextTick(e => {

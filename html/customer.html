@@ -143,7 +143,7 @@
             </el-table-column>
             <el-table-column
                     label="操作"
-                    min-width="520"
+                    min-width="580"
                     fixed="right"
                     show-overflow-tooltip>
                 <template slot-scope="scope">
@@ -177,6 +177,11 @@
                             type="danger"
                             @click="delOne(scope.row.id)">删除
                     </el-button>
+                   <!-- <el-button
+                            size="mini"
+                            type="warning"
+                            @click="entering_dio=true;in_id=scope.row.id">录入
+                    </el-button>-->
                 </template>
             </el-table-column>
         </el-table>
@@ -392,7 +397,194 @@
             <el-button type="primary" @click="edit">确 定</el-button>
           </span>
         </el-dialog>
+        <!--录入弹窗-->
+        <el-dialog title="会员持有商品录入"
+                   :visible.sync="entering_dio"
+                   min-width="460px"
+                   center>
+            <ul class="goods_edit">
+                <li>
+                    <span class="list_left">品项</span>
+                    <span class="list_right">
+                        <el-radio v-model="data.cate_c" label="3">余额</el-radio>
+                        <span @click="check_entry_name(1)">
+                             <el-radio v-model="data.cate_c" label="1" >套盒</el-radio>
+                        </span>
+                        <span @click="check_entry_name(2)">
+                            <el-radio v-model="data.cate_c" label="2" >项目</el-radio>
+                        </span>
+                         <span @click="check_entry_name(3)">
+                             <el-radio v-model="data.cate_c" label="4" >卡项</el-radio>
+                        </span>
+                         <span @click="check_entry_name(4)">
+                             <el-radio v-model="data.cate_c" label="5" >方案</el-radio>
+                        </span>
+</span>
+                </li>
+                <li v-if="data.cate_c==3">
+                    <ul class="goods_edit">
+                        <li>
+                            <span class="list_left">原始余额</span>
+                            <span class="list_right">
+                        <el-input v-model="data.balance" placeholder="0.00"></el-input>
+                    </span>
+                        </li>
+                        <li>
+                            <span class="list_left">赠送余额</span>
+                            <span class="list_right">
+                        <el-input v-model="data.send_balance" placeholder="0.00"></el-input>
+                    </span>
+                        </li>
+                    </ul>
+                </li>
 
+                <li v-if="data.cate_c == 1">
+                    <span class="list_left">套盒名称</span>
+                    <span class="list_right">
+                        <el-autocomplete @blur="th_blur(th_name)"
+                                v-model="th_name"
+                                :fetch-suggestions="querySearchAsync"
+                                placeholder="请输入内容" @select="handleSelect_th"></el-autocomplete>
+                    </span>
+                </li>
+                <li v-if="data.cate_c == 2">
+                    <span class="list_left">项目名称</span>
+                    <span class="list_right">
+                       <el-autocomplete @blur="xm_blur(xm_name)"
+                               v-model="xm_name"
+                               :fetch-suggestions="querySearchAsync"
+                               placeholder="请输入内容" @select="handleSelect_xm"
+                       ></el-autocomplete>
+                    </span>
+                </li>
+                <li v-if="data.cate_c == 1">
+                    <span class="list_left">所属类别</span>
+                    <span class="list_right">
+                        <el-radio v-for="v in boxArr" v-model="data.cateId"
+                                  :label="v.id">{{v.name}}
+                        </el-radio>
+                    </span>
+                </li>
+                <li v-if="data.cate_c == 2">
+                    <span class="list_left">所属类别</span>
+                    <span class="list_right">
+                        <el-radio v-for="v in itemsArr" v-model="data.cateId"
+                                  :label="v.id">{{v.name}}
+                        </el-radio>
+                    </span>
+                </li>
+                <li v-if="data.cate_c == 2||data.cate_c == 1">
+                    <ul class="goods_edit">
+                        <li>
+                            <span class="list_left">价格</span>
+                            <span class="list_right">
+                        <el-input v-model="data.price" placeholder="请输入当时购买价格"></el-input>
+                    </span>
+                        </li>
+                        <li>
+                            <span class="list_left">欠款</span>
+                            <span class="list_right">
+                        <el-input v-model="data.arrears_money" placeholder="如未欠款请填写0"></el-input>
+                    </span>
+                        </li>
+                        <li>
+                            <span class="list_left">原有次数</span>
+                            <span class="list_right">
+                        <el-input v-model="data.originally_num" placeholder="请输入原有次数"></el-input>
+                    </span>
+                        </li>
+                        <li>
+                            <span class="list_left">剩余次数</span>
+                            <span class="list_right">
+                        <el-input v-model="data.current_num" placeholder="请输入剩余次数"></el-input>
+                    </span>
+                        </li>
+                        <li>
+                            <span class="list_left">手工费</span>
+                            <span class="list_right">
+                        <el-input v-model="data.fee" placeholder="请输入手工费"></el-input>
+                    </span>
+                        </li>
+                        <li>
+                            <span class="list_left">护理周期</span>
+                            <span class="list_right">
+                        <el-radio v-model="data.cycle" label="1" >每周一次</el-radio>
+                            <el-radio v-model="data.cycle" label="2" >每
+                                <el-input class="choice_in" v-model="data.days" placeholder="请输入" style="margin:0 5px"></el-input>天一次
+                            </el-radio>
+                    </span>
+                        </li>
+                        <li>
+                            <span class="list_left">期限范围</span>
+                            <span class="list_right">
+                         <el-date-picker style="width: 390px"
+                                 v-model="time_limit"
+                                 type="daterange"
+                                 range-separator="至"
+                                 start-placeholder="开始日期"
+                                 end-placeholder="结束日期">
+                        </el-date-picker>
+                    </span>
+                        </li>
+                        <li>
+                            <span style="color: red">
+                                注意：
+                            </span>
+                            <span>
+                                如没有到期日期可不选择日期 则表示无使用期限
+                            </span>
+                        </li>
+                    </ul>
+                </li>
+                <li v-if="data.cate_c == 4">
+                    <ul class="goods_edit">
+                        <li>
+                            <span class="list_left">卡类型</span>
+                            <span class="list_right">
+                                <el-select v-model="user.staff" placeholder="请选择">
+                                 <el-option
+                                         v-for="item in card_type"
+                                         :label="item.name"
+                                         :value="item.value">
+                                </el-option>
+                            </el-select>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="list_left">卡名</span>
+                            <span class="list_right">
+                                <el-autocomplete @blur="th_blur(card_name)"
+                                                 v-model="card_name"
+                                                 :fetch-suggestions="querySearchAsync"
+                                                 placeholder="请输入内容" @select="handleSelect_th"></el-autocomplete>
+                    </span>
+                        </li>
+                        <li>
+                            <span class="list_left">额度</span>
+                            <span class="list_right">
+                        <el-input v-model="data.originally_num" placeholder="请输入原有次数"></el-input>
+                    </span>
+                        </li>
+                        <li>
+                            <span class="list_left">折扣</span>
+                            <span class="list_right">
+                        <el-input v-model="data.originally_num" placeholder="请输入原有次数"></el-input>
+                    </span>
+                        </li>
+                        <li>
+                            <span class="list_left">原有次数</span>
+                            <span class="list_right">
+                        <el-input v-model="data.originally_num" placeholder="请输入原有次数"></el-input>
+                    </span>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <span slot="footer" class="dialog-footer">
+            <el-button @click="entering_dio = false">取 消</el-button>
+            <el-button type="primary" @click="entry" v-if="data.cate_c != 5">确 定</el-button>
+          </span>
+        </el-dialog>
     </template>
 
 </div>
@@ -407,12 +599,24 @@
     new Vue({
         el: '#app',
         data: {
+            card_type:[{
+                value:1,
+                name:'储值卡'
+            },{
+                value:1,
+                    name:'普通折扣卡'
+            },{
+                value:1,
+                    name:'全场折扣卡'
+            }],
+            time_limit:'',
             m_arr:'',
             mem_arr:[],
             member_arr:[],
             max_ht:0,
             input: '',
             radio: '',
+            entering_dio: false,
             addDialogVisible: false,
             deleteDialogVisible: false,
             storeDialogVisible: false,
@@ -464,7 +668,40 @@
             syNum2: '',
             memberBalance: '',
             memberBalance2: '',
-            member_all:''
+            member_all:'',
+            in_id:'',
+            name_list:'',
+            data:{
+                mid: this.in_id,
+                cate_c: '3',
+                name: '',
+                price: '',
+                arrears_money: '',
+                originally_num: '',
+                current_num: '',
+                cateId: '',
+                fee: '',
+                cycle: '1',
+                start: '',
+                end: '',
+                balance: '',
+                send_balance: '',
+                c_name: '',
+                c_amount: '',
+                c_discount: '',
+                c_type: 0,
+                card_name: 0,
+                box_name: 0,
+                item_name: 0,
+                plan_id: ''
+            },
+            th_name: '',
+            xm_name: '',
+            th_list: '',
+            xm_list: '',
+            boxArr: '',
+            itemsArr: '',
+            card_name: '',
         },
         methods: {
             getQueryString(name) {
@@ -806,6 +1043,78 @@
                 } else {
                     return '农历'
                 }
+            },
+            check_entry_name(type){
+                console.log(type)
+                $.post(url(methods.check_entry_name),{type: type},v=>{
+                    console.log(v)
+                    this.name_list=v.res;
+                    if(type==1||type==2){
+                        $.post(url(methods.get_cate),v=> {
+                            this.boxArr=v.res.box;
+                            this.itemsArr=v.res.items;
+                        })
+                        if(type==1){
+                            this.th_list=v.res;
+                            for(let i of this.name_list){
+                                i.value = i.box_name;
+                            }
+                        }else if(type==2){
+                            this.xm_list=v.res;
+                            for(let i of this.name_list){
+                                i.value = i.pro_name;
+                            }
+                        }
+                    }
+
+                })
+            },
+            querySearchAsync(queryString, cb) {
+                var list = this.name_list;
+                var results = queryString ? list.filter(this.createStateFilter(queryString)) : list;
+
+                clearTimeout(this.timeout);
+                this.timeout = setTimeout(() => {
+                    cb(results);
+                }, 3000 * Math.random());
+            },
+            createStateFilter(queryString) {
+                return (state) => {
+                    return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+                };
+            },
+            handleSelect_th(item) {
+                console.log(item);
+                // this.data.box_name=item.id;
+                //do something
+            },
+            handleSelect_xm(item) {
+                console.log(item);
+                // this.data.item_name=item.id;
+//do something
+            },
+            th_blur(th){
+                for(let t of this.th_list){
+                    if(t.box_name==th){
+                       this.data.box_name = t.id;
+                    }else{
+                        this.data.name=th;
+                        this.data.box_name='';
+                    }
+                }
+            },
+            xm_blur(xm){
+                for(let t of this.th_list){
+                    if(t.box_name==xm){
+                        this.data.item_name = t.id;
+                    }else{
+                        this.data.name=xm;
+                        this.data.item_name='';
+                    }
+                }
+            },
+            entry(){
+
             }
         },
         watch: {
