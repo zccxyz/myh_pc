@@ -177,7 +177,7 @@
                             type="danger"
                             @click="delOne(scope.row.id)">删除
                     </el-button>
-                   <!-- <el-button
+                    <!--<el-button
                             size="mini"
                             type="warning"
                             @click="entering_dio=true;in_id=scope.row.id">录入
@@ -402,7 +402,7 @@
                    :visible.sync="entering_dio"
                    min-width="460px"
                    center>
-            <ul class="goods_edit">
+            <ul class="goods_edit" style="padding: 0 1.5rem">
                 <li>
                     <span class="list_left">品项</span>
                     <span class="list_right">
@@ -541,7 +541,7 @@
                         <li>
                             <span class="list_left">卡类型</span>
                             <span class="list_right">
-                                <el-select v-model="user.staff" placeholder="请选择">
+                                <el-select v-model="data.c_type" placeholder="请选择">
                                  <el-option
                                          v-for="item in card_type"
                                          :label="item.name"
@@ -553,37 +553,110 @@
                         <li>
                             <span class="list_left">卡名</span>
                             <span class="list_right">
-                                <el-autocomplete @blur="th_blur(card_name)"
+                                <el-autocomplete @blur="card_blur(card_name)"
                                                  v-model="card_name"
                                                  :fetch-suggestions="querySearchAsync"
-                                                 placeholder="请输入内容" @select="handleSelect_th"></el-autocomplete>
+                                                 placeholder="请输入卡名" @select="handleSelect_th"></el-autocomplete>
                     </span>
                         </li>
                         <li>
                             <span class="list_left">额度</span>
                             <span class="list_right">
-                        <el-input v-model="data.originally_num" placeholder="请输入原有次数"></el-input>
+                        <el-input v-model="data.c_amount" placeholder="请输入额度"></el-input>
                     </span>
                         </li>
-                        <li>
+                        <li v-if="data.c_type == 3">
                             <span class="list_left">折扣</span>
                             <span class="list_right">
                         <el-input v-model="data.originally_num" placeholder="请输入原有次数"></el-input>
                     </span>
                         </li>
-                        <li>
-                            <span class="list_left">原有次数</span>
-                            <span class="list_right">
-                        <el-input v-model="data.originally_num" placeholder="请输入原有次数"></el-input>
+                        <li v-if="data.c_type ==2" class="dis_div">
+                    <span>
+                        套盒折扣：&#12288;
+                        <el-input v-model="data.suitbox" type="number" placeholder="0" class="in_wid"></el-input>&nbsp;%
+                    </span>
+                            <span>
+                        产品折扣：&#12288;
+                        <el-input v-model="data.product" type="number" placeholder="0" class="in_wid"></el-input>&nbsp;%
+                    </span>
+                            <span>
+                        礼包折扣：&#12288;
+                        <el-input v-model="data.gift" type="number" placeholder="0" class="in_wid"></el-input>&nbsp;%
+                    </span>
+                            <span>
+                        项目折扣：&#12288;
+                        <el-input v-model="data.items" type="number" placeholder="0" class="in_wid"></el-input>&nbsp;%
                     </span>
                         </li>
                     </ul>
                 </li>
+                <li v-if="data.cate_c == 5">
+                    <el-table
+                            :data="name_list"
+                            border
+                            style="width: 100%">
+                        <el-table-column
+                                prop="name"
+                                label="方案名称"
+                                width="180">
+                        </el-table-column>
+                        <el-table-column
+                                prop="sale"
+                                label="价格">
+                        </el-table-column>
+                        <el-table-column
+                                label="操作"
+                                fixed="right"
+                                show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <el-button
+                                        size="mini"
+                                        @click="setplan(scope.row.detail);getDetail=true">查看
+                                </el-button>
+                                <el-button
+                                        size="mini"
+                                        type="success"
+                                        @click="plan_entry(scope.row.id)">录入
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </li>
+
             </ul>
             <span slot="footer" class="dialog-footer">
             <el-button @click="entering_dio = false">取 消</el-button>
             <el-button type="primary" @click="entry" v-if="data.cate_c != 5">确 定</el-button>
           </span>
+        </el-dialog>
+        <!-- 查看详情 -->
+        <el-dialog  append-to-body
+                title="方案详情"
+                :visible.sync="getDetail"
+                center>
+            <el-table border center
+                      :data="detail"
+                      style="width: 100%">
+                <el-table-column
+                        prop="type"
+                        label="类别"
+                        width="80">
+                </el-table-column>
+                <el-table-column
+                        prop="name"
+                        label="名称"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="price"
+                        label="售价">
+                </el-table-column>
+                <el-table-column
+                        prop="times"
+                        label="次数">
+                </el-table-column>
+            </el-table>
         </el-dialog>
     </template>
 
@@ -603,11 +676,11 @@
                 value:1,
                 name:'储值卡'
             },{
-                value:1,
-                    name:'普通折扣卡'
+                value:2,
+                name:'普通折扣卡'
             },{
-                value:1,
-                    name:'全场折扣卡'
+                value:3,
+                name:'全场折扣卡'
             }],
             time_limit:'',
             m_arr:'',
@@ -616,6 +689,8 @@
             max_ht:0,
             input: '',
             radio: '',
+            detail:[],
+            getDetail: false,
             entering_dio: false,
             addDialogVisible: false,
             deleteDialogVisible: false,
@@ -690,10 +765,14 @@
                 c_amount: '',
                 c_discount: '',
                 c_type: 0,
-                card_name: 0,
+                card_name: '',
                 box_name: 0,
                 item_name: 0,
-                plan_id: ''
+                plan_id: '',
+                suitbox:'',
+                product:'',
+                items:'',
+                gift:'',
             },
             th_name: '',
             xm_name: '',
@@ -1113,8 +1192,25 @@
                     }
                 }
             },
+            card_blur(card){
+                for(let t of this.name_list){
+                    if(t.card_name==card){
+                        this.data.card_name = t.id;
+                    }else{
+                        this.data.c_name=card;
+                        this.data.card_name='';
+                    }
+                }
+            },
             entry(){
 
+            },
+            setplan(plan){
+                for(var key in plan){
+                    this.detail.push(plan[key]);
+                }
+            },
+            plan_entry(id){
             }
         },
         watch: {

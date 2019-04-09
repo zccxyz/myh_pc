@@ -622,3 +622,13 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
     margin: 0 auto;
 }
 
+.dis_div {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.dis_div > span {
+    display: inline-block;
+    width: 46%;
+    margin-bottom: 5px;
+}

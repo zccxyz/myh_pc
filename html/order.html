@@ -185,12 +185,16 @@
             now: [],
             status: -1,
             time: null,
+            t_begin:'',
+            t_end:'',
         },
         watch: {
             time(v) {
                 if(v==null){
                     this.getData()
                 }else{
+                    this.t_begin=v[0];
+                    this.t_end=v[1];
                     this.getData(v[0], v[1])
                 }
             }
@@ -216,7 +220,7 @@
                     $.post(url(methods.refundOrder), {oid: id}, v=>{
                         if(v.code==1){
                             success(v['Msg'])
-                            this.getData()
+                            this.getData(this.t_begin,this.t_end)
                         }else{
                             error(v['error'])
                         }
@@ -235,7 +239,7 @@
                     $.post(url(methods.cancelOrder), {id: id}, v=>{
                         if(v.code==1){
                             success(v['Msg'])
-                            this.getData()
+                            this.getData(this.t_begin,this.t_end)
                         }else{
                             error(v['error'])
                         }
