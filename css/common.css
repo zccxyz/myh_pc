@@ -135,6 +135,9 @@ img{
 .in_wid{
     width:100px;
 }
+.s_in_wid{
+    width:60px;
+}
 .do_blue {
     display: inline-block;
     border:1px solid rgb(129, 138, 248);

@@ -37,6 +37,7 @@ var methods = {
     'check': 'Center/check',
     'ModifyPassword': 'Center/ModifyPassword',
     'get_advister':'Member/get_advister',
+    'oldentry':'Member/OldEntry',
     'get_staff':'Staff/get_staff',
     'addInit':'Staff/addInit',
     'checkNum':'Staff/checkNum',

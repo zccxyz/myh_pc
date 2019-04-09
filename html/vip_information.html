@@ -220,7 +220,7 @@
                     <span class="fl">
                           <p class="cr">汇总：</p>
                         <p class="money_total">剩余次数：{{num}}</p>
-                        <p class="money_total">欠款：{{arrears2}}</p>
+                        <!--<p class="money_total">欠款：{{arrears2}}</p>-->
                     </span>
                         <el-button type="success" class="go_buy fr" @click="jump">购买项目</el-button>
                     </div>
@@ -268,7 +268,7 @@
                     <span class="fl">
                           <p class="cr">汇总：</p>
                         <p class="money_total">剩余次数：{{num3}}</p>
-                        <p class="money_total">欠款：{{arrears4}}</p>
+                        <!--<p class="money_total">欠款：{{arrears4}}</p>-->
                     </span>
                         <el-button type="success" class="go_buy fr" @click="jump">购买方案</el-button>
                     </div>
@@ -315,7 +315,7 @@
                       <span class="fl">
                       <p class="cr">汇总：</p>
                     <p class="money_total">剩余次数：{{num2}}</p>
-                    <p class="money_total">欠款：{{arrears3}}</p>
+                    <!--<p class="money_total">欠款：{{arrears3}}</p>-->
                   </span>
                         <el-button type="success" class="go_buy fr" @click="jump">购买套盒</el-button>
                     </div>
@@ -366,7 +366,6 @@
                             style="width: 100%">
                         <el-table-column
                                 :formatter="formatter"
-                                prop="name"
                                 label="类型">
                         </el-table-column>
                         <el-table-column
@@ -377,9 +376,24 @@
                                 prop="amount"
                                 label="余额">
                         </el-table-column>
-                        <!--<el-table-column label="操作">
+                        <el-table-column min-width="150"
+                                label="折扣">
                             <template slot-scope="scope">
-                                <a href="#" class="cr">删除</a>
+                                <i v-if="scope.row.card_type==1">无</i>
+                                <i v-if="scope.row.card_type==2">
+                                    产品:{{scope.row.product}}折&#12288;套盒:{{scope.row.suitbox}}折&#12288;项目:{{scope.row.items}}折&#12288;礼包:{{scope.row.gift}}折
+                                </i>
+                                <i v-if="scope.row.card_type==3">
+                                    {{scope.row.discount}}折
+                                </i>
+                            </template>
+                        </el-table-column>
+                       <!-- <el-table-column label="操作">
+                            <template slot-scope="scope">
+                                <el-button type="warning" plain size="mini" @click="">编辑</el-button>
+
+                                <el-button type="danger" plain size="mini" @click="">删除</el-button>
+
                             </template>
                         </el-table-column>-->
                     </el-table>
@@ -395,7 +409,7 @@
                                 label="日期">
                         </el-table-column>
                         <el-table-column
-                                :formatter="formatter"
+                                :formatter="formatter3"
                                 prop="status"
                                 label="状态">
                         </el-table-column>
@@ -1218,11 +1232,17 @@
                 }
             },
             formatter(r, c) {
-                if (r.bir_type == 1) {
-                    return '无折扣消费卡'
-                } else {
-                    return '折扣消费卡'
+                console.log(r)
+                if (r.card_type == 1) {
+                    return '储值卡'
+                } else if (r.card_type == 2) {
+                    return '普通折扣卡'
+                }else  if (r.card_type == 3){
+                    return "全场折扣卡"
                 }
+            },
+            formatter3(r, c){
+
             },
             getCard() {
                 $.get(url(methods.cardList) + `&mid=${this.userId}`, v => {
@@ -1328,12 +1348,12 @@
                 $.post(url(methods.haveProductList), {mid: this.userId}, v => {
                     if (v.code == 1) {
                         let t = 0
-                        for (let x of v.list) {
+                        for (let x of v.res.list) {
                             t += x.sum * x.price
                         }
                         this.total = t
-                        this.cpList = v.list
-                        this.arrears = v.arrears
+                        this.cpList = v.res.list
+                        this.arrears = v.res.arrears
                     } else {
                         error('请求出错')
                     }
