@@ -401,7 +401,7 @@
         <el-dialog title="会员持有商品录入"
                    :visible.sync="entering_dio"
                    min-width="460px"
-                   center>
+                   center :before-close="close">
             <ul class="goods_edit" style="padding: 0 1.5rem">
                 <li>
                     <span class="list_left">品项</span>
@@ -616,11 +616,11 @@
                                         size="mini"
                                         @click="setplan(scope.row.detail);getDetail=true">查看
                                 </el-button>
-                                <!--<el-button
+                                <el-button
                                         size="mini"
                                         type="success"
                                         @click="plan_entry(scope.row.id)">录入
-                                </el-button>-->
+                                </el-button>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -628,7 +628,7 @@
 
             </ul>
             <span slot="footer" class="dialog-footer">
-            <el-button @click="entering_dio = false">取 消</el-button>
+            <el-button @click="entering_dio = false;cancel()">取 消</el-button>
             <el-button type="primary" @click="entry" v-if="data.cate_c != 5">确 定</el-button>
           </span>
         </el-dialog>
@@ -1280,11 +1280,6 @@
                 $.post(url(methods.oldentry),{data:this.data},v=>{
                     console.log(v)
                     if(v.code==1){
-                        this.$confirm('是否继续录入?', '提示', {
-                            confirmButtonText: '继续',
-                            cancelButtonText: '返回',
-                            type: 'warning'
-                        }).then(() => {
                             success(v.Msg)
                             this.data = {
                                 mid: this.in_id,
@@ -1314,9 +1309,6 @@
                                 items:'',
                                 gift:'',
                             };
-                        }).catch(e => {
-                            this.cancel()
-                        })
                     }else{
                         error(v.error)
                     }
