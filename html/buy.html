@@ -371,9 +371,9 @@
                     </el-table-column>
                 </el-table>
             </el-tab-pane>
-           <!-- <el-tab-pane>
-                <span slot="label" @click="recharge_dio=true">充值</span>
-            </el-tab-pane>-->
+            <el-tab-pane>
+                <span slot="label" @click="recharge_dio=true" style="display: inline-block;width: 100%;height:100%;cursor: pointer">充值</span>
+            </el-tab-pane>
         </el-tabs>
 
 
@@ -514,16 +514,20 @@
                 <li>
                     <span class="list_left">选择</span>
                     <span class="list_right">
-                        <el-radio v-model="rech_type" label="1">账户充值</el-radio>
-                        <el-radio v-model="rech_type" label="2">卡项充值</el-radio>
+                        <span @click="get_m_blance()">
+                            <el-radio v-model="rech_type" label="1">账户充值</el-radio>
+                        </span>
+                        <span @click="get_m_card()">
+                            <el-radio v-model="rech_type" label="2">卡项充值</el-radio>
+                        </span>
                     </span>
                 </li>
 
                 <li v-if="rech_type==1">
                     <div class="cus_center">
-                        <el-button
+                        <el-button class="fr"
                                 size="mini"
-                                type="success"
+                                type="warning"
                                 @click="record_dio=true;get_record('balance')">充值记录
                         </el-button>
                     </div>
@@ -531,7 +535,7 @@
                         <li>
                             <span class="list_left">当前余额</span>
                             <span class="list_right">
-                                156
+                                {{acc_blance}}
                             </span>
                         </li>
                         <li>
@@ -549,37 +553,41 @@
                 </li>
                 <li v-if="rech_type==2">
                     <ul class="card_li">
-                        <li>
+                        <li v-for="v in card_lis" >
                             <div>
-                                <p></p>
-                                <p>金额:&#12288;卡类:</p>
+                                <p>{{v.name}}</p>
+                                <p>余额:{{v.amount}}&#12288;卡类:
+                                    <i v-if="v.card_type==1">储值卡</i>
+                                    <i v-if="v.card_type==2">普通折扣卡</i>
+                                    <i v-if="v.card_type==1">储值卡</i>
+                                </p>
                             </div>
                             <span>
                                 <el-button
                                         size="mini"
                                         type="primary"
-                                        @click="card_re_dio=true">充值
+                                        @click="card_re_dio=true;ca_id=v.id;card_blance=v.amount">充值
                                 </el-button>
                             </span>
                         </li>
                     </ul>
                 </li>
             </ul>
-            <span slot="footer" class="dialog-footer">
-            <el-button @click="">取 消</el-button>
-            <el-button type="primary" @click="">确 定</el-button>
+            <span slot="footer" class="dialog-footer" v-if="rech_type==1">
+            <el-button @click="cancel">取 消</el-button>
+            <el-button type="primary" @click="recha_blance()">确 定</el-button>
           </span>
         </el-dialog>
         <!--卡项充值内弹窗-->
         <el-dialog
-                title="卡项充值"
+                title="卡项充值" append-to-body
                 :visible.sync="card_re_dio"
                 center
-                :before-close="cancel">
+                :before-close="cancel_in">
             <div class="cus_center">
-                <el-button
+                <el-button class="fr"
                         size="mini"
-                        type="success"
+                        type="warning"
                         @click="record_dio=true;get_record('card')">充值记录
                 </el-button>
             </div>
@@ -587,7 +595,7 @@
                 <li>
                     <span class="list_left">卡余额</span>
                     <span class="list_right">
-                        566
+                        {{card_blance}}
                     </span>
                 </li>
                 <li>
@@ -598,12 +606,12 @@
                 </li>
             </ul>
             <span slot="footer" class="dialog-footer">
-            <el-button @click="">取 消</el-button>
-            <el-button type="primary" @click="">确 定</el-button>
+            <el-button @click="cancel_in()">取 消</el-button>
+            <el-button type="primary" @click="card_recha()">确 定</el-button>
           </span>
         </el-dialog>
         <!-- 卡项、账户充值记录 -->
-        <el-dialog
+        <el-dialog append-to-body
                 title="充值记录"
                 :visible.sync="record_dio"
                 center>
@@ -635,7 +643,6 @@
                 </el-table-column>
             </el-table>
         </el-dialog>
-
     </template>
 
 </div>
@@ -697,19 +704,66 @@
             need3: [],
             nowData: '',
             p: null,
-            record:''
+            record:'',
+            acc_blance:'',
+            card_lis:'',
+            ca_id:'',
+            card_blance:'',
         },
         methods: {
+            get_m_blance(){
+                    $.get(url(methods.member_amount),{mid:this.user_id},v=>{
+                        this.acc_blance=v.res;
+                    })
+            },
+            get_m_card(){
+                    $.get(url(methods.recharge_cardList),{id:this.user_id,type:'list'},v=>{
+                        this.card_lis=v.res
+                    })
+            },
+            recha_blance(){
+                if(this.re_money==''&&this.send_money==''){
+                    error("至少充值一项")
+                }else{
+                    $.post(url(methods.recharge_account)+`&id=${this.user_id}`,{money:this.re_money,send:this.send_money},v=>{
+                        console.log(v)
+                        if(v.code==1){
+                            success(v.Msg)
+                            this.re_money=''
+                            this.send_money='';
+                            this.get_m_blance()
+                        }
+                    })
+                }
+            },
+            card_recha(){
+                if(this.card_money==''){
+                    error("请输入要充值的金额")
+                }else{
+                    $.post(url(methods.save_card)+`&id=${this.ca_id}`,{money:this.card_money},v=>{
+                        console.log(v)
+                        if(v.code==1){
+                            success(v.info)
+                            this.card_re_dio=false;
+                            this.card_money=''
+                            this.get_m_card()
+                        }
+                    })
+                }
+            },
             cancel(){
                 this.recharge_dio=false;
                 this.record_dio=false;
+                this.re_money=''
+                this.send_money=''
+            },
+            cancel_in(){
                 this.card_re_dio=false;
+                this.card_money=''
             },
             get_record(type){
                 $.post(url(methods.recharge_record),{mid:this.user_id,type:type},v=>{
-                    if(v.record!=''){
                         this.record=v.record;
-                    }
                 })
             },
             getPrice(v){
@@ -1242,6 +1296,7 @@
                 loginState()
                 this.r = url(methods.upload + '?type=2')
                 this.height()
+                this.get_m_blance()
             })
         }
     })

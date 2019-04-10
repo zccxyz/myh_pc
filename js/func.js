@@ -30,6 +30,8 @@ var methods = {
     'send_coupon': 'Member/send_coupon',
     'get_cate':'Member/get_cate',
     'recharge_record':'Member/RechargeRecord',
+
+    'recharge_cardList':'buy/rechargeCardList',
     'get_consumption':'Vipdetails/get_consumption',
     'exportGoods': 'Commodity/exportGoods',
     'upload': 'Commodity/upload',
@@ -93,6 +95,9 @@ var methods = {
     'change_save_commission': 'buy/change_save_commission',
     'cancelCoupon': 'buy/cancelCoupon',
     'ChoiceCouponList': 'buy/ChoiceCouponList',
+    'member_amount':'buy/memberAmount',
+    'recharge_account':'buy/RechargeAccount',
+    'save_card':'buy/saveCard',
     'getDetails': 'Consume/getDetails',
     'entry': 'Consume/entry',
     'isLeave': 'Consume/isLeave',
