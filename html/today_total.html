@@ -68,6 +68,21 @@
                     label="商品名称" min-width="170">
             </el-table-column>
             <el-table-column
+                    prop="total_price"
+                    label="总金额">
+            </el-table-column>
+            <el-table-column
+                    label="已支付">
+                <template slot-scope="scope">
+                    <i v-if="scope.row.status==1||scope.row.status==2">{{scope.row.one_total}}</i>
+                    <i v-if="scope.row.status==3">{{scope.row.money}}</i>
+                </template>
+            </el-table-column>
+            <el-table-column
+                    :formatter="formatterw"
+                    label="未支付">
+            </el-table-column>
+            <el-table-column
                     prop="status"
                     label="类型"
                     :formatter="formatter2">
@@ -77,15 +92,6 @@
                     label="状态"
                     :formatter="formatter3">
             </el-table-column>
-            <el-table-column
-                    prop="money"
-                    label="已支付">
-            </el-table-column>
-            <!--<el-table-column
-                    prop="beautician"
-                    label="美容师">
-            </el-table-column>-->
-
             <el-table-column label="支付明细">
                 <template slot-scope="scope">
                     <el-button type="primary" @click="pay_data=scope.row;pay_dio=true" plain size="mini">查看</el-button>
@@ -118,6 +124,9 @@
                     余额支付：{{pay_data.account_pay}}
                 </li>
                 <li>
+                    赠额支付：{{pay_data.send_money_pay}}
+                </li>
+                <li>
                     现金支付：{{pay_data.cash_pay}}
                 </li>
                 <li>
@@ -139,7 +148,7 @@
                     收钱吧支付：{{pay_data.sqb_pay}}
                 </li>
                 <li>
-                    优惠券支付：{{pay_data.counpon_pay}}
+                    优惠券支付：{{pay_data.coupon_pay}}
                 </li>
                 <li>
                     合计消费：{{pay_data.money}}
@@ -234,6 +243,13 @@
                     return '正常';
                 }else{
                     return '退单'
+                }
+            },
+            formatterw(r, c) {
+                if(r.status==1||r.status==2){
+                    return (parseFloat(r.total_price)-parseFloat(r.one_total)).toFixed(2)
+                }else if(r.status==3){
+                    return (parseFloat(r.total_price)-parseFloat(r.money)).toFixed(2)
                 }
             },
             formatter2(r, c) {

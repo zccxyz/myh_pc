@@ -323,7 +323,6 @@
                     money:'',
                     raise:''
                 }
-                console.log(a)
                 switch (a){
                     case 1:
                         this.box_xf_arr.push(empty);
@@ -362,7 +361,6 @@
                 }
             },
             delarr(d,index){
-                console.log(d)
                 switch (d){
                     case 1:
                         this.box_xf_arr.splice(index,1);
@@ -406,7 +404,6 @@
                     this.data.project_xh_enough=this.project_xh_arr;
                     this.data.plan_xf_enough=this.plan_xf_arr;
                     this.data.card_use_xh_enough=this.card_use_xh_arr;
-                    console.log(this.box_xf_state);
                     $.post(url(methods.raise),
                         {
                             data:this.data,
@@ -423,7 +420,6 @@
                                 cp_xf_state: this.cp_xf_state?1:0,
                             },
                         },v=> {
-                            console.log(v)
                             if(v.code==1){
                                 success('设置成功')
                                 this.$confirm('已设置成功，是否继续其他设置员工提成?', '提示', {
@@ -443,9 +439,7 @@
                 })
             },
             get_raise(){
-                console.log(this.id)
                     $.post(url(methods.raise_edit_details),{staff:this.id},v=>{
-                        console.log(v)
                          this.box_xf_state = v.res.box_xf_state==0?false:true;
                          this.box_xh_state = v.res.box_xh_state==0?false:true;
                          this.items_xf_state = v.res.items_xf_state==0?false:true;
@@ -479,13 +473,13 @@
                             this.data.product_type= '2';
                             this.product_arr=v.res.product_enough
                         }
-                        if (v.res.card_enough == null || v.res.card_enough == '') {
+                        if (v.res.sell_card_enough == null || v.res.sell_card_enough == '') {
                             this.data.card_type= '1';
                             this.card_arr=[]
-                            this.data.card_raise=v.res.card_raise
+                            this.data.card_raise=v.res.sell_card_raise
                         } else {
                             this.data.card_type= '2';
-                            this.card_arr=v.res.card_enough
+                            this.card_arr=v.res.sell_card_enough
                         }
                         if (v.res.box_xh_enough == null || v.res.box_xh_enough == '') {
                             this.data.box_xh_type= '1';
@@ -511,15 +505,14 @@
                             this.data.plan_xf_type= '2';
                             this.plan_xf_arr=v.res.plan_xf_enough
                         }
-                        if (v.res.card_use_xh_enough == null || v.res.card_use_xh_enough == '') {
+                        if (v.res.use_card_xh_enough == null || v.res.use_card_xh_enough == '') {
                             this.data.card_use_xh_type= '1';
                             this.card_use_xh_arr=[]
-                            this.data.card_use_xh_raise=v.res.card_use_xh_raise
+                            this.data.card_use_xh_raise=v.res.use_card_xh_raise
                         } else {
                             this.data.card_use_xh_type= '2';
-                            this.card_use_xh_arr=v.res.card_use_xh_enough
+                            this.card_use_xh_arr=v.res.use_card_xh_enough
                         }
-                        console.log(this.data)
                     })
             }
         },

@@ -371,6 +371,9 @@
                     </el-table-column>
                 </el-table>
             </el-tab-pane>
+            <!--<el-tab-pane>
+                <span slot="label" @click="recharge_dio=true">充值</span>
+            </el-tab-pane>-->
         </el-tabs>
 
 
@@ -501,6 +504,68 @@
                 <span class="red_box pay" @click="buyClothes()" style="cursor: pointer">提交订单</span>
             </div>
         </div>
+        <!--充值弹窗-->
+        <el-dialog
+                title="充值"
+                :visible.sync="recharge_dio"
+                min-width="400px"
+                center
+                :before-close="close">
+            <ul class="goods_edit">
+                <li>
+                    <span class="list_left">选择</span>
+                    <span class="list_right">
+                        <el-radio v-model="user.sex" label="1">卡项充值</el-radio>
+                        <el-radio v-model="user.sex" label="2">余额充值</el-radio>
+                    </span>
+                </li>
+
+                <li>
+                    <ul class="goods_edit">
+                        <li>
+                            <span class="list_left">当前余额</span>
+                            <span class="list_right">
+                    <el-input v-model="user.num" placeholder="请输入会员编号"></el-input>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="list_left">充值余额</span>
+                            <span class="list_right">
+                    <el-input v-model="user.name" placeholder="请输入会员名"></el-input>
+                </span>
+
+                        <li>
+                            <span class="list_left">赠送余额</span>
+                            <span class="list_right">
+                    <el-input v-model="user.age" placeholder="请输入年龄"></el-input>
+                </span>
+                        </li>
+                    </ul>
+                </li>
+
+                <li>
+                    <ul class="card_li">
+                        <li>
+                            <div>
+                                <p>{{v.name}}</p>
+                                <p>金额:&#12288;卡类:</p>
+                            </div>
+                            <span>
+                                <el-button
+                                        size="mini"
+                                        type="primary"
+                                        @click="">充值
+                                </el-button>
+                            </span>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <span slot="footer" class="dialog-footer">
+            <el-button @click="cancel">取 消</el-button>
+            <el-button type="primary" @click="add">确 定</el-button>
+          </span>
+        </el-dialog>
     </template>
 
 </div>
@@ -515,6 +580,7 @@
     new Vue({
         el: '#app',
         data: {
+            recharge_dio:false,
             index: 0,
             max_ht: 0,
             input: '',

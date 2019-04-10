@@ -784,11 +784,13 @@
                 $.post(url(methods.getRecordDetail), {day: day, ware: this.id}, v => {
                     this.myIn = []
                     this.myOut = []
-                    for (let x of v['res']) {
-                        if (x['status'] == 1) {
-                            this.myIn.push(x)
-                        } else {
-                            this.myOut.push(x)
+                    if(v.res.length!=0){
+                        for (let x of v.res) {
+                            if (x['status'] == 1) {
+                                this.myIn.push(x)
+                            } else {
+                                this.myOut.push(x)
+                            }
                         }
                     }
                 })

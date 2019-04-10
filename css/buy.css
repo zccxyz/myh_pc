@@ -58,3 +58,19 @@ border-top-left-radius:10px;
 .span_bold *{
 	font-weight: bold !important;
 }
+.card_li>li{
+	line-height: 26px;
+	padding: 0.5rem;
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: nowrap;
+	border-bottom: 1px solid rgb(238, 238, 238);
+}
+.card_li>li>div{
+	display: inline-block;
+}
+.card_li>li>span{
+	display: inline-block;
+	margin: 0 15px;
+
+}
