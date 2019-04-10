@@ -29,6 +29,7 @@ var methods = {
     'exportMember': 'Member/exportMember',
     'send_coupon': 'Member/send_coupon',
     'get_cate':'Member/get_cate',
+    'recharge_record':'Member/RechargeRecord',
     'get_consumption':'Vipdetails/get_consumption',
     'exportGoods': 'Commodity/exportGoods',
     'upload': 'Commodity/upload',

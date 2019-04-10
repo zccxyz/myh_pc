@@ -505,45 +505,51 @@
             </div>
         </div>
         <!--充值弹窗-->
-        <el-dialog
+        <!--<el-dialog
                 title="充值"
                 :visible.sync="recharge_dio"
                 min-width="400px"
                 center
-                :before-close="close">
+                :before-close="cancel">
             <ul class="goods_edit">
                 <li>
                     <span class="list_left">选择</span>
                     <span class="list_right">
-                        <el-radio v-model="user.sex" label="1">卡项充值</el-radio>
-                        <el-radio v-model="user.sex" label="2">余额充值</el-radio>
+                        <el-radio v-model="rech_type" label="1">账户充值</el-radio>
+                        <el-radio v-model="rech_type" label="2">卡项充值</el-radio>
                     </span>
                 </li>
 
-                <li>
+                <li v-if="rech_type==1">
+                    <div class="cus_center">
+                        <el-button
+                                size="mini"
+                                type="success"
+                                @click="record_dio=true;get_record('balance')">充值记录
+                        </el-button>
+                    </div>
                     <ul class="goods_edit">
                         <li>
                             <span class="list_left">当前余额</span>
                             <span class="list_right">
-                    <el-input v-model="user.num" placeholder="请输入会员编号"></el-input>
+                    <el-input v-model="" placeholder="请输入会员编号"></el-input>
                             </span>
                         </li>
                         <li>
                             <span class="list_left">充值余额</span>
                             <span class="list_right">
-                    <el-input v-model="user.name" placeholder="请输入会员名"></el-input>
+                    <el-input v-model="" placeholder="请输入会员名"></el-input>
                 </span>
 
                         <li>
                             <span class="list_left">赠送余额</span>
                             <span class="list_right">
-                    <el-input v-model="user.age" placeholder="请输入年龄"></el-input>
+                    <el-input v-model="" placeholder="请输入年龄"></el-input>
                 </span>
                         </li>
                     </ul>
                 </li>
-
-                <li>
+                <li v-if="rech_type==2">
                     <ul class="card_li">
                         <li>
                             <div>
@@ -563,9 +569,70 @@
             </ul>
             <span slot="footer" class="dialog-footer">
             <el-button @click="">取 消</el-button>
-            <el-button type="primary" @click="add">确 定</el-button>
+            <el-button type="primary" @click="">确 定</el-button>
           </span>
-        </el-dialog>
+        </el-dialog>-->
+        <!-- 账户充值记录 -->
+        <!--<el-dialog
+                title="方案详情"
+                :visible.sync="record_dio"
+                center>
+            <el-table border
+                      :data=""
+                      style="width: 100%">
+                <el-table-column
+                        prop=""
+                        label="类别"
+                        width="80">
+                </el-table-column>
+                <el-table-column
+                        prop=""
+                        label="名称"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop=""
+                        label="售价">
+                </el-table-column>
+                <el-table-column
+                        prop=""
+                        label="次数">
+                </el-table-column>
+            </el-table>
+
+        </el-dialog>-->
+        <!--卡项充值内弹窗-->
+        <!--<el-dialog
+                title="卡项充值"
+                :visible.sync="card_re_dio"
+                center
+                :before-close="cancel">
+            <div class="cus_center">
+                <el-button
+                        size="mini"
+                        type="success"
+                        @click="record_dio=true;get_record('card')">充值记录
+                </el-button>
+            </div>
+            <ul class="goods_edit">
+                <li>
+                    <span class="list_left">卡余额</span>
+                    <span class="list_right">
+                        <el-input v-model="" placeholder=""></el-input>
+                    </span>
+                </li>
+                <li>
+                    <span class="list_left">充值金额</span>
+                    <span class="list_right">
+                        <el-input v-model="" placeholder="请输入充值金额"></el-input>
+                    </span>
+                </li>
+            </ul>
+            <span slot="footer" class="dialog-footer">
+            <el-button @click="">取 消</el-button>
+            <el-button type="primary" @click="">确 定</el-button>
+          </span>
+        </el-dialog>-->
     </template>
 
 </div>
@@ -580,13 +647,15 @@
     new Vue({
         el: '#app',
         data: {
+            rech_type:'1',
             recharge_dio:false,
+            record_dio:false,
+            card_re_dio:false,
             index: 0,
             max_ht: 0,
             input: '',
             radio: '',
             checked: '',
-            centerDialogVisible: false,
             tableData3: [{
                 px: '产品',
                 class: '面部',
@@ -607,7 +676,6 @@
                 give: '是'
             }],
             multipleSelection: [],
-
             list: [],
             r: '',
             fileList: [],
@@ -625,6 +693,14 @@
             p: null,
         },
         methods: {
+            cancel(){
+                this.recharge_dio=false;
+                this.record_dio=false;
+                this.card_re_dio=false;
+            },
+            get_record(type){
+                // $.post(url(methods.recharge_record))
+            },
             getPrice(v){
                 v.one = parseFloat(v.price2)/parseFloat(v.needNum)
                 v.bf = v.price2
@@ -662,8 +738,6 @@
                             'id': v.id,'name':v.name,'type':v.type,'spec':v.sum, 'sum': v.needNum
                         })
                 }
-                console.log(wear);
-
                 $.post(url(methods.buyWear),{data: JSON.stringify(wear),type: all > 0 ? 1 : 2,id: this.user_id}, v => {
                     console.log(v);
                     if (v.code == 1) {
@@ -696,7 +770,6 @@
                         })
                     }
                 }
-                console.log(card)
                 //type>0传1 =0传2
                 $.post(url(methods.buyCard) + `&id=${this.user_id}`, {data: JSON.stringify(card)}, v => {
                     if (v.code == 1) {
@@ -871,54 +944,6 @@
                 } else if (this.tabIndex == 3) {
                     this.subPlan()
                 }
-                /*if (this.need.length == 0) {
-                    error('请选择商品')
-                    return
-                }
-                let goods = [];
-                let th = [];
-                let items = [];
-                for(let v of this.need) {
-                    if(v.type == '项目'){
-                        if(v.yh!=0){
-                            items.push({'price': v.price, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
-                                'name': v.name, 'sum': v.needNum, 'times': v.fre, 'is_rate': v.yh})
-                        }else{
-                            items.push({'price': v.price, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
-                                'name': v.name, 'sum': v.needNum, 'times': v.fre})
-                        }
-                    }else if(v.type == '产品') {
-                        if(v.yh != 0){
-                            goods.push({'price': v.price, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
-                                'name': v.name, 'sum': v.needNum, 'spec': v.spec, 'is_rate': v.yh})
-                        }else{
-                            goods.push({'price': v.price, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
-                                'name': v.name, 'sum': v.needNum, 'spec': v.spec})
-                        }
-
-                    }else if(v.type == '套盒') {
-                        if(v.yh!=0){
-                            th.push({'price': v.price, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
-                                'name': v.name, 'sum': v.needNum, 'times': v.fre, 'is_rate': v.yh})
-                        }else{
-                            th.push({'price': v.price, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
-                                'name': v.name, 'sum': v.needNum, 'times': v.fre})
-                        }
-                    }
-                }
-                //console.log(goods, th, items);return
-                $.post(url(methods.mergeBuy), {
-                    'item': JSON.stringify(items),
-                    'goods': JSON.stringify(goods), 'th': JSON.stringify(th), 'id': this.user_id}, v=>{
-                    if(v.code==1){
-                        localStorage.setItem('order_id', v.res)
-                        success('购买成功，请在手机端补款')
-                        setTimeout(()=>location.reload(), 1500)
-                        /!*location.href = './pay_page.html'*!/
-                    }else{
-                        error(v.error)
-                    }
-                })*/
             },
             allRemove() {
                 this.$confirm('是否全部清空?', '提示', {

@@ -422,15 +422,7 @@
                         },v=> {
                             if(v.code==1){
                                 success('设置成功')
-                                this.$confirm('已设置成功，是否继续其他设置员工提成?', '提示', {
-                                    confirmButtonText: '确定',
-                                    cancelButtonText: '取消',
-                                    type: 'warning'
-                                }).then(() => {
-                                    location.href = './staff_mange.html';
-                                }).catch(e => {
-                                    location.href = './home.html';
-                                })
+                                location.href = './staff_mange.html';
                             }else{
                                 error(v.error)
                             }
