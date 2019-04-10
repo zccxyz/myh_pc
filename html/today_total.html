@@ -241,8 +241,12 @@
             formatter3(r, c) {
                 if(r.is_back==1){
                     return '正常';
-                }else{
-                    return '退单'
+                }else if(r.is_back==2){
+                    return '退单';
+                }else if(r.is_back==3){
+                    return '欠款';
+                }else if(r.is_back==4){
+                    return '赠送';
                 }
             },
             formatterw(r, c) {

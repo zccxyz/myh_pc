@@ -371,7 +371,7 @@
                     </el-table-column>
                 </el-table>
             </el-tab-pane>
-            <!--<el-tab-pane>
+           <!-- <el-tab-pane>
                 <span slot="label" @click="recharge_dio=true">充值</span>
             </el-tab-pane>-->
         </el-tabs>
@@ -505,10 +505,9 @@
             </div>
         </div>
         <!--充值弹窗-->
-        <!--<el-dialog
+        <el-dialog
                 title="充值"
                 :visible.sync="recharge_dio"
-                min-width="400px"
                 center
                 :before-close="cancel">
             <ul class="goods_edit">
@@ -532,20 +531,19 @@
                         <li>
                             <span class="list_left">当前余额</span>
                             <span class="list_right">
-                    <el-input v-model="" placeholder="请输入会员编号"></el-input>
+                                156
                             </span>
                         </li>
                         <li>
-                            <span class="list_left">充值余额</span>
+                            <span class="list_left">充值金额</span>
                             <span class="list_right">
-                    <el-input v-model="" placeholder="请输入会员名"></el-input>
-                </span>
-
+                                <el-input v-model="re_money" placeholder="请输入充值金额"></el-input>
+                            </span>
                         <li>
                             <span class="list_left">赠送余额</span>
                             <span class="list_right">
-                    <el-input v-model="" placeholder="请输入年龄"></el-input>
-                </span>
+                                <el-input v-model="send_money" placeholder="请输入赠送余额"></el-input>
+                            </span>
                         </li>
                     </ul>
                 </li>
@@ -560,7 +558,7 @@
                                 <el-button
                                         size="mini"
                                         type="primary"
-                                        @click="">充值
+                                        @click="card_re_dio=true">充值
                                 </el-button>
                             </span>
                         </li>
@@ -571,38 +569,9 @@
             <el-button @click="">取 消</el-button>
             <el-button type="primary" @click="">确 定</el-button>
           </span>
-        </el-dialog>-->
-        <!-- 账户充值记录 -->
-        <!--<el-dialog
-                title="方案详情"
-                :visible.sync="record_dio"
-                center>
-            <el-table border
-                      :data=""
-                      style="width: 100%">
-                <el-table-column
-                        prop=""
-                        label="类别"
-                        width="80">
-                </el-table-column>
-                <el-table-column
-                        prop=""
-                        label="名称"
-                        width="180">
-                </el-table-column>
-                <el-table-column
-                        prop=""
-                        label="售价">
-                </el-table-column>
-                <el-table-column
-                        prop=""
-                        label="次数">
-                </el-table-column>
-            </el-table>
-
-        </el-dialog>-->
+        </el-dialog>
         <!--卡项充值内弹窗-->
-        <!--<el-dialog
+        <el-dialog
                 title="卡项充值"
                 :visible.sync="card_re_dio"
                 center
@@ -618,13 +587,13 @@
                 <li>
                     <span class="list_left">卡余额</span>
                     <span class="list_right">
-                        <el-input v-model="" placeholder=""></el-input>
+                        566
                     </span>
                 </li>
                 <li>
                     <span class="list_left">充值金额</span>
                     <span class="list_right">
-                        <el-input v-model="" placeholder="请输入充值金额"></el-input>
+                        <el-input v-model="card_money" placeholder="请输入充值金额"></el-input>
                     </span>
                 </li>
             </ul>
@@ -632,7 +601,41 @@
             <el-button @click="">取 消</el-button>
             <el-button type="primary" @click="">确 定</el-button>
           </span>
-        </el-dialog>-->
+        </el-dialog>
+        <!-- 卡项、账户充值记录 -->
+        <el-dialog
+                title="充值记录"
+                :visible.sync="record_dio"
+                center>
+            <el-table border
+                      :data="record"
+                      style="width: 100%">
+                <el-table-column
+                        type="index"
+                        width="50">
+                </el-table-column>
+                <el-table-column
+                        label="类型">
+                    <template slot-scope="scope">
+                        <i v-if="scope.row.type==1">余额</i>
+                        <i v-if="scope.row.type==2">卡项</i>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        prop="money"
+                        label="金额">
+                </el-table-column>
+                <el-table-column
+                        prop="send_money"
+                        label="赠送金额">
+                </el-table-column>
+                <el-table-column
+                        prop="time"
+                        label="时间">
+                </el-table-column>
+            </el-table>
+        </el-dialog>
+
     </template>
 
 </div>
@@ -651,6 +654,9 @@
             recharge_dio:false,
             record_dio:false,
             card_re_dio:false,
+            re_money:'',
+            send_money:'',
+            card_money:'',
             index: 0,
             max_ht: 0,
             input: '',
@@ -691,6 +697,7 @@
             need3: [],
             nowData: '',
             p: null,
+            record:''
         },
         methods: {
             cancel(){
@@ -699,14 +706,17 @@
                 this.card_re_dio=false;
             },
             get_record(type){
-                // $.post(url(methods.recharge_record))
+                $.post(url(methods.recharge_record),{mid:this.user_id,type:type},v=>{
+                    if(v.record!=''){
+                        this.record=v.record;
+                    }
+                })
             },
             getPrice(v){
                 v.one = parseFloat(v.price2)/parseFloat(v.needNum)
                 v.bf = v.price2
             },
             getDis(v){
-                console.log(v)
                 if(v.bf==null){
                     v.price2 = parseFloat(v.price)*parseFloat(v.needNum)*parseFloat(v.discount)/10
                     v.one = parseFloat(v.price2)/parseInt(v.needNum)
