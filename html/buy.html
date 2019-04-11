@@ -726,7 +726,6 @@
                     error("至少充值一项")
                 }else{
                     $.post(url(methods.recharge_account)+`&id=${this.user_id}`,{money:this.re_money,send:this.send_money},v=>{
-                        console.log(v)
                         if(v.code==1){
                             success(v.Msg)
                             this.re_money=''
@@ -741,7 +740,6 @@
                     error("请输入要充值的金额")
                 }else{
                     $.post(url(methods.save_card)+`&id=${this.ca_id}`,{money:this.card_money},v=>{
-                        console.log(v)
                         if(v.code==1){
                             success(v.info)
                             this.card_re_dio=false;
@@ -803,7 +801,6 @@
                         })
                 }
                 $.post(url(methods.buyWear),{data: JSON.stringify(wear),type: all > 0 ? 1 : 2,id: this.user_id}, v => {
-                    console.log(v);
                     if (v.code == 1) {
                         this.need3 = []
                         for (let v of this.yf) {
@@ -1144,7 +1141,6 @@
             },
             add3(v) {
                 v.needNum++
-                console.log(v)
                 let z = true;
                 for (let x of this.need3) {
                     if (v.id == x.id) {
@@ -1205,7 +1201,6 @@
                 }
             },
             handleClick(tab, event) {
-                //console.log(tab.index)
                 this.tabIndex = tab.index
                 this.need = []
                 this.need2 = []

@@ -30,7 +30,9 @@ var methods = {
     'send_coupon': 'Member/send_coupon',
     'get_cate':'Member/get_cate',
     'recharge_record':'Member/RechargeRecord',
-
+    'mem_own_edit':'Member/MemberBoxItemsM',
+    'del_card':'Member/del_card',
+    'modify_member_card_details':'Member/modify_member_card_details',
     'recharge_cardList':'buy/rechargeCardList',
     'get_consumption':'Vipdetails/get_consumption',
     'exportGoods': 'Commodity/exportGoods',

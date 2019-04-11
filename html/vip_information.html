@@ -96,18 +96,24 @@
                                 </el-select>
                             </p>
                             <p>
+                                积分：
+                                <el-button @click="integral_dio=true;getIntegral()" type="warning">{{userInfo.integral}}</el-button>
+                                <!--<el-input v-model="userInfo.integral" placeholder="" type="number"-->
+                                          <!--class="infor_wid un_line_h"></el-input>-->
+                            </p>
+                        </li>
+                        <li>
+                            <p>
                                 账户余额：
                                 <el-input v-model="userInfo.balance" placeholder="请输入会员余额" type="number"
                                           class="infor_wid un_line_h"></el-input>
                             </p>
-                        </li>
-                        <li>
-
                             <p>
                                 赠送余额：
                                 <el-input v-model="userInfo.send_balance" placeholder="请输入会员余额" type="number"
                                           class="infor_wid un_line_h"></el-input>
                             </p>
+                            <p></p>
                         </li>
                         <li>
                             <p>
@@ -203,7 +209,6 @@
                         </el-table-column>
                         <el-table-column
                                 prop="originally_num"
-
                                 label="总次数">
                         </el-table-column>
                         <!--<el-table-column
@@ -212,6 +217,7 @@
                         </el-table-column>-->
                         <el-table-column label="操作">
                             <template slot-scope="scope">
+                                <!--<el-button type="warning" size="mini" @click="console(scope.row);own_data=scope.row;edit_type='items'">编辑</el-button>-->
                                 <el-button type="danger" size="mini" @click="del(2, scope.row, 2)">删除</el-button>
                             </template>
                         </el-table-column>
@@ -255,11 +261,11 @@
                         </el-table-column>
                         <el-table-column
                                 prop="originally_num"
-
                                 label="总次数">
                         </el-table-column>
                         <el-table-column label="操作">
                             <template slot-scope="scope">
+                                <!--<el-button type="warning" size="mini" @click="console(scope.row);own_data=scope.row;edit_type='plan'">编辑</el-button>-->
                                 <el-button type="danger" size="mini" @click="del(2, scope.row, 2)">删除</el-button>
                             </template>
                         </el-table-column>
@@ -307,6 +313,7 @@
                         </el-table-column>-->
                         <el-table-column label="操作">
                             <template slot-scope="scope">
+                                <!--<el-button type="warning" size="mini" @click="console(scope.row);own_data=scope.row;edit_type='box'">编辑</el-button>-->
                                 <el-button type="danger" size="mini" @click="del(3, scope.row, 2)">删除</el-button>
                             </template>
                         </el-table-column>
@@ -356,6 +363,7 @@
                                 <i v-if="scope.row.coupon_type==4"> 满{{scope.row.dedut}}可用</i>
                             </template>
                         </el-table-column>
+
                     </el-table>
                 </div>
             </el-tab-pane>
@@ -388,67 +396,28 @@
                                 </i>
                             </template>
                         </el-table-column>
-                       <!-- <el-table-column label="操作">
+                        <el-table-column label="操作">
                             <template slot-scope="scope">
-                                <el-button type="warning" plain size="mini" @click="">编辑</el-button>
-
-                                <el-button type="danger" plain size="mini" @click="">删除</el-button>
-
+                                <!--<el-button type="warning" size="mini" @click="card_eDio=true;card_data=scope.row">编辑</el-button>-->
+                                <el-button type="danger" size="mini" @click="card_del(scope.row.id)">删除</el-button>
                             </template>
-                        </el-table-column>-->
+                        </el-table-column>
                     </el-table>
                 </div>
             </el-tab-pane>
-            <el-tab-pane label="积分">
+            <!--<el-tab-pane label="积分">
                 <div class="basic_inf">
-                    <el-table
-                            :data="integer"
-                            style="width: 100%">
-                        <el-table-column
-                                prop="time"
-                                label="日期">
-                        </el-table-column>
-                        <el-table-column
-                                :formatter="formatter3"
-                                prop="status"
-                                label="状态">
-                        </el-table-column>
-                        <el-table-column
-                                prop="integral"
-                                label="积分">
-                        </el-table-column>
-                        <!--<el-table-column
-                                prop="status"
-                                label="消费商品">
-                        </el-table-column>
-                        <el-table-column
-                                prop="time"
-                                label="划扣积分">
-                        </el-table-column>
-                        <el-table-column
-                                prop="time"
-                                label="存入积分">
-                        </el-table-column>
-                        <el-table-column
-                                prop="time"
-                                label="经手人">
-                        </el-table-column>-->
-                        <!--<el-table-column label="操作">
-                            <template slot-scope="scope">
-                                <a href="#" class="cr">删除</a>
-                            </template>
-                        </el-table-column>-->
-                    </el-table>
-                    <!--<div class="total">
+
+                    &lt;!&ndash;<div class="total">
                     <span class="fl">
                           <p class="cr">汇总：</p>
                         <p class="money_total">累计积分：23565分</p>
                         <p class="money_total">可用积分：562分</p>
                     </span>
                         <el-button type="success" class="go_buy fr">新增记录</el-button>
-                    </div>-->
+                    </div>&ndash;&gt;
                 </div>
-            </el-tab-pane>
+            </el-tab-pane>-->
             <el-tab-pane label="欠款">
                 <div class="basic_inf">
                     <el-table
@@ -905,6 +874,150 @@
             <el-button type="primary" @click="send_cou">确 定</el-button>
           </span>
         </el-dialog>
+        <!-- 积分记录 -->
+        <el-dialog
+                title="积分记录"
+                :visible.sync="integral_dio"
+                center>
+            <el-table
+                    :data="integer"
+                    style="width: 100%">
+                <el-table-column
+                        prop="time"
+                        label="日期">
+                </el-table-column>
+                <el-table-column
+                        label="状态">
+                    <template slot-scope="scope">
+                        <i ng-if="scope.row.status == 1">赠送</i>
+                        <i ng-if="scope.row.status == 2">使用</i>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        prop="integral"
+                        label="积分">
+                </el-table-column>
+                <!--<el-table-column
+                        prop="status"
+                        label="消费商品">
+                </el-table-column>
+                <el-table-column
+                        prop="time"
+                        label="划扣积分">
+                </el-table-column>
+                <el-table-column
+                        prop="time"
+                        label="存入积分">
+                </el-table-column>
+                <el-table-column
+                        prop="time"
+                        label="经手人">
+                </el-table-column>-->
+                <!--<el-table-column label="操作">
+                    <template slot-scope="scope">
+                        <a href="#" class="cr">删除</a>
+                    </template>
+                </el-table-column>-->
+            </el-table>
+        </el-dialog>
+        <!--会员持有的编辑-->
+        <el-dialog :append-to-body="true"
+                title="会员商品编辑"
+                :visible.sync="mownedit"
+                center
+                :before-close="own_cancel()">
+            <ul class="goods_edit">
+                <li>
+                    <span class="list_left">商品名称</span>
+                    <span class="list_right">
+                    <el-input v-model="own_data.name" placeholder="请输入商品名称"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">购价</span>
+                    <span class="list_right">
+                    <el-input v-model="own_data.price" placeholder="请输入商品购价"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">原本次数</span>
+                    <span class="list_right">
+                    <el-input v-model="own_data.originally_num" placeholder="请输入原本次数" type="number"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">剩余次数</span>
+                    <span class="list_right">
+                    <el-input v-model="own_data.current_num" placeholder="请输入原本次数"type="number"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">手工</span>
+                    <span class="list_right">
+                    <el-input v-model="own_data.fee" placeholder="请输入手工"type="number"></el-input>
+                </span>
+                </li>
+            </ul>
+            <span slot="footer" class="dialog-footer">
+            <el-button @click="own_cancel">取 消</el-button>
+            <el-button type="primary" @click="edit_v_own(own_data.id)">确 定</el-button>
+          </span>
+        </el-dialog>
+        <!--会员卡项的编辑-->
+        <el-dialog
+                title="会员持有卡项编辑"
+                :visible.sync="card_eDio"
+                center
+                :before-close="own_cancel()">
+            <ul class="goods_edit">
+                <li>
+                    <span class="list_left">卡项名称</span>
+                    <span class="list_right">
+                    <el-input v-model="own_data.name" placeholder="请输入商品名称"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">卡名</span>
+                    <span class="list_right">
+                    <el-input v-model="card_data.card_name" placeholder="请输入卡名"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">卡内余额</span>
+                    <span class="list_right">
+                    <el-input v-model="card_data.amount" type="number" placeholder="请输入卡内余额"></el-input>
+                </span>
+                </li>
+                <li v-if="card_data.card_type==3">
+                    <span class="list_left">折扣</span>
+                    <span class="list_right">
+                    <el-input v-model="card_data.discount" type="number" placeholder="请输入折扣" @blur="check_bulk(detail.discount)"></el-input>
+                </span>
+                </li>
+                <li v-if="card_data.card_type==2" class="dis_div">
+                    <span>
+                        套盒折扣：&#12288;
+                        <el-input v-model="card_data.suitbox" type="number" placeholder="0" class="in_wid" @blur="check_bulk(card_data.suitbox)"></el-input>&nbsp;%
+                    </span>
+                    <span>
+                        产品折扣：&#12288;
+                        <el-input v-model="card_data.product" type="number" placeholder="0" class="in_wid" @blur="check_bulk(card_data.product)"></el-input>&nbsp;%
+                    </span>
+                    <span>
+                        礼包折扣：&#12288;
+                        <el-input v-model="card_data.gift" type="number" placeholder="0" class="in_wid" @blur="check_bulk(card_data.gift)"></el-input>&nbsp;%
+                    </span>
+                    <span>
+                        项目折扣：&#12288;
+                        <el-input v-model="card_data.items" type="number" placeholder="0" class="in_wid" @blur="check_bulk(card_data.items)"></el-input>&nbsp;%
+                    </span>
+                </li>
+            </ul>
+             <span slot="footer" class="dialog-footer">
+             <el-button @click="own_cancel">取 消</el-button>
+             <el-button type="primary" @click="card_edit(card_data.id)">确 定</el-button>
+           </span>
+        </el-dialog>
     </template>
 </div>
 
@@ -926,6 +1039,12 @@
             dialogVisible: false,
             dialogVisible2: false,
             add_demand_dio:false,
+            integral_dio:false,
+            mownedit:false,
+            card_eDio:false,
+            card_data:'',
+            own_data:'',
+            edit_type:'',
             pay_dio:false,
             add_list:[],
             text:'',
@@ -1018,6 +1137,16 @@
             detail2: '',
         },
         methods: {
+            console(dd){
+                console.log(this.edit_type);
+                console.log(this.mownedit)
+                this.mownedit=true;
+                console.log(this.mownedit)
+                console.log(this.own_data)
+                console.log(dd)
+                this.own_data=dd
+                console.log(this.own_data)
+            },
             add_hel(){
                 localStorage.setItem('search_sh', '')
                 location.href='./health_pro.html';
@@ -1153,7 +1282,67 @@
                     this.arr3.push(v.id)
                 }
             },
-            del(t, v, t2 = 1) {
+            edit_v_own(id){
+                console.log(this.own_data);
+                if(this.own_data.originally_num==''){
+                    error('请输入原有次数！')
+                }else if(this.own_data.current_num==''){
+                    error('请输入剩余次数！')
+                }else if(this.own_data.current_num>this.own_data.originally_num){
+                    error('剩余次数大于原本次数！')
+                }else if(this.own_data.fee==''){
+                    error('请输入手工费！')
+                }else{
+                    $.get(url(methods.mem_own_edit),{data:this.own_data,id:id,type:this.edit_type},v=>{
+                        console.log(v)
+                        if(v.code==1){
+                            success(v.Msg)
+                        }
+                    })
+                }
+            },
+            own_cancel(){
+                this.mownedit=false;
+                this.card_eDio=false;
+                this.own_data='';
+                this.card_data='';
+            },
+            card_edit(id){
+                if(this.card_data.amount==''){
+                    error('请输入卡内余额！')
+                }else{
+                    $.get(url(methods.modify_member_card_details),{data:this.card_data},v=>{
+                        console.log(v)
+                        if(v.code==1){
+                            success(v.Msg)
+                            this.card_eDio=false;
+                            this.getCard()
+                        }
+                    })
+                }
+            },
+            check_bulk(bulk){
+               /* if(bulk<0||bulk>100){
+                    error('请输入1~100之间数字！')
+                }*/
+            },
+            card_del(id){
+                this.$confirm('是否删除?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    $.post(url(methods.del_card), {id: id}, v => {
+                        if (v.code == 1) {
+                            success(v.Msg);
+                            this.getCard();
+                        }
+                    })
+                }).catch(e => {
+
+                })
+            },
+                del(t, v, t2 = 1) {
                 this.$confirm('是否删除?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -1232,7 +1421,6 @@
                 }
             },
             formatter(r, c) {
-                console.log(r)
                 if (r.card_type == 1) {
                     return '储值卡'
                 } else if (r.card_type == 2) {
@@ -1240,9 +1428,6 @@
                 }else  if (r.card_type == 3){
                     return "全场折扣卡"
                 }
-            },
-            formatter3(r, c){
-
             },
             getCard() {
                 $.get(url(methods.cardList) + `&mid=${this.userId}`, v => {
@@ -1270,15 +1455,16 @@
                     this.getCoupon()
                 } else if (tab.index == 6) {
                     this.getCard()
-                } else if (tab.index == 7) {
-                    this.getIntegral()
-                } else if (tab.index == 8) {
+                }else if (tab.index == 7) {
                     this.getArrears()
-                } else if (tab.index == 9) {
+                } else if (tab.index == 8) {
                     this.getDa()
-                }else if (tab.index == 10) {
+                }else if (tab.index == 9) {
                     this.get_consumption()
                 }
+               /* else if (tab.index == 7) {
+                    this.getIntegral()
+                }*/
             },
             get_consumption(){
                 $.get(url(methods.get_consumption),{mid:this.userId},v=>{

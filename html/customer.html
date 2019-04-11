@@ -914,7 +914,6 @@
                     })
                 }
                 this.deleteDialogVisible = false
-                console.log(this.multipleSelection)
             },
             delOne(id) {
                 this.$confirm('是否删除?', '提示', {
@@ -1187,9 +1186,7 @@
                 }
             },
             check_entry_name(type){
-                console.log(type)
                 $.post(url(methods.check_entry_name),{type: type},v=>{
-                    console.log(v)
                     this.name_list=v.res;
                     if(type==1||type==2){
                         $.post(url(methods.get_cate),v=> {
@@ -1278,7 +1275,6 @@
             entry_in(){
                 this.data.mid=this.in_id;
                 $.post(url(methods.oldentry),{data:this.data},v=>{
-                    console.log(v)
                     if(v.code==1){
                             success(v.Msg)
                             this.data = {
@@ -1339,10 +1335,8 @@
                     }else if(this.data.c_amount == 0 || this.data.c_amount == ""){
                         error("请输入正确的余额")
                     }else if(this.data.c_type == 3 && this.data.c_discount == ""){
-                        console.log(1)
                         error("请输入正确的正确的折扣")
                     }else if(this.data.c_type == 3 && this.data.c_discount == 0){
-                        console.log(2)
                         error("请输入正确的正确的折扣")
                     }else{
                         this.entry_in()
