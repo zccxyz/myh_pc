@@ -214,6 +214,10 @@ function jump(v) {
     localStorage.setItem('user_id', v.uid)
     location.href = 'vip_information.html'
 }
+function jump_id(id) {
+    localStorage.setItem('user_id', id)
+    location.href = 'vip_information.html'
+}
 function loginState() {
     $.post(url(methods.isLogin), function(v) {
         if (!v.data) {
