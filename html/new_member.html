@@ -55,8 +55,16 @@
                 </template>
             </el-table-column>
             <el-table-column
+                    :formatter="m_recomend"
+                    label="推荐人">
+            </el-table-column>
+            <el-table-column
+                    :formatter="m_adviser"
+                    label="顾问">
+            </el-table-column>
+            <el-table-column
                     label="操作"
-                    width="300"
+                    width="340"
                     fixed="right"
                     show-overflow-tooltip>
                 <template slot-scope="scope">
@@ -73,6 +81,9 @@
                             size="mini"
                             @click="jump(1, scope.row)" class="purple do_but">
                         消费
+                    </el-button>
+                    <el-button
+                            size="mini" @click="jump(3, scope.row)">查看
                     </el-button>
                 </template>
             </el-table-column>
@@ -352,13 +363,26 @@
                 })
             },
             get_ember() {
-                console.log(1)
                 $.get(url(methods.get_member_list), v => {
                     console.log(v)
                     if(v.code==1){
                         this.mem_list = v.res.all_member
                     }
                 })
+            },
+            m_recomend(r,c){
+                for(let i of this.mem_list){
+                    if(i.id==r.recommend){
+                        return i.name
+                    }
+                }
+            },
+            m_adviser(r,c){
+                for(let i of this.adviser_list){
+                    if(i.id==r.adviser){
+                        return i.name
+                    }
+                }
             },
             add2() {
                 if (this.user.name == '' || this.user.tel.length != 11) {
@@ -701,6 +725,8 @@
                 that = this
                 this.getData()
                 this.r = url(methods.upload)
+                this.get_advister()
+                this.get_ember()
                 loginState();
             })
         }

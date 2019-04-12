@@ -217,7 +217,7 @@
                         </el-table-column>-->
                         <el-table-column label="操作">
                             <template slot-scope="scope">
-                                <!--<el-button type="warning" size="mini" @click="console(scope.row);own_data=scope.row;edit_type='items'">编辑</el-button>-->
+                                <!--<el-button type="warning" size="mini" @click="edit_m_own_dio=true">编辑</el-button>-->
                                 <el-button type="danger" size="mini" @click="del(2, scope.row, 2)">删除</el-button>
                             </template>
                         </el-table-column>
@@ -921,11 +921,10 @@
             </el-table>
         </el-dialog>
         <!--会员持有的编辑-->
-        <el-dialog :append-to-body="true"
+        <el-dialog
                 title="会员商品编辑"
-                :visible.sync="mownedit"
-                center
-                :before-close="own_cancel()">
+                :visible.sync="edit_m_own_dio"
+                center>
             <ul class="goods_edit">
                 <li>
                     <span class="list_left">商品名称</span>
@@ -948,18 +947,18 @@
                 <li>
                     <span class="list_left">剩余次数</span>
                     <span class="list_right">
-                    <el-input v-model="own_data.current_num" placeholder="请输入原本次数"type="number"></el-input>
+                    <el-input v-model="own_data.current_num" placeholder="请输入原本次数" type="number"></el-input>
                 </span>
                 </li>
                 <li>
                     <span class="list_left">手工</span>
                     <span class="list_right">
-                    <el-input v-model="own_data.fee" placeholder="请输入手工"type="number"></el-input>
+                    <el-input v-model="own_data.fee" placeholder="请输入手工" type="number"></el-input>
                 </span>
                 </li>
             </ul>
             <span slot="footer" class="dialog-footer">
-            <el-button @click="own_cancel">取 消</el-button>
+            <el-button @click="edit_m_own_dio=false">取 消</el-button>
             <el-button type="primary" @click="edit_v_own(own_data.id)">确 定</el-button>
           </span>
         </el-dialog>
@@ -1040,7 +1039,7 @@
             dialogVisible2: false,
             add_demand_dio:false,
             integral_dio:false,
-            mownedit:false,
+            edit_m_own_dio:false,
             card_eDio:false,
             card_data:'',
             own_data:'',
@@ -1139,9 +1138,9 @@
         methods: {
             console(dd){
                 console.log(this.edit_type);
-                console.log(this.mownedit)
-                this.mownedit=true;
-                console.log(this.mownedit)
+                console.log(this.edit_m_own_dio)
+                this.edit_m_own_dio=true;
+                console.log(this.edit_m_own_dio)
                 console.log(this.own_data)
                 console.log(dd)
                 this.own_data=dd
@@ -1302,7 +1301,7 @@
                 }
             },
             own_cancel(){
-                this.mownedit=false;
+                this.edit_m_own_dio=false;
                 this.card_eDio=false;
                 this.own_data='';
                 this.card_data='';

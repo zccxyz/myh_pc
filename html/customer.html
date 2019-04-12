@@ -117,6 +117,14 @@
                     label="会员编号" min-width="70">
             </el-table-column>
             <el-table-column
+                    label="来源" min-width="70">
+                <template slot-scope="scope">
+                    <i v-if="scope.row.old_status==1" style="color:red">会员</i>
+                    <i v-if="scope.row.old_status==2" style="color:green">新客</i>
+                    <i v-if="scope.row.old_status==3" style="color:blue">嘉宾</i>
+                </template>
+            </el-table-column>
+            <el-table-column
                     label="余额"
                     prop="balance" min-width="80">
             </el-table-column>
