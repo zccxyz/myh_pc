@@ -812,8 +812,6 @@
                         localStorage.setItem('arrearsRes', v.res.arrearsRes)
                         setTimeout(() => location.href = './pay_page.html', 1000)
                     }else{
-                        ((!syNum || parseFloat(data.num)>=parseFloat(syNum)) &&
-                            (!syNum2 || parseFloat(data.num)<=parseFloat(syNum2)))
                         error(v.error)
                     }
                 })
