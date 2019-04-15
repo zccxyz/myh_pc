@@ -418,6 +418,9 @@
                         <span @click="check_entry_name(1)">
                              <el-radio v-model="data.cate_c" label="1" >套盒</el-radio>
                         </span>
+                         <span @click="check_entry_name(6)">
+                             <el-radio v-model="data.cate_c" label="6" >产品</el-radio>
+                        </span>
                         <span @click="check_entry_name(2)">
                             <el-radio v-model="data.cate_c" label="2" >项目</el-radio>
                         </span>
@@ -465,6 +468,16 @@
                        ></el-autocomplete>
                     </span>
                 </li>
+                <li v-if="data.cate_c == 6">
+                    <span class="list_left">产品名称</span>
+                    <span class="list_right">
+                       <el-autocomplete @blur="cp_blur(cp_name)"
+                                        v-model="cp_name"
+                                        :fetch-suggestions="querySearchAsync"
+                                        placeholder="请输入内容" @select="handleSelect_cp"
+                       ></el-autocomplete>
+                    </span>
+                </li>
                 <li v-if="data.cate_c == 1">
                     <span class="list_left">所属类别</span>
                     <span class="list_right">
@@ -481,12 +494,26 @@
                         </el-radio>
                     </span>
                 </li>
-                <li v-if="data.cate_c == 2||data.cate_c == 1">
+                <li v-if="data.cate_c == 6">
+                    <span class="list_left">所属类别</span>
+                    <span class="list_right">
+                        <el-radio v-for="v in goodsArr" v-model="data.cateId"
+                                  :label="v.id">{{v.name}}
+                        </el-radio>
+                    </span>
+                </li>
+                <li v-if="data.cate_c == 2||data.cate_c == 1||data.cate_c == 6">
                     <ul class="goods_edit">
                         <li>
                             <span class="list_left">价格</span>
                             <span class="list_right">
                         <el-input v-model="data.price" placeholder="请输入当时购买价格"></el-input>
+                    </span>
+                        </li>
+                        <li v-if="data.cate_c == 6">
+                            <span class="list_left">数量</span>
+                            <span class="list_right">
+                        <el-input v-model="data.sum" placeholder="请输入产品数量"></el-input>
                     </span>
                         </li>
                         <li>
@@ -495,25 +522,25 @@
                         <el-input v-model="data.arrears_money" placeholder="如未欠款请填写0"></el-input>
                     </span>
                         </li>
-                        <li>
+                        <li v-if="data.cate_c != 6">
                             <span class="list_left">原有次数</span>
                             <span class="list_right">
                         <el-input v-model="data.originally_num" placeholder="请输入原有次数"></el-input>
                     </span>
                         </li>
-                        <li>
+                        <li v-if="data.cate_c != 6">
                             <span class="list_left">剩余次数</span>
                             <span class="list_right">
                         <el-input v-model="data.current_num" placeholder="请输入剩余次数"></el-input>
                     </span>
                         </li>
-                        <li>
+                        <li v-if="data.cate_c != 6">
                             <span class="list_left">手工费</span>
                             <span class="list_right">
                         <el-input v-model="data.fee" placeholder="请输入手工费"></el-input>
                     </span>
                         </li>
-                        <li>
+                        <li v-if="data.cate_c != 6">
                             <span class="list_left">护理周期</span>
                             <span class="list_right">
                         <el-radio v-model="data.cycle" label="1" >每周一次</el-radio>
@@ -785,14 +812,19 @@
                 product:'',
                 items:'',
                 gift:'',
+                goods_name:'',
+                sum:''
             },
             th_name: '',
             xm_name: '',
+            cp_name: '',
             th_list: '',
             xm_list: '',
+            cp_list: '',
             ca_list: '',
             boxArr: '',
             itemsArr: '',
+            goodsArr:'',
             card_name: '',
         },
         methods: {
@@ -1063,6 +1095,8 @@
                     product:'',
                     items:'',
                     gift:'',
+                    goods_name:'',
+                    sum:''
                 };
                 this.addDialogVisible = false
                 this.zt = false
@@ -1112,6 +1146,8 @@
                     product:'',
                     items:'',
                     gift:'',
+                    goods_name:'',
+                    sum:''
                 };
             },
             toggleSelection(rows) {
@@ -1196,10 +1232,11 @@
             check_entry_name(type){
                 $.post(url(methods.check_entry_name),{type: type},v=>{
                     this.name_list=v.res;
-                    if(type==1||type==2){
+                    if(type==1||type==2||type==6){
                         $.post(url(methods.get_cate),v=> {
                             this.boxArr=v.res.box;
                             this.itemsArr=v.res.items;
+                            this.goodsArr=v.res.goods;
                         })
                         if(type==1){
                             this.th_list=v.res;
@@ -1210,6 +1247,12 @@
                             this.xm_list=v.res;
                             for(let i of this.name_list){
                                 i.value = i.pro_name;
+                            }
+                        }
+                        else if(type==6){
+                            this.cp_list=v.res;
+                            for(let i of this.name_list){
+                                i.value = i.goods_name;
                             }
                         }
                     }else if(type==3){
@@ -1236,17 +1279,16 @@
                 };
             },
             handleSelect_th(item) {
-                console.log(item);
                 this.data.box_name=item.id;
-                //do something
             },
             handleSelect_xm(item) {
-                console.log(item);
                 this.data.item_name=item.id;
+            },
+            handleSelect_cp(item) {
+                this.data.goods_name=item.id;
 //do something
             },
             handleSelect_ca(item) {
-                console.log(item);
                 this.data.card_name=item.id;
 //do something
             },
@@ -1267,6 +1309,16 @@
                     }else{
                         this.data.name=xm;
                         this.data.item_name='';
+                    }
+                }
+            },
+            cp_blur(xm){
+                for(let t of this.cp_list){
+                    if(t.goods_name==xm){
+                        this.data.goods_name = t.id;
+                    }else{
+                        this.data.name=xm;
+                        this.data.goods_name='';
                     }
                 }
             },
@@ -1312,6 +1364,8 @@
                                 product:'',
                                 items:'',
                                 gift:'',
+                                goods_name:'',
+                                sum:''
                             };
                     }else{
                         error(v.error)
@@ -1326,6 +1380,16 @@
                         error("请填写原有次数")
                     }else if(this.data.current_num==''){
                         error("请填写剩余次数")
+                    }else if(this.data.cateId==''){
+                        error("请选择分类")
+                    }else{
+                        this.entry_in()
+                    }
+                }else if(this.data.cate_c ==6){
+                    if(this.data.price==''){
+                        error("请填写价格")
+                    }else if(this.data.sum==''){
+                        error("请填写产品数量")
                     }else if(this.data.cateId==''){
                         error("请选择分类")
                     }else{
