@@ -59,19 +59,19 @@
                               prefix-icon="el-icon-search"
                               v-model="input">
                     </el-input>
-                    <span>
-                            按数量查找：
-                        <el-radio v-model="radio" label="1">
-                            大于等于
-                            <el-input style="width: 80px" v-model="one" type="number" placeholder=""
-                                      class="line_input"></el-input>个
-                        </el-radio>
-                        <el-radio v-model="radio" label="2">
-                          小于等于
-                            <el-input style="width: 80px" v-model="two" type="number" placeholder=""
-                                      class="line_input"></el-input>个
-                      </el-radio>
-                        </span>
+                    <!--<span>-->
+                            <!--按数量查找：-->
+                        <!--<el-radio v-model="radio" label="1">-->
+                            <!--大于等于-->
+                            <!--<el-input style="width: 80px" v-model="one" type="number" placeholder=""-->
+                                      <!--class="line_input"></el-input>个-->
+                        <!--</el-radio>-->
+                        <!--<el-radio v-model="radio" label="2">-->
+                          <!--小于等于-->
+                            <!--<el-input style="width: 80px" v-model="two" type="number" placeholder=""-->
+                                      <!--class="line_input"></el-input>个-->
+                      <!--</el-radio>-->
+                        <!--</span>-->
                     <!--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <span>
                         库存小于(x)预警：
@@ -98,9 +98,9 @@
                     <i class="blue_c" @click="yjSet">修改</i>
                 </div>
                 <div class="basic_inf">
+                    <!--(!input ||(data.name==null?false:data.name.toLowerCase().includes(input.toLowerCase())))-->
                     <el-table
-                            :data="list.filter( data => (!input || data.name.toLowerCase().includes(input.toLowerCase()))
-                             && (one>0?data.stock>=one:true || two>0?data.stock<=two:true))"
+                            :data="list.filter( data => (!input ||(data.name==null?false:data.name.toLowerCase().includes(input.toLowerCase()))))"
                             style="width: 100%">
                         <el-table-column
                                 prop="type"
@@ -716,7 +716,7 @@
             input3: '',
             input4: '',
             value2: '',
-            one: '',
+            one:'',
             two: '',
             goods: [],
             hc: [],
@@ -747,6 +747,14 @@
             }
         },
         methods: {
+            /*con(m){
+                console.log(m);
+                if(m==''){
+                    console.log(1);
+                    this.one=0
+                    this.two='';
+                }
+            },*/
             go_scan(t){
                 localStorage.setItem('px', t);
                 location.href = './scan_code.html';
@@ -854,6 +862,8 @@
                 $.post(url(methods.wareIntoOutDetail), {ware: this.id}, v => {
                     this.warning = v['res']['warning']
                     this.list = v['res']['res']
+                    console.log(11 )
+                    console.log(this.list )
                 })
             },
             myClick(v, v2) {
