@@ -193,16 +193,16 @@
                 </template>
             </el-table-column>
         </el-table>
-        <!--<div style="background: #fff;text-align: center">
+        <div style="background: #fff;text-align: center;padding: 10px 0">
             <el-pagination  background
                             @current-change="handleCurrentChange"
                             :current-page="currentPage"
                             :page-size="20"
-                            layout="total, sizes, prev, pager, next, jumper"
+                            layout="total, prev, pager, next, jumper"
                             :total="total" :pager-count="8"
                             @prev-click="prev_click" @next-click="next_click">
             </el-pagination>
-        </div>-->
+        </div>
 
         <!--<el-pagination
                 background
@@ -846,14 +846,17 @@
             handleCurrentChange(val) {
                 this.page=val;
                 this.getMember()
-                console.log(`当前页: ${val}`);
             },
             next_click(val){
                 if(val<this.page_count){
                     this.page++;
                     this.getMember()
-                }else if (val=this.page_count){
-                    error('已经是最后一页了额')
+                }
+            },
+            prev_click(val){
+                if(val<2){
+                    this.page--;
+                    this.getMember()
                 }
             },
             getQueryString(name) {
@@ -881,7 +884,7 @@
             },
             height(){
                     var height=window.innerHeight;
-                    this.max_ht=window.innerHeight-192;
+                    this.max_ht=window.innerHeight-222;
             },
             exportData() {
                 /*$.get(url(methods.exportMember), v=>{
