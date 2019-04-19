@@ -652,7 +652,7 @@
                     if(arr_raise.indexOf(zz[i].raise)==-1){
                         for (let z in zz) {
                             if (i != z && zz[i].raise == zz[z].raise&&arr_raise.indexOf(zz[z].raise)==-1){
-                                if (zz[i].money <= zz[z].money) {
+                                if (parseFloat(zz[i].money) <= parseFloat(zz[z].money)) {
                                     var m = zz[i].money;
                                     var m2 = zz[z].money;
                                 } else {
