@@ -80,11 +80,6 @@
                             label="次数">
                     </el-table-column>-->
                     <el-table-column
-                            prop="free"
-                            label="赠送"
-                            :formatter="form">
-                    </el-table-column>
-                    <el-table-column
                             label="加入购物车"
                             show-overflow-tooltip>
                         <template slot-scope="scope">
@@ -1201,13 +1196,7 @@
                 })
                 this.height();
             },
-            form(r, c) {
-                if (r.free == 1) {
-                    return '是'
-                } else {
-                    return '否'
-                }
-            },
+
             form2(r, c) {
                 if (r.send == 1) {
                     return '是'
