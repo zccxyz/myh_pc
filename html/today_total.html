@@ -251,9 +251,17 @@
             },
             formatterw(r, c) {
                 if(r.status==1||r.status==2){
-                    return (parseFloat(r.total_price)-parseFloat(r.one_total)).toFixed(2)
+                    if(r.is_back!=4){
+                        return (parseFloat(r.total_price)-parseFloat(r.one_total)).toFixed(2);
+                    }else if(r.is_back==4){
+                        return 0;
+                    }
                 }else if(r.status==3){
-                    return (parseFloat(r.total_price)-parseFloat(r.money)).toFixed(2)
+                    if(r.is_back!=4) {
+                        return (parseFloat(r.total_price) - parseFloat(r.money)).toFixed(2);
+                    }else if(r.is_back==4){
+                        return 0;
+                    }
                 }
             },
             formatter2(r, c) {

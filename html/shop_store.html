@@ -65,6 +65,9 @@
                             size="mini"
                             @click="leaveDialogVisible=true;now=scope.row" class="blue do_but">离店
                     </el-button>
+                    <el-button
+                            size="mini" @click="jump(3, scope.row)">查看
+                    </el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -132,6 +135,9 @@
                         localStorage.setItem('user_id', v.mid)
                         location.href = './consume.html'
                     })
+                } else if (type == 3) {
+                    localStorage.setItem('user_id', v.mid)
+                    location.href = 'vip_information.html'
                 }
             },
             leave() {

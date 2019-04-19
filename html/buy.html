@@ -400,7 +400,7 @@
                             <el-radio v-model="v.yh" @change="v.discount=10" label="3">改价</el-radio>
                             <el-input v-if="v.yh==3" v-model="v.price2" placeholder="请输入价格"
                                       class="in_wid und_line" type="number" v-on:input="getPrice(v)"></el-input>
-                            <el-radio v-model="v.yh" label="2" v-if="v.free==1">赠送</el-radio>
+                            <el-radio v-model="v.yh" label="2">赠送</el-radio>
                             <template v-if="v.type!='产品' && v.type!='方案'">
                                 <i class="check_box">
                                     <!--<el-checkbox v-model="checked">修改次数</el-checkbox>-->
@@ -447,7 +447,7 @@
                             <el-radio v-model="v.yh" label="3" @change="v.discount=10">改价</el-radio>
                             <el-input v-if="v.yh==3" v-model="v.price2" v-on:input="getPrice(v)" placeholder="请输入价格"
                                       class="in_wid und_line"></el-input>
-                            <el-radio v-model="v.yh" label="2" v-if="v.send==1">赠送</el-radio>
+                            <el-radio v-model="v.yh" label="2">赠送</el-radio>
                         </span>
                         <span class="fr mar_hun">
                              <i class="el-icon-remove blue_c" @click="remove2(v)"></i>
@@ -487,7 +487,7 @@
                             <el-radio v-model="v.yh" @change="v.discount=10" label="3">改价</el-radio>
                             <el-input v-if="v.yh==3" v-model="v.price2" v-on:input="getPrice(v)" placeholder="请输入价格"
                                       class="in_wid und_line"></el-input>
-                            <el-radio v-model="v.yh" label="2" v-if="v.send==1">赠送</el-radio>
+                            <el-radio v-model="v.yh" label="2">赠送</el-radio>
                         </span>
                         <span class="fr mar_hun">
                              <i class="el-icon-remove blue_c" @click="remove3(v)"></i>
@@ -541,12 +541,12 @@
                         <li>
                             <span class="list_left">充值金额</span>
                             <span class="list_right">
-                                <el-input v-model="re_money" placeholder="请输入充值金额"></el-input>
+                                <el-input v-model="re_money" type="number" placeholder="请输入充值金额"></el-input>
                             </span>
                         <li>
                             <span class="list_left">赠送余额</span>
                             <span class="list_right">
-                                <el-input v-model="send_money" placeholder="请输入赠送余额"></el-input>
+                                <el-input v-model="send_money" type="number" placeholder="请输入赠送余额"></el-input>
                             </span>
                         </li>
                     </ul>
@@ -601,7 +601,7 @@
                 <li>
                     <span class="list_left">充值金额</span>
                     <span class="list_right">
-                        <el-input v-model="card_money" placeholder="请输入充值金额"></el-input>
+                        <el-input v-model="card_money" type="number" placeholder="请输入充值金额"></el-input>
                     </span>
                 </li>
             </ul>
@@ -800,28 +800,54 @@
                             'id': v.id,'name':v.name,'type':v.type,'spec':v.sum, 'sum': v.needNum
                         })
                 }
-                $.post(url(methods.buyWear),{data: JSON.stringify(wear),type: all > 0 ? 1 : 2,id: this.user_id}, v => {
-                    if (v.code == 1) {
-                        this.need3 = []
-                        for (let v of this.yf) {
-                            v.needNum = 0;
+                if(all==0){
+                    this.$confirm('确定赠送?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        $.post(url(methods.buyWear),{data: JSON.stringify(wear),type: 2,id: this.user_id}, v => {
+                            if (v.code == 1) {
+                                this.need3 = []
+                                for (let v of this.yf) {
+                                    v.needNum = 0;
+                                }
+                                    success('赠送成功')
+                                setTimeout(() => location.href = './customer.html', 1000)
+                            }else{
+                                error(v.error)
+                            }
+                        })
+                    }).catch(e => {
+
+                    })
+                }else if(all>0){
+                    $.post(url(methods.buyWear),{data: JSON.stringify(wear),type: 1 ,id: this.user_id}, v => {
+                        if (v.code == 1) {
+                            this.need3 = []
+                            for (let v of this.yf) {
+                                v.needNum = 0;
+                            }
+                                success('购买成功')
+                                localStorage.setItem('orderId', v.res.orderId)
+                                localStorage.setItem('type', 1)
+                                localStorage.setItem('arrearsRes', v.res.arrearsRes)
+                                setTimeout(() => location.href = './pay_page.html', 1000)
+                        }else{
+                            error(v.error)
                         }
-                        success('购买成功')
-                        localStorage.setItem('orderId', v.res.orderId)
-                        localStorage.setItem('type', 1)
-                        localStorage.setItem('arrearsRes', v.res.arrearsRes)
-                        setTimeout(() => location.href = './pay_page.html', 1000)
-                    }else{
-                        error(v.error)
-                    }
-                })
+                    })
+                }
+
             },
             subCard() {
                 if (this.need2.length == 0) {
                     return
                 }
                 let card = []
+                let all = 0
                 for (let v of this.need2) {
+                    all += parseFloat(v.one) * parseInt(v.needNum)
                     if (v.yh == 0 || v.yh == 3) {
                         card.push({'price': v.price2, 'id': v.id, 'sum': v.needNum})
                     } else {
@@ -832,21 +858,44 @@
                     }
                 }
                 //type>0传1 =0传2
-                $.post(url(methods.buyCard) + `&id=${this.user_id}`, {data: JSON.stringify(card)}, v => {
-                    if (v.code == 1) {
-                        this.need = []
-                        for (let v of this.list) {
-                            v.needNum = 0;
+                if(all==0){
+                    this.$confirm('确定赠送?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        $.post(url(methods.buyCard) + `&id=${this.user_id}`, {data: JSON.stringify(card),type: 2}, v => {
+                            if (v.code == 1) {
+                                this.need = []
+                                for (let v of this.list) {
+                                    v.needNum = 0;
+                                }
+                                success('赠送成功')
+                                setTimeout(() => location.href = './customer.html', 1000)
+                            }else{
+                                error(v.error)
+                            }
+                        })
+                    }).catch(e => {
+
+                    })
+                }else if(all>0) {
+                    $.post(url(methods.buyCard) + `&id=${this.user_id}`, {data: JSON.stringify(card),type: 1}, v => {
+                        if (v.code == 1) {
+                            this.need = []
+                            for (let v of this.list) {
+                                v.needNum = 0;
+                            }
+                            success(v.Msg)
+                            localStorage.setItem('orderId', v.res.orderId)
+                            localStorage.setItem('arrearsRes', v.res.arrearsRes)
+                            localStorage.setItem('type', 1)
+                            setTimeout(() => location.href = './pay_page.html', 1000)
+                        } else {
+                            error(v.error)
                         }
-                        success(v.Msg)
-                        localStorage.setItem('orderId', v.res.orderId)
-                        localStorage.setItem('arrearsRes', v.res.arrearsRes)
-                        localStorage.setItem('type', 1)
-                        setTimeout(() => location.href = './pay_page.html', 1000)
-                    } else {
-                        error(v.error)
-                    }
-                })
+                    })
+                }
             },
             subItems() {
                 let items = []
@@ -867,24 +916,50 @@
                         }
                     }
                 }
-                $.post(url(methods.buyItems) + `&id=${this.user_id}`, {
-                    data: JSON.stringify(items),
-                    type: all > 0 ? 1 : 2
-                }, v => {
-                    if (v.code == 1) {
-                        this.need = []
-                        for (let v of this.list) {
-                            v.needNum = 0;
+                if(all==0) {
+                    this.$confirm('确定赠送?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        $.post(url(methods.buyItems) + `&id=${this.user_id}`, {
+                            data: JSON.stringify(items),
+                            type: 2
+                        }, v => {
+                            if (v.code == 1) {
+                                this.need = []
+                                for (let v of this.list) {
+                                    v.needNum = 0;
+                                }
+                                success('赠送成功')
+                                setTimeout(() => location.href = './customer.html', 1000)
+                            } else {
+                                error(v.error)
+                            }
+                        })
+                    }).catch(e => {
+
+                    })
+                }else if(all>0) {
+                    $.post(url(methods.buyItems) + `&id=${this.user_id}`, {
+                        data: JSON.stringify(items),
+                        type: 1
+                    }, v => {
+                        if (v.code == 1) {
+                            this.need = []
+                            for (let v of this.list) {
+                                v.needNum = 0;
+                            }
+                            success(v.Msg)
+                            localStorage.setItem('orderId', v.res.orderId)
+                            localStorage.setItem('arrearsRes', v.res.arrearsRes)
+                            localStorage.setItem('type', 1)
+                            setTimeout(() => location.href = './pay_page.html', 1000)
+                        } else {
+                            error(v.error)
                         }
-                        success(v.Msg)
-                        localStorage.setItem('orderId', v.res.orderId)
-                        localStorage.setItem('arrearsRes', v.res.arrearsRes)
-                        localStorage.setItem('type', 1)
-                        setTimeout(() => location.href = './pay_page.html', 1000)
-                    } else {
-                        error(v.error)
-                    }
-                })
+                    })
+                }
             },
             subBox() {
                 let th = []
@@ -905,7 +980,45 @@
                         }
                     }
                 }
-                $.post(url(methods.buyTh) + `&id=${this.user_id}`, {
+                if(all==0){
+                    this.$confirm('确定赠送?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        $.post(url(methods.buyTh),{data: JSON.stringify(th),type: 2,id: this.user_id}, v => {
+                            if (v.code == 1) {
+                                this.need = []
+                                for (let v of this.list) {
+                                    v.needNum = 0;
+                                }
+                                success('赠送成功')
+                                setTimeout(() => location.href = './customer.html', 1000)
+                            }else{
+                                error(v.error)
+                            }
+                        })
+                    }).catch(e => {
+
+                    })
+                }else if(all>0){
+                    $.post(url(methods.buyTh),{data: JSON.stringify(th),type: 1 ,id: this.user_id}, v => {
+                        if (v.code == 1) {
+                            this.need = []
+                            for (let v of this.list) {
+                                v.needNum = 0;
+                            }
+                            success('购买成功')
+                            localStorage.setItem('orderId', v.res.orderId)
+                            localStorage.setItem('type', 1)
+                            localStorage.setItem('arrearsRes', v.res.arrearsRes)
+                            setTimeout(() => location.href = './pay_page.html', 1000)
+                        }else{
+                            error(v.error)
+                        }
+                    })
+                }
+                /*$.post(url(methods.buyTh) + `&id=${this.user_id}`, {
                     data: JSON.stringify(th),
                     type: all > 0 ? 1 : 2
                 }, v => {
@@ -922,7 +1035,7 @@
                     } else {
                         error(v.error)
                     }
-                })
+                })*/
             },
             subCp() {
                 let goods = []
@@ -944,28 +1057,56 @@
                         }
                     }
                 }
-                $.post(url(methods.buyGoods) + `&id=${this.user_id}`, {
-                    data: JSON.stringify(goods),
-                    type: all > 0 ? 1 : 2,
-                }, v => {
-                    if (v.code == 1) {
-                        this.need = []
-                        for (let v of this.list) {
-                            v.needNum = 0;
+                if(all==0) {
+                    this.$confirm('确定赠送?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        $.post(url(methods.buyGoods) + `&id=${this.user_id}`, {
+                            data: JSON.stringify(goods),
+                            type:  2,
+                        }, v => {
+                            if (v.code == 1) {
+                                this.need = []
+                                for (let v of this.list) {
+                                    v.needNum = 0;
+                                }
+                                success('赠送成功')
+                                setTimeout(() => location.href = './customer.html', 1000)
+                            } else {
+                                error(v.error)
+                            }
+                        })
+                    }).catch(e => {
+
+                    })
+                }else if(all>0){
+                    $.post(url(methods.buyGoods) + `&id=${this.user_id}`, {
+                        data: JSON.stringify(goods),
+                        type: 1,
+                    }, v => {
+                        if (v.code == 1) {
+                            this.need = []
+                            for (let v of this.list) {
+                                v.needNum = 0;
+                            }
+                            success(v.Msg)
+                            localStorage.setItem('orderId', v.res.orderId)
+                            localStorage.setItem('arrearsRes', v.res.arrearsRes)
+                            localStorage.setItem('type', 1)
+                            setTimeout(() => location.href = './pay_page.html', 1000)
+                        } else {
+                            error(v.error)
                         }
-                        success(v.Msg)
-                        localStorage.setItem('orderId', v.res.orderId)
-                        localStorage.setItem('arrearsRes', v.res.arrearsRes)
-                        localStorage.setItem('type', 1)
-                        setTimeout(() => location.href = './pay_page.html', 1000)
-                    } else {
-                        error(v.error)
-                    }
-                })
+                    })
+                }
             },
             subPlan() {
                 let goods = []
+                let all = 0
                 for (let v of this.need) {
+                    all += parseFloat(v.one) * parseInt(v.needNum)
                     if (v.type == '方案') {
                         if(v.yh==2){
                             v.price2=0;
@@ -977,23 +1118,48 @@
                         }
                     }
                 }
+                if(all==0){
+                    this.$confirm('确定赠送?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
                 $.post(url(methods.buyPlan) + `&id=${this.user_id}`, {
-                    data: JSON.stringify(goods)
+                    data: JSON.stringify(goods),type:2
                 }, v => {
                     if (v.code == 1) {
                         this.need = []
                         for (let v of this.list) {
                             v.needNum = 0;
                         }
-                        success(v.Msg)
-                        localStorage.setItem('orderId', v.res.orderId)
-                        localStorage.setItem('arrearsRes', v.res.arrearsRes)
-                        localStorage.setItem('type', 1)
-                        setTimeout(() => location.href = './pay_page.html', 1000)
+                        success('赠送成功')
+                        setTimeout(() => location.href = './customer.html', 1000)
                     } else {
                         error(v.error)
                     }
                 })
+                    }).catch(e => {
+
+                    })
+                }else if(all>0){
+                    $.post(url(methods.buyPlan) + `&id=${this.user_id}`, {
+                        data: JSON.stringify(goods),type:1
+                    }, v => {
+                        if (v.code == 1) {
+                            this.need = []
+                            for (let v of this.list) {
+                                v.needNum = 0;
+                            }
+                            success(v.Msg)
+                            localStorage.setItem('orderId', v.res.orderId)
+                            localStorage.setItem('arrearsRes', v.res.arrearsRes)
+                            localStorage.setItem('type', 1)
+                            setTimeout(() => location.href = './pay_page.html', 1000)
+                        } else {
+                            error(v.error)
+                        }
+                    })
+                }
             },
             sub() {
                 if (this.tabIndex == 0) {

@@ -35,22 +35,32 @@
                                 <span slot="title">工作台首页</span>
                             </a>
                         </el-menu-item>
-                        <el-menu-item index="2">
-                            <a href="customer.html" target="iframe">
-                                <span class="span_img">
-                                    <img src="../images/vip.png" class="home_icon">
-                                </span>
-                                <span slot="title">会员管理</span>
-                            </a>
-                        </el-menu-item>
-                        <el-menu-item index="99999">
-                            <a href="new_member.html" target="iframe">
+                        <el-submenu index="2">
+                            <template slot="title">
                                 <span class="span_img">
                                     <img src="../images/home_cus.png" class="home_icon">
                                 </span>
-                                <span slot="title">新客管理</span>
-                            </a>
-                        </el-menu-item>
+                                <span class="white">客户管理</span>
+                            </template>
+                            <el-menu-item index="2-1"><a href="customer.html" target="iframe" class="a_padd">会员管理</a></el-menu-item>
+                            <el-menu-item index="2-2"><a href="new_member.html" target="iframe" class="a_padd">新客管理</a></el-menu-item>
+                        </el-submenu>
+                        <!--<el-menu-item index="2">-->
+                            <!--<a href="customer.html" target="iframe">-->
+                                <!--<span class="span_img">-->
+                                    <!--<img src="../images/vip.png" class="home_icon">-->
+                                <!--</span>-->
+                                <!--<span slot="title">会员管理</span>-->
+                            <!--</a>-->
+                        <!--</el-menu-item>-->
+                        <!--<el-menu-item index="99999">-->
+                            <!--<a href="new_member.html" target="iframe">-->
+                                <!--<span class="span_img">-->
+                                    <!--<img src="../images/home_cus.png" class="home_icon">-->
+                                <!--</span>-->
+                                <!--<span slot="title">新客管理</span>-->
+                            <!--</a>-->
+                        <!--</el-menu-item>-->
                         <el-menu-item index="4">
                             <a href="shop_store.html" target="iframe">
                                 <span class="span_img">
@@ -59,7 +69,23 @@
                                 <span slot="title">到店管理</span>
                             </a>
                         </el-menu-item>
-                        <el-menu-item index="3">
+                        <el-submenu index="3">
+                            <template slot="title">
+                                <span class="span_img">
+                                    <img src="../images/home_goods.png" class="home_icon">
+                                </span>
+                                <span class="white">商品管理</span>
+                            </template>
+                            <el-menu-item index="3-1"><a href="goods.html" target="iframe" class="a_padd">品项管理</a></el-menu-item>
+                            <el-menu-item index="3-2"><a href="goods2.html" target="iframe" class="a_padd">内衣管理</a></el-menu-item>
+                            <el-menu-item index="3-3"><a href="consumeables.html" target="iframe" class="a_padd">院装消耗</a></el-menu-item>
+                            <el-menu-item index="3-4"><a href="card.html" target="iframe" class="a_padd">卡项管理</a></el-menu-item>
+                            <el-menu-item index="3-5"><a href="plan.html" target="iframe" class="a_padd">方案管理</a></el-menu-item>
+                            <el-menu-item index="3-6"><a href="coupon.html" target="iframe" class="a_padd">优惠券</a></el-menu-item>
+                            <!--<el-menu-item index="3-7"><a href="be_recommend.html" target="iframe" class="a_padd">预约推荐</a></el-menu-item>-->
+                            <el-menu-item index="3-7"><a href="recycle.html" target="iframe" class="a_padd">回收站</a></el-menu-item>
+                        </el-submenu>
+                        <!--<el-menu-item index="3">
                             <a href="goods.html" target="iframe">
                                 <span class="span_img">
                                     <img src="../images/home_goods.png" class="home_icon">
@@ -74,9 +100,9 @@
                                 </span>
                                 <span slot="title">内衣管理</span>
                             </a>
-                        </el-menu-item>
+                        </el-menu-item>-->
 
-                        <el-menu-item index="5">
+                        <!--<el-menu-item index="5">
                             <a href="card.html" target="iframe">
                                 <span class="span_img">
                                     <img src="../images/card.png" class="home_icon" style="height: 18px">
@@ -92,7 +118,7 @@
                                 </span>
                                 <span slot="title">方案管理</span>
                             </a>
-                        </el-menu-item>
+                        </el-menu-item>-->
                         <el-menu-item index="7">
                             <a href="ware_mange.html" target="iframe">
                                 <span class="span_img">
@@ -101,14 +127,14 @@
                                 <span slot="title">仓库管理</span>
                             </a>
                         </el-menu-item>
-                        <el-menu-item index="8">
+                        <!--<el-menu-item index="8">
                             <a href="consumeables.html" target="iframe">
                                 <span class="span_img">
                                     <img src="../images/court.png" class="home_icon" style="height: 18px;width: 22px;">
                                 </span>
                                 <span slot="title">院装消耗</span>
                             </a>
-                        </el-menu-item>
+                        </el-menu-item>-->
                         <!--<el-menu-item index="9">
                             <a href="order.html" target="iframe">
                                 <span class="span_img">
@@ -143,16 +169,33 @@
                             <el-menu-item index="12-1"><a href="staff_analysis.html" target="iframe" class="a_padd">员工分析</a></el-menu-item>
                             <el-menu-item index="12-2"><a href="data_analysis.html" target="iframe" class="a_padd">数据分析</a></el-menu-item>
                             <el-menu-item index="12-3"><a href="arrear_analysis.html" target="iframe" class="a_padd">负债率分析</a></el-menu-item>
+                            <el-menu-item index="12-4"><a href="populaity.html" target="iframe" class="a_padd">普及率</a></el-menu-item>
+                            <el-menu-item index="12-4"><a href="ranking_list.html" target="iframe" class="a_padd">排行榜</a></el-menu-item>
+                        </el-submenu>
+                        <el-submenu index="6">
+                            <template slot="title">
+                                <span class="span_img">
+                                    <img src="../images/branch.png" class="home_icon">
+                                </span>
+                                <span class="white">店铺管理</span>
+                            </template>
+                            <el-menu-item index="6-1"><a href="staff_mange.html" target="iframe" class="a_padd">店员管理</a></el-menu-item>
+                            <el-menu-item index="6-2"><a href="power.html" target="iframe" class="a_padd">权限管理</a></el-menu-item>
+                            <el-menu-item index="6-3"><a href="cus_distri.html" target="iframe" class="a_padd">客户分配</a></el-menu-item>
+                            <el-menu-item index="6-4"><a href="staff.html" target="iframe" class="a_padd">员工工资</a></el-menu-item>
+                            <el-menu-item index="6-5"><a href="branch_store.html" target="iframe" class="a_padd">分店管理</a></el-menu-item>
+                            <el-menu-item index="6-6"><span class="white" style="padding-left: 30px;
+    font-size: 1.6rem;" @click="print_dio=true;get_print()" class="a_padd">打印设置</span></el-menu-item>
                         </el-submenu>
                         </el-menu-item>
-                        <el-menu-item index="13" v-if="user.pid==0">
+                        <!--<el-menu-item index="13" v-if="user.pid==0">
                             <a href="branch_store.html" target="iframe">
                                 <span class="span_img">
                                     <img src="../images/branch.png" class="home_icon" style="height: 18px">
                                 </span>
                                 <span slot="title">分店管理</span>
                             </a>
-                        </el-menu-item>
+                        </el-menu-item>-->
                         <!--已经有14了-->
                     </el-menu>
                 </el-aside>
@@ -191,6 +234,40 @@
           </span>
         </el-dialog>
     </template>
+    <templte>
+        <el-dialog
+                title="打印设置"
+                :visible.sync="print_dio"
+                min-width="400px"
+                center
+                :before-close="close">
+            <ul class="goods_edit">
+                <li>
+                    <span class="list_left">打印标题</span>
+                    <span class="list_right">
+                        <el-input v-model="print_data.print_title" placeholder="请输入打印标题"></el-input>
+                        </el-select>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">打印机编号</span>
+                    <span class="list_right">
+                    <el-input v-model="print_data.sn" placeholder="请输入打印机编号"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">打印机密钥</span>
+                    <span class="list_right">
+                    <el-input v-model="print_data.key" placeholder="请输入打印机密钥"></el-input>
+                </span>
+                </li>
+            </ul>
+            <span slot="footer" class="dialog-footer">
+            <el-button @click="close">取 消</el-button>
+            <el-button type="primary" @click="edit()">确 定</el-button>
+          </span>
+        </el-dialog>
+    </templte>
 </div>
 </body>
 </html>
@@ -208,7 +285,13 @@
             xin: '',
             con_xin: '',
             pass_sta:false,
-            password:''
+            password:'',
+            print_dio:false,
+            print_data:{
+                print_title: '',
+                sn: '',
+                key: ''
+            }
         },
         methods: {
             logout() {
@@ -261,6 +344,42 @@
                             error(v.Msg)
                         }
                     })
+                }
+            },
+            get_warning() {
+                $.get(url(methods.get_warn), (r) => {
+                    this.warning_total = r.res.warning_count;
+                });
+            },
+            get_print(){
+                $.get(url(methods.printset), (r) => {
+                    this.print_data = r.res;
+                });
+            },
+            close(){
+                this.print_dio=false;
+                print_data={
+                    print_title: '',
+                    sn: '',
+                    key: ''
+                }
+            },
+            edit(){
+                if (this.print_data.print_title == "") {
+                    error('请填写打印标题');
+                } else if (this.print_data.sn == "") {
+                    error('请填写打印机编号');
+                } else if (this.print_data.key == "") {
+                    error('请填写打印机密钥');
+                }else{
+                    $.post(url(methods.printset),{data:this.print_data}, (r) => {
+                        if(r.code==1){
+                            success(r.Msg)
+                            this.print_dio=false;
+                        }else{
+                            error('设置失败')
+                        }
+                    });
                 }
             }
         },

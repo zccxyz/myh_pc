@@ -71,7 +71,7 @@
                             <el-input style="width: 80px" v-model="two" type="number" placeholder=""
                                       class="line_input" @blur="con(two)"></el-input>个
                       </el-radio>
-                        </span>-->
+                    </span>-->
                     <!--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <span>
                         库存小于(x)预警：
@@ -793,6 +793,9 @@
                 $.post(url(methods.getRecordDetail), {day: day, ware: this.id}, v => {
                     this.myIn = []
                     this.myOut = []
+                    if(v.code==-1){
+                        error(v.error)
+                    }
                     if(v.res.length!=0){
                         for (let x of v.res) {
                             if (x['status'] == 1) {
