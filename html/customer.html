@@ -193,6 +193,17 @@
                 </template>
             </el-table-column>
         </el-table>
+        <!--<div style="background: #fff;text-align: center">
+            <el-pagination  background
+                            @current-change="handleCurrentChange"
+                            :current-page="currentPage"
+                            :page-size="20"
+                            layout="total, sizes, prev, pager, next, jumper"
+                            :total="total" :pager-count="8"
+                            @prev-click="prev_click" @next-click="next_click">
+            </el-pagination>
+        </div>-->
+
         <!--<el-pagination
                 background
                 layout="prev, pager, next"
@@ -709,6 +720,8 @@
     new Vue({
         el: '#app',
         data: {
+            currentPage:1,
+            page_count:'',
             card_type:[{
                 value:1,
                 name:'储值卡'
@@ -826,8 +839,23 @@
             itemsArr: '',
             goodsArr:'',
             card_name: '',
+            count: '',
+
         },
         methods: {
+            handleCurrentChange(val) {
+                this.page=val;
+                this.getMember()
+                console.log(`当前页: ${val}`);
+            },
+            next_click(val){
+                if(val<this.page_count){
+                    this.page++;
+                    this.getMember()
+                }else if (val=this.page_count){
+                    error('已经是最后一页了额')
+                }
+            },
             getQueryString(name) {
                 var url=window.location.href;
                 if(url.indexOf("mid")!=-1){
@@ -853,7 +881,7 @@
             },
             height(){
                     var height=window.innerHeight;
-                    this.max_ht=window.innerHeight-142;
+                    this.max_ht=window.innerHeight-192;
             },
             exportData() {
                 /*$.get(url(methods.exportMember), v=>{
@@ -1189,11 +1217,12 @@
             },
             getMember() {
                 if(this.m_arr=='wu'){
-                    $.get(url(methods.get_member_list), v => {
+                    $.get(url(methods.get_member_list),{page:this.page}, v => {
                         let rs = verify(v)
                         if (rs != false) {
-                            this.total = rs.page_count
-                            this.list = rs.all_member
+                            this.total = rs.count
+                            this.page_count = rs.page_count
+                            this.list = rs.list
                         }
                     })
                 }else{
