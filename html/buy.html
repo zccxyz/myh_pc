@@ -548,6 +548,9 @@
                 </li>
                 <li v-if="rech_type==2">
                     <ul class="card_li">
+                        <li v-if="card_lis.length==0">
+                            您还没有购买卡项额！
+                        </li>
                         <li v-for="v in card_lis" >
                             <div>
                                 <p>{{v.name}}</p>
@@ -722,10 +725,14 @@
                 }else{
                     $.post(url(methods.recharge_account)+`&id=${this.user_id}`,{money:this.re_money,send:this.send_money},v=>{
                         if(v.code==1){
+                            console.log(v)
                             success(v.Msg)
                             this.re_money=''
                             this.send_money='';
                             this.get_m_blance()
+                            localStorage.setItem('orderId', v.res.oid)
+                            localStorage.setItem('cost', v.res.res)
+                            setTimeout(() => location.href = './commission.html', 1000)
                         }
                     })
                 }
@@ -734,12 +741,16 @@
                 if(this.card_money==''){
                     error("请输入要充值的金额")
                 }else{
-                    $.post(url(methods.save_card)+`&id=${this.ca_id}`,{money:this.card_money},v=>{
+                    $.post(url(methods.save_card)+`&id=${this.ca_id}`,{money:this.card_money,mid:this.user_id},v=>{
                         if(v.code==1){
                             success(v.info)
                             this.card_re_dio=false;
                             this.card_money=''
                             this.get_m_card()
+                            console.log(v.res.cost_id)
+                            localStorage.setItem('orderId', v.res.oid)
+                            localStorage.setItem('cost', v.res.cost_id)
+                            setTimeout(() => location.href = './commission.html', 1000)
                         }
                     })
                 }
@@ -1196,7 +1207,13 @@
                 })
                 this.height();
             },
-
+            form(r, c) {
+                if (r.free == 1) {
+                    return '是'
+                } else {
+                    return '否'
+                }
+            },
             form2(r, c) {
                 if (r.send == 1) {
                     return '是'
