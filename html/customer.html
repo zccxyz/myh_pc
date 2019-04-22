@@ -45,7 +45,7 @@
                       prefix-icon="el-icon-search"
                       v-model="input">
             </el-input>
-          <el-button type="warning"  style="float: left" @click="get_search()">点击搜索</el-button>
+            <el-button type="warning"  style="float: left" @click="get_search()">点击搜索</el-button>
             <!--<el-button @click="import2" type="success" id="file" native-type="submit">导入会员表</el-button>-->
             <el-upload
                     style="float: left"
@@ -72,21 +72,21 @@
                        style="margin-bottom: 5px">健康筛选
             </el-button>
         </div>
-         <!--<div class="cus_center">
-            每月到店：
-            <el-input v-model="ddNum" type="number" placeholder="次" class="choice_in in_left"></el-input>
-            至
-            <el-input v-model="ddNum2" type="number" placeholder="次" class="choice_in in_right"></el-input>
-            剩余次数：
-            <el-input v-model="syNum" type="number" placeholder="次" class="choice_in in_left"></el-input>
-            至
-            <el-input v-model="syNum2" type="number" placeholder="次" class="choice_in in_right"></el-input>
-            会员余额：
-            <el-input v-model="memberBalance" type="number" placeholder="元" class="choice_in in_left"></el-input>
-            至
-            <el-input v-model="memberBalance2" type="number" placeholder="元" class="choice_in in_right"></el-input>
-           <el-button type="primary" style="height: 30px;padding: 0 15px">查询</el-button>
-        </div>-->
+        <!--<div class="cus_center">
+           每月到店：
+           <el-input v-model="ddNum" type="number" placeholder="次" class="choice_in in_left"></el-input>
+           至
+           <el-input v-model="ddNum2" type="number" placeholder="次" class="choice_in in_right"></el-input>
+           剩余次数：
+           <el-input v-model="syNum" type="number" placeholder="次" class="choice_in in_left"></el-input>
+           至
+           <el-input v-model="syNum2" type="number" placeholder="次" class="choice_in in_right"></el-input>
+           会员余额：
+           <el-input v-model="memberBalance" type="number" placeholder="元" class="choice_in in_left"></el-input>
+           至
+           <el-input v-model="memberBalance2" type="number" placeholder="元" class="choice_in in_right"></el-input>
+          <el-button type="primary" style="height: 30px;padding: 0 15px">查询</el-button>
+       </div>-->
         <el-table border :max-height="max_ht"
                   ref="multipleTable"
                   :data="list.filter(
@@ -146,9 +146,9 @@
                     label="剩余次数">
             </el-table-column>-->
             <el-table-column
-                             prop="bir_type"
-                             label="类型" min-width="45"
-                             :formatter="formatter">
+                    prop="bir_type"
+                    label="类型" min-width="45"
+                    :formatter="formatter">
             </el-table-column>
             <el-table-column
                     label="操作"
@@ -232,13 +232,13 @@
                 <li>
                     <span class="list_left">年龄</span>
                     <span class="list_right">
-                    <el-input v-model="user.age" placeholder="请输入年龄"></el-input>
+                    <el-input v-model="user.age" placeholder="请输入年龄" type="tel" maxlength="3"></el-input>
                 </span>
                 </li>
                 <li>
                     <span class="list_left">手机号</span>
                     <span class="list_right">
-                    <el-input v-model="user.tel" placeholder="请输入手机号" maxlength="11"></el-input>
+                    <el-input v-model="user.tel" placeholder="请输入手机号" maxlength="11" type="tel"></el-input>
                 </span>
                 </li>
                 <li>
@@ -377,13 +377,13 @@
                 <li>
                     <span class="list_left">年龄</span>
                     <span class="list_right">
-                    <el-input v-model="user.age" placeholder="请输入年龄"></el-input>
+                    <el-input v-model="user.age" placeholder="请输入年龄" type="tel" maxlength="3"></el-input>
                 </span>
                 </li>
                 <li>
                     <span class="list_left">手机号</span>
                     <span class="list_right">
-                    <el-input v-model="user.tel" placeholder="请输入手机号" maxlength="11"></el-input>
+                    <el-input v-model="user.tel" type="tel" placeholder="请输入手机号" maxlength="11"></el-input>
                 </span>
                 </li>
                 <li>
@@ -465,18 +465,18 @@
                     <span class="list_left">套盒名称</span>
                     <span class="list_right">
                         <el-autocomplete @blur="th_blur(th_name)"
-                                v-model="th_name"
-                                :fetch-suggestions="querySearchAsync"
-                                placeholder="请输入内容" @select="handleSelect_th"></el-autocomplete>
+                                         v-model="th_name"
+                                         :fetch-suggestions="querySearchAsync"
+                                         placeholder="请输入内容" @select="handleSelect_th"></el-autocomplete>
                     </span>
                 </li>
                 <li v-if="data.cate_c == 2">
                     <span class="list_left">项目名称</span>
                     <span class="list_right">
                        <el-autocomplete @blur="xm_blur(xm_name)"
-                               v-model="xm_name"
-                               :fetch-suggestions="querySearchAsync"
-                               placeholder="请输入内容" @select="handleSelect_xm"
+                                        v-model="xm_name"
+                                        :fetch-suggestions="querySearchAsync"
+                                        placeholder="请输入内容" @select="handleSelect_xm"
                        ></el-autocomplete>
                     </span>
                 </li>
@@ -565,11 +565,11 @@
                             <span class="list_left">期限范围</span>
                             <span class="list_right">
                          <el-date-picker style="width: 390px"
-                                 v-model="time_limit"
-                                 type="daterange"
-                                 range-separator="至"
-                                 start-placeholder="开始日期"
-                                 end-placeholder="结束日期">
+                                         v-model="time_limit"
+                                         type="daterange"
+                                         range-separator="至"
+                                         start-placeholder="开始日期"
+                                         end-placeholder="结束日期">
                         </el-date-picker>
                     </span>
                         </li>
@@ -681,9 +681,9 @@
         </el-dialog>
         <!-- 查看详情 -->
         <el-dialog  append-to-body
-                title="方案详情"
-                :visible.sync="getDetail"
-                center>
+                    title="方案详情"
+                    :visible.sync="getDetail"
+                    center>
             <el-table border center
                       :data="detail"
                       style="width: 100%">
@@ -841,20 +841,20 @@
             goodsArr:'',
             card_name: '',
             count: '',
-          all_member: '',
+            all_member: '',
 
         },
         methods: {
-          	get_search(){
+            get_search(){
                 if(this.input!=''){
-                  this.list=[];
-                  for(let v of this.all_member) {
-                      if (v.name.indexOf(this.input) != -1 || v.tel.indexOf(this.input) != -1) {
-                          this.list.push(v);
-                      }
-                  }
+                    this.list=[];
+                    for(let v of this.all_member) {
+                        if (v.name.indexOf(this.input) != -1 || v.tel.indexOf(this.input) != -1) {
+                            this.list.push(v);
+                        }
+                    }
                 }
-			},
+            },
             handleCurrentChange(val) {
                 this.page=val;
                 this.getMember()
@@ -895,8 +895,8 @@
                 })
             },
             height(){
-                    var height=window.innerHeight;
-                    this.max_ht=window.innerHeight-222;
+                var height=window.innerHeight;
+                this.max_ht=window.innerHeight-222;
             },
             exportData() {
                 /*$.get(url(methods.exportMember), v=>{
@@ -1073,8 +1073,8 @@
                     return
                 }*/
                 $.post(url(methods.addVip), {'data': this.user}, v => {
-                    let rs = verify(v)
-                    if (rs != false) {
+                    // let rs = verify(v)
+                    if (v.code==1) {
                         success('添加成功')
                         this.user = {
                             'name': '',
@@ -1238,7 +1238,7 @@
                             this.total = rs.count
                             this.page_count = rs.page_count
                             this.all_member = rs.all_member
- 							this.list = rs.list
+                            this.list = rs.list
                         }
                     })
                 }else{
@@ -1340,7 +1340,7 @@
             th_blur(th){
                 for(let t of this.th_list){
                     if(t.box_name==th){
-                       this.data.box_name = t.id;
+                        this.data.box_name = t.id;
                     }else{
                         this.data.name=th;
                         this.data.box_name='';
@@ -1381,37 +1381,37 @@
                 this.data.mid=this.in_id;
                 $.post(url(methods.oldentry),{data:this.data},v=>{
                     if(v.code==1){
-                            success(v.Msg)
-                            this.data = {
-                                mid: this.in_id,
-                                cate_c: '3',
-                                name: '',
-                                price: '',
-                                arrears_money: '',
-                                originally_num: '',
-                                current_num: '',
-                                cateId: '',
-                                fee: '',
-                                cycle: '1',
-                                start: '',
-                                end: '',
-                                balance: '',
-                                send_balance: '',
-                                c_name: '',
-                                c_amount: '',
-                                c_discount: '',
-                                c_type: 0,
-                                card_name: '',
-                                box_name: 0,
-                                item_name: 0,
-                                plan_id: '',
-                                suitbox:'',
-                                product:'',
-                                items:'',
-                                gift:'',
-                                goods_name:'',
-                                sum:''
-                            };
+                        success(v.Msg)
+                        this.data = {
+                            mid: this.in_id,
+                            cate_c: '3',
+                            name: '',
+                            price: '',
+                            arrears_money: '',
+                            originally_num: '',
+                            current_num: '',
+                            cateId: '',
+                            fee: '',
+                            cycle: '1',
+                            start: '',
+                            end: '',
+                            balance: '',
+                            send_balance: '',
+                            c_name: '',
+                            c_amount: '',
+                            c_discount: '',
+                            c_type: 0,
+                            card_name: '',
+                            box_name: 0,
+                            item_name: 0,
+                            plan_id: '',
+                            suitbox:'',
+                            product:'',
+                            items:'',
+                            gift:'',
+                            goods_name:'',
+                            sum:''
+                        };
                     }else{
                         error(v.error)
                     }
@@ -1475,7 +1475,7 @@
                     this.entry_in()
                 }).catch(()=>{
                     this.data.plan_id=''
-                    })
+                })
             }
         },
         watch: {

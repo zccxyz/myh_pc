@@ -153,7 +153,7 @@
             <li>
                 <span class="list_left">手机号</span>
                 <span class="list_right">
-                    <el-input v-model="staff.tel" placeholder="请输入手机号" @blur="checkPhone()"></el-input>
+                    <el-input v-model="staff.tel" placeholder="请输入手机号" @blur="checkPhone()" type="tel" maxlength="11"></el-input>
                 </span>
             </li>
             <li>
@@ -237,7 +237,7 @@
                 <li>
                     <span class="list_left">手机号</span>
                     <span class="list_right">
-                    <el-input v-model="staff.tel" placeholder="请输入手机号" @blur="checkPhone()"></el-input>
+                    <el-input v-model="staff.tel" placeholder="请输入手机号" @blur="checkPhone()" type="tel" maxlength="11"></el-input>
                 </span>
                 </li>
                 <li>
@@ -532,6 +532,7 @@
                                 cancelButtonText: '返回',
                                 type: 'warning'
                             }).then(() => {
+                                this.get_staff()
                                 this.value = '';
                                 this.staff = {
                                     name: '',
