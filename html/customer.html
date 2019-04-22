@@ -41,10 +41,11 @@
     <template>
         <div class="cus_center">
             <el-input class="cus_seatch" style="float: left"
-                      placeholder="请输入内容"
+                      placeholder="请输入名字或电话"
                       prefix-icon="el-icon-search"
                       v-model="input">
             </el-input>
+          <el-button type="warning"  style="float: left" @click="get_search()">点击搜索</el-button>
             <!--<el-button @click="import2" type="success" id="file" native-type="submit">导入会员表</el-button>-->
             <el-upload
                     style="float: left"
@@ -71,7 +72,7 @@
                        style="margin-bottom: 5px">健康筛选
             </el-button>
         </div>
-        <div class="cus_center">
+         <!--<div class="cus_center">
             每月到店：
             <el-input v-model="ddNum" type="number" placeholder="次" class="choice_in in_left"></el-input>
             至
@@ -84,8 +85,8 @@
             <el-input v-model="memberBalance" type="number" placeholder="元" class="choice_in in_left"></el-input>
             至
             <el-input v-model="memberBalance2" type="number" placeholder="元" class="choice_in in_right"></el-input>
-            <!--<el-button type="primary" style="height: 30px;padding: 0 15px">查询</el-button>-->
-        </div>
+           <el-button type="primary" style="height: 30px;padding: 0 15px">查询</el-button>
+        </div>-->
         <el-table border :max-height="max_ht"
                   ref="multipleTable"
                   :data="list.filter(
@@ -840,9 +841,20 @@
             goodsArr:'',
             card_name: '',
             count: '',
+          all_member: '',
 
         },
         methods: {
+          	get_search(){
+                if(this.input!=''){
+                  this.list=[];
+                  for(let v of this.all_member) {
+                      if (v.name.indexOf(this.input) != -1 || v.tel.indexOf(this.input) != -1) {
+                          this.list.push(v);
+                      }
+                  }
+                }
+			},
             handleCurrentChange(val) {
                 this.page=val;
                 this.getMember()
@@ -1225,7 +1237,8 @@
                         if (rs != false) {
                             this.total = rs.count
                             this.page_count = rs.page_count
-                            this.list = rs.list
+                            this.all_member = rs.all_member
+ 							this.list = rs.list
                         }
                     })
                 }else{
