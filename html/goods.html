@@ -121,7 +121,7 @@
                    title="编辑商品"
                    :visible.sync="centerDialogVisible"
                    width="400px"
-                   center>
+                   center :before-close="cancel">
             <ul class="goods_edit">
                 <li>
                     <span class="list_left">品项</span>
@@ -142,25 +142,25 @@
                 <li>
                     <span class="list_left">售价</span>
                     <span class="list_right">
-                    <el-input v-model="now.price" placeholder="请输入售价"></el-input>
+                    <el-input v-model="now.price" placeholder="请输入售价" type="number"></el-input>
                 </span>
                 </li>
                 <li v-if="now.zt!=3">
                     <span class="list_left">库存</span>
                     <span class="list_right">
-                    <el-input v-model="now.stock" placeholder="请输入库存"></el-input>
+                    <el-input v-model="now.stock" placeholder="请输入库存" type="number"></el-input>
                 </span>
                 </li>
                 <li v-if="now.zt!=1">
                     <span class="list_left">次数</span>
                     <span class="list_right">
-                    <el-input v-model="now.fre" placeholder="请输入次数"></el-input>
+                    <el-input v-model="now.fre" placeholder="请输入次数" type="number"></el-input>
                 </span>
                 </li>
                 <li v-if="now.zt!=1">
                     <span class="list_left">手工费</span>
                     <span class="list_right">
-                    <el-input v-model="now.fee" placeholder="请输入手工费"></el-input>
+                    <el-input v-model="now.fee" placeholder="请输入手工费" type="number"></el-input>
                 </span>
                 </li>
                 <li>
@@ -172,7 +172,7 @@
                 </li>
             </ul>
             <span slot="footer" class="dialog-footer">
-            <el-button @click="centerDialogVisible = false">取 消</el-button>
+            <el-button @click="cancel">取 消</el-button>
             <el-button type="primary" @click="editAll">确 定</el-button>
           </span>
         </el-dialog>
@@ -180,7 +180,7 @@
         <el-dialog title="新增商品"
                    :visible.sync="zt"
                    width="460px"
-                   center>
+                   center :before-close="cancel">
             <ul class="goods_edit">
                 <li>
                     <span class="list_left">品项</span>
@@ -225,25 +225,25 @@
                 <li>
                     <span class="list_left">售价</span>
                     <span class="list_right">
-                    <el-input v-model="sj.price" placeholder="请输入售价"></el-input>
+                    <el-input v-model="sj.price" placeholder="请输入售价" type="number"></el-input>
                 </span>
                 </li>
                 <li v-if="sj.type!=3">
                     <span class="list_left">库存</span>
                     <span class="list_right">
-                    <el-input v-model="sj.stock" placeholder="请输入库存"></el-input>
+                    <el-input v-model="sj.stock" placeholder="请输入库存" type="number"></el-input>
                 </span>
                 </li>
                 <li v-if="sj.type!=1">
                     <span class="list_left">次数</span>
                     <span class="list_right">
-                    <el-input v-model="sj.fre" placeholder="请输入次数"></el-input>
+                    <el-input v-model="sj.fre" placeholder="请输入次数" type="number"></el-input>
                 </span>
                 </li>
                 <li v-if="sj.type!=1">
                     <span class="list_left">手工费</span>
                     <span class="list_right">
-                        <el-input v-model="sj.fee" placeholder="请输入手工费"></el-input>
+                        <el-input v-model="sj.fee" placeholder="请输入手工费" type="number"></el-input>
                     </span>
                 </li>
                 <li>
@@ -256,7 +256,7 @@
                 </li>
             </ul>
             <span slot="footer" class="dialog-footer">
-            <el-button @click="zt = false">取 消</el-button>
+            <el-button @click="cancel">取 消</el-button>
             <el-button type="primary" @click="addAll">确 定</el-button>
           </span>
         </el-dialog>
@@ -353,6 +353,23 @@
 
                 })
             },
+            cancel(){
+                this.zt=false;
+                this.centerDialogVisible=false;
+                this.now=null;
+                this.sj={
+                    type: '1', //产品，套盒，项目
+                    name: '',
+                    price: '',
+                    stock: '',
+                    fre: '',
+                    fee: '',
+                    cid: '',
+                    is_bind: '2',
+                    spec_id: '',
+                    sn: '',
+                };
+            },
             addAll() {
                 if (this.sj.type != 1) {
                     if(this.sj.type == 3){
@@ -406,11 +423,44 @@
                 })
             },
             editAll() {
-                if (this.now.name == '' || this.now.price == '' || this.now.stock == '' || this.now.fre == '' ||
+                if (this.now.zt != 1) {
+                    if(this.now.zt == 3){
+                        if (this.now.name == '' || this.now.price == '' || this.now.fre == '' ||
+                            this.now.fee == '') {
+                            error('请填完以上信息')
+                            return
+                        }
+                        if(this.now.is_bind==1){
+                            if(this.now.spec_id==''){
+                                return error('请选择耗材')
+                            }
+                        }
+                    }else{
+                        if (this.now.name == '' || this.now.fre == '' ) {
+                            error('请填完以上信息')
+                            return
+                        }else if(this.now.stock == ''&&this.now.stock!=0){
+                            error('请填写库存')
+                            return
+                        }else if(this.now.fee == ''){
+                            error('请填写手工费')
+                            return
+                        }else if(this.now.price == ''){
+                            error('请填写售价')
+                            return
+                        }
+                    }
+                } else {
+                    if (this.now.name == '' || this.now.price == '' || this.now.stock == '') {
+                        error('请填完以上信息')
+                        return
+                    }
+                }
+                /*if (this.now.name == '' || this.now.price == '' || this.now.stock == '' || this.now.fre == '' ||
                     this.now.fee == '') {
                     error('请填完以上信息')
                     return
-                }
+                }*/
                 $.post(url(methods.editAll), {'data': JSON.stringify(this.now)}, v => {
                     if(v['code']==0){
                         success('修改成功')
@@ -436,9 +486,8 @@
                 })
             },
             edit(v) {
-                this.now = v
+                this.now = Object.assign({},v)
                 this.centerDialogVisible = true
-                console.log(this.now)
             },
             toggleSelection(rows) {
                 if (rows) {
