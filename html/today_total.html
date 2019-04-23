@@ -266,9 +266,10 @@
             },
             formatter2(r, c) {
                 if(r.status == 1 && r.type != 6){
-                    return '消费'
                     if(r.card_pay!=0){
                         return '消费/卡扣'
+                    }else{
+                        return '消费'
                     }
                 }else if(r.status == 2 && r.type != 6){
                     return '消耗'
