@@ -26,7 +26,7 @@
                     <ul class="basic_ul">
                         <li>
                             <p>
-                                姓名：
+                                姓名：{{edit_m_own_dio}}
                                 <el-input v-model="userInfo.name" placeholder="请输入"
                                           class="infor_wid un_line_h"></el-input>
                             </p>
@@ -221,7 +221,8 @@
                         </el-table-column>-->
                         <el-table-column label="操作">
                             <template slot-scope="scope">
-                                <!--<el-button type="warning" size="mini" @click="edit_m_own_dio=true">编辑</el-button>-->
+                                <el-button type="warning" size="mini" @click="edit_data(scope.row.id,'items')">编辑</el-button>
+
                                 <el-button type="danger" size="mini" @click="del(2, scope.row, 2)">删除</el-button>
                             </template>
                         </el-table-column>
@@ -247,10 +248,10 @@
                                 type="selection"
                                 width="60">
                         </el-table-column>
-                       <!-- <el-table-column
-                                prop="plan_name"
-                                label="方案名称">
-                        </el-table-column>-->
+                        <el-table-column
+                                prop="category"
+                                label="品项">
+                        </el-table-column>
                         <el-table-column
                                 prop="name"
                                 label="商品名称">
@@ -273,7 +274,7 @@
                         </el-table-column>
                         <el-table-column label="操作">
                             <template slot-scope="scope">
-                                <!--<el-button type="warning" size="mini" @click="console(scope.row);own_data=scope.row;edit_type='plan'">编辑</el-button>-->
+                                <el-button v-if="scope.row.category!='产品'" type="warning" size="mini" @click="edit_data(scope.row.id,'plan')">编辑</el-button>
                                 <el-button type="danger" size="mini" @click="del(2, scope.row, 2)">删除</el-button>
                             </template>
                         </el-table-column>
@@ -325,7 +326,7 @@
                         </el-table-column>-->
                         <el-table-column label="操作">
                             <template slot-scope="scope">
-                                <!--<el-button type="warning" size="mini" @click="console(scope.row);own_data=scope.row;edit_type='box'">编辑</el-button>-->
+                                <el-button type="warning" size="mini" @click="edit_data(scope.row.id,'box')">编辑</el-button>
                                 <el-button type="danger" size="mini" @click="del(3, scope.row, 2)">删除</el-button>
                             </template>
                         </el-table-column>
@@ -410,7 +411,7 @@
                         </el-table-column>
                         <el-table-column label="操作">
                             <template slot-scope="scope">
-                                <!--<el-button type="warning" size="mini" @click="card_eDio=true;card_data=scope.row">编辑</el-button>-->
+                                <el-button type="warning" size="mini" @click="card_eDio=true;set_card(scope.row.id)">编辑</el-button>
                                 <el-button type="danger" size="mini" @click="card_del(scope.row.id)">删除</el-button>
                             </template>
                         </el-table-column>
@@ -933,9 +934,9 @@
             </el-table>
         </el-dialog>
         <!--会员持有的编辑-->
-        <el-dialog
+        <!--<el-dialog
                 title="会员商品编辑"
-                :visible.sync="edit_m_own_dio"
+                visible.sync="edit_m_own_dio"
                 center>
             <ul class="goods_edit">
                 <li>
@@ -970,27 +971,70 @@
                 </li>
             </ul>
             <span slot="footer" class="dialog-footer">
-            <el-button @click="edit_m_own_dio=false">取 消</el-button>
+            <el-button @click="">取 消</el-button>
             <el-button type="primary" @click="edit_v_own(own_data.id)">确 定</el-button>
           </span>
+        </el-dialog>-->
+        <!--弹框示例-->
+        <el-dialog
+                title="会员商品编辑"
+                :visible.sync="centerDialogVisible"
+                center>
+            <ul class="goods_edit">
+                <li>
+                    <span class="list_left">商品名称</span>
+                    <span class="list_right">
+                    <el-input v-model="own_data.name" disabled></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">购价</span>
+                    <span class="list_right">
+                    <el-input v-model="own_data.price" placeholder="请输入商品购价"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">原本次数</span>
+                    <span class="list_right">
+                    <el-input v-model="own_data.originally_num" placeholder="请输入原本次数" type="number"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">剩余次数</span>
+                    <span class="list_right">
+                    <el-input v-model="own_data.current_num" placeholder="请输入原本次数" type="number"></el-input>
+                </span>
+                </li>
+                <li>
+                    <span class="list_left">手工</span>
+                    <span class="list_right">
+                    <el-input v-model="own_data.fee" placeholder="请输入手工" type="number"></el-input>
+                </span>
+                </li>
+            </ul>
+            <span slot="footer" class="dialog-footer">
+    <el-button @click="centerDialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="edit_v_own()">确 定</el-button>
+  </span>
         </el-dialog>
         <!--会员卡项的编辑-->
         <el-dialog
                 title="会员持有卡项编辑"
                 :visible.sync="card_eDio"
-                center
-                :before-close="own_cancel()">
+                center>
             <ul class="goods_edit">
+                <li>
+                    <span class="list_left">卡项类型</span>
+                    <span class="list_right">
+                        <i v-if="card_data.card_type==1">储值卡</i>
+                        <i v-if="card_data.card_type==2">普通折扣卡</i>
+                        <i v-if="card_data.card_type==3">全场折扣卡</i>
+                    </span>
+                </li>
                 <li>
                     <span class="list_left">卡项名称</span>
                     <span class="list_right">
-                    <el-input v-model="own_data.name" placeholder="请输入商品名称"></el-input>
-                </span>
-                </li>
-                <li>
-                    <span class="list_left">卡名</span>
-                    <span class="list_right">
-                    <el-input v-model="card_data.card_name" placeholder="请输入卡名"></el-input>
+                    <el-input v-model="card_data.name" disabled></el-input>
                 </span>
                 </li>
                 <li>
@@ -1025,7 +1069,7 @@
                 </li>
             </ul>
              <span slot="footer" class="dialog-footer">
-             <el-button @click="own_cancel">取 消</el-button>
+             <el-button @click="card_eDio=false">取 消</el-button>
              <el-button type="primary" @click="card_edit(card_data.id)">确 定</el-button>
            </span>
         </el-dialog>
@@ -1046,6 +1090,8 @@
             con_list:'',
             demand_list:'',
             checkList: '',
+            centerDialogVisible: false,
+            edit_id:'',
             get_coupon_Dio: false,
             dialogVisible: false,
             dialogVisible2: false,
@@ -1054,6 +1100,7 @@
             edit_m_own_dio:false,
             card_eDio:false,
             card_data:'',
+            card_id:'',
             own_data:'',
             edit_type:'',
             pay_dio:false,
@@ -1091,36 +1138,6 @@
             }],
             value: '',
             birth: '',
-            tableData: [{
-                classify: '面部',
-                name: '补水面膜',
-                price: '1235',
-                time: '2019-02-12',
-                discount: '4折',
-                dis_price: '262'
-            }, {
-                classify: '面部',
-                name: '补水面膜',
-                price: '1235',
-                time: '2019-02-12',
-                discount: '4折',
-                dis_price: '262'
-            }, {
-                classify: '面部',
-                name: '补水面膜',
-                price: '1235',
-                time: '2019-02-12',
-                discount: '4折',
-                dis_price: '262'
-            }, {
-                classify: '面部',
-                name: '补水面膜',
-                price: '1235',
-                time: '2019-02-12',
-                discount: '4折',
-                dis_price: '262'
-            }],
-
             userId: 0,
             userInfo: null,
             cpList: [],
@@ -1148,15 +1165,68 @@
             detail2: '',
         },
         methods: {
-            console(dd){
-                console.log(this.edit_type);
-                console.log(this.edit_m_own_dio)
-                this.edit_m_own_dio=true;
-                console.log(this.edit_m_own_dio)
-                console.log(this.own_data)
-                console.log(dd)
-                this.own_data=dd
-                console.log(this.own_data)
+            edit_data(id,type){
+                this.edit_type=type;
+                this.edit_id=id;
+                this.centerDialogVisible=true;
+                $.get(url(methods.mem_own_edit),{id:id,type:type},v=>{
+                    if(v.code==1){
+                        this.own_data=v.detail;
+                    }
+                })
+            },
+            edit_v_own(){
+                console.log(this.own_data);
+                if(this.own_data.originally_num==''){
+                    error('请输入原有次数！')
+                }else if(this.own_data.current_num==''){
+                    error('请输入剩余次数！')
+                }else if(parseInt(this.own_data.current_num)>parseInt(this.own_data.originally_num)){
+                    error('剩余次数不能大于原本次数额！')
+                }else if(this.own_data.fee==''){
+                    error('请输入手工费！')
+                }else{
+                    $.post(url(methods.mem_own_edit),{data:this.own_data,id:this.edit_id,type:this.edit_type},v=>{
+                        console.log(v)
+                        if(v.code==1){
+                            success(v.Msg);
+                            this.getBoxItems(this.edit_type);
+                            this.centerDialogVisible=false;
+
+                        }
+                    })
+                }
+            },
+            own_cancel(){
+                this.edit_m_own_dio=false;
+                this.card_eDio=false;
+                // this.own_data='';
+                this.card_data='';
+            },
+            set_card(id){
+                this.card_id=id;
+                    $.get(url(methods.modify_member_card_details),{id:id,mid:this.userId},v=>{
+                        console.log(v)
+                        if(v.code==1){
+                            this.card_data=v.res;
+                        }
+                    })
+            },
+            card_edit(id){
+                if(this.card_data.amount==''){
+                    error('请输入卡内余额！')
+                }else{
+                    this.card_data.id=this.card_id;
+                    this.card_data.mid=this.userId;
+                    $.post(url(methods.modify_member_card_details),{data:this.card_data},v=>{
+                        console.log(v)
+                        if(v.code==1){
+                            success(v.Msg)
+                            this.card_eDio=false;
+                            this.getCard()
+                        }
+                    })
+                }
             },
             add_hel(){
                 localStorage.setItem('search_sh', '')
@@ -1293,45 +1363,7 @@
                     this.arr3.push(v.id)
                 }
             },
-            edit_v_own(id){
-                console.log(this.own_data);
-                if(this.own_data.originally_num==''){
-                    error('请输入原有次数！')
-                }else if(this.own_data.current_num==''){
-                    error('请输入剩余次数！')
-                }else if(this.own_data.current_num>this.own_data.originally_num){
-                    error('剩余次数大于原本次数！')
-                }else if(this.own_data.fee==''){
-                    error('请输入手工费！')
-                }else{
-                    $.get(url(methods.mem_own_edit),{data:this.own_data,id:id,type:this.edit_type},v=>{
-                        console.log(v)
-                        if(v.code==1){
-                            success(v.Msg)
-                        }
-                    })
-                }
-            },
-            own_cancel(){
-                this.edit_m_own_dio=false;
-                this.card_eDio=false;
-                this.own_data='';
-                this.card_data='';
-            },
-            card_edit(id){
-                if(this.card_data.amount==''){
-                    error('请输入卡内余额！')
-                }else{
-                    $.get(url(methods.modify_member_card_details),{data:this.card_data},v=>{
-                        console.log(v)
-                        if(v.code==1){
-                            success(v.Msg)
-                            this.card_eDio=false;
-                            this.getCard()
-                        }
-                    })
-                }
-            },
+
             check_bulk(bulk){
                /* if(bulk<0||bulk>100){
                     error('请输入1~100之间数字！')

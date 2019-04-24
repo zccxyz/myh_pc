@@ -87,21 +87,22 @@
            <el-input v-model="memberBalance2" type="number" placeholder="元" class="choice_in in_right"></el-input>
           <el-button type="primary" style="height: 30px;padding: 0 15px">查询</el-button>
        </div>-->
+       <!-- .filter(
+        data => (!input || data.name.toLowerCase().includes(input.toLowerCase()) ||
+        data.tel.toLowerCase().includes(input.toLowerCase())||(data.shop_num==null?false:data.shop_num.toLowerCase().includes(input.toLowerCase()))) &&
+
+        ((!memberBalance || parseFloat(data.balance)>=parseFloat(memberBalance)) &&
+        (!memberBalance2 || parseFloat(data.balance)<=parseFloat(memberBalance2))) &&
+
+        ((!syNum || parseFloat(data.num)>=parseFloat(syNum)) &&
+        (!syNum2 || parseFloat(data.num)<=parseFloat(syNum2))) &&
+
+        ((!ddNum || parseFloat(data.arrival_num)>=parseFloat(ddNum)) &&
+        (!ddNum2 || parseFloat(data.arrival_num)<=parseFloat(ddNum2)))
+        )-->
         <el-table border :max-height="max_ht"
                   ref="multipleTable"
-                  :data="list.filter(
-                  data => (!input || data.name.toLowerCase().includes(input.toLowerCase()) ||
-                  data.tel.toLowerCase().includes(input.toLowerCase())||(data.shop_num==null?false:data.shop_num.toLowerCase().includes(input.toLowerCase()))) &&
-
-                  ((!memberBalance || parseFloat(data.balance)>=parseFloat(memberBalance)) &&
-                  (!memberBalance2 || parseFloat(data.balance)<=parseFloat(memberBalance2))) &&
-
-                  ((!syNum || parseFloat(data.num)>=parseFloat(syNum)) &&
-                  (!syNum2 || parseFloat(data.num)<=parseFloat(syNum2))) &&
-
-                  ((!ddNum || parseFloat(data.arrival_num)>=parseFloat(ddNum)) &&
-                  (!ddNum2 || parseFloat(data.arrival_num)<=parseFloat(ddNum2)))
-                  )"
+                  :data="list"
                   tooltip-effect="dark"
                   style="width: 100%"
                   @selection-change="handleSelectionChange">
