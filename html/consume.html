@@ -47,20 +47,6 @@
                                  <i class="el-icon-circle-plus blue_c" @click="jia(1, i)"></i>
                             </span>
                         </li>
-                        <!--<li>
-                        <span class="g_name">
-                             面部护理
-                        </span>
-                            <span class="cr p_wid">￥298.00</span>
-                            <span class="g_c_price">
-                           修改价格
-                       </span>
-                            <span class="fr mar_hun">
-                             <i class="el-icon-remove blue_c"></i>
-                             <i>5</i>
-                             <i class="el-icon-circle-plus blue_c"></i>
-                        </span>
-                        </li>-->
                     </ul>
                 </div>
             </el-collapse-item>
@@ -91,23 +77,6 @@
                                  <i class="el-icon-circle-plus blue_c" @click="jia(2, i)"></i>
                             </span>
                         </li>
-                        <!--<li>
-                            <span class="g_name">
-                                 面部护理
-                            </span>
-                                <span class="cr p_wid">￥298.00</span>
-                                <span class="huihui p_wid">
-                               剩余次数：3
-                           </span>
-                                <span class="huihui p_wid">
-                               共有次数：12
-                           </span>
-                                <span class="fr mar_hun">
-                                 <i class="el-icon-remove blue_c"></i>
-                                 <i>5</i>
-                                 <i class="el-icon-circle-plus blue_c"></i>
-                            </span>
-                        </li>-->
                     </ul>
                 </div>
             </el-collapse-item>
@@ -172,118 +141,7 @@
                 </div>
             </el-collapse-item>
         </el-collapse>
-        <!--<p class="cr linr_four">
-        会员余额：￥{{balance}}
-        </p>
-        <div class="con_div" v-if="items.length>0">
-        <p class="con_list linr_four">
-        会员余额消费
-        </p>
-        <ul class="consume_list">
-        <li v-for="(v, i) in items">
-        <span class="g_name">
-        {{v.pro_name}}
-        </span>
-        <span class="cr p_wid">￥{{v.check_num>0?v.price * v.check_num:v.price}}</span>
-        <span class="g_c_price" @click="open3(v)">
-        修改价格
-        </span>
-        <span class="fr mar_hun">
-        <template v-if="v.check_num>0">
-        <i class="el-icon-remove blue_c" @click="jian(1, i)"></i>
-        <i>{{v.check_num}}</i>
-        </template>
-        <i class="el-icon-circle-plus blue_c" @click="jia(1, i)"></i>
-        </span>
-        </li>
-        &lt;!&ndash;<li>
-        <span class="g_name">
-        面部护理
-        </span>
-        <span class="cr p_wid">￥298.00</span>
-        <span class="g_c_price">
-        修改价格
-        </span>
-        <span class="fr mar_hun">
-        <i class="el-icon-remove blue_c"></i>
-        <i>5</i>
-        <i class="el-icon-circle-plus blue_c"></i>
-        </span>
-        </li>&ndash;&gt;
-        </ul>
-        </div>
-
-        <div class="con_div" v-if="myBox.length>0">
-        <p class="item_list linr_four">
-        会员自有套盒
-        </p>
-        <ul class="consume_list">
-        <li v-for="(v,i) in myBox">
-        <span class="g_name">
-        {{v.name}}
-        </span>
-        <span class="cr p_wid">￥298.00</span>
-        <span class="huihui p_wid">
-        剩余次数：{{v.current_num}}
-        </span>
-        <span class="huihui p_wid">
-        共有次数：{{v.originally_num}}
-        </span>
-        <span class="fr mar_hun">
-        <template v-if="v.check_num>0">
-        <i class="el-icon-remove blue_c" @click="jian(2, i)"></i>
-        <i>{{v.check_num}}</i>
-        </template>
-        <i class="el-icon-circle-plus blue_c" @click="jia(2, i)"></i>
-        </span>
-        </li>
-        &lt;!&ndash;<li>
-        <span class="g_name">
-        面部护理
-        </span>
-        <span class="cr p_wid">￥298.00</span>
-        <span class="huihui p_wid">
-        剩余次数：3
-        </span>
-        <span class="huihui p_wid">
-        共有次数：12
-        </span>
-        <span class="fr mar_hun">
-        <i class="el-icon-remove blue_c"></i>
-        <i>5</i>
-        <i class="el-icon-circle-plus blue_c"></i>
-        </span>
-        </li>&ndash;&gt;
-        </ul>
-        </div>
-
-        <div class="con_div" v-if="myItems.length>0">
-        <p class="th_list linr_four">
-        会员项目消耗
-        </p>
-        <ul class="consume_list">
-        <li v-for="(v,i) in myItems">
-        <span class="g_name">
-        {{v.name}}
-        </span>
-        <span class="cr p_wid">￥298.00</span>
-        <span class="huihui p_wid">
-        剩余次数：{{v.current_num}}
-        </span>
-        <span class="huihui p_wid">
-        共有次数：{{v.originally_num}}
-        </span>
-        <span class="fr mar_hun">
-        <template v-if="v.check_num>0">
-        <i class="el-icon-remove blue_c" @click="jian(3, i)"></i>
-        <i>{{v.check_num}}</i>
-        </template>
-        <i class="el-icon-circle-plus blue_c" @click="jia(3, i)"></i>
-        </span>
-        </li>
-        </ul>
-        </div>-->
-        <div class="commission">
+        <div class="commission" style="margin-top: 15px">
             <div class="mar_hun fl">
                 <p class="p_div_b">
                     消耗手工录入
@@ -308,10 +166,10 @@
                         <i class="el-icon-circle-close-outline close" @click="del(1, i)"></i>
                     </li>
                 </ul>
-                <p class="p_div_b" style="margin-top: 15px">
+                <p class="p_div_b" style="margin-top: 15px" v-if="v_own_i_t_m>0">
                     消耗提成录入
                 </p>
-                <ul class="consume_list commission_list">
+                <ul class="consume_list commission_list" v-if="v_own_i_t_m>0">
                     <li>
                         美容师
                         <el-select v-model="two.id" placeholder="请选择" class="in_wid">
@@ -371,7 +229,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="fr">
+            <div class="fr" v-if="v_a_i_t_m>0">
                 <p class="p_div_b">
                     卡扣提成录入
                 </p>
@@ -486,6 +344,8 @@
             roomId: 0,
             c_b: '1', //1余额，2会员卡
             card: [],
+            v_a_i_t_m:0,
+            v_own_i_t_m:0,
         },
         methods: {
             sub() {
@@ -570,40 +430,48 @@
                 if (type == 1) {
                     if (this.items[i].check_num > 0) {
                         this.items[i].check_num--
+                        this.v_a_i_t_m-=this.items[i].price;
                     }
                 } else if (type == 2) {
                     if (this.myBox[i].check_num > 0) {
                         this.myBox[i].check_num--
+                        this.v_own_i_t_m-=parseFloat(this.myBox[i].price);
                     }
                 } else if (type == 3) {
                     if (this.myItems[i].check_num > 0) {
                         this.myItems[i].check_num--
+                        this.v_own_i_t_m-=parseFloat(this.myItems[i].price);
                     }
                 } else if (type == 4) {
                     if (this.myPlan[i].check_num > 0) {
                         this.myPlan[i].check_num--
+                        this.v_own_i_t_m-=parseFloat(this.myPlan[i].price);
                     }
                 }
             },
             jia(type, i) {
                 if (type == 1) {
-                    this.items[i].check_num++
+                    this.items[i].check_num++;
+                    this.v_a_i_t_m+=this.items[i].price;
                 } else if (type == 2) {
                     if (this.myBox[i].current_num <= this.myBox[i].check_num) {
                         //error('数量不足')
                         return
                     }
                     this.myBox[i].check_num++
+                    this.v_own_i_t_m+=parseFloat(this.myBox[i].price);
                 } else if (type == 3) {
                     if (this.myItems[i].current_num <= this.myItems[i].check_num) {
                         return
                     }
                     this.myItems[i].check_num++
+                    this.v_own_i_t_m+=parseFloat(this.myItems[i].price);
                 } else if (type == 4) {
                     if (this.myPlan[i].current_num <= this.myPlan[i].check_num) {
                         return
                     }
                     this.myPlan[i].check_num++
+                    this.v_own_i_t_m+=parseFloat(this.myPlan[i].price);
                 }
             },
             del(type, i) {
