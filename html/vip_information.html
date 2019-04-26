@@ -402,10 +402,10 @@
                             <template slot-scope="scope">
                                 <i v-if="scope.row.card_type==1">无</i>
                                 <i v-if="scope.row.card_type==2">
-                                    产品:{{scope.row.product}}折&#12288;套盒:{{scope.row.suitbox}}折&#12288;项目:{{scope.row.items}}折&#12288;礼包:{{scope.row.gift}}折
+                                    产品:{{scope.row.product}}&#12288;套盒:{{scope.row.suitbox}}&#12288;项目:{{scope.row.items}}&#12288;礼包:{{scope.row.gift}}
                                 </i>
                                 <i v-if="scope.row.card_type==3">
-                                    {{scope.row.discount}}折
+                                    {{scope.row.discount}}
                                 </i>
                             </template>
                         </el-table-column>
@@ -1051,7 +1051,7 @@
                 <li v-if="card_data.card_type==3">
                     <span class="list_left">折扣</span>
                     <span class="list_right">
-                    <el-input v-model="card_data.discount" type="number" placeholder="请输入折扣" @blur="check_bulk(detail.discount)"></el-input>
+                    <el-input v-model="card_data.discount" type="number" placeholder="请输入折扣" @blur="check_bulk(detail.discount)"><i slot="suffix">%</i></el-input>
                 </span>
                 </li>
                 <li v-if="card_data.card_type==2" class="dis_div">

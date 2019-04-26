@@ -91,7 +91,7 @@
                 <li v-if="sj2.type==3">
                     <span class="list_left">折扣</span>
                     <span class="list_right">
-                    <el-input v-model="sj2.discount" placeholder="请输入折扣"></el-input>
+                    <el-input v-model="sj2.discount" placeholder="请输入折扣"><i slot="suffix">%</i></el-input>
                 </span>
                 </li>
                 <li>
@@ -155,7 +155,7 @@
                 <li>
                     <span class="list_left">额度</span>
                     <span class="list_right">
-                    <el-input v-model="detail.amount" type="number" placeholder="请输入额度"></el-input>
+                    <el-input v-model="detail.amount" type="number" placeholder="请输入额度"><i slot="suffix">%</i></el-input>
                 </span>
                 </li>
                 <li v-if="detail.card_type==3">
