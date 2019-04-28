@@ -782,6 +782,15 @@
             pay_data:'',
             con_detail_data:''
         },
+        watch: {
+            time(v){
+                if(v!=null){
+                    this.start = v[0]
+                    this.end = v[1]
+                }
+                this.getData()
+            }
+        },
         methods: {
             getData() {
                 $.post(url(methods.indexDetail) + '&start=' + this.start + '&end=' + this.end, v => {
