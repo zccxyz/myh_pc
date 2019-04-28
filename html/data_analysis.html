@@ -820,12 +820,12 @@
                 })
             },
             getdetail(type){
-                $.get(url(methods.buy_detail_list),{start: this.start, end: this.end, type: type},v=>{
+                $.get(url(methods.buy_detail_list),{start: this.start, end: this.end, type: type,search:'day'},v=>{
                     this.detail_data=v.res
                 })
             },
             get_consume(type){
-                $.get(url(methods.consumed_detail_list),{start: this.start, end: this.end, type: type},v=>{
+                $.get(url(methods.consumed_detail_list),{start: this.start, end: this.end, type: type,search:'day'},v=>{
                     this.con_detail_data=v.list
                 })
             },
