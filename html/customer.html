@@ -43,7 +43,7 @@
             <el-input class="cus_seatch" style="float: left"
                       placeholder="请输入名字或电话"
                       prefix-icon="el-icon-search"
-                      v-model="input">
+                      v-model="input" @keyup.enter.native="get_search()">
             </el-input>
             <el-button type="warning"  style="float: left" @click="get_search()">点击搜索</el-button>
             <!--<el-button @click="import2" type="success" id="file" native-type="submit">导入会员表</el-button>-->
