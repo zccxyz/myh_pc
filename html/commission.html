@@ -48,6 +48,9 @@
                 <div style="height: 50px;width: 100%;line-height:50px;padding-left:15px;font-size:1.8rem;background: white;">
                     消费可提成金额 ：<span class="cr" style="font-size: 1.8rem;">&yen;{{total}}</span>
                 </div>
+                <div v-if="goods_additional_price > 0" style="height: 50px;width: 100%;line-height:50px;padding-left:15px;font-size:1.8rem;background: white;">
+                    产品附加提成金额 ：<span class="cr" style="font-size: 1.8rem;">&yen;{{goods_additional_price}}</span>
+                </div>
             </div>
             <div class="" v-if="total>0">
                 <p class="p_div_b">
@@ -313,7 +316,7 @@
             type: 0,
             d: [],
             ac_card_total: 0,
-
+            goods_additional_price:0,
             one2: {rate: '', id: ''},
             two2: {rate: '', id: ''},
             three2: {rate: '', id: ''},
@@ -711,6 +714,7 @@
                         this.m = v.res.m
                         this.d = v.res.d
                         this.ac_card_total = v.res.ac_card_total
+                        this.goods_additional_price = v.res.goods_additional_price;
                     } else {
                         error(v.errorMsg)
                     }

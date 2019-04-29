@@ -157,6 +157,12 @@
                     <el-input v-model="now.fre" placeholder="请输入次数" type="number"></el-input>
                 </span>
                 </li>
+                <li v-if="now.zt==1">
+                    <span class="list_left">附加提成</span>
+                    <span class="list_right">
+                    <el-input v-model="now.additional_price" placeholder="请输入附加提成" type="number"></el-input>
+                </span>
+                </li>
                 <li v-if="now.zt!=1">
                     <span class="list_left">手工费</span>
                     <span class="list_right">
@@ -232,6 +238,12 @@
                     <span class="list_left">库存</span>
                     <span class="list_right">
                     <el-input v-model="sj.stock" placeholder="请输入库存" type="number"></el-input>
+                </span>
+                </li>
+                <li v-if="sj.type==1">
+                    <span class="list_left">附加提成</span>
+                    <span class="list_right">
+                    <el-input v-model="sj.additional_price" placeholder="请输入附加提成" type="number"></el-input>
                 </span>
                 </li>
                 <li v-if="sj.type!=1">
@@ -314,6 +326,7 @@
                 is_bind: '2',
                 spec_id: '',
                 sn: '',
+                additional_price: '',
             },
         },
         methods: {
@@ -368,6 +381,7 @@
                     is_bind: '2',
                     spec_id: '',
                     sn: '',
+                    additional_price: '',
                 };
             },
             addAll() {
@@ -416,6 +430,7 @@
                             is_bind: '2',
                             spec_id: '',
                             sn: '',
+                            additional_price: '',
                         }
                         this.zt = false
                         this.getGoods()
