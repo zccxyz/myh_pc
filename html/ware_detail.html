@@ -257,6 +257,9 @@
                               v-model="input3">
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
                     </el-input>
+                    <span v-show="nowPos=='内衣'">
+                        总库存：{{total_stock}}
+                    </span>
                     <el-button type="success" class="fr" @click="getDetail">盈亏数</el-button>
                     <el-button type="primary" class="fr" style="margin-right: 10px" @click="sub">保存</el-button>
                 </div>
@@ -742,6 +745,7 @@
             logs: [],
             list2: [],
             nowData: '',
+            total_stock: '',
             un: [],
         },
         watch: {
@@ -983,11 +987,14 @@
             },
             getUn() {
                 $.post(url(methods.getUn), v => {
+                    let all_totck=0
                     for (let x of v.data) {
                         x.pdNum = '';
                         x.nowNum = '';
                         x.type = 4;
+                        all_totck+=parseInt(x.sum)
                     }
+                    this.total_stock=all_totck
                     this.un = v.data;
                 })
             },
