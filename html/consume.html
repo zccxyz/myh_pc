@@ -156,7 +156,7 @@
                                     :value="v.id">
                             </el-option>
                         </el-select>
-                        <el-input v-model="one.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
+                        <el-input v-model="one.rate" placeholder="请输入" class="in_wid" @blur="check_number(1,one.rate)"></el-input>&nbsp;%
                         <p class="do_blue" @click="add(1)">添加</p>
                     </li>
                     <li v-for="(v, i) in oneArr" class="app_li">
@@ -179,7 +179,7 @@
                                     :value="item.id">
                             </el-option>
                         </el-select>
-                        <el-input v-model="two.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
+                        <el-input v-model="two.rate" placeholder="请输入" class="in_wid" @blur="check_number(2,two.rate)"></el-input>&nbsp;%
                         <p class="do_blue" @click="add(2)">添加</p>
                     </li>
                     <li v-for="(v, i) in twoArr" class="app_li">
@@ -198,7 +198,7 @@
                                     :value="item.id">
                             </el-option>
                         </el-select>
-                        <el-input v-model="three.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
+                        <el-input v-model="three.rate" placeholder="请输入" class="in_wid" @blur="check_number(3,three.rate)"></el-input>&nbsp;%
                         <p class="do_blue" @click="add(3)">添加</p>
                     </li>
                     <li v-for="(v, i) in threeArr" class="app_li">
@@ -218,7 +218,7 @@
                                     :value="item.id">
                             </el-option>
                         </el-select>
-                        <el-input v-model="four.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
+                        <el-input v-model="four.rate" placeholder="请输入" class="in_wid" @blur="check_number(4,four.rate)"></el-input>&nbsp;%
                         <p class="do_blue" @click="add(4)">添加</p>
                     </li>
                     <li v-for="(v, i) in fourArr" class="app_li">
@@ -243,7 +243,7 @@
                                     :value="item.id">
                             </el-option>
                         </el-select>
-                        <el-input v-model="five.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
+                        <el-input v-model="five.rate" placeholder="请输入" class="in_wid" @blur="check_number(5,five.rate)"></el-input>&nbsp;%
                         <p class="do_blue" @click="add(5)">添加</p>
                     </li>
                     <li v-for="(v, i) in fiveArr" class="app_li">
@@ -262,7 +262,7 @@
                                     :value="item.id">
                             </el-option>
                         </el-select>
-                        <el-input v-model="six.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
+                        <el-input v-model="six.rate" placeholder="请输入" class="in_wid" @blur="check_number(6,six.rate)"></el-input>&nbsp;%
                         <p class="do_blue" @click="add(6)">添加</p>
                     </li>
                     <li v-for="(v, i) in sixArr" class="app_li">
@@ -282,7 +282,7 @@
                                     :value="item.id">
                             </el-option>
                         </el-select>
-                        <el-input v-model="seven.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
+                        <el-input v-model="seven.rate" placeholder="请输入" class="in_wid" @blur="check_number(7,seven.rate)"></el-input>&nbsp;%
                         <p class="do_blue" @click="add(7)">添加</p>
                     </li>
                     <li v-for="(v, i) in sevenArr" class="app_li">
@@ -348,6 +348,42 @@
             v_own_i_t_m:0,
         },
         methods: {
+            check_number(t,v){
+                if(isNaN(v)){
+                    error("只能输入数字");
+                    this.empty(t);
+                }else if(v<0||v>100){
+                    error("只能在0-100范围之内");
+                    this.empty(t);
+                }
+            },
+            empty(a){
+                switch (a){
+                    case 1:
+                        this.one.rate=''
+                        break;
+                    case 2:
+                        this.two.rate=''
+                        break;
+                    case 3:
+                        this.three.rate=''
+                        break;
+                    case 4:
+                        this.four.rate=''
+                        break;
+                    case 5:
+                        this.five.rate=''
+                        break;
+                    case 6:
+                        this.six.rate=''
+                        break;
+                    case 7:
+                        this.seven.rate=''
+                        break;
+                    default:
+                        break;
+                }
+            },
             sub() {
                 this.$confirm('是否确认录入?', '提示', {
                     confirmButtonText: '确定',

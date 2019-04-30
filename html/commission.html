@@ -66,7 +66,7 @@
                                     :value="item.id">
                             </el-option>
                         </el-select>
-                        <el-input type="number" v-model="two.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
+                        <el-input type="number" v-model="two.rate" placeholder="请输入" class="in_wid" @blur="check_number(2,two.rate)"></el-input>&nbsp;%
                         <p class="do_blue cursor" @click="add(2)">添加</p>
                     </li>
                     <li v-for="(v, i) in twoArr" style="background: #d5baf9;">
@@ -85,7 +85,7 @@
                                     :value="item.id">
                             </el-option>
                         </el-select>
-                        <el-input type="number" v-model="three.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
+                        <el-input type="number" v-model="three.rate" placeholder="请输入" class="in_wid" @blur="check_number(3,three.rate)"></el-input>&nbsp;%
                         <p class="do_blue cursor" @click="add(3)">添加</p>
                     </li>
                     <li v-for="(v, i) in threeArr" style="background: #d5baf9;">
@@ -105,7 +105,7 @@
                                     :value="item.id">
                             </el-option>
                         </el-select>
-                        <el-input type="number" v-model="four.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
+                        <el-input type="number" v-model="four.rate" placeholder="请输入" class="in_wid" @blur="check_number(4,four.rate)"></el-input>&nbsp;%
                         <p class="do_blue cursor" @click="add(4)">添加</p>
                     </li>
                     <li v-for="(v, i) in fourArr" style="background: #d5baf9;">
@@ -137,7 +137,7 @@
                                         :value="item.id">
                                 </el-option>
                             </el-select>
-                            <el-input type="number" v-model="two2.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
+                            <el-input type="number" v-model="two2.rate" placeholder="请输入" class="in_wid" @blur="check_number(22,two2.rate)"></el-input>&nbsp;%
                             <p class="do_blue cursor" @click="add2(2)">添加</p>
                         </li>
                         <li v-for="(v, i) in twoArr2" style="background: #d5baf9;">
@@ -156,7 +156,7 @@
                                         :value="item.id">
                                 </el-option>
                             </el-select>
-                            <el-input type="number" v-model="three2.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
+                            <el-input type="number" v-model="three2.rate" placeholder="请输入" class="in_wid" @blur="check_number(32,three2.rate)"></el-input>&nbsp;%
                             <p class="do_blue cursor" @click="add2(3)">添加</p>
                         </li>
                         <li v-for="(v, i) in threeArr2" style="background: #d5baf9;">
@@ -176,7 +176,7 @@
                                         :value="item.id">
                                 </el-option>
                             </el-select>
-                            <el-input type="number" v-model="four2.rate" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
+                            <el-input type="number" v-model="four2.rate" placeholder="请输入" class="in_wid" @blur="check_number(42,four2.rate)"></el-input>&nbsp;%
                             <p class="do_blue cursor" @click="add2(4)">添加</p>
                         </li>
                         <li v-for="(v, i) in fourArr2" style="background: #d5baf9;">
@@ -216,7 +216,7 @@
                                                 :value="item.id">
                                         </el-option>
                                     </el-select>
-                                    <el-input type="number" v-model="g.per_in"  v-change="check_per(g.per_in,'mrs',index)"placeholder="请输入" class="in_wid"></el-input>&nbsp;%
+                                    <el-input type="number" v-model="g.per_in"  v-change="check_per(g.per_in,'mrs',index)" placeholder="请输入" class="in_wid"></el-input>&nbsp;%
                                     <p class="do_blue cursor" @click="add_per('mrs',index,g.name_in,g.per_in)">添加</p>
                                 </li>
                                 <li>
@@ -330,6 +330,39 @@
             up_data:[],
         },
         methods: {
+            check_number(t,v){
+                if(isNaN(v)){
+                    error("只能输入数字");
+                    this.empty(t);
+                }else if(v<0||v>100){
+                    error("只能在0-100范围之内");
+                    this.empty(t);
+                }
+            },
+            empty(a){
+                switch (a){
+                    case 2:
+                        this.two.rate=''
+                        break;
+                    case 3:
+                        this.three.rate=''
+                        break;
+                    case 4:
+                        this.four.rate=''
+                        break;
+                    case 22:
+                        this.two2.rate=''
+                        break;
+                    case 32:
+                        this.three2.rate=''
+                        break;
+                    case 42:
+                        this.four2.rate=''
+                        break;
+                    default:
+                        break;
+                }
+            },
             handleClick(tab, event) {
                 if (tab.index == 0) {
 
