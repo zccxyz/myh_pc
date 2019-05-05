@@ -571,6 +571,15 @@
                     </ul>
                 </li>
             </ul>
+            <div class="change_time" v-if="rech_type==1">
+                <el-checkbox v-model="bulu" class="bulu_class" @change="bulu_state(bulu)">是否为补录</el-checkbox>
+                <el-date-picker v-if="bulu==true" prefix-icon="el-icon-date"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                v-model="supp_time"
+                                type="datetime" @change="sub_o_time"
+                                placeholder="选择补录日期" :picker-options="pickerOptions0">
+                </el-date-picker>
+            </div>
             <span slot="footer" class="dialog-footer" v-if="rech_type==1">
             <el-button @click="cancel">取 消</el-button>
             <el-button type="primary" @click="recha_blance()">确 定</el-button>
@@ -603,6 +612,15 @@
                     </span>
                 </li>
             </ul>
+            <div class="change_time">
+                <el-checkbox v-model="bulu" class="bulu_class" @change="bulu_state(bulu)">是否为补录</el-checkbox>
+                <el-date-picker v-if="bulu==true" prefix-icon="el-icon-date"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                v-model="supp_time"
+                                type="datetime" @change="sub_o_time"
+                                placeholder="选择补录日期" :picker-options="pickerOptions0">
+                </el-date-picker>
+            </div>
             <span slot="footer" class="dialog-footer">
             <el-button @click="cancel_in()">取 消</el-button>
             <el-button type="primary" @click="card_recha()">确 定</el-button>
@@ -655,6 +673,13 @@
     new Vue({
         el: '#app',
         data: {
+            pickerOptions0: {
+                disabledDate(time) {
+                    return time.getTime() > Date.now();
+                }
+            },
+            bulu:false,
+            supp_time: '',
             rech_type:'1',
             recharge_dio:false,
             record_dio:false,
@@ -709,6 +734,19 @@
             card_blance:'',
         },
         methods: {
+            bulu_state(state){
+                if (state==false){
+                    this.supp_time='';
+                }
+            },
+            sub_o_time(){
+                /*console.log(this.supp_time)
+                $.post(url(methods.change_time),{time:this.supp_time,oid:this.id},v=>{
+                    if(v.code == 1){
+                        success('订单时间修改成功')
+                    }
+                })*/
+            },
             get_m_blance(){
                     $.get(url(methods.member_amount),{mid:this.user_id},v=>{
                         this.acc_blance=v.res;
@@ -723,7 +761,7 @@
                 if(this.re_money==''&&this.send_money==''){
                     error("至少充值一项")
                 }else{
-                    $.post(url(methods.recharge_account)+`&id=${this.user_id}`,{money:this.re_money,send:this.send_money},v=>{
+                    $.post(url(methods.recharge_account)+`&id=${this.user_id}`,{money:this.re_money,send:this.send_money,time:this.supp_time},v=>{
                         if(v.code==1){
                             console.log(v)
                             success(v.Msg)
@@ -741,7 +779,7 @@
                 if(this.card_money==''){
                     error("请输入要充值的金额")
                 }else{
-                    $.post(url(methods.save_card)+`&id=${this.ca_id}`,{money:this.card_money,mid:this.user_id},v=>{
+                    $.post(url(methods.save_card)+`&id=${this.ca_id}`,{money:this.card_money,mid:this.user_id,time:this.supp_time},v=>{
                         if(v.code==1){
                             success(v.info)
                             this.card_re_dio=false;

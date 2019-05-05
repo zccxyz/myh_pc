@@ -378,7 +378,7 @@
                         </el-table-column>
                     </el-table>
                     <el-table v-show="nowPos=='内衣'"
-                              :data="un.filter(data => !input3 || data.name.toLowerCase().includes(input3.toLowerCase()) )"
+                              :data="un.filter(data => !input3 ||(data.name==null?false:data.name.toLowerCase().includes(input3.toLowerCase()) ))"
                               style="width: 100%">
 
                         <el-table-column

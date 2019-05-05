@@ -34,6 +34,15 @@
             <p class="order_detail" v-else>
                 总金额:<i class="cr">{{detail.price}}</i>&#12288;已支付：{{detail.pay_money}}&#12288;未结清：{{detail.money}}
             </p>
+            <div class="change_time">
+                <el-checkbox v-model="bulu" class="bulu_class" @change="bulu_state(bulu)">是否为补录</el-checkbox>
+                <el-date-picker v-if="bulu==true" prefix-icon="el-icon-date"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                        v-model="supp_time"
+                        type="datetime" @change="sub_o_time"
+                        placeholder="选择补录日期" :picker-options="pickerOptions0">
+                </el-date-picker>
+            </div>
             <p class="other_back order_detail">支付方式</p>
             <ul class="pay_div">
                 <p style="margin: 12px 0;">
@@ -183,6 +192,13 @@
     new Vue({
         el: '#app',
         data: {
+            pickerOptions0: {
+                disabledDate(time) {
+                    return time.getTime() > Date.now();
+                }
+            },
+            bulu:false,
+            supp_time: '',
             input: '',
             id: 0,
             order: '',
@@ -223,7 +239,20 @@
             couponID:''
         },
         methods: {
-            check (id, check) {
+            bulu_state(state){
+                if (state==false){
+                    this.supp_time='';
+                }
+            },
+            sub_o_time(){
+                console.log(this.supp_time)
+                $.post(url(methods.change_time),{time:this.supp_time,oid:this.id},v=>{
+                    if(v.code == 1){
+                        success('订单时间修改成功')
+                    }
+                })
+            },
+                check (id, check) {
                 if (check == 1) {
                     //新添加的
                     $.post(url(methods.cancelCoupon), {

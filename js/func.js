@@ -100,6 +100,7 @@ var methods = {
     'member_amount':'buy/memberAmount',
     'recharge_account':'buy/RechargeAccount',
     'save_card':'buy/saveCard',
+    'change_time':'buy/update_time',
     'getDetails': 'Consume/getDetails',
     'entry': 'Consume/entry',
     'isLeave': 'Consume/isLeave',

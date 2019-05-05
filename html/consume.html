@@ -18,6 +18,15 @@
                 <el-breadcrumb-item>消耗</el-breadcrumb-item>
             </el-breadcrumb>
         </p>
+        <div class="change_time">
+            <el-checkbox v-model="bulu" class="bulu_class" @change="bulu_state(bulu)">是否为补录</el-checkbox>
+            <el-date-picker v-if="bulu==true" prefix-icon="el-icon-date"
+                            value-format="yyyy-MM-dd HH:mm:ss"
+                            v-model="supp_time"
+                            type="datetime" @change="sub_o_time"
+                            placeholder="选择补录日期" :picker-options="pickerOptions0">
+            </el-date-picker>
+        </div>
         <el-collapse v-model="activeNames">
             <p class="cr linr_four">
                 会员余额：￥{{balance}}
@@ -313,6 +322,13 @@
     new Vue({
         el: '#app',
         data: {
+            pickerOptions0: {
+                disabledDate(time) {
+                    return time.getTime() > Date.now();
+                }
+            },
+            bulu:false,
+            supp_time: '',
             activeNames: ['2'],
             radio: '1',
             input: '',
@@ -348,6 +364,19 @@
             v_own_i_t_m:0,
         },
         methods: {
+            bulu_state(state){
+                if (state==false){
+                    this.supp_time='';
+                }
+            },
+            sub_o_time(){
+               /* console.log(this.supp_time)
+                $.post(url(methods.change_time),{zztime:this.supp_time},v=>{
+                    if(v.code == 1){
+                        success('订单时间修改成功')
+                    }
+                })*/
+            },
             check_number(t,v){
                 if(isNaN(v)){
                     error("只能输入数字");
@@ -438,7 +467,7 @@
                             'amount_items': this.items, 'mid': this.userId,
                             'arr': this.roomId, 's': arr, 'm': arr2, 'g': arr3, 'd': arr4,
                             'ka_m': arr5, 'ka_g': arr6, 'ka_d': arr7,
-                            'c_b': this.c_b == 1 ? 1 : 2, 'consume_card': this.c_b == 1 ? 0 : this.c_b,
+                            'c_b': this.c_b == 1 ? 1 : 2, 'consume_card': this.c_b == 1 ? 0 : this.c_b,'zztime':this.supp_time
                         })
                     }, v => {
                         if (v.code == 1) {

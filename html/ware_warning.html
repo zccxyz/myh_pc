@@ -27,10 +27,10 @@
                 <el-table-column
                         label="品项">
                     <template slot-scope="scope">
-                        <i ng-if="scope.row.cate==1">产品</i>
-                        <i ng-if="scope.row.cate==2">套盒</i>
-                        <i  ng-if="scope.row.cate==3">耗材</i>
-                        <i  ng-if="scope.row.cate==4">内衣</i>
+                        <i v-if="scope.row.cate==1">产品</i>
+                        <i v-if="scope.row.cate==2">套盒</i>
+                        <i  v-if="scope.row.cate==3">耗材</i>
+                        <i  v-if="scope.row.cate==4">内衣</i>
                     </template>
                 </el-table-column>
                 <el-table-column

@@ -51,7 +51,7 @@
         </div>
         <el-table border
                   ref="multipleTable"
-                  :data="list.filter(data => (!input || data.name.toLowerCase().includes(input.toLowerCase())) && data.type!='方案')"
+                  :data="list.filter(data => (!input ||(data.name==null?false:data.name.toLowerCase().includes(input.toLowerCase()))))"
                   tooltip-effect="dark"
                   style="width: 100%"
                   @selection-change="handleSelectionChange">
