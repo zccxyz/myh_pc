@@ -371,7 +371,7 @@
             },
             sub_o_time(){
                /* console.log(this.supp_time)
-                $.post(url(methods.change_time),{zztime:this.supp_time},v=>{
+                $.post(url(methods.change_time),{zz_time:this.supp_time},v=>{
                     if(v.code == 1){
                         success('订单时间修改成功')
                     }
@@ -467,7 +467,7 @@
                             'amount_items': this.items, 'mid': this.userId,
                             'arr': this.roomId, 's': arr, 'm': arr2, 'g': arr3, 'd': arr4,
                             'ka_m': arr5, 'ka_g': arr6, 'ka_d': arr7,
-                            'c_b': this.c_b == 1 ? 1 : 2, 'consume_card': this.c_b == 1 ? 0 : this.c_b,'zztime':this.supp_time
+                            'c_b': this.c_b == 1 ? 1 : 2, 'consume_card': this.c_b == 1 ? 0 : this.c_b,'zz_time':this.supp_time
                         })
                     }, v => {
                         if (v.code == 1) {
