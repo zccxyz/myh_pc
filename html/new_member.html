@@ -23,6 +23,11 @@
                       prefix-icon="el-icon-search"
                       v-model="input">
             </el-input>
+            <span style="line-height: 40px;">
+                共
+                <i style="margin: 0 10px;color: blue;font-weight: bold">{{all_total}}</i>位新客
+            </span>
+
             <el-button type="success" class="fr" @click="zt2 = true;get_ember();get_advister()">添加新客</el-button>
         </div>
         <el-table border
@@ -53,6 +58,10 @@
                     <i v-if="scope.row.vip_status==2">新客</i>
                     <i v-if="scope.row.vip_status==3">嘉宾</i>
                 </template>
+            </el-table-column>
+            <el-table-column
+                    prop="create_times"
+                    label="加入时间">
             </el-table-column>
             <el-table-column
                     :formatter="m_recomend"
@@ -305,6 +314,7 @@
     new Vue({
         el: '#app',
         data: {
+            all_total: '',
             input: '',
             radio: '',
             addDialogVisible: false,
@@ -678,7 +688,7 @@
                         //x['marital'] = x['marital'].toString()
                     }
                     this.arr = v.data.guests
-
+                    this.all_total=v.data.count
                 })
             },
             formatter2(r, c) {

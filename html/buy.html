@@ -844,7 +844,7 @@
                             'id': v.id,'name':v.name,'type':v.type,'spec':v.sum, 'sum': v.needNum
                         })
                 }
-                if(all==0){
+                if(this.total3==0){
                     this.$confirm('确定赠送?', '提示', {
                         confirmButtonText: '确定',
                         cancelButtonText: '取消',
@@ -865,7 +865,7 @@
                     }).catch(e => {
 
                     })
-                }else if(all>0){
+                }else if(this.total3>0){
                     $.post(url(methods.buyWear),{data: JSON.stringify(wear),type: 1 ,id: this.user_id}, v => {
                         if (v.code == 1) {
                             this.need3 = []
@@ -902,7 +902,7 @@
                     }
                 }
                 //type>0传1 =0传2
-                if(all==0){
+                if(this.total2==0){
                     this.$confirm('确定赠送?', '提示', {
                         confirmButtonText: '确定',
                         cancelButtonText: '取消',
@@ -923,7 +923,7 @@
                     }).catch(e => {
 
                     })
-                }else if(all>0) {
+                }else if(this.total2>0) {
                     $.post(url(methods.buyCard) + `&id=${this.user_id}`, {data: JSON.stringify(card),type: 1}, v => {
                         if (v.code == 1) {
                             this.need = []
@@ -960,7 +960,7 @@
                         }
                     }
                 }
-                if(all==0) {
+                if(this.total==0) {
                     this.$confirm('确定赠送?', '提示', {
                         confirmButtonText: '确定',
                         cancelButtonText: '取消',
@@ -984,7 +984,7 @@
                     }).catch(e => {
 
                     })
-                }else if(all>0) {
+                }else if(this.total>0) {
                     $.post(url(methods.buyItems) + `&id=${this.user_id}`, {
                         data: JSON.stringify(items),
                         type: 1
@@ -1024,7 +1024,7 @@
                         }
                     }
                 }
-                if(all==0){
+                if(this.total==0){
                     this.$confirm('确定赠送?', '提示', {
                         confirmButtonText: '确定',
                         cancelButtonText: '取消',
@@ -1045,7 +1045,7 @@
                     }).catch(e => {
 
                     })
-                }else if(all>0){
+                }else if(this.total>0){
                     $.post(url(methods.buyTh),{data: JSON.stringify(th),type: 1 ,id: this.user_id}, v => {
                         if (v.code == 1) {
                             this.need = []
@@ -1101,7 +1101,8 @@
                         }
                     }
                 }
-                if(all==0) {
+
+                if(this.total==0) {
                     this.$confirm('确定赠送?', '提示', {
                         confirmButtonText: '确定',
                         cancelButtonText: '取消',
@@ -1125,7 +1126,7 @@
                     }).catch(e => {
 
                     })
-                }else if(all>0){
+                }else if(this.total>0){
                     $.post(url(methods.buyGoods) + `&id=${this.user_id}`, {
                         data: JSON.stringify(goods),
                         type: 1,
@@ -1162,7 +1163,7 @@
                         }
                     }
                 }
-                if(all==0){
+                if(this.total==0){
                     this.$confirm('确定赠送?', '提示', {
                         confirmButtonText: '确定',
                         cancelButtonText: '取消',
@@ -1185,7 +1186,7 @@
                     }).catch(e => {
 
                     })
-                }else if(all>0){
+                }else if(this.total>0){
                     $.post(url(methods.buyPlan) + `&id=${this.user_id}`, {
                         data: JSON.stringify(goods),type:1
                     }, v => {

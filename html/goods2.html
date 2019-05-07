@@ -22,8 +22,8 @@
     </p>
     <template>
         <div class="cus_center">
-            <el-input style="float:left;" class="cus_seatch"
-                      placeholder="请输入内衣名称"
+            <el-input style="float:left;width: 300px" class="cus_seatch"
+                      placeholder="请输入内衣名称或内衣罩杯或尺码搜索"
                       prefix-icon="el-icon-search"
                       v-model="input">
             </el-input>
@@ -51,7 +51,7 @@
         </div>
         <el-table border
                   ref="multipleTable"
-                  :data="list.filter(data => (!input ||(data.name==null?false:data.name.toLowerCase().includes(input.toLowerCase()))))"
+                  :data="list.filter(data => (!input ||(data.name==null?false:data.name.toLowerCase().includes(input.toLowerCase()))||(data.size==null?false:(data.size.toLowerCase()==input.toLowerCase()?true:false))||(data.cup==null?false:(data.cup.toLowerCase()==input.toLowerCase()?true:false))))"
                   tooltip-effect="dark"
                   style="width: 100%"
                   @selection-change="handleSelectionChange">
@@ -254,8 +254,8 @@
                 <li>
                     <span class="list_left">类型</span>
                     <span class="list_right">
-                    <el-radio v-model="radio" label="1">胸衣</el-radio>
-                    <el-radio v-model="radio" label="2">其他</el-radio>
+                    <el-radio v-model="data.type" label="1">胸衣</el-radio>
+                    <el-radio v-model="data.type" label="2">其他</el-radio>
                 </span>
                 </li>
                 <li>
@@ -271,10 +271,16 @@
                       </el-select>
                 </span>
                 </li>
-                <li>
+                <li v-if="data.type==2">
                     <span class="list_left">尺码</span>
                     <span class="list_right">
                     <el-input placeholder="请输入商品尺码" v-model="data.size"></el-input>
+                </span>
+                </li>
+                <li v-if="data.type==1">
+                    <span class="list_left">罩杯</span>
+                    <span class="list_right">
+                    <el-input placeholder="请输入内衣罩杯" v-model="data.cup"></el-input>
                 </span>
                 </li>
 
@@ -387,10 +393,16 @@
                       </el-select>
                 </span>
                 </li>
-                <li>
+                <li v-if="now.type==2">
                     <span class="list_left">尺码</span>
                     <span class="list_right">
                     <el-input placeholder="请输入商品尺码" v-model="now.size"></el-input>
+                </span>
+                </li>
+                <li v-if="now.type==1">
+                    <span class="list_left">罩杯</span>
+                    <span class="list_right">
+                    <el-input placeholder="请输入内衣罩杯" v-model="now.cup"></el-input>
                 </span>
                 </li>
 
@@ -573,7 +585,7 @@
                 unit: '',
                 sum: '',
                 price: '',
-                type: '',
+                type:  '1',
             },
             zt2: false,
         },
@@ -587,12 +599,12 @@
                 let d = data
                 if(t=='add') {
                     if (this.data.name == '' || this.data.price == '') {
-                        return error('请输入名称和价格')
+                        return error('请输入名称或价格')
                     }
                     d = this.data
                 }else if(t=='modify'){
                     if (this.now.name == '' || this.now.price == '') {
-                        return error('请输入名称和价格')
+                        return error('请输入名称或价格')
                     }
                     d = this.now
                 }else{
@@ -620,6 +632,18 @@
                         this.getYf()
                         this.zt = false
                         this.zt2 = false
+                        this.data={
+                            sn: '',
+                            color: '',
+                            name: '',
+                            size: '',
+                            cup: '',
+                            unit: '',
+                            sum: '',
+                            price: '',
+                            type: '1',
+                        }
+                        this.now=null;
                         success('成功')
                     }else{
                         error(v.error)
