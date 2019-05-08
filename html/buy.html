@@ -307,15 +307,15 @@
 
             <el-tab-pane v-if="user.mode==1" label="内衣">
                 <div>
-                    <el-input style="margin:5px 0;" class="cus_seatch"
-                              placeholder="请输入商品名称"
+                    <el-input style="margin:5px 0;width: 350px" class="cus_seatch"
+                              placeholder="请输入内衣名称或编号或尺码或罩杯搜索"
                               prefix-icon="el-icon-search"
                               v-model="input">
                     </el-input>
                 </div>
                 <el-table border :max-height="max_ht"
                           ref="multipleTable"
-                          :data="yf.filter(data => (!input || data.name.toLowerCase().includes(input.toLowerCase())))"
+                          :data="yf.filter(data => (!input ||(data.name==null?false:data.name.toLowerCase().includes(input.toLowerCase()))||(data.size==null?false:(data.size.toLowerCase()==input.toLowerCase()?true:false))||(data.sn==null?false:data.sn.toLowerCase().includes(input.toLowerCase()))||(data.cup==null?false:(data.cup.toLowerCase()==input.toLowerCase()?true:false))))"
                           tooltip-effect="dark"
                           style="width: 100%">
                     <el-table-column
