@@ -538,10 +538,30 @@
                             <span class="list_right">
                                 <el-input v-model="re_money" type="number" placeholder="请输入充值金额"></el-input>
                             </span>
+                        </li>
                         <li>
                             <span class="list_left">赠送余额</span>
                             <span class="list_right">
                                 <el-input v-model="send_money" type="number" placeholder="请输入赠送余额"></el-input>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="list_left">支付方式</span>
+                            <span class="list_right">
+                                 <el-select v-model="ways" placeholder="请选择支付方式">
+                                    <el-option
+                                            v-for="item in options"
+                                            :key="item.value"
+                                            :label="item.label"
+                                            :value="item.value">
+                                    </el-option>
+                                  </el-select>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="list_left">赠送积分</span>
+                            <span class="list_right">
+                                <el-input v-model="integral" type="number" placeholder="请输入赠送积分"></el-input>
                             </span>
                         </li>
                     </ul>
@@ -611,6 +631,25 @@
                         <el-input v-model="card_money" type="number" placeholder="请输入充值金额"></el-input>
                     </span>
                 </li>
+                <li>
+                    <span class="list_left">支付方式</span>
+                    <span class="list_right">
+                                 <el-select v-model="ways" placeholder="请选择支付方式">
+                                    <el-option
+                                            v-for="item in options"
+                                            :key="item.value"
+                                            :label="item.label"
+                                            :value="item.value">
+                                    </el-option>
+                                  </el-select>
+                            </span>
+                </li>
+                <li>
+                    <span class="list_left">赠送积分</span>
+                    <span class="list_right">
+                                <el-input v-model="integral" type="number" placeholder="请输入赠送积分"></el-input>
+                            </span>
+                </li>
             </ul>
             <div class="change_time">
                 <el-checkbox v-model="bulu" class="bulu_class" @change="bulu_state(bulu)">是否为补录</el-checkbox>
@@ -673,6 +712,30 @@
     new Vue({
         el: '#app',
         data: {
+            options: [{
+                value: 1,
+                label: '现金'
+            }, {
+                value: 2,
+                label: '微信'
+            }, {
+                value: 3,
+                label: '支付宝'
+            }, {
+                value: 4,
+                label: '银行卡'
+            }, {
+                value: 5,
+                label: '美团'
+            }, {
+                value: 6,
+                label: '大众点评'
+            }, {
+                value: 7,
+                label: '收钱吧'
+            }],
+            ways:1,
+            integral:'',
             pickerOptions0: {
                 disabledDate(time) {
                     return time.getTime() > Date.now();
@@ -761,7 +824,7 @@
                 if(this.re_money==''&&this.send_money==''){
                     error("至少充值一项")
                 }else{
-                    $.post(url(methods.recharge_account)+`&id=${this.user_id}`,{money:this.re_money,send:this.send_money,time:this.supp_time},v=>{
+                    $.post(url(methods.recharge_account)+`&id=${this.user_id}`,{money:this.re_money,send:this.send_money,time:this.supp_time,integral:this.integral,type:this.ways},v=>{
                         if(v.code==1){
                             console.log(v)
                             success(v.Msg)
@@ -779,7 +842,7 @@
                 if(this.card_money==''){
                     error("请输入要充值的金额")
                 }else{
-                    $.post(url(methods.save_card)+`&id=${this.ca_id}`,{money:this.card_money,mid:this.user_id,time:this.supp_time},v=>{
+                    $.post(url(methods.save_card)+`&id=${this.ca_id}`,{money:this.card_money,mid:this.user_id,time:this.supp_time,integral:this.integral,type:this.ways},v=>{
                         if(v.code==1){
                             success(v.info)
                             this.card_re_dio=false;

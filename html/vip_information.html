@@ -902,8 +902,8 @@
                 <el-table-column
                         label="状态">
                     <template slot-scope="scope">
-                        <i ng-if="scope.row.status == 1">赠送</i>
-                        <i ng-if="scope.row.status == 2">使用</i>
+                        <i v-if="scope.row.status == 1">赠送</i>
+                        <i v-if="scope.row.status == 2">使用</i>
                     </template>
                 </el-table-column>
                 <el-table-column
