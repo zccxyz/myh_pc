@@ -530,7 +530,7 @@
                 $.get(url(methods.consume_repair_),{id:this.id}, v => {
                     if (v.code == 1) {
                         this.gw = v.res.g
-                        this.mrs = v.res.m
+                        this.mrs = v.res.sg
                         this.dz = v.res.d
                         this.detail = v.res.list
                     }
