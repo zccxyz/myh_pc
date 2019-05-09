@@ -91,6 +91,14 @@
                 </div>
             </el-tab-pane>
             <el-tab-pane label="消耗未提成业绩">
+                <div class="cus_center">
+                    <el-date-picker class="cus_seatch"
+                                    v-model="t"
+                                    value-format="yyyy-MM-dd"
+                                    type="date"
+                                    placeholder="选择日期查询">
+                    </el-date-picker>
+                </div>
                 <div class="basic_inf">
                     <el-table
                             :data="list"
