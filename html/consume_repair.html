@@ -57,10 +57,10 @@
                         <i class="el-icon-circle-close-outline close cursor" @click="del(1, i)"></i>
                     </li>
                 </ul>
-                <p class="p_div_b" style="margin-top: 15px">
+                <p class="p_div_b" style="margin-top: 15px" v-if="v_own_i_t_m>0">
                     消耗提成录入
                 </p>
-                <ul class="consume_list commission_list">
+                <ul class="consume_list commission_list" v-if="v_own_i_t_m>0">
                     <li>
                         美容师
                         <el-select v-model="two.id" placeholder="请选择" class="in_wid">
@@ -120,7 +120,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="fr">
+            <div class="fr" v-if="v_a_i_t_m>0">
                 <p class="p_div_b">
                     卡扣提成录入
                 </p>
@@ -236,6 +236,8 @@
             roomId: 0,
             c_b: '1', //1余额，2会员卡
             card: [],
+            v_a_i_t_m:0,
+            v_own_i_t_m:0,
         },
         methods: {
             check_number(t,v){
@@ -362,14 +364,17 @@
                 } else if (type == 2) {
                     if (this.myBox[i].check_num > 0) {
                         this.myBox[i].check_num--
+                        this.v_own_i_t_m-=parseFloat(this.myBox[i].price);
                     }
                 } else if (type == 3) {
                     if (this.myItems[i].check_num > 0) {
                         this.myItems[i].check_num--
+                        this.v_own_i_t_m-=parseFloat(this.myItems[i].price);
                     }
                 } else if (type == 4) {
                     if (this.myPlan[i].check_num > 0) {
                         this.myPlan[i].check_num--
+                        this.v_own_i_t_m-=parseFloat(this.myPlan[i].price);
                     }
                 }
             },
@@ -382,16 +387,19 @@
                         return
                     }
                     this.myBox[i].check_num++
+                    this.v_own_i_t_m+=parseFloat(this.myBox[i].price);
                 } else if (type == 3) {
                     if (this.myItems[i].current_num <= this.myItems[i].check_num) {
                         return
                     }
                     this.myItems[i].check_num++
+                    this.v_own_i_t_m+=parseFloat(this.myItems[i].price);
                 } else if (type == 4) {
                     if (this.myPlan[i].current_num <= this.myPlan[i].check_num) {
                         return
                     }
                     this.myPlan[i].check_num++
+                    this.v_own_i_t_m+=parseFloat(this.myPlan[i].price);
                 }
             },
             del(type, i) {
