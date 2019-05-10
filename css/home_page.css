@@ -3,6 +3,13 @@
   height:100%;
     background-color: #f7f7ff;
 }
+.el-footer {
+    height:50px;
+    background-color: #f6f6f6;
+    color: #333;
+    text-align: center;
+    line-height:50px;
+}
 .el-header {
     line-height:  88px;
   color:#fff;

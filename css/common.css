@@ -5,6 +5,9 @@
     height:100%;
     cursor: pointer;
 }
+a{
+    cursor: pointer;
+}
 .el-dialog{
     margin-top: 5% !important;
     max-height: 85%;
