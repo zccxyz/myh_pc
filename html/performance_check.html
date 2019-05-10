@@ -77,6 +77,14 @@
                         label="卡扣提成">
                 </el-table-column>
                 <el-table-column
+                        label="附加提成">
+                    <template slot-scope="scope">
+                        <el-button type="success" plain size="mini" @click="getDetail(scope.row.id, 5)">
+                            {{scope.row.other_raise}}
+                        </el-button>
+                    </template>
+                </el-table-column>
+                <el-table-column
                         label="总手工">
                     <template slot-scope="scope">
                         <el-button type="warning" size="mini" @click="getDetail(scope.row.id, 3)">
@@ -97,14 +105,14 @@
                 :visible.sync="state"
                 :before-close="close2"
                 center>
-            <el-date-picker style="margin-bottom: 10px"
+            <!--<el-date-picker style="margin-bottom: 10px"
                             v-model="time2"
                             type="datetimerange"
                             value-format="yyyy-MM-dd HH:mm:ss"
                             range-separator="至"
                             start-placeholder="开始日期"
                             end-placeholder="结束日期">
-            </el-date-picker>
+            </el-date-picker>-->
             <el-table border
                       :data="arr"
                       style="width: 100%">
@@ -149,14 +157,14 @@
                 :visible.sync="state2"
                 :before-close="close2"
                 center>
-            <el-date-picker style="margin-bottom: 10px"
+            <!--<el-date-picker style="margin-bottom: 10px"
                             v-model="time2"
                             type="datetimerange"
                             value-format="yyyy-MM-dd HH:mm:ss"
                             range-separator="至"
                             start-placeholder="开始日期"
                             end-placeholder="结束日期">
-            </el-date-picker>
+            </el-date-picker>-->
             <el-table border
                       :data="arr"
                       style="width: 100%">
@@ -201,14 +209,14 @@
                 :visible.sync="state3"
                 :before-close="close2"
                 center>
-            <el-date-picker style="margin-bottom: 10px"
-                            v-model="time2"
-                            type="datetimerange"
-                            value-format="yyyy-MM-dd HH:mm:ss"
-                            range-separator="至"
-                            start-placeholder="开始日期"
-                            end-placeholder="结束日期">
-            </el-date-picker>
+            <!-- <el-date-picker style="margin-bottom: 10px"
+                             v-model="time2"
+                             type="datetimerange"
+                             value-format="yyyy-MM-dd HH:mm:ss"
+                             range-separator="至"
+                             start-placeholder="开始日期"
+                             end-placeholder="结束日期">
+             </el-date-picker>-->
             <el-table border
                       :data="arr"
                       style="width: 100%">
@@ -252,14 +260,14 @@
                 :visible.sync="state4"
                 :before-close="close2"
                 center>
-            <el-date-picker style="margin-bottom: 10px"
-                            v-model="time2"
-                            type="datetimerange"
-                            value-format="yyyy-MM-dd HH:mm:ss"
-                            range-separator="至"
-                            start-placeholder="开始日期"
-                            end-placeholder="结束日期">
-            </el-date-picker>
+            <!-- <el-date-picker style="margin-bottom: 10px"
+                             v-model="time2"
+                             type="datetimerange"
+                             value-format="yyyy-MM-dd HH:mm:ss"
+                             range-separator="至"
+                             start-placeholder="开始日期"
+                             end-placeholder="结束日期">
+             </el-date-picker>-->
             <el-table border
                       :data="arr"
                       style="width: 100%">
@@ -302,6 +310,44 @@
                 </el-table-column>
             </el-table>
         </el-dialog>
+        <!--员工附加提成详情  5-->
+        <el-dialog
+                title="员工附加提成详情"
+                :visible.sync="state5"
+                :before-close="close2"
+                center>
+            <!-- <el-date-picker style="margin-bottom: 10px"
+                             v-model="time2"
+                             type="datetimerange"
+                             value-format="yyyy-MM-dd HH:mm:ss"
+                             range-separator="至"
+                             start-placeholder="开始日期"
+                             end-placeholder="结束日期">
+             </el-date-picker>-->
+            <el-table border
+                      :data="arr"
+                      style="width: 100%">
+                <el-table-column
+                        prop="v_name"
+                        label="客户">
+                </el-table-column>
+                <el-table-column
+                        prop="other_raise"
+                        label="附加提成">
+                </el-table-column>
+                <el-table-column
+                        prop="time"
+                        label="时间">
+                </el-table-column>
+                <el-table-column
+                        label="操作"
+                        show-overflow-tooltip>
+                    <template slot-scope="scope">
+                        <el-button type="danger" plain size="mini" @click="now=scope.row;type=5;zt=true;console()">修改</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </el-dialog>
         <el-dialog
                 title="修改业绩"
                 :before-close="close"
@@ -312,19 +358,30 @@
                 <li>
                     <span class="list_left" v-if="type == 1 || type == 2 || type == 4">总业绩</span>
                     <span class="list_left" v-if="type == 3">总手工</span>
+                    <span class="list_left" v-if="type == 5">会员</span>
                     <span class="list_right">
+                        <i v-if="type == 5">{{now.v_name}}</i>
                         <i v-if="type == 1">{{now.actual}}</i>
                         <i v-if="type == 2 || type == 4">{{now.total_price}}</i>
                     <el-input v-if="type == 3" v-model="now.total_fee" disabled></el-input>
                 </span>
                 </li>
+
                 <li>
                     <span class="list_left" v-if="type == 1 || type == 2 || type == 4">获得提成</span>
                     <span class="list_left" v-if="type == 3">获得手工</span>
+                    <span class="list_left" v-if="type == 5">附加提成</span>
                     <span class="list_right">
-                     <i v-if="type == 1 || type == 2 || type == 4">{{now.money}}</i>
+                        <i v-if="type == 5">{{now.other_raise}}</i>
+                        <i v-if="type == 1 || type == 2 || type == 4">{{now.money}}</i>
                     <el-input v-if="type == 3" v-model="now.fee" disabled></el-input>
                 </span>
+                </li>
+                <li v-if="type == 5">
+                    <span class="list_left">新附加提成：</span>
+                    <span class="list_right">
+                        <el-input v-model="other_money" placeholder="请输入新的附加提成" type="number"></el-input>
+                    </span>
                 </li>
                 <li v-if="type == 1 || type == 2 || type == 4">
                     <span class="list_left">修改业绩</span>
@@ -357,6 +414,7 @@
     new Vue({
         el: '#app',
         data: {
+            other_money: '',
             edit_per: false,
             zxf_dio: false,
             zxh_dio: false,
@@ -376,6 +434,7 @@
             state2: false,
             state3: false,
             state4: false,
+            state5: false,
             arr: [],
             money: '',
             new_raise_fee: '',
@@ -391,7 +450,7 @@
                 console.log(this.type)
             },
             edit() {
-                if (this.money == '') {
+                if (this.money == ''&&this.other_money== ''&&this.new_raise_fee== '') {
                     return error('请输入金额')
                 }
                 if (this.type == 1) {
@@ -416,7 +475,7 @@
                 }
                 $.post(url(methods.raiseDetailOperation), {
                     type: this.type,
-                    data: {new_raise_fee: this.new_raise_fee, money: this.money},
+                    data: {new_raise_fee: this.new_raise_fee, money: this.money,other_money:this.other_money},
                     id: this.now.id
                 }, v => {
                     if (v.code == 1) {
@@ -440,6 +499,8 @@
                     this.state3 = true
                 } else if (type == 4) {
                     this.state4 = true
+                }else if (type == 5) {
+                    this.state5 = true
                 }
                 $.post(url(methods.performanceFeiDetails), {
                     staff: id,
@@ -474,6 +535,7 @@
                 this.state2 = false
                 this.state3 = false
                 this.state4 = false
+                this.state5 = false
                 this.time2 = ''
             },
             getData() {
@@ -506,7 +568,7 @@
                 this.getData()
             },
             time2() {
-                if(this.state || this.state2 || this.state3||this.state4){
+                if(this.state || this.state2 || this.state3||this.state4||this.state5){
                     this.getDetail(this.userId, this.type)
                 }
             }
