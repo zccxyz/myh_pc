@@ -516,7 +516,7 @@
                 })
             },
             formatter(r, c) {
-                return (r.fee_total +r.card_total_raise +r.xf_total_raise + r.xh_total_raise).toFixed(2)
+                return (r.fee_total +r.card_total_raise +r.xf_total_raise + r.xh_total_raise+r.other_raise).toFixed(2)
             },
             formatter2(r, c) {
                 if (r.raise_type == 1) {
