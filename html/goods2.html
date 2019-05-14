@@ -25,7 +25,7 @@
             <el-input style="float:left;width: 350px" class="cus_seatch"
                       placeholder="请输入内衣名称或内衣罩杯或尺码或编号搜索"
                       prefix-icon="el-icon-search"
-                      v-model="input">
+                      v-model="input" @keyup.native="get_search()">
             </el-input>
             <el-upload
                     style="float: left"
@@ -49,9 +49,10 @@
             <!--addPlan = true-->
             <!--<el-button type="warning" class="fr" @click="scan_Dio=true">扫码录入</el-button>-->
         </div>
-        <el-table border
+        <!--.filter(data => (!input ||(data.name==null?false:data.name.toLowerCase().includes(input.toLowerCase()))||(data.size==null?false:(data.size.toLowerCase()==input.toLowerCase()?true:false))||(data.sn==null?false:data.sn.toLowerCase().includes(input.toLowerCase()))||(data.cup==null?false:(data.cup.toLowerCase()==input.toLowerCase()?true:false))))-->
+        <el-table border :max-height="max_ht"
                   ref="multipleTable"
-                  :data="list.filter(data => (!input ||(data.name==null?false:data.name.toLowerCase().includes(input.toLowerCase()))||(data.size==null?false:(data.size.toLowerCase()==input.toLowerCase()?true:false))||(data.sn==null?false:data.sn.toLowerCase().includes(input.toLowerCase()))||(data.cup==null?false:(data.cup.toLowerCase()==input.toLowerCase()?true:false))))"
+                  :data="list"
                   tooltip-effect="dark"
                   style="width: 100%"
                   @selection-change="handleSelectionChange">
@@ -96,22 +97,6 @@
                     prop="sum"
                     label="库存">
             </el-table-column>
-            <!--<el-table-column
-                    prop="beforehand_num"
-                    label="预售">
-            </el-table-column>-->
-            <!--<el-table-column
-                    prop="fre"
-                    label="次数">
-            </el-table-column>
-            <el-table-column
-                    prop="fee"
-                    label="手工">
-            </el-table-column>
-            <el-table-column
-                    prop="give"
-                    label="赠送">
-            </el-table-column>-->
             <el-table-column
                     label="操作"
                     fixed="right"
@@ -130,6 +115,16 @@
                 </template>
             </el-table-column>
         </el-table>
+        <div v-if="this.total>20" style="background: #fff;text-align: center;padding: 10px 0">
+            <el-pagination  background
+                            @current-change="handleCurrentChange"
+                            :current-page="currentPage"
+                            :page-size="20"
+                            layout="total, prev, pager, next, jumper"
+                            :total="total" :pager-count="8"
+                            @prev-click="prev_click" @next-click="next_click">
+            </el-pagination>
+        </div>
 
         <!--<el-dialog
                    title="编辑商品"
@@ -511,6 +506,14 @@
     new Vue({
         el: '#app',
         data: {
+            search_list:'',
+            currentPage:1,
+            page:1,
+            page_count:'',
+            total: 0,
+            all_list: '',
+            count: '',
+            max_ht:0,
             scan_type:'1',
             scan_Dio:false,
             unit_options: [{
@@ -589,7 +592,21 @@
             },
             zt2: false,
         },
+        watch:{
+            input(v){
+                if(v==''){
+                    this.all_list=this.search_list
+                    this.pages_fun()
+                }else{
+                    this.get_search()
+                }
+            }
+        },
         methods: {
+            height(){
+                var height=window.innerHeight;
+                this.max_ht=window.innerHeight-172;
+            },
             go_scan(t){
                 console.log(t)
                 localStorage.setItem('px', t);
@@ -673,142 +690,12 @@
                 });return*/
                 window.open(url(methods.exportGoods))
             },
-            del(type = 1, v = '') {
-                if (type == 2) {
-                    this.multipleSelection.push(v)
-                }
-                if (this.multipleSelection.length == 0) {
-                    error('请选择需要删除的商品')
-                    return
-                }
-                this.$confirm('确定删除?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    $.post(url(methods.del), {'data': JSON.stringify(this.multipleSelection)}, v => {
-                        if (v.code == 0) {
-                            success('删除成功')
-                            this.multipleSelection = []
-                            this.getGoods()
-                        } else {
-                            error(v.msg)
-                        }
-                    })
-                }).catch(e => {
-
-                })
-            },
-            addAll() {
-                if (this.type != 1) {
-                    if (this.type == 3) {
-                        if (this.name == '' || this.price == '' || this.fre == '' ||
-                            this.fee == '') {
-                            error('请填完以上信息')
-                            return
-                        }
-                        if (this.is_bind == 1) {
-                            if (this.spec_id == '') {
-                                return error('请选择耗材')
-                            }
-                        }
-                    } else {
-                        if (this.name == '' || this.price == '' || this.stock == '' || this.fre == '' ||
-                            this.fee == '') {
-                            error('请填完以上信息')
-                            return
-                        }
-                    }
-                } else {
-                    if (this.name == '' || this.price == '' || this.stock == '') {
-                        error('请填完以上信息')
-                        return
-                    }
-                }
-
-                if (this.cid == '') {
-                    error('请选择分类')
-                    return
-                }
-                $.post(url(methods.addAll), {'data': JSON.stringify(this.sj)}, v => {
-                    let rs = verify(v)
-                    if (rs != false) {
-                        success('添加成功')
-                        this.sj = {
-                            type: '1', //产品，套盒，项目
-                            name: '',
-                            price: '',
-                            stock: '',
-                            fre: '',
-                            fee: '',
-                            cid: '',
-                            is_bind: '2',
-                            spec_id: '',
-                        }
-                        this.zt = false
-                        this.getGoods()
-                    }
-                })
-            },
-            editAll() {
-                if (this.name == '' || this.price == '' || this.stock == '' || this.fre == '' ||
-                    this.fee == '') {
-                    error('请填完以上信息')
-                    return
-                }
-                $.post(url(methods.editAll), {'data': JSON.stringify(this.now)}, v => {
-                    if (v['code'] == 0) {
-                        success('修改成功')
-                        this.centerDialogVisible = false
-                        this.getGoods()
-                    } else {
-                        error(v.msg)
-                    }
-                    /*let rs = verify(v)
-                    if (rs != false) {
-                        success('修改成功')
-                        this.centerDialogVisible = false
-                        this.getGoods()
-                    }*/
-                })
-            },
-            getClassify() {
-                $.post(url(methods.getClassify), v => {
-                    let rs = verify(v)
-                    if (rs != false) {
-                        this.classify = rs
-                    }
-                })
-            },
             edit(v) {
                 this.now = v
                 this.zt2 = true
             },
-            toggleSelection(rows) {
-                if (rows) {
-                    rows.forEach(row => {
-                        this.$refs.multipleTable.toggleRowSelection(row);
-                    });
-                } else {
-                    this.$refs.multipleTable.clearSelection();
-                }
-            },
             handleSelectionChange(val) {
                 this.multipleSelection = val;
-            },
-            handleEdit(index, row) {
-                console.log(index, row);
-            },
-            handleDelete(index, row) {
-                console.log(index, row);
-            },
-            getGoods() {
-                $.post(url(methods.getAllGoods), v => {
-                    let rs = verify(v)
-                    if (rs != false) {
-                        this.list = rs
-                    }
-                })
             },
             ok(v, file, fileList) {
                 if (v.code == 0) {
@@ -826,18 +713,67 @@
                     return false
                 }
             },
-            getCate() {
-                $.get(url(methods.getCate), v => {
-                    this.cate = v.res.list
-                })
-            },
             getYf() {
                 $.get(url(methods.getUnderwear), v => {
                     for (let x of v.res) {
                         x['type'] = x['type'].toString()
                     }
-                    this.list = v.res
+                    this.total = v.res.length;
+                    this.search_list = v.res;
+                    this.all_list = v.res;
+                    this.list=[];
+                    this.pages_fun()
                 })
+            },
+            pages_fun(){
+                this.list=[];
+                let m;
+                if(this.total<this.page*20){
+                    m=this.total
+                }else{
+                    m=this.page*20
+                }
+                for(var i=(this.page-1)*20;i<m;i++){
+                    this.list.push(this.all_list[i])
+                }
+            },
+            get_search(){
+                if(this.input!=''){
+                    this.list=[];
+                    this.all_list=[];
+                    this.page=1;
+                    for(let v of this.search_list) {
+                        if((v.name!=null&&v.name.indexOf(this.input) != -1)||(v.sn!=null&&v.sn.indexOf(this.input) != -1)||(v.size!=null&&v.size.toLowerCase()==this.input.toLowerCase())||(v.cup!=null&&v.cup.toLowerCase()==this.input.toLowerCase())){
+                            this.all_list.push(v);
+                        }
+                    }
+                    this.total=this.all_list.length;
+                    if(this.total>21){
+                        this.pages_fun()
+                    }else{
+                        this.list=this.all_list
+                    }
+                }else{
+                    this.all_list=this.search_list
+                    this.total =this.all_list.length;
+                    this.pages_fun()
+                }
+            },
+            handleCurrentChange(val) {
+                this.page=val;
+                this.pages_fun()
+            },
+            next_click(val){
+                if(val<this.page_count){
+                    this.page++;
+                    this.pages_fun()
+                }
+            },
+            prev_click(val){
+                if(val<2){
+                    this.page--;
+                    this.pages_fun()
+                }
             },
             formatter(r) {
                 if(r.type==1){
@@ -853,8 +789,8 @@
                 that = this;
                 this.getYf()
                 loginState()
-                // this.r = url(methods.upload) + '&type=2'
                 this.r = url(methods.upload) + '&type=3'
+                this.height()
             })
         }
     })

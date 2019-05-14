@@ -22,7 +22,7 @@
             <el-input style="float:left;" class="cus_seatch"
                       placeholder="请输入商品名称"
                       prefix-icon="el-icon-search"
-                      v-model="input">
+                      v-model="input" @keyup.native="get_search()">
             </el-input>
             <el-upload
                     style="float: left"
@@ -46,9 +46,10 @@
             <!--addPlan = true-->
             <!--<el-button type="success" class="fr">批量新增</el-button>-->
         </div>
+        <!--.filter(data => (!input || data.name.toLowerCase().includes(input.toLowerCase())) && data.type!='方案')-->
         <el-table border :max-height="max_ht"
                   ref="multipleTable"
-                  :data="list.filter(data => (!input || data.name.toLowerCase().includes(input.toLowerCase())) && data.type!='方案')"
+                  :data="list"
                   tooltip-effect="dark"
                   style="width: 100%"
                   @selection-change="handleSelectionChange">
@@ -116,7 +117,16 @@
                 </template>
             </el-table-column>
         </el-table>
-
+        <div v-if="this.total>20" style="background: #fff;text-align: center;padding: 10px 0">
+            <el-pagination  background
+                            @current-change="handleCurrentChange"
+                            :current-page="currentPage"
+                            :page-size="20"
+                            layout="total, prev, pager, next, jumper"
+                            :total="total" :pager-count="8"
+                            @prev-click="prev_click" @next-click="next_click">
+            </el-pagination>
+        </div>
         <el-dialog v-if="now != null"
                    title="编辑商品"
                    :visible.sync="centerDialogVisible"
@@ -286,30 +296,21 @@
     new Vue({
         el: '#app',
         data: {
+            search_list:'',
+            currentPage:1,
+            page:1,
+            page_count:'',
+            total: 0,
+            all_list: '',
+            count: '',
+            list: [],
             max_ht:0,
             input: '',
             radio: '',
             centerDialogVisible: false,
             addPlan: false,
             good_list: false,
-            tableData3: [{
-                px: '产品',
-                class: '面部',
-                name: '睡眠面膜',
-                price: '231',
-                fre: '',
-                amout: ''
-            }, {
-                px: '套盒',
-                class: '身体',
-                name: '肩颈套',
-                price: '2310',
-                fre: 12,
-                amout: 5
-            }],
             multipleSelection: [],
-
-            list: [],
             r: '',
             fileList: [],
             now: null,
@@ -329,10 +330,82 @@
                 additional_price: '',
             },
         },
+        watch:{
+            input(v){
+                if(v==''){
+                    this.all_list=this.search_list
+                    this.pages_fun()
+                }else{
+                    this.get_search()
+                }
+            }
+        },
         methods: {
+            getGoods() {
+                $.post(url(methods.getAllGoods), v => {
+                    let rs = verify(v)
+                    if (rs != false) {
+                        this.total = rs.length;
+                        this.search_list = rs;
+                        this.all_list = rs;
+                        this.list=[];
+                        this.pages_fun()
+                    }
+                })
+            },
             height(){
                 var height=window.innerHeight;
-                this.max_ht=window.innerHeight-107;
+                this.max_ht=window.innerHeight-167;
+            },
+            pages_fun(){
+                this.list=[];
+                let m;
+                if(this.total<this.page*20){
+                    m=this.total
+                }else{
+                    m=this.page*20
+                }
+                for(var i=(this.page-1)*20;i<m;i++){
+                    this.list.push(this.all_list[i])
+                }
+            },
+            get_search(){
+                if(this.input!=''){
+                    this.list=[];
+                    this.all_list=[];
+                    this.page=1;
+                    for(let v of this.search_list) {
+                        if(v.name!=null&&v.name.indexOf(this.input) != -1){
+                            this.all_list.push(v);
+                        }
+                    }
+                    this.total=this.all_list.length;
+                    if(this.total>21){
+                        this.pages_fun()
+                    }else{
+                        this.list=this.all_list
+                    }
+                }else{
+                    this.all_list=this.search_list
+                    this.total =this.all_list.length;
+                    this.pages_fun()
+                }
+            },
+            handleCurrentChange(val) {
+                this.page=val;
+                this.pages_fun()
+            },
+            next_click(val){
+                if(val<this.page_count){
+                    this.page++;
+                    this.pages_fun()
+                }
+            },
+            prev_click(val){
+                if(val<2){
+                    this.page--;
+                    this.pages_fun()
+                }
             },
             exportData() {
                 /*$.post(url(methods.exportGoods), v=>{
@@ -522,14 +595,7 @@
             handleDelete(index, row) {
                 console.log(index, row);
             },
-            getGoods() {
-                $.post(url(methods.getAllGoods), v => {
-                    let rs = verify(v)
-                    if (rs != false) {
-                        this.list = rs
-                    }
-                })
-            },
+
             ok(v, file, fileList) {
                 if (v.code == 0) {
                     success(v.msg)

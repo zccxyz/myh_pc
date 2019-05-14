@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="../css/index.css">
     <link rel="stylesheet" type="text/css" href="../css/common.css">
     <link rel="stylesheet" type="text/css" href="../css/customer.css">
+    <script src="../js/jquery.min.js"></script>
     <style>
         .choice_in {
             width: 60px;
@@ -43,9 +44,9 @@
             <el-input class="cus_seatch" style="float: left"
                       placeholder="请输入名字或电话"
                       prefix-icon="el-icon-search"
-                      v-model="input" @keyup.enter.native="get_search()">
+                      v-model="input" @keyup.native="get_search()">
             </el-input>
-            <el-button type="warning"  style="float: left" @click="get_search()">点击搜索</el-button>
+<!--            <el-button type="warning"  style="float: left" @click="get_search()">点击搜索</el-button>-->
             <!--<el-button @click="import2" type="success" id="file" native-type="submit">导入会员表</el-button>-->
             <el-upload
                     style="float: left"
@@ -100,6 +101,7 @@
         ((!ddNum || parseFloat(data.arrival_num)>=parseFloat(ddNum)) &&
         (!ddNum2 || parseFloat(data.arrival_num)<=parseFloat(ddNum2)))
         )-->
+
         <el-table border :max-height="max_ht"
                   ref="multipleTable"
                   :data="list"
@@ -124,6 +126,7 @@
                     <i v-if="scope.row.old_status==1" style="color:red">会员</i>
                     <i v-if="scope.row.old_status==2" style="color:green">新客</i>
                     <i v-if="scope.row.old_status==3" style="color:blue">嘉宾</i>
+                    <i v-if="scope.row.old_status==null">其他</i>
                 </template>
             </el-table-column>
             <el-table-column
@@ -195,7 +198,7 @@
                 </template>
             </el-table-column>
         </el-table>
-        <div style="background: #fff;text-align: center;padding: 10px 0">
+        <div v-if="this.total>20" style="background: #fff;text-align: center;padding: 10px 0">
             <el-pagination  background
                             @current-change="handleCurrentChange"
                             :current-page="currentPage"
@@ -714,10 +717,9 @@
 
 </body>
 </html>
-<script src="../js/jquery.min.js"></script>
 <script src="../js/vue.js"></script>
-<script src="../js/func.js"></script>
 <script src="../js/index.js"></script>
+<script src="../js/func.js"></script>
 <script>
     new Vue({
         el: '#app',
@@ -842,34 +844,59 @@
             goodsArr:'',
             card_name: '',
             count: '',
-            all_member: '',
-
+            search_list: '',
+            all_list:[],
+            page:1,
         },
         methods: {
             get_search(){
                 if(this.input!=''){
                     this.list=[];
-                    for(let v of this.all_member) {
+                    this.all_list=[];
+                    this.page=1;
+                    for(let v of this.search_list) {
                         if (v.name.indexOf(this.input) != -1 || v.tel.indexOf(this.input) != -1) {
-                            this.list.push(v);
+                            this.all_list.push(v);
                         }
                     }
+                    this.total=this.all_list.length
+                    if(this.total>21){
+                        this.pages_fun()
+                    }else{
+                        this.list=this.all_list
+                    }
+                }else{
+                    this.all_list=this.search_list
+                    this.total =this.all_list.length;
+                    this.pages_fun()
+                }
+            },
+            pages_fun(){
+                this.list=[];
+                let m;
+                if(this.total<this.page*20){
+                    m=this.total
+                }else{
+                    m=this.page*20
+                }
+                for(var i=(this.page-1)*20;i<m;i++){
+                    this.list.push(this.all_list[i])
                 }
             },
             handleCurrentChange(val) {
                 this.page=val;
-                this.getMember()
+                this.pages_fun()
             },
             next_click(val){
                 if(val<this.page_count){
                     this.page++;
-                    this.getMember()
+                    this.pages_fun()
                 }
             },
             prev_click(val){
                 if(val<2){
                     this.page--;
-                    this.getMember()
+                    this.pages_fun()
                 }
             },
             getQueryString(name) {
@@ -897,7 +924,7 @@
             },
             height(){
                 var height=window.innerHeight;
-                this.max_ht=window.innerHeight-222;
+                this.max_ht=window.innerHeight-172;
             },
             exportData() {
                 /*$.get(url(methods.exportMember), v=>{
@@ -1238,8 +1265,10 @@
                         if (rs != false) {
                             this.total = rs.count
                             this.page_count = rs.page_count
-                            this.all_member = rs.all_member
-                            this.list = rs.list
+                            this.search_list = rs.all_member
+                            this.all_list = rs.all_member
+                            this.list=[];
+                            this.pages_fun()
                         }
                     })
                 }else{
@@ -1497,6 +1526,14 @@
                 if (v != null) {
                     this.start = v[0]
                     this.end = v[1]
+                }
+            },
+            input(v){
+                if(v==''){
+                    this.all_list=this.search_list
+                    this.pages_fun()
+                }else{
+                    this.get_search()
                 }
             }
         },

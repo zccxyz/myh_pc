@@ -21,7 +21,7 @@
             <el-input class="cus_seatch" style="float: left"
                       placeholder="请输入内容"
                       prefix-icon="el-icon-search"
-                      v-model="input">
+                      v-model="input" @keyup.native="get_search()">
             </el-input>
             <span style="line-height: 40px;">
                 共
@@ -30,10 +30,11 @@
 
             <el-button type="success" class="fr" @click="zt2 = true;get_ember();get_advister()">添加新客</el-button>
         </div>
-        <el-table border
+      <!--  .filter(data => !input || data.name.toLowerCase().includes(input.toLowerCase()) ||
+        data.tel.toLowerCase().includes(input.toLowerCase()))-->
+        <el-table border  :max-height="max_ht"
                   ref="multipleTable"
-                  :data="arr.filter(data => !input || data.name.toLowerCase().includes(input.toLowerCase()) ||
-                  data.tel.toLowerCase().includes(input.toLowerCase()))"
+                  :data="list"
                   tooltip-effect="dark"
                   style="width: 100%">
             <!--<el-table-column
@@ -97,7 +98,16 @@
                 </template>
             </el-table-column>
         </el-table>
-
+        <div v-if="this.total>20" style="background: #fff;text-align: center;padding: 10px 0">
+            <el-pagination  background
+                            @current-change="handleCurrentChange"
+                            :current-page="currentPage"
+                            :page-size="20"
+                            layout="total, prev, pager, next, jumper"
+                            :total="total" :pager-count="8"
+                            @prev-click="prev_click" @next-click="next_click">
+            </el-pagination>
+        </div>
         <!--新增-->
         <el-dialog
                 title="添加新客"
@@ -314,6 +324,14 @@
     new Vue({
         el: '#app',
         data: {
+            search_list:'',
+            currentPage:1,
+            page:1,
+            page_count:'',
+            total: 0,
+            all_list: '',
+            count: '',
+            max_ht:0,
             all_total: '',
             input: '',
             radio: '',
@@ -341,8 +359,6 @@
                 tel: '15212645632'
             }],
             multipleSelection: [],
-
-            total: 0,
             list: [],
             fileList: [],
             r: '',
@@ -359,14 +375,91 @@
             now: '',
             zt: false,
             zt2: false,
-
-            arr: [],
             user2: {},
             pw: '',
             mem_list:'',
             adviser_list:''
         },
+        watch:{
+            input(v){
+                if(v==''){
+                    this.all_list=this.search_list
+                    this.pages_fun()
+                }else{
+                    this.get_search()
+                }
+            }
+        },
         methods: {
+            getData() {
+                $.get(url(methods.guest), v => {
+                    for (let x of v.data.guests) {
+                        x['sex'] = x['sex'].toString()
+                        x['bir_type'] = x['bir_type'].toString()
+                        //x['marital'] = x['marital'].toString()
+                    }
+                    this.search_list = v.data.guests
+                    this.all_list = v.data.guests
+                    this.all_total=v.data.count
+                    this.total=v.data.count
+                    this.list=[];
+                    this.pages_fun()
+                })
+            },
+            height(){
+                var height=window.innerHeight;
+                this.max_ht=window.innerHeight-172;
+            },
+            pages_fun(){
+                this.list=[];
+                let m;
+                if(this.total<this.page*20){
+                    m=this.total
+                }else{
+                    m=this.page*20
+                }
+                for(var i=(this.page-1)*20;i<m;i++){
+                    this.list.push(this.all_list[i])
+                }
+            },
+            get_search(){
+                if(this.input!=''){
+                    this.list=[];
+                    this.all_list=[];
+                    this.page=1;
+                    for(let v of this.search_list) {
+                        if((v.name!=null&&v.name.indexOf(this.input) != -1)||(v.tel!=null&&v.tel.indexOf(this.input) != -1)){
+                            this.all_list.push(v);
+                        }
+                    }
+                    this.total=this.all_list.length;
+                    if(this.total>21){
+                        this.pages_fun()
+                    }else{
+                        this.list=this.all_list
+                    }
+                }else{
+                    this.all_list=this.search_list
+                    this.total =this.all_list.length;
+                    this.pages_fun()
+                }
+            },
+            handleCurrentChange(val) {
+                this.page=val;
+                this.pages_fun()
+            },
+            next_click(val){
+                if(val<this.page_count){
+                    this.page++;
+                    this.pages_fun()
+                }
+            },
+            prev_click(val){
+                if(val<2){
+                    this.page--;
+                    this.pages_fun()
+                }
+            },
             get_advister(){
                 $.get(url(methods.get_advister),v=>{
                     this.adviser_list=v.res;
@@ -665,7 +758,6 @@
                 $.get(url(methods.get_member_list), v => {
                     let rs = verify(v)
                     if (rs != false) {
-                        this.total = rs.page_count
                         this.list = rs.all_member
                     }
                 })
@@ -680,17 +772,7 @@
                     return '农历'
                 }
             },
-            getData() {
-                $.get(url(methods.guest), v => {
-                    for (let x of v.data.guests) {
-                        x['sex'] = x['sex'].toString()
-                        x['bir_type'] = x['bir_type'].toString()
-                        //x['marital'] = x['marital'].toString()
-                    }
-                    this.arr = v.data.guests
-                    this.all_total=v.data.count
-                })
-            },
+
             formatter2(r, c) {
                 if (r.sex == 1) {
                     return '女'
@@ -737,6 +819,7 @@
                 this.r = url(methods.upload)
                 this.get_advister()
                 this.get_ember()
+                this.height()
                 loginState();
             })
         }

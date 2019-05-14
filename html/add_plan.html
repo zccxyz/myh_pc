@@ -196,7 +196,7 @@
                     <template slot-scope="scope">
                         <i class="el-icon-remove green_c" v-if="scope.row.number>0"></i>
                         <i v-if="scope.row.number>0">{{scope.row.number}}</i>
-                        <i class="el-icon-circle-plus green_c" @click="add(scope.$index, 1)"></i>
+                        <i class="el-icon-circle-plus green_c" @click="add(scope.row, 1)"></i>
                     </template>
                 </el-table-column>
             </el-table>
@@ -212,7 +212,7 @@
                       prefix-icon="el-icon-search"
                       v-model="input">
             </el-input>
-            <el-table border
+            <el-table border type="index"
                       :data="box.filter(data => !input || data.box_name.toLowerCase().includes(input.toLowerCase()))"
                       tooltip-effect="dark">
                 <!--<el-table-column
@@ -237,7 +237,7 @@
                     <template slot-scope="scope">
                         <i class="el-icon-remove green_c" v-if="scope.row.number>0"></i>
                         <i v-if="scope.row.number>0">{{scope.row.number}}</i>
-                        <i class="el-icon-circle-plus green_c" @click="add(scope.$index, 2)"></i>
+                        <i class="el-icon-circle-plus green_c" @click="add(scope.row, 2)"></i>
                     </template>
                 </el-table-column>
             </el-table>
@@ -278,7 +278,7 @@
                     <template slot-scope="scope">
                         <i class="el-icon-remove green_c" v-if="scope.row.number>0"></i>
                         <i v-if="scope.row.number>0">{{scope.row.number}}</i>
-                        <i class="el-icon-circle-plus green_c" @click="add(scope.$index, 3)"></i>
+                        <i class="el-icon-circle-plus green_c" @click="add(scope.row, 3)"></i>
                     </template>
                 </el-table-column>
             </el-table>
@@ -377,26 +377,26 @@
                 }
                 this.need.splice(i, 1)
             },
-            add(i, type) {
+            add(d, type) {
+                d.number++
                 if (type == 1) {
-                    this.items[i].number++
-                    let d = this.items[i]
+                    // let d = this.items[i]
                     this.need.unshift({
                         price: d.price, id: d.id, name: d.pro_name,
                         type: '项目', cost: d.cost, times: d.frequency,
                         dis: 10, state: '0', edit: false,
                     })
                 } else if (type == 2) {
-                    this.box[i].number++
-                    let d = this.box[i]
+                    // d.number++
+                    // let d = this.box[i]
                     this.need.unshift({
                         price: d.price, id: d.id, name: d.box_name,
                         type: '套盒', cost: d.cost, times: d.times,
                         dis: 10, state: '0', edit: false,
                     })
                 } else if (type == 3) {
-                    this.goods[i].number++
-                    let d = this.goods[i]
+                    // d.number++
+                    // let d = this.goods[i]
                     this.need.unshift({
                         price: d.price, id: d.id, name: d.goods_name,
                         type: '产品', cost: d.cost, times: d.stock,
