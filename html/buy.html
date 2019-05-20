@@ -305,7 +305,7 @@
                 </el-table>
             </el-tab-pane>
 
-            <el-tab-pane v-if="user.mode==1" label="内衣">
+            <el-tab-pane label="内衣">
                 <div>
                     <el-input style="margin:5px 0;width: 350px" class="cus_seatch"
                               placeholder="请输入内衣名称或编号或尺码或罩杯搜索"
@@ -1557,9 +1557,7 @@
                 that = this;
                 this.user_id = localStorage.getItem('user_id')
                 this.user = JSON.parse(localStorage.getItem('user'))
-                if (this.user.mode == 1) {
                     this.getYf()
-                }
                 this.getGoods()
                 this.getCard()
                 loginState()
