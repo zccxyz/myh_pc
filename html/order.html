@@ -50,7 +50,7 @@
             <el-input class="cus_seatch" style="float: left"
                       placeholder="请输入姓名/订单编号搜索"
                       prefix-icon="el-icon-search"
-                      v-model="input">
+                      v-model="input" @keyup.native="get_search()">
             </el-input>
             <el-date-picker style="width: 400px"
                     v-model="time"
@@ -61,10 +61,11 @@
                     end-placeholder="结束日期">
             </el-date-picker>
         </div>
+       <!-- .filter(data => (!input || data.name.toLowerCase().includes(input.toLowerCase()) ||
+        data.sn.toLowerCase().includes(input.toLowerCase())) && status==-1?true:data.status==status )-->
         <div class="basic_inf">
-            <el-table
-                    :data="list.filter(data => (!input || data.name.toLowerCase().includes(input.toLowerCase()) ||
-                    data.sn.toLowerCase().includes(input.toLowerCase())) && status==-1?true:data.status==status )"
+            <el-table :max-height="max_ht"
+                    :data="list"
                     style="width: 100%" fit="true">
                 <el-table-column
                         prop="sn"
@@ -168,6 +169,14 @@
     new Vue({
         el: '#app',
         data: {
+            search_list:'',
+            currentPage:1,
+            page:1,
+            page_count:'',
+            total: 0,
+            all_list: '',
+            count: '',
+            max_ht:0,
             order_detail: false,
             detail: [{
                 name: '补水面膜',
@@ -197,9 +206,71 @@
                     this.t_end=v[1];
                     this.getData(v[0], v[1])
                 }
+            },
+            input(v){
+                if(v==''){
+                    this.all_list=this.search_list
+                    this.pages_fun()
+                }else{
+                    this.get_search()
+                }
             }
         },
         methods: {
+            height(){
+                var height=window.innerHeight;
+                this.max_ht=window.innerHeight-172;
+            },
+            pages_fun(){
+                this.list=[];
+                let m;
+                if(this.total<this.page*20){
+                    m=this.total
+                }else{
+                    m=this.page*20
+                }
+                for(var i=(this.page-1)*20;i<m;i++){
+                    this.list.push(this.all_list[i])
+                }
+            },
+            get_search(){
+                if(this.input!=''){
+                    this.list=[];
+                    this.all_list=[];
+                    this.page=1;
+                    for(let v of this.search_list) {
+                        if((v.name!=null&&v.name.indexOf(this.input) != -1)||(v.sn!=null&&v.sn.indexOf(this.input) != -1)||(v.size!=null&&v.size.toLowerCase()==this.input.toLowerCase())||(v.cup!=null&&v.cup.toLowerCase()==this.input.toLowerCase())){
+                            this.all_list.push(v);
+                        }
+                    }
+                    this.total=this.all_list.length;
+                    if(this.total>21){
+                        this.pages_fun()
+                    }else{
+                        this.list=this.all_list
+                    }
+                }else{
+                    this.all_list=this.search_list
+                    this.total =this.all_list.length;
+                    this.pages_fun()
+                }
+            },
+            handleCurrentChange(val) {
+                this.page=val;
+                this.pages_fun()
+            },
+            next_click(val){
+                if(val<this.page_count){
+                    this.page++;
+                    this.pages_fun()
+                }
+            },
+            prev_click(val){
+                if(val<2){
+                    this.page--;
+                    this.pages_fun()
+                }
+            },
             bk(id) {
                 $.post(url(methods.checkArrears), {oid: id}, v=>{
                     if(v.code==1){
@@ -308,6 +379,7 @@
                 that = this;
                 loginState()
                 this.getData()
+                this.height()
             })
         }
     })
