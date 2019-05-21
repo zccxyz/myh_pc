@@ -48,9 +48,9 @@
         </el-tabs>
         <div class="cus_center">
             <el-input class="cus_seatch" style="float: left"
-                      placeholder="请输入姓名/订单编号搜索"
+                      placeholder="请输入会员姓名/订单编号搜索"
                       prefix-icon="el-icon-search"
-                      v-model="input">
+                      v-model="input" @keyup.native="get_search()">
             </el-input>
             <el-date-picker style="width: 400px"
                             v-model="time"
@@ -61,11 +61,12 @@
                             end-placeholder="结束日期">
             </el-date-picker>
         </div>
+        <!-- .filter(data => (!input || data.name.toLowerCase().includes(input.toLowerCase()) ||
+         data.sn.toLowerCase().includes(input.toLowerCase())) && status==-1?true:data.status==status )-->
         <div class="basic_inf">
-            <el-table
-                    :data="list.filter(data => (!input || data.name.toLowerCase().includes(input.toLowerCase()) ||
-                    data.sn.toLowerCase().includes(input.toLowerCase())) && status==-1?true:data.status==status )"
-                    style="width: 100%" fit="true">
+            <el-table :max-height="max_ht"
+                      :data="list"
+                      style="width: 100%" fit="true">
                 <el-table-column
                         prop="sn"
                         label="订单编号" width="175">
@@ -131,6 +132,17 @@
                     </template>
                 </el-table-column>
             </el-table>
+            <div v-if="this.total>10" style="background: #fff;text-align: center;padding: 10px 0">
+                <el-pagination  background
+                                @current-change="handleCurrentChange"
+                                :current-page="currentPage"
+                                :page-size="10"
+                                :page-sizes="[10]"
+                                layout="total,sizes, prev, pager, next, jumper"
+                                :total="total" :pager-count="8"
+                                @prev-click="prev_click" @next-click="next_click">
+                </el-pagination>
+            </div>
         </div>
         <!-- 订单详情 -->
         <el-dialog
@@ -168,6 +180,14 @@
     new Vue({
         el: '#app',
         data: {
+            search_list:'',
+            currentPage:1,
+            page:1,
+            page_count:'',
+            total: 0,
+            all_list: '',
+            count: '',
+            max_ht:0,
             order_detail: false,
             detail: [{
                 name: '补水面膜',
@@ -181,6 +201,12 @@
             input: '',
 
             list: [],
+            zero_l: [],
+            one_l: [],
+            two_l: [],
+            three_l: [],
+            four_l: [],
+            total_l: [],
             details: [],
             now: [],
             status: -1,
@@ -197,9 +223,93 @@
                     this.t_end=v[1];
                     this.getData(v[0], v[1])
                 }
+            },
+            input(v){
+                    this.get_search()
+            },
+            table(v){
+                this.get_search()
             }
         },
         methods: {
+            height(){
+                var height=window.innerHeight;
+                this.max_ht=window.innerHeight-222;
+            },
+            pages_fun(){
+                this.list=[];
+                let m;
+                if(this.total<this.page*10){
+                    m=this.total
+                }else{
+                    m=this.page*10
+                }
+                for(var i=(this.page-1)*10;i<m;i++){
+                    this.list.push(this.all_list[i])
+                }
+            },
+            get_search(){
+                this.page=1;
+                if(this.status==-1){
+                    this.search_list= this.total_l
+                }else if(this.status==0){
+                    this.search_list=this.zero_l
+                }else if(this.status==1){
+                    this.search_list=this.one_l
+                }else if(this.status==2){
+                    this.search_list=this.two_l
+                }else if(this.status==3){
+                    this.search_list=this.three_l
+                }else if(this.status==4){
+                    this.search_list=this.four_l
+                }
+                if(this.input!=''){
+                    this.all_list=[];
+                    console.log(this.status)
+                    for(let v of this.search_list) {
+                        if((v.name!=null&&v.name.indexOf(this.input) != -1)||(v.sn!=null&&v.sn.indexOf(this.input) != -1)){
+                            this.all_list.push(v);
+                        }
+                    }
+                }else{
+                    if(this.status==-1){
+                        this.all_list= this.total_l
+                    }else if(this.status==0){
+                        this.all_list=this.zero_l
+                    }else if(this.status==1){
+                        this.all_list=this.one_l
+                    }else if(this.status==2){
+                        this.all_list=this.two_l
+                    }else if(this.status==3){
+                        this.all_list=this.three_l
+                    }else if(this.status==4){
+                        this.all_list=this.four_l
+                    }
+                }
+                this.list=[];
+                this.total =this.all_list.length;
+                if(this.total>11){
+                    this.pages_fun()
+                }else{
+                    this.list=this.all_list
+                }
+            },
+            handleCurrentChange(val) {
+                this.page=val;
+                this.pages_fun()
+            },
+            next_click(val){
+                if(val<this.page_count){
+                    this.page++;
+                    this.pages_fun()
+                }
+            },
+            prev_click(val){
+                if(val<2){
+                    this.page--;
+                    this.pages_fun()
+                }
+            },
             bk(id) {
                 $.post(url(methods.checkArrears), {oid: id}, v=>{
                     if(v.code==1){
@@ -294,11 +404,39 @@
                 }else if(v.index == 5){
                     this.status = 4
                 }
+                this.page=1;
+                this.get_search()
             },
             getData(s='', e='') {
                 $.get(url(methods.getOrder) + `&type=all&start=${s}&end=${e}&status=day`, v => {
-                    this.list = v.res.list
+                    // this.list = v.res.list
+                    this.total = v.res.list.length;
+                    this.search_list =v.res.list
+                    this.all_list = v.res.list
+                    this.total_l = v.res.list
+                    this.list=[];
+                    this.page=1;
+                    this.zero_l=[];
+                    this.one_l=[];
+                    this.two_l=[];
+                    this.three_l=[];
+                    this.four_l=[];
+                    this.pages_fun()
                     this.details = v.res.orderDetail
+                    for(i of this.all_list){
+                        if(i.status==0){
+                            this.zero_l.push(i)
+                        }else if(i.status==1){
+                            this.one_l.push(i)
+                        }else if(i.status==2){
+                            this.two_l.push(i)
+                        }else if(i.status==3){
+                            this.three_l.push(i)
+                        }else if(i.status==4){
+                            this.four_l.push(i)
+                        }
+                    }
+                    this.get_search()
                 })
             }
         },
@@ -308,6 +446,7 @@
                 that = this;
                 loginState()
                 this.getData()
+                this.height()
             })
         }
     })
