@@ -277,7 +277,7 @@
                         </div>
                     </li>
                 </ul>
-                <div class="bottom_submit">
+                <div class="bottom_submit" v-if="fixdata.length!=0">
                     <el-button type="success" @click="fix_sure">提交</el-button>
                 </div>
             </el-tab-pane>
@@ -297,7 +297,6 @@
         el: '#app',
         data: {
             arrears_id:'',
-            gw: [],
             mrs: [],
             staff: [],
             one: {rate: '', id: ''},

@@ -75,10 +75,10 @@
                             prop="beforehand_num"
                             label="预售">
                     </el-table-column>
-                   <!-- <el-table-column
-                            prop="fre"
-                            label="次数">
-                    </el-table-column>-->
+                    <!-- <el-table-column
+                             prop="fre"
+                             label="次数">
+                     </el-table-column>-->
                     <el-table-column
                             label="加入购物车"
                             show-overflow-tooltip>
@@ -521,9 +521,9 @@
                 <li v-if="rech_type==1">
                     <div class="cus_center">
                         <el-button class="fr"
-                                size="mini"
-                                type="warning"
-                                @click="record_dio=true;get_record('balance')">充值记录
+                                   size="mini"
+                                   type="warning"
+                                   @click="record_dio=true;get_record('balance')">充值记录
                         </el-button>
                     </div>
                     <ul class="goods_edit">
@@ -613,9 +613,9 @@
                 :before-close="cancel_in">
             <div class="cus_center">
                 <el-button class="fr"
-                        size="mini"
-                        type="warning"
-                        @click="record_dio=true;get_record('card')">充值记录
+                           size="mini"
+                           type="warning"
+                           @click="record_dio=true;get_record('card')">充值记录
                 </el-button>
             </div>
             <ul class="goods_edit">
@@ -667,9 +667,9 @@
         </el-dialog>
         <!-- 卡项、账户充值记录 -->
         <el-dialog append-to-body
-                title="充值记录"
-                :visible.sync="record_dio"
-                center>
+                   title="充值记录"
+                   :visible.sync="record_dio"
+                   center>
             <el-table border
                       :data="record"
                       style="width: 100%">
@@ -811,14 +811,14 @@
                 })*/
             },
             get_m_blance(){
-                    $.get(url(methods.member_amount),{mid:this.user_id},v=>{
-                        this.acc_blance=v.res;
-                    })
+                $.get(url(methods.member_amount),{mid:this.user_id},v=>{
+                    this.acc_blance=v.res;
+                })
             },
             get_m_card(){
-                    $.get(url(methods.recharge_cardList),{id:this.user_id,type:'list'},v=>{
-                        this.card_lis=v.res
-                    })
+                $.get(url(methods.recharge_cardList),{id:this.user_id,type:'list'},v=>{
+                    this.card_lis=v.res
+                })
             },
             recha_blance(){
                 if(this.re_money==''&&this.send_money==''){
@@ -868,7 +868,7 @@
             },
             get_record(type){
                 $.post(url(methods.recharge_record),{mid:this.user_id,type:type},v=>{
-                        this.record=v.record;
+                    this.record=v.record;
                 })
             },
             getPrice(v){
@@ -903,9 +903,9 @@
                 for (let v of this.need3) {
                     all += parseFloat(v.one) * parseInt(v.needNum)
                     wear.push({
-                            'price': v.price2 , [`p_dis_t${v.id}`]: v.yh,
-                            'id': v.id,'name':v.name,'type':v.type,'spec':v.sum, 'sum': v.needNum
-                        })
+                        'price': v.price2 , [`p_dis_t${v.id}`]: v.yh,
+                        'id': v.id,'name':v.name,'type':v.type,'spec':v.sum, 'sum': v.needNum
+                    })
                 }
                 if(this.total3==0){
                     this.$confirm('确定赠送?', '提示', {
@@ -919,7 +919,7 @@
                                 for (let v of this.yf) {
                                     v.needNum = 0;
                                 }
-                                    success('赠送成功')
+                                success('赠送成功')
                                 setTimeout(() => location.href = './customer.html', 1000)
                             }else{
                                 error(v.error)
@@ -935,11 +935,11 @@
                             for (let v of this.yf) {
                                 v.needNum = 0;
                             }
-                                success('购买成功')
-                                localStorage.setItem('orderId', v.res.orderId)
-                                localStorage.setItem('type', 1)
-                                localStorage.setItem('arrearsRes', v.res.arrearsRes)
-                                setTimeout(() => location.href = './pay_page.html', 1000)
+                            success('购买成功')
+                            localStorage.setItem('orderId', v.res.orderId)
+                            localStorage.setItem('type', 1)
+                            localStorage.setItem('arrearsRes', v.res.arrearsRes)
+                            setTimeout(() => location.href = './pay_page.html', 1000)
                         }else{
                             error(v.error)
                         }
@@ -1232,20 +1232,20 @@
                         cancelButtonText: '取消',
                         type: 'warning'
                     }).then(() => {
-                $.post(url(methods.buyPlan) + `&id=${this.user_id}`, {
-                    data: JSON.stringify(goods),type:2
-                }, v => {
-                    if (v.code == 1) {
-                        this.need = []
-                        for (let v of this.list) {
-                            v.needNum = 0;
-                        }
-                        success('赠送成功')
-                        setTimeout(() => location.href = './customer.html', 1000)
-                    } else {
-                        error(v.error)
-                    }
-                })
+                        $.post(url(methods.buyPlan) + `&id=${this.user_id}`, {
+                            data: JSON.stringify(goods),type:2
+                        }, v => {
+                            if (v.code == 1) {
+                                this.need = []
+                                for (let v of this.list) {
+                                    v.needNum = 0;
+                                }
+                                success('赠送成功')
+                                setTimeout(() => location.href = './customer.html', 1000)
+                            } else {
+                                error(v.error)
+                            }
+                        })
                     }).catch(e => {
 
                     })
@@ -1557,7 +1557,7 @@
                 that = this;
                 this.user_id = localStorage.getItem('user_id')
                 this.user = JSON.parse(localStorage.getItem('user'))
-                    this.getYf()
+                this.getYf()
                 this.getGoods()
                 this.getCard()
                 loginState()
