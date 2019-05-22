@@ -194,6 +194,7 @@
             </div>
             </el-tab-pane>
             <el-tab-pane label="固定提成">
+                <p v-if="fixdata.length==0" style="color:red">补提暂时不能固定提成额</p>
                 <ul class="fix_ul">
                     <li v-for="(g,index) in fixdata">
                         <div class="">

@@ -20,363 +20,177 @@
     </p>
     <template>
 
-        <el-tabs type="card" @tab-click="handleClick" class="vip_infor"><!---->
+        <el-tabs type="card" @tab-click="handleClick" class="vip_infor">
             <el-tab-pane label="产品">
-                <div>
-                    <el-input style="margin:5px 0;" class="cus_seatch"
-                              placeholder="请输入商品名称"
-                              prefix-icon="el-icon-search"
-                              v-model="input">
-                    </el-input>
-                </div>
-                <el-table border :max-height="max_ht"
-                          ref="multipleTable"
-                          :data="list.filter(data => (!input || data.name.toLowerCase().includes(input.toLowerCase())) && data.type=='产品')"
-                          tooltip-effect="dark"
-                          style="width: 100%">
-                    <el-table-column
-                            label="品项"
-                            width="120"
-                            prop="type">
-                    </el-table-column>
-                    <el-table-column
-                            prop="class"
-                            label="类别"
-                            width="120">
-                    </el-table-column>
-                    <el-table-column
-                            prop="name"
-                            label="商品名称"
-                            min-width="210">
-                    </el-table-column>
 
-                    <!--<el-table-column
-                            prop=""
-                            label="编号">
-                    </el-table-column>
-                    <el-table-column
-                            prop=""
-                            label="颜色">
-                    </el-table-column>
-                    <el-table-column
-                            prop=""
-                            label="大小">
-                    </el-table-column>-->
-
-                    <el-table-column
-                            prop="price"
-                            label="零售价">
-                    </el-table-column>
-                    <el-table-column
-                            prop="stock"
-                            label="库存">
-                    </el-table-column>
-                    <el-table-column
-                            prop="beforehand_num"
-                            label="预售">
-                    </el-table-column>
-                    <!-- <el-table-column
-                             prop="fre"
-                             label="次数">
-                     </el-table-column>-->
-                    <el-table-column
-                            label="加入购物车"
-                            show-overflow-tooltip>
-                        <template slot-scope="scope">
-                            <i class="el-icon-remove blue_c" @click="remove(scope.row)" v-if="scope.row.needNum>0"></i>
-                            <i v-if="scope.row.needNum>0">{{scope.row.needNum}}</i>
-                            <i class="el-icon-circle-plus blue_c" @click="add(scope.row)"></i>
-                        </template>
-                    </el-table-column>
-                </el-table>
             </el-tab-pane>
             <el-tab-pane label="项目">
-                <div>
-                    <el-input style="margin:5px 0;" class="cus_seatch"
-                              placeholder="请输入商品名称"
-                              prefix-icon="el-icon-search"
-                              v-model="input">
-                    </el-input>
-                </div>
-                <el-table border :max-height="max_ht"
-                          ref="multipleTable"
-                          :data="list.filter(data => (!input || data.name.toLowerCase().includes(input.toLowerCase())) && data.type=='项目')"
-                          tooltip-effect="dark"
-                          style="width: 100%">
-                    <el-table-column
-                            label="品项"
-                            width="120"
-                            prop="type">
-                    </el-table-column>
-                    <el-table-column
-                            prop="class"
-                            label="类别"
-                            width="120">
-                    </el-table-column>
-                    <el-table-column
-                            prop="name"
-                            label="商品名称" min-width="210">
-                    </el-table-column>
-                    <el-table-column
-                            prop="price"
-                            label="零售价">
-                    </el-table-column>
-                    <el-table-column
-                            prop="stock"
-                            label="库存">
-                    </el-table-column>
-                    <el-table-column
-                            prop="beforehand_num"
-                            label="预售">
-                    </el-table-column>
-                    <el-table-column
-                            prop="fre"
-                            label="次数">
-                    </el-table-column>
-                    <el-table-column
-                            prop="free"
-                            label="赠送"
-                            :formatter="form">
-                    </el-table-column>
-                    <el-table-column
-                            label="加入购物车"
-                            show-overflow-tooltip>
-                        <template slot-scope="scope">
-                            <i class="el-icon-remove blue_c" @click="remove(scope.row)" v-if="scope.row.needNum>0"></i>
-                            <i v-if="scope.row.needNum>0">{{scope.row.needNum}}</i>
-                            <i class="el-icon-circle-plus blue_c" @click="add(scope.row)"></i>
-                        </template>
-                    </el-table-column>
-                </el-table>
             </el-tab-pane>
             <el-tab-pane label="套盒">
-                <div>
-                    <el-input style="margin:5px 0;" class="cus_seatch"
-                              placeholder="请输入商品名称"
-                              prefix-icon="el-icon-search"
-                              v-model="input">
-                    </el-input>
-                </div>
-                <el-table border :max-height="max_ht"
-                          ref="multipleTable"
-                          :data="list.filter(data => (!input || data.name.toLowerCase().includes(input.toLowerCase())) && data.type=='套盒')"
-                          tooltip-effect="dark"
-                          style="width: 100%">
-                    <el-table-column
-                            label="品项"
-                            width="120"
-                            prop="type">
-                    </el-table-column>
-                    <el-table-column
-                            prop="class"
-                            label="类别"
-                            width="120">
-                    </el-table-column>
-                    <el-table-column
-                            prop="name"
-                            label="商品名称" min-width="210">
-                    </el-table-column>
-                    <el-table-column
-                            prop="price"
-                            label="零售价">
-                    </el-table-column>
-                    <el-table-column
-                            prop="stock"
-                            label="库存">
-                    </el-table-column>
-                    <el-table-column
-                            prop="beforehand_num"
-                            label="预售">
-                    </el-table-column>
-                    <el-table-column
-                            prop="fre"
-                            label="次数">
-                    </el-table-column>
-                    <el-table-column
-                            prop="free"
-                            label="赠送"
-                            :formatter="form">
-                    </el-table-column>
-                    <el-table-column
-                            label="加入购物车"
-                            show-overflow-tooltip>
-                        <template slot-scope="scope">
-                            <i class="el-icon-remove blue_c" @click="remove(scope.row)" v-if="scope.row.needNum>0"></i>
-                            <i v-if="scope.row.needNum>0">{{scope.row.needNum}}</i>
-                            <i class="el-icon-circle-plus blue_c" @click="add(scope.row)"></i>
-                        </template>
-                    </el-table-column>
-                </el-table>
+
             </el-tab-pane>
             <el-tab-pane label="方案">
-                <div>
-                    <el-input style="margin:5px 0;" class="cus_seatch"
-                              placeholder="请输入商品名称"
-                              prefix-icon="el-icon-search"
-                              v-model="input">
-                    </el-input>
-                </div>
-                <el-table border :max-height="max_ht"
-                          ref="multipleTable"
-                          :data="list.filter(data => (!input || data.name.toLowerCase().includes(input.toLowerCase())) && data.type=='方案')"
-                          tooltip-effect="dark"
-                          style="width: 100%">
-                    <el-table-column
-                            prop="name"
-                            label="商品名称" min-width="210">
-                    </el-table-column>
-                    <el-table-column
-                            prop="sale"
-                            label="零售价">
-                    </el-table-column>
-                    <el-table-column
-                            prop="free"
-                            label="赠送"
-                            :formatter="form">
-                    </el-table-column>
-                    <el-table-column
-                            label="加入购物车"
-                            show-overflow-tooltip>
-                        <template slot-scope="scope">
-                            <i class="el-icon-remove blue_c" @click="remove(scope.row)" v-if="scope.row.needNum>0"></i>
-                            <i v-if="scope.row.needNum>0">{{scope.row.needNum}}</i>
-                            <i class="el-icon-circle-plus blue_c" @click="add(scope.row)"></i>
-                        </template>
-                    </el-table-column>
-                </el-table>
+
             </el-tab-pane>
             <el-tab-pane label="卡项">
-                <div>
-                    <el-input style="margin:5px 0;" class="cus_seatch"
-                              placeholder="请输入商品名称"
-                              prefix-icon="el-icon-search"
-                              v-model="input">
-                    </el-input>
-                </div>
-                <el-table border :max-height="max_ht"
-                          ref="multipleTable"
-                          :data="card.filter(data => (!input || data.card_name.toLowerCase().includes(input.toLowerCase())))"
-                          tooltip-effect="dark"
-                          style="width: 100%">
-                    <el-table-column
-                            label="类型"
-                            width="120"
-                            prop="card_type">
-                    </el-table-column>
-                    <el-table-column
-                            prop="card_name"
-                            label="名称"
-                            width="160">
-                    </el-table-column>
-                    <el-table-column
-                            prop="amount"
-                            label="余额">
-                    </el-table-column>
-                    <el-table-column
-                            prop="price"
-                            label="售价">
-                    </el-table-column>
-                    <!--<el-table-column
-                            prop="stock"
-                            label="库存">
-                    </el-table-column>
-                    <el-table-column
-                            prop="beforehand_num"
-                            label="预售">
-                    </el-table-column>
-                    <el-table-column
-                            prop="fre"
-                            label="次数">
-                    </el-table-column>-->
-                    <el-table-column
-                            prop="send"
-                            label="赠送"
-                            :formatter="form2">
-                    </el-table-column>
-                    <el-table-column
-                            label="加入购物车"
-                            show-overflow-tooltip>
-                        <template slot-scope="scope">
-                            <i class="el-icon-remove blue_c" @click="remove2(scope.row)" v-if="scope.row.needNum>0"></i>
-                            <i v-if="scope.row.needNum>0">{{scope.row.needNum}}</i>
-                            <i class="el-icon-circle-plus blue_c" @click="add2(scope.row)"></i>
-                        </template>
-                    </el-table-column>
-                </el-table>
+
             </el-tab-pane>
 
             <el-tab-pane label="内衣">
-                <div>
-                    <el-input style="margin:5px 0;width: 350px" class="cus_seatch"
-                              placeholder="请输入内衣名称或编号或尺码或罩杯搜索"
-                              prefix-icon="el-icon-search"
-                              v-model="input">
-                    </el-input>
-                </div>
+
+            </el-tab-pane>
+
+            <el-tab-pane>
+                <span slot="label" @click="recharge_dio=true;get_m_blance()"
+                      style="display: inline-block;width: 100%;height:100%;cursor: pointer">充值</span>
+            </el-tab-pane>
+        </el-tabs>
+        <div v-if="tabIndex!=6">
+            <div class="cus_center">
+                <el-input v-if="tabIndex!=5" style="margin:5px 0;" class="cus_seatch"
+                          placeholder="请输入商品名称"
+                          prefix-icon="el-icon-search"
+                          v-model="input" @keyup.native="get_search()">
+                </el-input>
+                <el-input v-if="tabIndex==5" style="margin:5px 0;width: 350px" class="cus_seatch"
+                          placeholder="请输入内衣名称或编号或尺码或罩杯搜索"
+                          prefix-icon="el-icon-search"
+                          v-model="input" @keyup.native="get_search()">
+                </el-input>
+            </div>
+            <!--                !input || data.name.toLowerCase().includes(input.toLowerCase())) &&-->
+            <div class="basic_inf">
                 <el-table border :max-height="max_ht"
                           ref="multipleTable"
-                          :data="yf.filter(data => (!input ||(data.name==null?false:data.name.toLowerCase().includes(input.toLowerCase()))||(data.size==null?false:(data.size.toLowerCase()==input.toLowerCase()?true:false))||(data.sn==null?false:data.sn.toLowerCase().includes(input.toLowerCase()))||(data.cup==null?false:(data.cup.toLowerCase()==input.toLowerCase()?true:false))))"
+                          :data="list"
                           tooltip-effect="dark"
                           style="width: 100%">
-                    <el-table-column
-                            label="编号"
-                            prop="sn" min-width="140">
+                    <el-table-column :key="Math.random()" v-if="tabIndex==0||tabIndex==1||tabIndex==2||tabIndex==3"
+                                     label="品项"
+                                     width="120"
+                                     prop="type">
                     </el-table-column>
-                    <el-table-column
-                            label="类型"
-                            prop="type">
+                    <el-table-column :key="Math.random()" v-if="tabIndex==5"
+                                     label="编号"
+                                     prop="sn" min-width="140">
                     </el-table-column>
-                    <el-table-column
-                            prop="name"
-                            label="名称"
-                            min-width="210">
+                    <el-table-column :key="Math.random()" v-if="tabIndex==5"
+                                     label="类型">
+                        <template slot-scope="scope">
+                            <i v-if="scope.row.type==1">胸衣</i>
+                            <i v-if="scope.row.type==2">其他</i>
+                        </template>
                     </el-table-column>
-                    <el-table-column
-                            prop="price"
-                            label="价格">
+                    <el-table-column :key="Math.random()" v-if="tabIndex==0||tabIndex==1||tabIndex==2"
+                                     prop="class"
+                                     label="类别"
+                                     width="120">
                     </el-table-column>
-                    <el-table-column
-                            prop="color"
-                            label="颜色">
+                    <el-table-column :key="Math.random()" v-if="tabIndex==4"
+                                     label="卡项类型"
+                                     width="120">
+                        <template slot-scope="scope">
+                            <i v-if="scope.row.card_type==3">全场折扣卡</i>
+                            <i v-if="scope.row.card_type==2">折扣储值卡</i>
+                            <i v-if="scope.row.card_type==1">储值卡</i>
+                        </template>
                     </el-table-column>
-                    <el-table-column
-                            prop="size"
-                            label="尺码">
+                    <el-table-column :key="Math.random()" v-if="tabIndex!=4"
+                                     prop="name"
+                                     label="商品名称"
+                                     min-width="210">
                     </el-table-column>
-                    <el-table-column
-                            prop="cup"
-                            label="罩杯">
+                    <el-table-column :key="Math.random()" v-if="tabIndex==4"
+                                     prop="card_name"
+                                     label="卡项名称"
+                                     min-width="210">
                     </el-table-column>
-                    <el-table-column
-                            prop="unit"
-                            label="单位">
+                    <el-table-column v-if="tabIndex==4"
+                                     prop="amount"
+                                     label="余额">
                     </el-table-column>
-                    <el-table-column
-                            prop="sum"
-                            label="数量">
+                    <el-table-column :key="Math.random()" v-if="tabIndex==5"
+                                     prop="color"
+                                     label="颜色">
+                    </el-table-column>
+                    <el-table-column :key="Math.random()" v-if="tabIndex==5"
+                                     prop="size"
+                                     label="尺码">
+                    </el-table-column>
+                    <el-table-column :key="Math.random()" v-if="tabIndex==5"
+                                     prop="cup"
+                                     label="罩杯">
+                    </el-table-column>
+                    <el-table-column :key="Math.random()" v-if="tabIndex==5"
+                                     prop="unit"
+                                     label="单位">
+                    </el-table-column>
+                    <el-table-column :key="Math.random()" v-if="tabIndex!=3"
+                                     prop="price"
+                                     label="零售价">
+                    </el-table-column>
+                    <el-table-column v-if="tabIndex==3"
+                                     prop="sale"
+                                     label="零售价">
+                    </el-table-column>
+                    <el-table-column :key="Math.random()" v-if="tabIndex==0||tabIndex==2"
+                                     prop="stock"
+                                     label="库存">
+                    </el-table-column>
+                    <el-table-column :key="Math.random()" v-if="tabIndex==5"
+                                     prop="sum"
+                                     label="数量">
+                    </el-table-column>
+                    <el-table-column :key="Math.random()" v-if="tabIndex==0||tabIndex==1||tabIndex==2"
+                                     prop="beforehand_num"
+                                     label="预售">
+                    </el-table-column>
+                    <el-table-column :key="Math.random()" v-if="tabIndex==1||tabIndex==2"
+                                     prop="fre"
+                                     label="次数">
+                    </el-table-column>
+                    <el-table-column :key="Math.random()" v-if="tabIndex==2||tabIndex==3||tabIndex==1"
+                                     label="可赠送">
+                        <template slot-scope="scope">
+                            <i v-if="scope.row.free==1">是</i>
+                            <i v-if="scope.row.free==2">否</i>
+                        </template>
+                    </el-table-column>
+                    <el-table-column :key="Math.random()" v-if="tabIndex==4"
+                                     label="可赠送">
+                        <template slot-scope="scope">
+                            <i v-if="scope.row.send==1">是</i>
+                            <i v-if="scope.row.send==2">否</i>
+                        </template>
                     </el-table-column>
                     <el-table-column
                             label="加入购物车"
                             show-overflow-tooltip>
                         <template slot-scope="scope">
-                            <i class="el-icon-remove blue_c" @click="remove3(scope.row)" v-if="scope.row.needNum>0"></i>
+                            <i class="el-icon-remove blue_c" @click="remove(scope.row)" v-if="scope.row.needNum>0"></i>
                             <i v-if="scope.row.needNum>0">{{scope.row.needNum}}</i>
-                            <i class="el-icon-circle-plus blue_c" @click="add3(scope.row)"></i>
+                            <i class="el-icon-circle-plus blue_c" @click="add(scope.row)"></i>
                         </template>
                     </el-table-column>
                 </el-table>
-            </el-tab-pane>
-            <el-tab-pane>
-                <span slot="label" @click="recharge_dio=true" style="display: inline-block;width: 100%;height:100%;cursor: pointer">充值</span>
-            </el-tab-pane>
-        </el-tabs>
-
-
+                <div v-if="this.total>10" style="background: #fff;text-align: center;padding: 10px 0">
+                    <el-pagination background
+                                   @current-change="handleCurrentChange"
+                                   :current-page="currentPage"
+                                   :page-size="10"
+                                   :page-sizes="[10]"
+                                   layout="total,sizes, prev, pager, next, jumper"
+                                   :total="total" :pager-count="8"
+                                   @prev-click="prev_click" @next-click="next_click">
+                    </el-pagination>
+                </div>
+            </div>
+        </div>
         <!--<div v-if="need.length>0" style="height: 250px;"></div>-->
         <div v-if="need.length>0" class="cart_div" style="z-index: 10">
             <p class="cart_title">
                 已选择（{{need.length}}）
-                <span class="fr mar_hun" @click="allRemove">
+                <span class="fr mar_hun cursor" @click="allRemove">
                 <img src="../images/delete.png">&nbsp;全部清空
                </span>
             </p>
@@ -396,7 +210,7 @@
                             <el-input v-if="v.yh==3" v-model="v.price2" placeholder="请输入价格"
                                       class="in_wid und_line" type="number" v-on:input="getPrice(v)"></el-input>
                             <el-radio v-model="v.yh" label="2">赠送</el-radio>
-                            <template v-if="v.type!='产品' && v.type!='方案'">
+                            <template v-if="v.type=='项目'|| v.type=='方案'">
                                 <i class="check_box">
                                     <!--<el-checkbox v-model="checked">修改次数</el-checkbox>-->
                                     修改次数
@@ -414,89 +228,9 @@
             </div>
             <div class="cart_total">
                  <span class="fl cr total_money">
-                     合计：{{total}}
+                     合计：{{total_price}}
                  </span>
                 <span class="green pay cursor" @click="sub">提交订单</span>
-            </div>
-        </div>
-
-        <div v-if="need2.length>0" class="cart_div" style="z-index: 10">
-            <p class="cart_title">
-                已选择（{{need2.length}}）
-                <span class="fr mar_hun" @click="allRemove">
-                <img src="../images/delete.png">&nbsp;全部清空
-               </span>
-            </p>
-            <div style="height: 200px;background: white;overflow: scroll;">
-                <ul class="consume_list" style="margin-bottom: 50px">
-                    <li v-for="v in need2" class="linr_four">
-                        <span class="g_name">
-                             {{v.card_name}}
-                        </span>
-                        <span class="p_wid">￥{{v.yh==2?0:v.one*v.needNum}}</span>
-                        <span class="span_bold">
-                            优惠方式
-                            <el-radio v-model="v.yh" label="1">打折</el-radio>
-                            <el-input v-if="v.yh==1" v-model="v.discount" v-on:input="getDis(v)" placeholder="请输入1到10的数字"
-                                      class="in_wid und_line"></el-input>
-                            <el-radio v-model="v.yh" label="3" @change="v.discount=10">改价</el-radio>
-                            <el-input v-if="v.yh==3" v-model="v.price2" v-on:input="getPrice(v)" placeholder="请输入价格"
-                                      class="in_wid und_line"></el-input>
-                            <el-radio v-model="v.yh" label="2">赠送</el-radio>
-                        </span>
-                        <span class="fr mar_hun">
-                             <i class="el-icon-remove blue_c" @click="remove2(v)"></i>
-                             <i>{{v.needNum}}</i>
-                             <i class="el-icon-circle-plus blue_c" @click="add2(v)"></i>
-                        </span>
-                    </li>
-                </ul>
-            </div>
-            <div class="cart_total">
-                 <span class="fl cr total_money">
-                     合计：{{total2}}
-                 </span>
-                <span class="red_box pay" @click="subCard" style="cursor: pointer">提交订单</span>
-            </div>
-        </div>
-
-        <div v-if="need3.length>0" class="cart_div" style="z-index: 10">
-            <p class="cart_title">
-                已选择（{{need3.length}}）
-                <span class="fr mar_hun cursor" @click="allRemove">
-                <img src="../images/delete.png">&nbsp;全部清空
-               </span>
-            </p>
-            <div style="height: 200px;background: white;overflow: scroll;">
-                <ul class="consume_list" style="margin-bottom: 50px">
-                    <li v-for="v in need3" class="linr_four">
-                        <span class="g_name">
-                             {{v.name}}
-                        </span>
-                        <span class="p_wid">￥{{v.yh==2?0:v.one*v.needNum}}</span>
-                        <span class="span_bold">
-                            优惠方式
-                            <el-radio v-model="v.yh" label="1">打折</el-radio>
-                            <el-input v-if="v.yh==1" v-on:input="getDis(v)" v-model="v.discount" placeholder="请输入1到10的数字"
-                                      class="in_wid und_line"></el-input>
-                            <el-radio v-model="v.yh" @change="v.discount=10" label="3">改价</el-radio>
-                            <el-input v-if="v.yh==3" v-model="v.price2" v-on:input="getPrice(v)" placeholder="请输入价格"
-                                      class="in_wid und_line"></el-input>
-                            <el-radio v-model="v.yh" label="2">赠送</el-radio>
-                        </span>
-                        <span class="fr mar_hun">
-                             <i class="el-icon-remove blue_c" @click="remove3(v)"></i>
-                             <i>{{v.needNum}}</i>
-                             <i class="el-icon-circle-plus blue_c" @click="add3(v)"></i>
-                        </span>
-                    </li>
-                </ul>
-            </div>
-            <div class="cart_total">
-                 <span class="fl cr total_money">
-                     合计：{{total3}}
-                 </span>
-                <span class="red_box pay" @click="buyClothes()" style="cursor: pointer">提交订单</span>
             </div>
         </div>
         <!--充值弹窗-->
@@ -571,7 +305,7 @@
                         <li v-if="card_lis.length==0">
                             您还没有购买卡项额！
                         </li>
-                        <li v-for="v in card_lis" >
+                        <li v-for="v in card_lis">
                             <div>
                                 <p>{{v.name}}</p>
                                 <p>余额:{{v.amount}}&#12288;卡类:
@@ -712,6 +446,13 @@
     new Vue({
         el: '#app',
         data: {
+            search_list: '',
+            currentPage: 1,
+            page: 1,
+            page_count: '',
+            total: 0,
+            all_list: '',
+            count: '',
             options: [{
                 value: 1,
                 label: '现金'
@@ -734,22 +475,22 @@
                 value: 7,
                 label: '收钱吧'
             }],
-            ways:1,
-            integral:'',
+            ways: 1,
+            integral: '',
             pickerOptions0: {
                 disabledDate(time) {
                     return time.getTime() > Date.now();
                 }
             },
-            bulu:false,
+            bulu: false,
             supp_time: '',
-            rech_type:'1',
-            recharge_dio:false,
-            record_dio:false,
-            card_re_dio:false,
-            re_money:'',
-            send_money:'',
-            card_money:'',
+            rech_type: '1',
+            recharge_dio: false,
+            record_dio: false,
+            card_re_dio: false,
+            re_money: '',
+            send_money: '',
+            card_money: '',
             index: 0,
             max_ht: 0,
             input: '',
@@ -790,19 +531,122 @@
             need3: [],
             nowData: '',
             p: null,
-            record:'',
-            acc_blance:'',
-            card_lis:'',
-            ca_id:'',
-            card_blance:'',
+            record: '',
+            acc_blance: '',
+            card_lis: '',
+            ca_id: '',
+            card_blance: '',
+            cp_list: [],
+            xm_list: [],
+            th_list: [],
+            fa_list: [],
+        },
+        watch: {
+            /*input(v){
+                    this.get_search()
+            }*/
         },
         methods: {
-            bulu_state(state){
-                if (state==false){
-                    this.supp_time='';
+            pages_fun() {
+                this.list = [];
+                let m;
+                if (this.total < this.page * 10) {
+                    m = this.total
+                } else {
+                    m = this.page * 10
+                }
+                for (var i = (this.page - 1) * 10; i < m; i++) {
+                    this.list.push(this.all_list[i])
                 }
             },
-            sub_o_time(){
+            get_search() {
+                this.page = 1;
+                if (this.tabIndex == 0) {
+                    this.search_list = this.cp_list
+                } else if (this.tabIndex == 1) {
+                    this.search_list = this.xm_list
+                } else if (this.tabIndex == 2) {
+                    this.search_list = this.th_list
+                } else if (this.tabIndex == 3) {
+                    this.search_list = this.fa_list
+                } else if (this.tabIndex == 4) {
+                    this.search_list = this.card
+                } else if (this.tabIndex == 5) {
+                    this.search_list = this.yf
+                }
+                if (this.input != '') {
+                    this.list = [];
+                    this.all_list = [];
+                    if (this.tabIndex == 0 || this.tabIndex == 1 || this.tabIndex == 2 || this.tabIndex == 3) {
+                        for (let v of this.search_list) {
+                            if (v.name != null && v.name.indexOf(this.input) != -1) {
+                                this.all_list.push(v);
+                            }
+                        }
+                    } else if (this.tabIndex == 4) {
+                        for (let v of this.search_list) {
+                            if (v.card_name != null && v.card_name.indexOf(this.input) != -1) {
+                                this.all_list.push(v);
+                            }
+                        }
+                    } else if (this.tabIndex == 5) {
+                        for (let v of this.search_list) {
+                            if ((v.name != null && v.name.indexOf(this.input) != -1) || (v.sn != null && v.sn.indexOf(this.input) != -1) || (v.size != null && v.size.toLowerCase() == this.input.toLowerCase()) || (v.cup != null && v.cup.toLowerCase() == this.input.toLowerCase())) {
+                                this.all_list.push(v);
+                            }
+                        }
+                    }
+                    this.total = this.all_list.length;
+                    if (this.total > 11) {
+                        this.pages_fun()
+                    } else {
+                        this.list = this.all_list
+                    }
+                } else {
+                    if (this.tabIndex == 0) {
+                        this.all_list = this.cp_list
+                    } else if (this.tabIndex == 1) {
+                        this.all_list = this.xm_list
+                    } else if (this.tabIndex == 2) {
+                        this.all_list = this.th_list
+                    } else if (this.tabIndex == 3) {
+                        this.all_list = this.fa_list
+                    } else if (this.tabIndex == 4) {
+                        this.all_list = this.card
+                    } else if (this.tabIndex == 5) {
+                        this.all_list = this.yf
+                    }
+                    this.list = [];
+                    this.total = this.all_list.length;
+                    if (this.total > 11) {
+                        this.pages_fun()
+                    } else {
+                        this.list = this.all_list
+                    }
+                }
+            },
+            handleCurrentChange(val) {
+                this.page = val;
+                this.pages_fun()
+            },
+            next_click(val) {
+                if (val < this.page_count) {
+                    this.page++;
+                    this.pages_fun()
+                }
+            },
+            prev_click(val) {
+                if (val < 2) {
+                    this.page--;
+                    this.pages_fun()
+                }
+            },
+            bulu_state(state) {
+                if (state == false) {
+                    this.supp_time = '';
+                }
+            },
+            sub_o_time() {
                 /*console.log(this.supp_time)
                 $.post(url(methods.change_time),{time:this.supp_time,oid:this.id},v=>{
                     if(v.code == 1){
@@ -810,26 +654,32 @@
                     }
                 })*/
             },
-            get_m_blance(){
-                $.get(url(methods.member_amount),{mid:this.user_id},v=>{
-                    this.acc_blance=v.res;
+            get_m_blance() {
+                $.get(url(methods.member_amount), {mid: this.user_id}, v => {
+                    this.acc_blance = v.res;
                 })
             },
-            get_m_card(){
-                $.get(url(methods.recharge_cardList),{id:this.user_id,type:'list'},v=>{
-                    this.card_lis=v.res
+            get_m_card() {
+                $.get(url(methods.recharge_cardList), {id: this.user_id, type: 'list'}, v => {
+                    this.card_lis = v.res
                 })
             },
-            recha_blance(){
-                if(this.re_money==''&&this.send_money==''){
+            recha_blance() {
+                if (this.re_money == '' && this.send_money == '') {
                     error("至少充值一项")
-                }else{
-                    $.post(url(methods.recharge_account)+`&id=${this.user_id}`,{money:this.re_money,send:this.send_money,time:this.supp_time,integral:this.integral,type:this.ways},v=>{
-                        if(v.code==1){
+                } else {
+                    $.post(url(methods.recharge_account) + `&id=${this.user_id}`, {
+                        money: this.re_money,
+                        send: this.send_money,
+                        time: this.supp_time,
+                        integral: this.integral,
+                        type: this.ways
+                    }, v => {
+                        if (v.code == 1) {
                             console.log(v)
                             success(v.Msg)
-                            this.re_money=''
-                            this.send_money='';
+                            this.re_money = ''
+                            this.send_money = '';
                             this.get_m_blance()
                             localStorage.setItem('orderId', v.res.oid)
                             localStorage.setItem('cost', v.res.res)
@@ -838,15 +688,21 @@
                     })
                 }
             },
-            card_recha(){
-                if(this.card_money==''){
+            card_recha() {
+                if (this.card_money == '') {
                     error("请输入要充值的金额")
-                }else{
-                    $.post(url(methods.save_card)+`&id=${this.ca_id}`,{money:this.card_money,mid:this.user_id,time:this.supp_time,integral:this.integral,type:this.ways},v=>{
-                        if(v.code==1){
+                } else {
+                    $.post(url(methods.save_card) + `&id=${this.ca_id}`, {
+                        money: this.card_money,
+                        mid: this.user_id,
+                        time: this.supp_time,
+                        integral: this.integral,
+                        type: this.ways
+                    }, v => {
+                        if (v.code == 1) {
                             success(v.info)
-                            this.card_re_dio=false;
-                            this.card_money=''
+                            this.card_re_dio = false;
+                            this.card_money = ''
                             this.get_m_card()
                             console.log(v.res.cost_id)
                             localStorage.setItem('orderId', v.res.oid)
@@ -856,428 +712,185 @@
                     })
                 }
             },
-            cancel(){
-                this.recharge_dio=false;
-                this.record_dio=false;
-                this.re_money=''
-                this.send_money=''
+            cancel() {
+                this.recharge_dio = false;
+                this.record_dio = false;
+                this.re_money = ''
+                this.send_money = ''
             },
-            cancel_in(){
-                this.card_re_dio=false;
-                this.card_money=''
+            cancel_in() {
+                this.card_re_dio = false;
+                this.card_money = ''
             },
-            get_record(type){
-                $.post(url(methods.recharge_record),{mid:this.user_id,type:type},v=>{
-                    this.record=v.record;
+            get_record(type) {
+                $.post(url(methods.recharge_record), {mid: this.user_id, type: type}, v => {
+                    this.record = v.record;
                 })
             },
-            getPrice(v){
-                v.one = parseFloat(v.price2)/parseFloat(v.needNum)
+            getPrice(v) {
+                v.one = parseFloat(v.price2) / parseFloat(v.needNum)
                 v.bf = v.price2
             },
-            getDis(v){
-                if(v.bf==null){
-                    v.price2 = parseFloat(v.price)*parseFloat(v.needNum)*parseFloat(v.discount)/10
-                    v.one = parseFloat(v.price2)/parseInt(v.needNum)
-                }else{
-                    v.price2 = parseFloat(v.bf)*parseFloat(v.discount)/10
-                    v.one = parseFloat(v.price2)/parseInt(v.needNum)
+            getDis(v) {
+                if (v.bf == null) {
+                    v.price2 = parseFloat(v.price) * parseFloat(v.needNum) * parseFloat(v.discount) / 10
+                    v.one = parseFloat(v.price2) / parseInt(v.needNum)
+                } else {
+                    v.price2 = parseFloat(v.bf) * parseFloat(v.discount) / 10
+                    v.one = parseFloat(v.price2) / parseInt(v.needNum)
                 }
-                /*v.price2 = parseFloat(v.price2)*parseFloat(v.discount)/10
-                v.one = parseFloat(v.price2)/parseInt(v.needNum)*/
             },
             height() {
                 var height = window.innerHeight;
-                if(this.need.length>0||this.need2.length>0||this.need3.length>0){
-                    this.max_ht = window.innerHeight - 415;
-                }else{
-                    this.max_ht = window.innerHeight - 165;
-                }
-            },
-            buyClothes() {
-                if (this.need3.length == 0) {
-                    return error('请选择内衣')
-                }
-                let wear = []
-                let all = 0
-                for (let v of this.need3) {
-                    all += parseFloat(v.one) * parseInt(v.needNum)
-                    wear.push({
-                        'price': v.price2 , [`p_dis_t${v.id}`]: v.yh,
-                        'id': v.id,'name':v.name,'type':v.type,'spec':v.sum, 'sum': v.needNum
-                    })
-                }
-                if(this.total3==0){
-                    this.$confirm('确定赠送?', '提示', {
-                        confirmButtonText: '确定',
-                        cancelButtonText: '取消',
-                        type: 'warning'
-                    }).then(() => {
-                        $.post(url(methods.buyWear),{data: JSON.stringify(wear),type: 2,id: this.user_id}, v => {
-                            if (v.code == 1) {
-                                this.need3 = []
-                                for (let v of this.yf) {
-                                    v.needNum = 0;
-                                }
-                                success('赠送成功')
-                                setTimeout(() => location.href = './customer.html', 1000)
-                            }else{
-                                error(v.error)
-                            }
-                        })
-                    }).catch(e => {
-
-                    })
-                }else if(this.total3>0){
-                    $.post(url(methods.buyWear),{data: JSON.stringify(wear),type: 1 ,id: this.user_id}, v => {
-                        if (v.code == 1) {
-                            this.need3 = []
-                            for (let v of this.yf) {
-                                v.needNum = 0;
-                            }
-                            success('购买成功')
-                            localStorage.setItem('orderId', v.res.orderId)
-                            localStorage.setItem('type', 1)
-                            localStorage.setItem('arrearsRes', v.res.arrearsRes)
-                            setTimeout(() => location.href = './pay_page.html', 1000)
-                        }else{
-                            error(v.error)
-                        }
-                    })
-                }
-
-            },
-            subCard() {
-                if (this.need2.length == 0) {
-                    return
-                }
-                let card = []
-                let all = 0
-                for (let v of this.need2) {
-                    all += parseFloat(v.one) * parseInt(v.needNum)
-                    if (v.yh == 0 || v.yh == 3) {
-                        card.push({'price': v.price2, 'id': v.id, 'sum': v.needNum})
-                    } else {
-                        card.push({
-                            'price': v.yh == 1 ? v.price * v.dis / 10 : 0, [`p_dis_t${v.id}`]: v.yh,
-                            'id': v.id, 'sum': v.needNum
-                        })
-                    }
-                }
-                //type>0传1 =0传2
-                if(this.total2==0){
-                    this.$confirm('确定赠送?', '提示', {
-                        confirmButtonText: '确定',
-                        cancelButtonText: '取消',
-                        type: 'warning'
-                    }).then(() => {
-                        $.post(url(methods.buyCard) + `&id=${this.user_id}`, {data: JSON.stringify(card),type: 2}, v => {
-                            if (v.code == 1) {
-                                this.need = []
-                                for (let v of this.list) {
-                                    v.needNum = 0;
-                                }
-                                success('赠送成功')
-                                setTimeout(() => location.href = './customer.html', 1000)
-                            }else{
-                                error(v.error)
-                            }
-                        })
-                    }).catch(e => {
-
-                    })
-                }else if(this.total2>0) {
-                    $.post(url(methods.buyCard) + `&id=${this.user_id}`, {data: JSON.stringify(card),type: 1}, v => {
-                        if (v.code == 1) {
-                            this.need = []
-                            for (let v of this.list) {
-                                v.needNum = 0;
-                            }
-                            success(v.Msg)
-                            localStorage.setItem('orderId', v.res.orderId)
-                            localStorage.setItem('arrearsRes', v.res.arrearsRes)
-                            localStorage.setItem('type', 1)
-                            setTimeout(() => location.href = './pay_page.html', 1000)
-                        } else {
-                            error(v.error)
-                        }
-                    })
-                }
-            },
-            subItems() {
-                let items = []
-                let all = 0
-                for (let v of this.need) {
-                    all += parseFloat(v.one) * parseInt(v.needNum)
-                    if (v.type == '项目') {
-                        if (v.yh==2) {
-                            items.push({
-                                'price': 0, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
-                                'name': v.name, 'sum': v.needNum, 'times': v.fre, 'is_rate': v.yh
-                            })
-                        } else {
-                            items.push({
-                                'price': v.price2, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
-                                'name': v.name, 'sum': v.needNum, 'times': v.fre
-                            })
-                        }
-                    }
-                }
-                if(this.total==0) {
-                    this.$confirm('确定赠送?', '提示', {
-                        confirmButtonText: '确定',
-                        cancelButtonText: '取消',
-                        type: 'warning'
-                    }).then(() => {
-                        $.post(url(methods.buyItems) + `&id=${this.user_id}`, {
-                            data: JSON.stringify(items),
-                            type: 2
-                        }, v => {
-                            if (v.code == 1) {
-                                this.need = []
-                                for (let v of this.list) {
-                                    v.needNum = 0;
-                                }
-                                success('赠送成功')
-                                setTimeout(() => location.href = './customer.html', 1000)
-                            } else {
-                                error(v.error)
-                            }
-                        })
-                    }).catch(e => {
-
-                    })
-                }else if(this.total>0) {
-                    $.post(url(methods.buyItems) + `&id=${this.user_id}`, {
-                        data: JSON.stringify(items),
-                        type: 1
-                    }, v => {
-                        if (v.code == 1) {
-                            this.need = []
-                            for (let v of this.list) {
-                                v.needNum = 0;
-                            }
-                            success(v.Msg)
-                            localStorage.setItem('orderId', v.res.orderId)
-                            localStorage.setItem('arrearsRes', v.res.arrearsRes)
-                            localStorage.setItem('type', 1)
-                            setTimeout(() => location.href = './pay_page.html', 1000)
-                        } else {
-                            error(v.error)
-                        }
-                    })
-                }
-            },
-            subBox() {
-                let th = []
-                let all = 0
-                for (let v of this.need) {
-                    all += parseFloat(v.one) * parseInt(v.needNum)
-                    if (v.type == '套盒') {
-                        if (v.yh ==2) {
-                            th.push({
-                                'price': 0, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
-                                'name': v.name, 'sum': v.needNum, 'times': v.fre, 'is_rate': v.yh
-                            })
-                        } else {
-                            th.push({
-                                'price': v.price2, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
-                                'name': v.name, 'sum': v.needNum, 'times': v.fre
-                            })
-                        }
-                    }
-                }
-                if(this.total==0){
-                    this.$confirm('确定赠送?', '提示', {
-                        confirmButtonText: '确定',
-                        cancelButtonText: '取消',
-                        type: 'warning'
-                    }).then(() => {
-                        $.post(url(methods.buyTh),{data: JSON.stringify(th),type: 2,id: this.user_id}, v => {
-                            if (v.code == 1) {
-                                this.need = []
-                                for (let v of this.list) {
-                                    v.needNum = 0;
-                                }
-                                success('赠送成功')
-                                setTimeout(() => location.href = './customer.html', 1000)
-                            }else{
-                                error(v.error)
-                            }
-                        })
-                    }).catch(e => {
-
-                    })
-                }else if(this.total>0){
-                    $.post(url(methods.buyTh),{data: JSON.stringify(th),type: 1 ,id: this.user_id}, v => {
-                        if (v.code == 1) {
-                            this.need = []
-                            for (let v of this.list) {
-                                v.needNum = 0;
-                            }
-                            success('购买成功')
-                            localStorage.setItem('orderId', v.res.orderId)
-                            localStorage.setItem('type', 1)
-                            localStorage.setItem('arrearsRes', v.res.arrearsRes)
-                            setTimeout(() => location.href = './pay_page.html', 1000)
-                        }else{
-                            error(v.error)
-                        }
-                    })
-                }
-                /*$.post(url(methods.buyTh) + `&id=${this.user_id}`, {
-                    data: JSON.stringify(th),
-                    type: all > 0 ? 1 : 2
-                }, v => {
-                    if (v.code == 1) {
-                        this.need = []
-                        for (let v of this.list) {
-                            v.needNum = 0;
-                        }
-                        success(v.Msg)
-                        localStorage.setItem('orderId', v.res.orderId)
-                        localStorage.setItem('arrearsRes', v.res.arrearsRes)
-                        localStorage.setItem('type', 1)
-                        setTimeout(() => location.href = './pay_page.html', 1000)
-                    } else {
-                        error(v.error)
-                    }
-                })*/
-            },
-            subCp() {
-                let goods = []
-                let all = 0
-                for (let v of this.need) {
-                    all += parseFloat(v.one) * parseInt(v.needNum)
-                    if (v.type == '产品') {
-                        if(v.yh==2){
-                            v.price2=0;
-                            goods.push({
-                                'price': 0, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
-                                'name': v.name, 'sum': v.needNum, 'spec': v.spec
-                            })
-                        }else{
-                            goods.push({
-                                'price': v.price2, [`p_dis_t${v.id}`]: v.discount, 'id': v.id,
-                                'name': v.name, 'sum': v.needNum, 'spec': v.spec
-                            })
-                        }
-                    }
-                }
-
-                if(this.total==0) {
-                    this.$confirm('确定赠送?', '提示', {
-                        confirmButtonText: '确定',
-                        cancelButtonText: '取消',
-                        type: 'warning'
-                    }).then(() => {
-                        $.post(url(methods.buyGoods) + `&id=${this.user_id}`, {
-                            data: JSON.stringify(goods),
-                            type:  2,
-                        }, v => {
-                            if (v.code == 1) {
-                                this.need = []
-                                for (let v of this.list) {
-                                    v.needNum = 0;
-                                }
-                                success('赠送成功')
-                                setTimeout(() => location.href = './customer.html', 1000)
-                            } else {
-                                error(v.error)
-                            }
-                        })
-                    }).catch(e => {
-
-                    })
-                }else if(this.total>0){
-                    $.post(url(methods.buyGoods) + `&id=${this.user_id}`, {
-                        data: JSON.stringify(goods),
-                        type: 1,
-                    }, v => {
-                        if (v.code == 1) {
-                            this.need = []
-                            for (let v of this.list) {
-                                v.needNum = 0;
-                            }
-                            success(v.Msg)
-                            localStorage.setItem('orderId', v.res.orderId)
-                            localStorage.setItem('arrearsRes', v.res.arrearsRes)
-                            localStorage.setItem('type', 1)
-                            setTimeout(() => location.href = './pay_page.html', 1000)
-                        } else {
-                            error(v.error)
-                        }
-                    })
-                }
-            },
-            subPlan() {
-                let goods = []
-                let all = 0
-                for (let v of this.need) {
-                    all += parseFloat(v.one) * parseInt(v.needNum)
-                    if (v.type == '方案') {
-                        if(v.yh==2){
-                            v.price2=0;
-                            goods.push({
-                                'price': 0, [`p_dis_t${v.id}`]: v.discount, 'id': v.id, 'sum': v.needNum
-                            })
-                        }else{
-                            goods.push({'price': v.price2, [`p_dis_t${v.id}`]: v.discount,'id': v.id, 'sum': v.needNum})
-                        }
-                    }
-                }
-                if(this.total==0){
-                    this.$confirm('确定赠送?', '提示', {
-                        confirmButtonText: '确定',
-                        cancelButtonText: '取消',
-                        type: 'warning'
-                    }).then(() => {
-                        $.post(url(methods.buyPlan) + `&id=${this.user_id}`, {
-                            data: JSON.stringify(goods),type:2
-                        }, v => {
-                            if (v.code == 1) {
-                                this.need = []
-                                for (let v of this.list) {
-                                    v.needNum = 0;
-                                }
-                                success('赠送成功')
-                                setTimeout(() => location.href = './customer.html', 1000)
-                            } else {
-                                error(v.error)
-                            }
-                        })
-                    }).catch(e => {
-
-                    })
-                }else if(this.total>0){
-                    $.post(url(methods.buyPlan) + `&id=${this.user_id}`, {
-                        data: JSON.stringify(goods),type:1
-                    }, v => {
-                        if (v.code == 1) {
-                            this.need = []
-                            for (let v of this.list) {
-                                v.needNum = 0;
-                            }
-                            success(v.Msg)
-                            localStorage.setItem('orderId', v.res.orderId)
-                            localStorage.setItem('arrearsRes', v.res.arrearsRes)
-                            localStorage.setItem('type', 1)
-                            setTimeout(() => location.href = './pay_page.html', 1000)
-                        } else {
-                            error(v.error)
-                        }
-                    })
+                if (this.need.length > 0) {
+                    this.max_ht = window.innerHeight - 500;
+                } else {
+                    this.max_ht = window.innerHeight - 172;
                 }
             },
             sub() {
+                let goods = []
+                let url_v;
                 if (this.tabIndex == 0) {
-                    this.subCp()
+                    url_v = url(methods.buyGoods) + `&id=${this.user_id}`;//产品
+                    for (let v of this.need) {
+                        if (v.yh == 2) {
+                            v.price2 = 0;
+                        }
+                        goods.push({
+                            'price': v.price2,
+                            [`p_dis_t${v.id}`]: v.discount,
+                            'id': v.id,
+                            'name': v.name,
+                            'sum': v.needNum,
+                            'spec': v.spec
+                        })
+                    }
                 } else if (this.tabIndex == 1) {
-                    this.subItems()
+                    url_v = url(methods.buyItems) + `&id=${this.user_id}`;
+                    for (let v of this.need) {
+                        if (v.yh == 2) {
+                            goods.push({
+                                'price': 0,
+                                [`p_dis_t${v.id}`]: v.discount,
+                                'id': v.id,
+                                'name': v.name,
+                                'sum': v.needNum,
+                                'times': v.fre,
+                                'is_rate': v.yh
+                            })
+                        } else {
+                            goods.push({
+                                'price': v.price2,
+                                [`p_dis_t${v.id}`]: v.discount,
+                                'id': v.id,
+                                'name': v.name,
+                                'sum': v.needNum,
+                                'times': v.fre
+                            })
+                        }
+                    }
                 } else if (this.tabIndex == 2) {
-                    this.subBox()
+                    url_v = url(methods.buyTh) + `&id=${this.user_id}`;
+                    for (let v of this.need) {
+                        if (v.yh == 2) {
+                            goods.push({
+                                'price': 0,
+                                [`p_dis_t${v.id}`]: v.discount,
+                                'id': v.id,
+                                'name': v.name,
+                                'sum': v.needNum,
+                                'times': v.fre,
+                                'is_rate': v.yh
+                            })
+                        } else {
+                            goods.push({
+                                'price': v.price2,
+                                [`p_dis_t${v.id}`]: v.discount,
+                                'id': v.id,
+                                'name': v.name,
+                                'sum': v.needNum,
+                                'times': v.fre
+                            })
+                        }
+                    }
                 } else if (this.tabIndex == 3) {
-                    this.subPlan()
+                    url_v = url(methods.buyPlan) + `&id=${this.user_id}`;
+                    for (let v of this.need) {
+                        if (v.yh == 2) {
+                            v.price2 = 0;
+                        }
+                        goods.push({
+                            'price': v.price2,
+                            [`p_dis_t${v.id}`]: v.discount,
+                            'id': v.id,
+                            'sum': v.needNum,
+                        })
+                    }
+                } else if (this.tabIndex == 4) {
+                    url_v = url(methods.buyCard) + `&id=${this.user_id}`;
+                    for (let v of this.need) {
+                        if (v.yh == 0 || v.yh == 3) {
+                            goods.push({'price': v.price2, 'id': v.id, 'sum': v.needNum})
+                        } else {
+                            goods.push({
+                                'price': v.yh == 1 ? v.price * v.dis / 10 : 0,
+                                [`p_dis_t${v.id}`]: v.yh,
+                                'id': v.id,
+                                'sum': v.needNum
+                            })
+                        }
+                    }
+                } else if (this.tabIndex == 5) {
+                    url_v = url(methods.buyWear) + `&id=${this.user_id}`;
+                    for (let v of this.need) {
+                        goods.push({
+                            'price': v.price2, [`p_dis_t${v.id}`]: v.yh,
+                            'id': v.id, 'name': v.name, 'type': v.type, 'spec': v.sum, 'sum': v.needNum
+                        })
+                    }
+                }
+                if (this.total_price == 0) {
+                    this.$confirm('确定赠送?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        $.post(url_v, {
+                            data: JSON.stringify(goods), type: 2
+                        }, v => {
+                            if (v.code == 1) {
+                                this.need = []
+                                for (let v of this.list) {
+                                    v.needNum = 0;
+                                }
+                                success('赠送成功')
+                                setTimeout(() => location.href = './customer.html', 1000)
+                            } else {
+                                error(v.error)
+                            }
+                        })
+                    }).catch(e => {
+
+                    })
+                } else if (this.total_price > 0) {
+                    $.post(url_v, {
+                        data: JSON.stringify(goods), type: 1
+                    }, v => {
+                        if (v.code == 1) {
+                            this.need = []
+                            for (let v of this.list) {
+                                v.needNum = 0;
+                            }
+                            success(v.Msg)
+                            localStorage.setItem('orderId', v.res.orderId)
+                            localStorage.setItem('arrearsRes', v.res.arrearsRes)
+                            localStorage.setItem('type', 1)
+                            setTimeout(() => location.href = './pay_page.html', 1000)
+                        } else {
+                            error(v.error)
+                        }
+                    })
                 }
             },
             allRemove() {
@@ -1292,41 +905,15 @@
                         v.price2 = v.price
                         v.yh = 0
                     }
-                    this.need2 = []
-                    for (let v of this.card) {
-                        v.needNum = 0;
-                        v.price2 = v.price
-                        v.yh = 0
-                    }
-                    this.need3 = []
-                    for (let v of this.yf) {
-                        v.needNum = 0;
-                        v.price2 = v.price
-                        v.yh = 0
-                    }
                 }).catch(e => {
 
                 })
                 this.height();
             },
-            form(r, c) {
-                if (r.free == 1) {
-                    return '是'
-                } else {
-                    return '否'
-                }
-            },
-            form2(r, c) {
-                if (r.send == 1) {
-                    return '是'
-                } else {
-                    return '否'
-                }
-            },
             remove(v) {
                 if (v.needNum > 0) {
                     v.needNum--
-                    v.price2 = parseFloat(v.price2)-parseFloat(v.one)
+                    v.price2 = parseFloat(v.price2) - parseFloat(v.one)
                     for (let i in this.need) {
                         if (v.id == this.need[i].id && this.need[i].needNum > 0) {
                             z = false
@@ -1343,52 +930,12 @@
                 }
                 this.height();
             },
-            remove2(v) {
-                if (v.needNum > 0) {
-                    v.needNum--
-                    v.price2 = parseFloat(v.price2)-parseFloat(v.one)
-                    for (let i in this.need2) {
-                        if (v.id == this.need2[i].id && this.need2[i].needNum > 0) {
-                            z = false
-                            break
-                        }
-                        if (this.need2[i].needNum == 0) {
-                            this.need[i].needNum = 0
-                            this.need[i].price2 = this.need[i].price
-                            this.need[i].yh = 0
-                            this.need[i].bf = null
-                            this.need2.splice(i, 1)
-                        }
-                    }
-                }
-                this.height();
-            },
-            remove3(v) {
-                if (v.needNum > 0) {
-                    v.needNum--
-                    v.price2 = parseFloat(v.price2)-parseFloat(v.one)
-                    for (let i in this.need3) {
-                        if (v.id == this.need3[i].id && this.need3[i].needNum > 0) {
-                            z = false
-                            break
-                        }
-                        if (this.need3[i].needNum == 0) {
-                            this.need[i].needNum = 0
-                            this.need[i].price2 = this.need[i].price
-                            this.need[i].yh = 0
-                            this.need[i].bf = null
-                            this.need3.splice(i, 1)
-                        }
-                    }
-                }
-                this.height();
-            },
             add(v) {
                 v.needNum++
                 let z = true;
                 for (let x of this.need) {
                     if (v.id == x.id) {
-                        x.price2 = (parseFloat(x.price2)+parseFloat(x.one)).toFixed(2)
+                        x.price2 = (parseFloat(x.price2) + parseFloat(x.one)).toFixed(2)
                         z = false
                         break
                     }
@@ -1396,60 +943,18 @@
                 if (z) {
                     this.need.unshift(v)
                 }
+                console.log(this.need)
                 this.height();
-            },
-            add2(v) {
-                v.needNum++
-                let z = true;
-                for (let x of this.need2) {
-                    if (v.id == x.id) {
-                        x.price2 = parseFloat(x.price2)+parseFloat(x.one)
-                        z = false
-                        break
-                    }
-                }
-                if (z) {
-                    this.need2.unshift(v)
-                }
-                this.height();
-            },
-            add3(v) {
-                v.needNum++
-                let z = true;
-                for (let x of this.need3) {
-                    if (v.id == x.id) {
-                        x.price2 = parseFloat(x.price2)+parseFloat(x.one)
-                        z = false
-                        break
-                    }
-                }
-                if (z) {
-                    this.need3.unshift(v)
-                }
-                this.height();
-            },
-            toggleSelection(rows) {
-                if (rows) {
-                    rows.forEach(row => {
-                        this.$refs.multipleTable.toggleRowSelection(row);
-                    });
-                } else {
-                    this.$refs.multipleTable.clearSelection();
-                }
-            },
-            handleSelectionChange(val) {
-                this.multipleSelection = val;
-            },
-            handleEdit(index, row) {
-                console.log(index, row);
-            },
-            handleDelete(index, row) {
-                console.log(index, row);
             },
             getGoods() {
                 $.post(url(methods.getAllGoods), v => {
                     let rs = verify(v)
                     if (rs != false) {
+                        this.page = 1;
+                        this.cp_list = [];
+                        this.xm_list = [];
+                        this.th_list = [];
+                        this.fa_list = [];
                         for (let v of rs) {
                             v['needNum'] = 0
                             v['discount'] = 10
@@ -1457,8 +962,26 @@
                             v['price2'] = v.price
                             v.one = v.price
                             v.bf = null
+                            if (v.type == '产品') {
+                                this.cp_list.push(v)
+                            } else if (v.type == '项目') {
+                                this.xm_list.push(v)
+                            } else if (v.type == '套盒') {
+                                this.th_list.push(v)
+                            } else if (v.type == '方案') {
+                                this.fa_list.push(v)
+                            }
                         }
-                        this.list = rs
+                        this.search_list = this.cp_list
+                        this.all_list = this.cp_list
+                        this.total = this.all_list.length
+                        if (this.total <= 10) {
+                            this.list = this.all_list
+                        } else {
+                            this.list = [];
+                            this.pages_fun()
+                        }
+                        // this.list = rs
                     }
                 })
             },
@@ -1467,30 +990,45 @@
                 this.fileList = []
                 this.getGoods()
             },
-            beforeUpload2(f) {
-                let ext = f.name.toString().split('.')
-                if (ext[1] != 'xlsx') {
-                    error('请上传xlsx文件')
-                    return false
-                }
-            },
             handleClick(tab, event) {
+                this.page = 1;
+                this.input = '';
                 this.tabIndex = tab.index
-                this.need = []
-                this.need2 = []
-                this.need3 = []
-                for (let v of this.list) {
-                    v.needNum = 0;
+                this.height();
+                if (tab.index == 0) {
+                    this.search_list = this.cp_list
+                    this.all_list = this.cp_list
+                } else if (tab.index == 1) {
+                    this.search_list = this.xm_list
+                    this.all_list = this.xm_list
+                } else if (tab.index == 2) {
+                    this.search_list = this.th_list
+                    this.all_list = this.th_list
+                } else if (tab.index == 3) {
+                    this.search_list = this.fa_list
+                    this.all_list = this.fa_list
+                } else if (tab.index == 4) {
+                    this.getCard()
+                } else if (tab.index == 5) {
+                    this.getYf()
                 }
-                for (let v of this.card) {
-                    v.needNum = 0;
+                if (tab.index != 6) {
+                    this.total = this.all_list.length
+                    if (this.total <= 10) {
+                        this.list = this.all_list
+                    } else {
+                        this.list = [];
+                        this.pages_fun()
+                    }
+                    this.need = []
+                    for (let v of this.list) {
+                        v.needNum = 0;
+                    }
+                    this.total_price = 0
                 }
-                for (let v of this.yf) {
-                    v.needNum = 0;
-                }
-                this.height()
             },
             getCard() {
+                this.page = 1;
                 $.post(url(methods.getCardList), v => {
                     if (v.code == 1) {
                         for (let x of v.card.list) {
@@ -1502,6 +1040,16 @@
                             v.bf = null
                         }
                         this.card = v.card.list
+                        this.total = v.card.list.length;
+                        this.search_list = v.card.list;
+                        this.all_list = v.card.list;
+                        this.list = [];
+                        if (this.total <= 10) {
+                            this.list = this.search_list
+                        } else {
+                            this.list = [];
+                            this.pages_fun()
+                        }
                     } else {
                         error(v.error)
                     }
@@ -1519,32 +1067,25 @@
                         v.bf = null
                     }
                     this.yf = v.res
+                    this.total = v.res.length;
+                    this.search_list = v.res;
+                    this.all_list = v.res;
+                    this.list = [];
+                    if (this.total <= 10) {
+                        this.list = this.search_list
+                    } else {
+                        this.list = [];
+                        this.pages_fun()
+                    }
                 })
             },
         },
         computed: {
-            total() {
+            total_price() {
                 let all = 0
                 for (let v of this.need) {
-                    if(v.yh!=2){
-                        all += parseFloat(v.one) * parseInt(v.needNum)
-                    }
-                }
-                return all
-            },
-            total2() {
-                let all = 0
-                for (let v of this.need2) {
-                    if(v.yh!=2){
-                        all += parseFloat(v.one) * parseInt(v.needNum)
-                    }
-                }
-                return all
-            },
-            total3() {
-                let all = 0
-                for (let v of this.need3) {
-                    if(v.yh!=2){
+                    console.log(v.yh)
+                    if (v.yh != 2) {
                         all += parseFloat(v.one) * parseInt(v.needNum)
                     }
                 }
@@ -1557,13 +1098,12 @@
                 that = this;
                 this.user_id = localStorage.getItem('user_id')
                 this.user = JSON.parse(localStorage.getItem('user'))
-                    this.getYf()
+                // this.getYf()
                 this.getGoods()
-                this.getCard()
+                // this.getCard()
                 loginState()
-                this.r = url(methods.upload + '?type=2')
                 this.height()
-                this.get_m_blance()
+
             })
         }
     })
