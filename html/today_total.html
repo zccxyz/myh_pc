@@ -40,7 +40,7 @@
                 </el-date-picker>
             </div>
             <el-input class="total_sea" style="float: right;"
-                    placeholder="请输入内容"
+                    placeholder="请输入会员姓名搜索"
                     prefix-icon="el-icon-search"
                     v-model="input">
             </el-input>
@@ -294,7 +294,7 @@
                     return '卡项'
                 }else if(r.type == 6) {
                     return '账户'
-                }else if(r.type == 6) {
+                }else if(r.type == 7) {
                     return '内衣'
                 }
             },

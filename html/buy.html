@@ -204,7 +204,7 @@
                         <span>
                             优惠方式
                             <el-radio v-model="v.yh" label="1">打折</el-radio>
-                            <el-input v-if="v.yh==1" v-model="v.discount" placeholder="请输入1到10的数字"
+                            <el-input v-if="v.yh==1" v-model="v.discount" placeholder="0-10"
                                       class="in_wid und_line" type="number" v-on:input="getDis(v)"></el-input>
                             <el-radio v-model="v.yh" @change="v.discount=10" label="3">改价</el-radio>
                             <el-input v-if="v.yh==3" v-model="v.price2" placeholder="请输入价格"
@@ -733,12 +733,18 @@
             },
             getDis(v) {
                 if (v.bf == null) {
-                    v.price2 = parseFloat(v.price) * parseFloat(v.needNum) * parseFloat(v.discount) / 10
-                    v.one = parseFloat(v.price2) / parseInt(v.needNum)
+                    if(v.discount==''){
+                        v.price2 = parseFloat(v.price) * parseFloat(v.needNum)
+                        v.one = v.price
+                    }else{
+                        v.price2 = parseFloat(v.price) * parseFloat(v.needNum) * parseFloat(v.discount) / 10
+                        v.one = parseFloat(v.price2) / parseInt(v.needNum)
+                    }
                 } else {
                     v.price2 = parseFloat(v.bf) * parseFloat(v.discount) / 10
                     v.one = parseFloat(v.price2) / parseInt(v.needNum)
                 }
+
             },
             height() {
                 var height = window.innerHeight;
@@ -1086,6 +1092,10 @@
                 for (let v of this.need) {
                     console.log(v.yh)
                     if (v.yh != 2) {
+                        if(v.yh==1&&v.discount==null){
+                           v.one=v.price;
+                           console.log(v.one)
+                                }
                         all += parseFloat(v.one) * parseInt(v.needNum)
                     }
                 }

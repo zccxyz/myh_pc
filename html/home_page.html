@@ -18,7 +18,7 @@
                     <span @click="change_dio=true" style="cursor: pointer"><i class="el-icon-setting"></i>修改密码</span>
                     &#12288;
                     <a href="bespeak.html" target="iframe" style="position: relative">
-                        <span class="news"></span>
+                        <span class="news" v-if="new_infor>0"></span>
                         <img src="../images/news.png" class="home_birth">
                     </a>
                     <img @click="logout" src="../images/home_exit.png" class="home_exit">
@@ -279,6 +279,7 @@
     new Vue({
         el: '#app',
         data: {
+            new_infor:0,
             user: '',
             change_dio:false,
             yuan: '',
