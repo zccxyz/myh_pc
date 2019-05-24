@@ -117,11 +117,11 @@
                 </template>
             </el-table-column>
         </el-table>
-        <div v-if="this.total>20" style="background: #fff;text-align: center;padding: 10px 0">
+        <div v-if="total>10" style="background: #fff;text-align: center;padding: 10px 0">
             <el-pagination  background
                             @current-change="handleCurrentChange"
                             :current-page="currentPage"
-                            :page-size="20"
+                            :page-size="10"
                             layout="total, prev, pager, next, jumper"
                             :total="total" :pager-count="8"
                             @prev-click="prev_click" @next-click="next_click">
@@ -360,12 +360,12 @@
             pages_fun(){
                 this.list=[];
                 let m;
-                if(this.total<this.page*20){
+                if(this.total<this.page*10){
                     m=this.total
                 }else{
-                    m=this.page*20
+                    m=this.page*10
                 }
-                for(var i=(this.page-1)*20;i<m;i++){
+                for(var i=(this.page-1)*10;i<m;i++){
                     this.list.push(this.all_list[i])
                 }
             },
@@ -380,7 +380,7 @@
                         }
                     }
                     this.total=this.all_list.length;
-                    if(this.total>21){
+                    if(this.total>11){
                         this.pages_fun()
                     }else{
                         this.list=this.all_list

@@ -132,7 +132,7 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <div v-if="this.total>10" style="background: #fff;text-align: center;padding: 10px 0">
+            <div v-if="total>10" style="background: #fff;text-align: center;padding: 10px 0">
                 <el-pagination  background
                                 @current-change="handleCurrentChange"
                                 :current-page="currentPage"
@@ -234,7 +234,7 @@
         methods: {
             height(){
                 var height=window.innerHeight;
-                this.max_ht=window.innerHeight-222;
+                this.max_ht=window.innerHeight-232;
             },
             pages_fun(){
                 this.list=[];

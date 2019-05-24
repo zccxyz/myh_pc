@@ -43,7 +43,11 @@
         </div>
         <el-tabs type="card" @tab-click="handleClick"
                  class="vip_infor">
-            <el-tab-pane label="普通提成">
+            <el-tab-pane>
+                <span slot="label">
+                    <i v-if="type==1">普通提成</i>
+                    <i v-else>补款提成</i>
+                </span>
             <div class="" style="margin:10px 0 15px;">
                 <div style="height: 50px;width: 100%;line-height:50px;padding-left:15px;font-size:1.8rem;background: white;">
                     消费可提成金额 ：<span class="cr" style="font-size: 1.8rem;">&yen;{{total}}</span>
@@ -190,11 +194,13 @@
             </div>
             <div class="bottom_submit">
                 <el-button type="success" @click="sub" v-if="type==1">提交</el-button>
-                <el-button type="success" @click="sub2" v-else>提交</el-button>
+                <el-button type="success" @click="sub2" v-else>普通提成录入</el-button>
+                <div style="margin-top:30px;">
+                    <el-button type="success" @click="sub_fix" v-if="type!=1">固定提成录入</el-button>
+                </div>
             </div>
             </el-tab-pane>
-            <el-tab-pane label="固定提成">
-                <p v-if="fixdata.length==0" style="color:red">补提暂时不能固定提成额</p>
+            <el-tab-pane label="固定提成" v-if="type==1">
                 <ul class="fix_ul">
                     <li v-for="(g,index) in fixdata">
                         <div class="">
@@ -547,8 +553,69 @@
                     });
                 }
             },
+            sub_fix() {
+                if (this.twoArr.length == 0 && this.threeArr.length == 0 && this.fourArr.length == 0&&this.twoArr2.length == 0 && this.threeArr2.length == 0 && this.fourArr2.length == 0) {
+                    error('请选择提成员工')
+                    return
+                }
+
+                let arr2 = []
+                let arr3 = []
+                let arr4 = []
+
+                let arr5 = []
+                let arr6 = []
+                let arr7 = []
+                if (this.twoArr.length > 0) {
+                    for (let v of this.twoArr) {
+                        arr2.push({'money': v.rate, 'id': v.id, 'name': v.name})
+                    }
+                }
+                if (this.threeArr.length > 0) {
+                    for (let v of this.threeArr) {
+                        arr3.push({'money': v.rate, 'id': v.id, 'name': v.name})
+                    }
+                }
+                if (this.fourArr.length > 0) {
+                    for (let v of this.fourArr) {
+                        arr4.push({'money': v.rate, 'id': v.id, 'name': v.name})
+                    }
+                }
+                if (this.twoArr2.length > 0) {
+                    for (let v of this.twoArr2) {
+                        arr5.push({'money': v.rate, 'id': v.id, 'name': v.name})
+                    }
+                }
+                if (this.threeArr2.length > 0) {
+                    for (let v of this.threeArr2) {
+                        arr6.push({'money': v.rate, 'id': v.id, 'name': v.name})
+                    }
+                }
+                if (this.fourArr2.length > 0) {
+                    for (let v of this.fourArr2) {
+                        arr7.push({'money': v.rate, 'id': v.id, 'name': v.name})
+                    }
+                }
+                this.up_data = {
+                    'ra_mrs': arr2,
+                    'ra_gw': arr3,
+                    'ra_dz': arr4,
+                };
+                $.post(url(methods.change_save_supp_commission), {
+                    arrears_id: this.arrears_id,
+                    data: this.up_data,
+                    supp:this.cost
+                }, v => {
+                    if (v.code == 1) {
+                        success(v.Msg)
+                        setTimeout(() => location.href = './customer.html', 1000)
+                    } else {
+                        error(v.error)
+                    }
+                })
+            },
             sub2() {
-                if (this.twoArr.length == 0 && this.threeArr.length == 0 && this.fourArr.length == 0) {
+                if (this.twoArr.length == 0 && this.threeArr.length == 0 && this.fourArr.length == 0&&this.twoArr2.length == 0 && this.threeArr2.length == 0 && this.fourArr2.length == 0) {
                     error('请选择提成员工')
                     return
                 }
@@ -772,6 +839,7 @@
                         if (v.res.print_type == 1) {
                             this.isPrint()
                         }
+                        this.ac_card_total = v.res.ac_card_total
                         this.total = v.res.total
                         this.gw= v.res.g
                         this.m = v.res.m

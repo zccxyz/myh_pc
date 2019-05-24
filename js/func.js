@@ -1,6 +1,6 @@
-var ym = 'https://www.myhkj.cn/apis/backend/';
+// var ym = 'https://www.myhkj.cn/apis/backend/';
 // var ym = 'http://admin.test.com/apis/backend/';
-// var ym = 'http://myhpc.com/apis/backend/';
+var ym = 'http://myhpc.com/apis/backend/';
 
 var methods = {
     'login': 'login/login',
@@ -95,6 +95,7 @@ var methods = {
     'saveCommission': 'buy/save_commission',
     'change_percentage': 'buy/change_percentage',
     'change_save_commission': 'buy/change_save_commission',
+    'change_save_supp_commission': 'buy/change_save_supp_commission',
     'cancelCoupon': 'buy/cancelCoupon',
     'ChoiceCouponList': 'buy/ChoiceCouponList',
     'member_amount':'buy/memberAmount',

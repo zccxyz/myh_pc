@@ -32,7 +32,7 @@
 
         .store_tabs label {
             display: inline-block;
-            width:25%;
+            width: 25%;
         }
 
         .store_tabs label span {
@@ -53,25 +53,45 @@
         </p>
         <el-tabs type="card" @tab-click="myClick" class="vip_infor">
             <el-tab-pane label="出入库管理/其他设置">
-                <div class="cus_center">
-                    <el-input class="cus_seatch" style="float: left"
-                              placeholder="请输入内容"
-                              prefix-icon="el-icon-search"
-                              v-model="input">
-                    </el-input>
-                    <!--<span>
-                            按数量查找：
-                        <el-radio v-model="radio" label="1">
+                <div style="overflow: hidden">
+                    <div style="overflow: hidden;margin-bottom: 10px">
+                        <span class="fl" style="line-height: 40px;color:red;font-weight: bold">预警设置：</span>
+                        <div class="fl" style="margin-right: 40px">
+                            库存小于(x)预警：
+                            <el-input v-model="warning.start_num" type="number" placeholder=""
+                                      class="li_input"></el-input>
+                            <i class="blue_c" @click="yjSet">修改</i>
+                            <!--<el-button type="warning" class="fr" @click="scan_Dio=true">批量扫码入库</el-button>-->
+                        </div>
+                        <div class="fl" style="margin-right: 20px">
+                            库存大于(x)预警：
+                            <el-input v-model="warning.end_num" type="number" placeholder=""
+                                      class="li_input"></el-input>
+                            <i class="blue_c" @click="yjSet">修改</i>
+                        </div>
+                        <el-button type="success" class="fr" @click="pull" style="margin-left: 15px">同步商品</el-button>
+                    </div>
+                    <p>
+                        <el-input class="cus_seatch"
+                                  placeholder="请输入商品名称搜索"
+                                  prefix-icon="el-icon-search"
+                                  v-model="input" @keyup.native="get_search()">
+                        </el-input>
+                        <span>
+                            按库存查找：
+                            <!--                        <el-radio v-model="radio" label="1">-->
                             大于等于
                             <el-input style="width: 80px" v-model="one" type="number" placeholder=""
-                                      class="line_input" @blur="con(one)"></el-input>个
-                        </el-radio>
-                        <el-radio v-model="radio" label="2">
+                                      class="line_input"></el-input>个或（≤库存≤）
+                            <!--                        </el-radio>-->
+                            <!--                        <el-radio v-model="radio" label="2">-->
                           小于等于
                             <el-input style="width: 80px" v-model="two" type="number" placeholder=""
-                                      class="line_input" @blur="con(two)"></el-input>个
-                      </el-radio>
-                    </span>-->
+                                      class="line_input"></el-input>个
+                            <!--                      </el-radio>-->
+                    </span>
+                    </p>
+
                     <!--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <span>
                         库存小于(x)预警：
@@ -84,25 +104,14 @@
                         <el-input v-model="warning.end_num" type="number" placeholder="" class="li_input"></el-input>
                         <i class="blue_c" @click="yjSet">修改</i>
                     </span>-->
-                    <el-button type="success" class="fr" @click="pull">同步商品</el-button>
-                </div>
-                <div>
-                    库存小于(x)预警：
-                    <el-input v-model="warning.start_num" type="number" placeholder="" class="li_input"></el-input>
-                    <i class="blue_c" @click="yjSet">修改</i>
-                    <!--<el-button type="warning" class="fr" @click="scan_Dio=true">批量扫码入库</el-button>-->
-                </div>
-                <div>
-                    库存大于(x)预警：
-                    <el-input v-model="warning.end_num" type="number" placeholder="" class="li_input"></el-input>
-                    <i class="blue_c" @click="yjSet">修改</i>
                 </div>
                 <!--:data="list.filter( data => (!input || data.name.toLowerCase().includes(input.toLowerCase()))
                 && (one>0?data.stock>=one:true || two>0?data.stock<=two:true))"-->
+                <!-- .filter( data => (!input ||(data.name==null?false:data.name.toLowerCase().includes(input.toLowerCase()))))-->
                 <div class="basic_inf">
-                    <el-table
-                            :data="list.filter( data => (!input ||(data.name==null?false:data.name.toLowerCase().includes(input.toLowerCase()))))"
-                            style="width: 100%">
+                    <el-table v-if="table_index==0" :max-height="max_data"
+                              :data="list"
+                              style="width: 100%">
                         <el-table-column
                                 prop="type"
                                 label="品项"
@@ -127,14 +136,15 @@
                             </template>
                         </el-table-column>
                     </el-table>
+
                 </div>
             </el-tab-pane>
 
             <el-tab-pane label="出库流水记录">
                 <div class="cus_center">
-                    <el-input class="cus_seatch"
+                    <el-input class="cus_seatch" @keyup.native="get_search()"
                               placeholder="请输入商品名称/操作人"
-                              v-model="input2">
+                              v-model="input">
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
                     </el-input>
                     <el-date-picker class="cus_seatch"
@@ -144,11 +154,12 @@
                                     placeholder="选择日期查询">
                     </el-date-picker>
                 </div>
+            <!--    myOut.filter(data => !input2 || data.name.toLowerCase().includes(input2.toLowerCase()) ||
+                data.operation_human.toLowerCase().includes(input2.toLowerCase()))-->
                 <div class="basic_inf">
-                    <el-table
-                            :data="myOut.filter(data => !input2 || data.name.toLowerCase().includes(input2.toLowerCase()) ||
-                            data.operation_human.toLowerCase().includes(input2.toLowerCase()))"
-                            style="width: 100%">
+                    <el-table v-if="table_index==1" :max-height="max_in_o"
+                              :data="list"
+                              style="width: 100%">
                         <el-table-column
                                 prop="time"
                                 label="出库时间">
@@ -175,9 +186,9 @@
 
             <el-tab-pane label="入库流水记录">
                 <div class="cus_center">
-                    <el-input class="cus_seatch"
+                    <el-input class="cus_seatch" @keyup.native="get_search()"
                               placeholder="请输入商品名称/操作人"
-                              v-model="input2">
+                              v-model="input">
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
                     </el-input>
                     <el-date-picker class="cus_seatch"
@@ -187,11 +198,12 @@
                                     placeholder="选择日期">
                     </el-date-picker>
                 </div>
+                <!--myIn.filter(data => !input2 || data.name.toLowerCase().includes(input2.toLowerCase()) ||
+                data.operation_human.toLowerCase().includes(input2.toLowerCase()))-->
                 <div class="basic_inf">
-                    <el-table
-                            :data="myIn.filter(data => !input2 || data.name.toLowerCase().includes(input2.toLowerCase()) ||
-                            data.operation_human.toLowerCase().includes(input2.toLowerCase()))"
-                            style="width: 100%">
+                    <el-table :max-height="max_in_o" v-if="table_index==2"
+                              :data="list"
+                              style="width: 100%">
                         <el-table-column
                                 prop="time"
                                 label="入库时间">
@@ -211,40 +223,7 @@
                     </el-table>
                 </div>
             </el-tab-pane>
-            <el-tab-pane label="商品调仓"  v-if="false">
-                <div class="cus_center">
-                    <el-input class="cus_seatch"
-                              placeholder="请输入商品名称"
-                              v-model="input4">
-                        <i slot="prefix" class="el-input__icon el-icon-search"></i>
-                    </el-input>
-                </div>
-                <div class="basic_inf">
-                    <el-table
-                            :data="list2.filter(data => !input4 || data.name.toLowerCase().includes(input4.toLowerCase()) )"
-                            style="width: 100%">
-                        <el-table-column
-                                prop="name"
-                                label="名称">
-                        </el-table-column>
-                        <el-table-column
-                                prop="stock"
-                                label="剩余库存">
-                        </el-table-column>
-                        <el-table-column
-                                label="操作">
-                            <template slot-scope="scope">
-                                <el-button
-                                        size="mini" type="primary"
-                                        @click="nowData=scope.row;d_cang_dio=true">调仓
-                                </el-button>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                </div>
-            </el-tab-pane>
             <el-tab-pane label="库存盘点">
-
                 <div class="cus_center">
                     <el-radio-group v-model="nowPos" class="store_tabs">
                         <el-radio-button label="产品"></el-radio-button>
@@ -252,14 +231,14 @@
                         <el-radio-button label="耗材"></el-radio-button>
                         <el-radio-button label="内衣"></el-radio-button>
                     </el-radio-group>
-                    <el-input v-show="nowPos!='内衣'" class="cus_seatch"
+                    <el-input @keyup.native="get_search()" v-if="nowPos!='内衣'" class="cus_seatch"
                               placeholder="请输入商品名称"
-                              v-model="input3">
+                              v-model="input">
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
                     </el-input>
-                    <el-input v-show="nowPos=='内衣'" class="cus_seatch"  style="width: 350px"
+                    <el-input @keyup.native="get_search()" v-if="nowPos=='内衣'" class="cus_seatch" style="width: 350px"
                               placeholder="请输入内衣名称或内衣罩杯或尺码或编号搜索"
-                              v-model="input3">
+                              v-model="input">
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
                     </el-input>
                     <span v-show="nowPos=='内衣'">
@@ -268,9 +247,10 @@
                     <el-button type="success" class="fr" @click="getDetail">盈亏数</el-button>
                     <el-button type="primary" class="fr" style="margin-right: 10px" @click="sub">保存</el-button>
                 </div>
-                <div class="basic_inf">
-                    <el-table v-show="nowPos=='产品'"
-                              :data="goods.filter(data => !input3 || data.goods_name.toLowerCase().includes(input3.toLowerCase()) )"
+<!--                goods.filter(data => !input3 || data.goods_name.toLowerCase().includes(input3.toLowerCase()) )-->
+                <div class="basic_inf" v-if="table_index==3">
+                    <el-table v-show="nowPos=='产品'" :max-height="max_arr"
+                              :data="list"
                               style="width: 100%">
 
                         <el-table-column
@@ -306,9 +286,9 @@
                             </template>
                         </el-table-column>
                     </el-table>
-
-                    <el-table v-show="nowPos=='套盒'"
-                              :data="th.filter(data => !input3 || data.box_name.toLowerCase().includes(input3.toLowerCase()) )"
+<!--                    th.filter(data => !input3 || data.box_name.toLowerCase().includes(input3.toLowerCase()) )-->
+                    <el-table v-show="nowPos=='套盒'" :max-height="max_arr"
+                              :data="list"
                               style="width: 100%">
 
                         <el-table-column
@@ -344,11 +324,10 @@
                             </template>
                         </el-table-column>
                     </el-table>
-
-                    <el-table v-show="nowPos=='耗材'"
-                              :data="hc.filter(data => !input3 || data.name.toLowerCase().includes(input3.toLowerCase()) )"
+<!--                    hc.filter(data => !input3 || data.name.toLowerCase().includes(input3.toLowerCase()) )-->
+                    <el-table v-show="nowPos=='耗材'" :max-height="max_arr"
+                              :data="list"
                               style="width: 100%">
-
                         <el-table-column
                                 prop="name"
                                 label="名称">
@@ -382,8 +361,9 @@
                             </template>
                         </el-table-column>
                     </el-table>
-                    <el-table v-show="nowPos=='内衣'"
-                              :data="un.filter(data => (!input3 ||(data.name==null?false:data.name.toLowerCase().includes(input3.toLowerCase()))||(data.size==null?false:(data.size.toLowerCase()==input3.toLowerCase()?true:false))||(data.sn==null?false:data.sn.toLowerCase().includes(input3.toLowerCase()))||(data.cup==null?false:(data.cup.toLowerCase()==input3.toLowerCase()?true:false))))"
+                    <!--un.filter(data => (!input3 ||(data.name==null?false:data.name.toLowerCase().includes(input3.toLowerCase()))||(data.size==null?false:(data.size.toLowerCase()==input3.toLowerCase()?true:false))||(data.sn==null?false:data.sn.toLowerCase().includes(input3.toLowerCase()))||(data.cup==null?false:(data.cup.toLowerCase()==input3.toLowerCase()?true:false))))-->
+                    <el-table v-show="nowPos=='内衣'" :max-height="max_arr"
+                              :data="list"
                               style="width: 100%">
 
                         <el-table-column
@@ -437,7 +417,50 @@
                     </el-table>
                 </div>
             </el-tab-pane>
+            <el-tab-pane label="商品调仓" v-if="false">
+                <div class="cus_center">
+                    <el-input class="cus_seatch"
+                              placeholder="请输入商品名称"
+                              v-model="input4">
+                        <i slot="prefix" class="el-input__icon el-icon-search"></i>
+                    </el-input>
+                </div>
+                <div class="basic_inf">
+                    <el-table v-if="table_index==0"
+                              :data="list2.filter(data => !input4 || data.name.toLowerCase().includes(input4.toLowerCase()) )"
+                              style="width: 100%">
+                        <el-table-column
+                                prop="name"
+                                label="名称">
+                        </el-table-column>
+                        <el-table-column
+                                prop="stock"
+                                label="剩余库存">
+                        </el-table-column>
+                        <el-table-column
+                                label="操作">
+                            <template slot-scope="scope">
+                                <el-button
+                                        size="mini" type="primary"
+                                        @click="nowData=scope.row;d_cang_dio=true">调仓
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+            </el-tab-pane>
+
         </el-tabs>
+        <div v-if="total>10" style="background: #fff;text-align: center;padding: 10px 0">
+            <el-pagination background
+                           @current-change="handleCurrentChange"
+                           :current-page="currentPage"
+                           :page-size="10"
+                           layout="total, prev, pager, next, jumper"
+                           :total="total" :pager-count="8"
+                           @prev-click="prev_click" @next-click="next_click">
+            </el-pagination>
+        </div>
         <!--盈亏数-->
         <el-dialog title="盈亏数"
                    :visible.sync="y_k_dio"
@@ -668,7 +691,17 @@
     new Vue({
         el: '#app',
         data: {
-            scan_type:'1',
+            search_list: '',
+            currentPage: 1,
+            page: 1,
+            page_count: '',
+            total: 0,
+            all_list: '',
+            count: '',
+            max_data: 0,
+            max_in_o: 0,
+            max_arr: 0,
+            scan_type: '1',
             scan_Dio: false,
             checkList: '',
             y_k_dio: false,
@@ -678,30 +711,6 @@
             out_ware: false,
             input: '',
             radio: '1',
-            table_data: [{
-                px: '产品',
-                name: '补水面膜',
-                stock: '15',
-                pre: '0'
-            }, {
-                px: '套盒',
-                name: '肩颈套',
-                stock: '0',
-                pre: '3'
-            }],
-            out_data: [{
-                out_time: '2018-02-15',
-                name: '肩颈套',
-                handle: '手动出库',
-                num: '3',
-                do_per: '丽丽'
-            }, {
-                out_time: '2018-02-15',
-                name: '肩颈套',
-                handle: '手动出库',
-                num: '3',
-                do_per: '丽丽'
-            }],
             options: [{
                 value: '2',
                 label: '男'
@@ -709,23 +718,8 @@
                 value: '1',
                 label: '女'
             }],
-            calss: [{
-                value: 2,
-                label: '农历'
-            }, {
-                value: 1,
-                label: '阳历'
-            }],
-            status: [{
-                value: 1,
-                label: '已婚'
-            }, {
-                value: 2,
-                label: '未婚'
-            }],
             value: '',
             birth: '',
-
             id: 0,
             list: [],
             warning: {},
@@ -741,7 +735,7 @@
             input3: '',
             input4: '',
             value2: '',
-            one:0,
+            one: '',
             two: '',
             goods: [],
             hc: [],
@@ -752,6 +746,7 @@
             nowData: '',
             total_stock: '',
             un: [],
+            table_index: 0
         },
         watch: {
             value(v) {
@@ -761,27 +756,234 @@
                 this.getRecord(v == null ? '' : v);
             },
             one(v) {
-                this.radio = '1'
-                this.two = ''
+                console.log(parseFloat(this.one))
+                if (this.two != '' && this.one != '' && parseFloat(this.two) < parseFloat(this.one)) {
+                    this.one = ''
+                    error('查询范围不对额')
+                } else if (this.two != '' || this.one != '') {
+                    this.get_search()
+                }
             },
             two(v) {
-                this.radio = '2'
-                this.one = ''
+                console.log(v)
+                if (this.two != '' && this.one != '' && parseFloat(this.two) < parseFloat(this.one)) {
+                    let that=this
+                    setTimeout(function(){
+                        if( parseFloat(that.two) < parseFloat(that.one)){
+                            that.two = ''
+                            that.$message({
+                                message:'查询范围时最大值不能比最大值小额',
+                                duration:1000,
+                                type: 'warning'
+                            });
+                        }
+                    }, 2000);
+                } else if (this.two != '' || this.one != '') {
+                    this.get_search()
+                }
+            },
+            input(v) {
+                if (v == '') {
+                    this.all_list = this.search_list
+                    this.pages_fun()
+                } else {
+                    this.get_search()
+                }
             },
             nowPos(v) {
-                this.input3 = ''
+                this.page=1;
+                this.input3 = '';
+                if(v=='产品'){
+                    this.getCp()
+                }else if(v=='耗材'){
+                    this.getHc()
+                }else if(v=='套盒'){
+                    this.getTh()
+                }else if(v=='内衣'){
+                    this.getUn()
+                }
+                this.total = this.all_list.length
+                if (this.total <= 10) {
+                    this.list = this.all_list
+                } else {
+                    this.list = [];
+                    this.pages_fun()
+                }
             }
         },
         methods: {
-            con(m){
-                console.log(m);
-                if(m==''){
-                    console.log(1);
-                    this.one=0
-                    this.two='';
+            pages_fun() {
+                this.list = [];
+                let m;
+                if (this.total < this.page * 10) {
+                    m = this.total
+                } else {
+                    m = this.page * 10
+                }
+                for (var i = (this.page - 1) * 10; i < m; i++) {
+                    this.list.push(this.all_list[i])
                 }
             },
-            go_scan(t){
+            get_search() {
+                this.page=1;
+                this.list = [];
+                this.all_list = [];
+                console.log(this.table_index)
+                if (this.table_index == 0) {
+                    console.log(this.input)
+                    console.log(this.one)
+                    console.log(this.two)
+                    if (this.input != '' && this.one == '' && this.two == '') {
+                        console.log('名称')
+                        for (let v of this.search_list) {
+                            if (v.name != null && v.name.indexOf(this.input) != -1) {
+                                this.all_list.push(v);
+                            }
+                        }
+                    } else if (this.input == '' && this.two == '' && this.one != '') {
+                        console.log('小')
+                        this.all_list = [];
+                        for (let v of this.search_list) {
+                            if (v.stock != null  && parseFloat(v.stock) >= parseFloat(this.one)) {
+                                this.all_list.push(v);
+                            }
+                        }
+                    } else if (this.input == '' && this.one == '' && this.two != '') {
+                        console.log('大')
+                        this.all_list = [];
+                        for (let v of this.search_list) {
+                            if (v.stock != null &&  parseFloat(v.stock) <= parseFloat(this.two)) {
+                                this.all_list.push(v);
+                            }
+                        }
+                    } else if (this.input != '' && this.one != '' && this.two == '') {
+                        console.log('名称 小')
+                        this.all_list = [];
+                        for (let v of this.search_list) {
+                            if ((v.name != null && v.name.indexOf(this.input) != -1) && (v.stock != null  && parseFloat(v.stock) >= parseFloat(this.one))) {
+                                this.all_list.push(v);
+                            }
+                        }
+                    }else if (this.input != '' && this.one == '' && this.two != '') {
+                        console.log('名称 大')
+                        this.all_list = [];
+                        for (let v of this.search_list) {
+                            if ((v.name != null && v.name.indexOf(this.input) != -1) && (v.stock != null  && parseFloat(v.stock) <= parseFloat(this.two))) {
+                                this.all_list.push(v);
+                            }
+                        }
+                    }else if (this.input == '' && this.one != '' && this.two != '') {
+                        console.log('小 大')
+                        this.all_list = [];
+                        for (let v of this.search_list) {
+                            if (v.stock != null && parseFloat(v.stock) >= parseFloat(this.one)&&parseFloat(v.stock) <= parseFloat(this.two)) {
+                                this.all_list.push(v);
+                            }
+                        }
+                    } else if (this.input != '' && this.one != '' && this.two != '') {
+                        this.all_list = [];
+                        for (let v of this.search_list) {
+                            if ((v.name != null && v.name.indexOf(this.input) != -1) && (v.stock != null  && parseFloat(v.stock) >= parseFloat(this.one)) && ( parseFloat(v.stock) <= parseFloat(this.two))) {
+                                this.all_list.push(v);
+                            }
+                        }
+                        console.log(this.all_list)
+                    } else if (this.input == '' && this.one == '' && this.two == '') {
+                        this.all_list = this.search_list
+                    }
+                }else if(this.table_index==1||this.table_index==2){
+                    for(let v of this.search_list) {
+                        if((v.name!=null&&v.name.indexOf(this.input) != -1)||(v.operation_human!=null&&v.operation_human.indexOf(this.input) != -1)){
+                            this.all_list.push(v);
+                        }
+                    }
+                }else if(this.table_index==3&&this.nowPos=='产品'){
+                    for(let v of this.search_list) {
+                        if((v.goods_name!=null&&v.goods_name.indexOf(this.input) != -1)){
+                            this.all_list.push(v);
+                        }
+                    }
+                }else if(this.table_index==3&&this.nowPos=='套盒'){
+                    for(let v of this.search_list) {
+                        if((v.box_name!=null&&v.box_name.indexOf(this.input) != -1)){
+                            this.all_list.push(v);
+                        }
+                    }
+                }else if(this.table_index==3&&this.nowPos=='耗材'){
+                    for(let v of this.search_list) {
+                        if((v.name!=null&&v.name.indexOf(this.input) != -1)){
+                            this.all_list.push(v);
+                        }
+                    }
+                }else if(this.table_index==3&&this.nowPos=='内衣'){
+                    for(let v of this.search_list) {
+                        if((v.name!=null&&v.name.indexOf(this.input) != -1)||(v.sn!=null&&v.sn.indexOf(this.input) != -1)||(v.size!=null&&v.size.toLowerCase()==this.input.toLowerCase())||(v.cup!=null&&v.cup.toLowerCase()==this.input.toLowerCase())){
+                        this.all_list.push(v);
+                        }
+                    }
+                }
+                this.total = this.all_list.length;
+                if (this.total > 11) {
+                    this.pages_fun()
+                } else {
+                    this.list = this.all_list
+                }
+                /*if(this.input!=''){
+                    this.list=[];
+                    this.all_list=[];
+                    this.page=1;
+                    console.log(this.table_index)
+                    if(this.table_index==0){
+                        console.log(this.input)
+                        console.log(this.one)
+                        console.log(this.two)
+                        for(let v of this.search_list) {
+                            if((v.name!=null&&v.name.indexOf(this.input) != -1)||(v.stock!=null&&this.one!=''&&parseFloat(v.stock)>=this.one)||(v.stock!=null&&this.two!=''&&parseFloat(v.stock)<=this.two)){
+                                this.all_list.push(v);
+                            }
+                        }
+                    }else{
+                        for(let v of this.search_list) {
+                            if(v.name!=null&&v.name.indexOf(this.input) != -1){
+                                this.all_list.push(v);
+                            }
+                        }
+                    }
+                    this.total=this.all_list.length;
+                    if(this.total>11){
+                        this.pages_fun()
+                    }else{
+                        this.list=this.all_list
+                    }
+                }else{
+                    this.all_list=this.search_list
+                    this.total =this.all_list.length;
+                    this.pages_fun()
+                }*/
+            },
+            handleCurrentChange(val) {
+                this.page = val;
+                this.pages_fun()
+            },
+            next_click(val) {
+                if (val < this.page_count) {
+                    this.page++;
+                    this.pages_fun()
+                }
+            },
+            prev_click(val) {
+                if (val < 2) {
+                    this.page--;
+                    this.pages_fun()
+                }
+            },
+            height() {
+                var height = window.innerHeight;
+                this.max_data = window.innerHeight - 275;
+                this.max_in_o = window.innerHeight - 212;
+                this.max_arr = window.innerHeight - 285;
+            },
+            go_scan(t) {
                 localStorage.setItem('px', t);
                 location.href = './scan_code.html';
             },
@@ -815,22 +1017,43 @@
                 })
             },
             getRecord(day = '') {
+                this.page=1;
                 $.post(url(methods.getRecordDetail), {day: day, ware: this.id}, v => {
                     this.myIn = []
                     this.myOut = []
-                    if(v.code==-1){
+                    if (v.code == -1) {
                         error(v.error)
                     }
-                    if(v.res.length!=0){
-                        for (let x of v.res) {
-                            if (x['status'] == 1) {
-                                this.myIn.push(x)
-                            } else {
-                                this.myOut.push(x)
+                    if(v.res!=null){
+                        if (v.res.length != 0) {
+                            for (let x of v.res) {
+                                if (x['status'] == 1) {
+                                    this.myIn.push(x)
+                                } else {
+                                    this.myOut.push(x)
+                                }
                             }
                         }
                     }
+                    if (this.table_index == 1) {
+                        //c出
+                        this.search_list = this.myOut
+                        this.all_list = this.myOut
+                    } else if (this.table_index == 2) {
+                        this.search_list = this.myIn
+                        this.all_list = this.myIn
+                    }
+                    this.total = this.all_list.length
+                    if (this.total <= 10) {
+                        this.list = this.all_list
+                    } else {
+                        this.list = [];
+                        this.pages_fun()
+                    }
                 })
+                if(this.input!=''){
+                    this.get_search()
+                }
             },
             close() {
                 this.in_ware = false
@@ -888,34 +1111,40 @@
                 }
             },
             getData() {
+                this.page=1;
                 $.post(url(methods.wareIntoOutDetail), {ware: this.id}, v => {
                     this.warning = v['res']['warning']
-                    this.list = v['res']['res']
+                    // this.list = v['res']['res']
+                    this.search_list = v['res']['res']
+                    this.all_list = v['res']['res']
+                    this.total = this.all_list.length
+                    if (this.total <= 10) {
+                        this.list = this.all_list
+                    } else {
+                        this.list = [];
+                        this.pages_fun()
+                    }
                 })
+                if(this.input!=''){
+                    this.get_search()
+                }
             },
             myClick(v, v2) {
-                this.myIn = []
-                this.myOut = []
+                this.input = ''
+                this.value = ''
+                this.page=1;
+                this.table_index = v.index
                 if (v.index == 0) {
                     this.getData()
                 } else if (v.index == 1) {
+                    //c出
                     this.getRecord()
                 } else if (v.index == 2) {
                     this.getRecord()
+
                 } else if (v.index == 3) {
-                    //this.getDc()
                     this.getCp()
-                    this.getHc()
-                    this.getTh()
-                    this.getUn()
-                } else if (v.index == 4) {
-                    this.getCp()
-                    this.getHc()
-                    this.getTh()
-                    this.getUn()
                 }
-                this.input2 = ''
-                this.value = ''
             },
             sub() {
                 let arr = []
@@ -952,7 +1181,7 @@
                             this.getTh()
                         } else if (this.nowPos == '耗材') {
                             this.getHc()
-                        }else if (this.nowPos == '内衣') {
+                        } else if (this.nowPos == '内衣') {
                             this.getUn()
                         }
                     } else {
@@ -961,6 +1190,7 @@
                 })
             },
             getCp() {
+                this.page=1;
                 $.post(url(methods.getCp), v => {
                     for (let x of v.data) {
                         x.pdNum = ''
@@ -968,9 +1198,22 @@
                         x.type = 1
                     }
                     this.goods = v.data
+                    this.search_list = this.goods
+                    this.all_list = this.goods
+                    this.total = this.all_list.length
+                    if (this.total <= 10) {
+                        this.list = this.all_list
+                    } else {
+                        this.list = [];
+                        this.pages_fun()
+                    }
                 })
+                if(this.input!=''){
+                    this.get_search()
+                }
             },
             getTh() {
+                this.page=1;
                 $.post(url(methods.getTh), v => {
                     for (let x of v.data) {
                         x.pdNum = ''
@@ -978,9 +1221,22 @@
                         x.type = 2
                     }
                     this.th = v.data
+                    this.search_list = this.th
+                    this.all_list = this.th
+                    this.total = this.all_list.length
+                    if (this.total <= 10) {
+                        this.list = this.all_list
+                    } else {
+                        this.list = [];
+                        this.pages_fun()
+                    }
                 })
+                if(this.input!=''){
+                    this.get_search()
+                }
             },
             getHc() {
+                this.page=1;
                 $.post(url(methods.getHc), v => {
                     for (let x of v.data) {
                         x.pdNum = ''
@@ -988,20 +1244,45 @@
                         x.type = 3
                     }
                     this.hc = v.data
+                    this.search_list = this.hc
+                    this.all_list = this.hc
+                    this.total = this.all_list.length
+                    if (this.total <= 10) {
+                        this.list = this.all_list
+                    } else {
+                        this.list = [];
+                        this.pages_fun()
+                    }
                 })
+                if(this.input!=''){
+                    this.get_search()
+                }
             },
             getUn() {
+                this.page=1;
                 $.post(url(methods.getUn), v => {
-                    let all_totck=0
+                    let all_totck = 0
                     for (let x of v.data) {
                         x.pdNum = '';
                         x.nowNum = '';
                         x.type = 4;
-                        all_totck+=parseInt(x.sum)
+                        all_totck += parseInt(x.sum)
                     }
-                    this.total_stock=all_totck
+                    this.total_stock = all_totck
                     this.un = v.data;
+                    this.search_list = this.un
+                    this.all_list = this.un
+                    this.total = this.all_list.length
+                    if (this.total <= 10) {
+                        this.list = this.all_list
+                    } else {
+                        this.list = [];
+                        this.pages_fun()
+                    }
                 })
+                if(this.input!=''){
+                    this.get_search()
+                }
             },
             getDetail() {
                 this.y_k_dio = true
@@ -1031,6 +1312,7 @@
                 loginState()
                 this.id = localStorage.getItem('wareId')
                 this.getData()
+                this.height()
             })
         }
     })
